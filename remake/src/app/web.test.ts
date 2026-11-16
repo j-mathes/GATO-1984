@@ -11,6 +11,7 @@ import { BIOS_TICK_SECONDS, EFFECTS, SoundEngine, type AudioContextLike, type Os
 import { Simulation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import type { Gfx } from "../render/gfx.js";
+import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
 
 const root = new URL("../../", import.meta.url);
 const read = <T>(path: string): T => JSON.parse(readFileSync(new URL(path, root), "utf8")) as T;
@@ -309,5 +310,36 @@ describe("application shell", () => {
     expect(sim.sub.y).toBe(10000);
     press(app, "c", "z", "n", "o", "Enter");
     expect((app as unknown as { prompt: unknown }).prompt).toBeNull(); // wrong password
+  });
+
+  it("Z -> PAED teleport into the island of ORDXX7 at night completes the rescue through the whole app", () => {
+    const { app } = makeApp();
+    press(app, "x"); // title -> menu
+    app.startMission(7, 1);
+    press(app, "x"); // skip the orders
+    press(app, "Tab", "3", "Enter"); // TIME OF DAY -> night (0), as the orders ask
+    expect(app.settings.timeOfDay).toBe(0);
+    const sim = (app as unknown as { sim: Simulation }).sim;
+    const island = sim.scenario.islands[14];
+    if (!island) throw new Error("missing island");
+    const coords = `${island.x},${island.y - island.innerRadius - 80}`.split("");
+    press(app, "c", "z", ..."PAED".split(""), "Enter", ...coords, "Enter");
+    expect(sim.currentQuadrant).toBe(14);
+    app.frame(0);
+    for (let t = 250; t <= 1500 && sim.status === "running"; t += 250) app.frame(t);
+    expect(sim.status).toBe("missionComplete");
+    expect(app.log.missionsCompleted).toBe(1);
+  });
+
+  it("display modes cycle and size the picture", () => {
+    expect(nextDisplayMode("authentic")).toBe("fit");
+    expect(nextDisplayMode("fit")).toBe("crt");
+    expect(nextDisplayMode("crt")).toBe("authentic");
+    expect(computeDisplaySize("authentic", 1000, 700)).toEqual({ width: 960, height: 600 }); // 3x, whole pixels
+    expect(computeDisplaySize("fit", 1000, 700)).toEqual({ width: 1000, height: 625 }); // fills the width, keeps 8:5
+    expect(computeDisplaySize("crt", 1920, 1080)).toEqual({ width: 1728, height: 1080 });
+    expect(computeDisplaySize("authentic", 200, 100)).toEqual({ width: 320, height: 200 }); // never below 1x
+    expect(isDisplayMode("fit")).toBe(true);
+    expect(isDisplayMode("sepia")).toBe(false);
   });
 });

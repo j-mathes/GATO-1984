@@ -113,6 +113,11 @@ export class App {
   // Input
   // ---------------------------------------------------------------------------------------------------------------
 
+  /** True while a typed prompt (password, coordinates, difficulty) is open, so global hotkeys must not steal the keys. */
+  get textEntryActive(): boolean {
+    return this.prompt !== null || this.difficultyEditor !== null;
+  }
+
   keydown(e: KeyLike): void {
     void this.sound.unlock();
     switch (this.mode) {

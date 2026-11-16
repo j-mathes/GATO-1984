@@ -9,6 +9,7 @@ import { SoundEngine } from "./audio/soundEngine.js";
 import type { CourseJson, DemoScriptDocument, HistoryPagesDocument, MxpJson, OrdersJson, ShipLogDocument } from "./core/index.js";
 import { attachKeyboard } from "./input/keyboard.js";
 import { Gfx } from "./render/gfx.js";
+import { setupDisplay } from "./render/display.js";
 import { SpriteLibrary } from "./render/sprites.js";
 
 /** Scenario number from a file name such as ".../COURXX7.json" or ".../ORDXX12.json". */
@@ -51,7 +52,15 @@ async function boot(): Promise<void> {
   }
 
   const app = new App(gfx, data, sprites, new SoundEngine(), storage);
-  attachKeyboard(window, (e) => app.keydown(e));
+  const display = setupDisplay(canvas, document.getElementById("crt"), storage);
+  attachKeyboard(window, (e) => {
+    // V cycles authentic -> fit window -> fit window + CRT scanlines (not while typing into a prompt)
+    if ((e.key === "v" || e.key === "V") && !e.ctrlKey && !e.altKey && !e.metaKey && !app.textEntryActive) {
+      display.cycle();
+      return;
+    }
+    app.keydown(e);
+  });
   canvas.focus();
 
   const loop = (t: number): void => {
