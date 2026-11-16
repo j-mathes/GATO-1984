@@ -123,7 +123,7 @@ export interface OrdersView {
  */
 export function drawOrders(g: Gfx, view: OrdersView): void {
   drawTeletype(g, view.screen, view.cursorOn);
-  const note = view.finished ? "PRESS ANY KEY" : view.hidden ? "ORDERS IN MORSE ONLY - ANY KEY SKIPS" : "PRESS ANY KEY TO SKIP";
+  const note = view.finished ? "PRESS ANY KEY TO CONTINUE" : view.hidden ? "ORDERS IN MORSE ONLY - ANY KEY SKIPS" : "PRESS ANY KEY TO SKIP";
   g.text(1, 25, note, COLORS.grey);
 }
 

@@ -57,7 +57,7 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 | ? or H | Controls quick-reference overlay (remake addition). The world pauses while it is shown; any key closes it and is not passed on |
 | [ / ] | Time compression slower / faster: 1x = 2.5 simulation steps a second (the 1984 pace, default), 2x = 5, 4x = 10. A line at the top confirms the change. Remembered in `localStorage` (`gato.timeScale`); also GAME CONTROL item 6 |
 | Z (on the chart) | Hidden debug command: type `PAED`, Enter, then `x,y`, Enter to teleport (only while no enemy is alerted) |
-| Any key | Skips the Morse order broadcast (also the demo's example) |
+| Any key | Orders screen: the first key stops the Morse and shows the whole message (still hidden at difficulty 8 or more), then "PRESS ANY KEY TO CONTINUE" waits for a second key before the control room. In the demo it skips the example |
 | Esc | Quit to the launcher |
 | V | Display mode |
 | W | Wake trails on/off: persistent track dots on the radar, chart and quadrant map (the original's behaviour, default) or clean redraws. Remembered in `localStorage` (`gato.trails`) |
@@ -115,7 +115,7 @@ Details live in `../analysis/` (`loader_verification.md`, `exe_architecture.md`,
   - Scenario files are plain ASCII (no MBF on disk): `ORDXX*` orders, `COURXX*` convoy waypoints plus a 3-value trailer, `OBX*` ship drawings. There are 10 distinct scenarios; 11–20 duplicate 1–10.
   - `COURXX` trailer: `ds:0x2246` = objective island quadrant, `ds:0x2242` = required time of day, `ds:0x226a` = highest convoy slot that must be sunk.
   - `ds:0x09e2` = SOUND on/off. `ds:0x2256` = DIFFICULTY 0–9; at 8 or more the order characters are not printed (the Morse still plays and the blank lines still scroll the grey band).
-  - The mission briefing is the same text-mode routine as the demo's Morse example: 40-column text, black on light grey (`COLOR 0,7`), a grey band that grows upwards as lines scroll, the `@` line printed as the rest of the line + 12 spaces + `DTG dd/hhmm ZULU` and sent in Morse like the rest. The remake's briefing screen is checked against capture `2660312` (cell positions of every text row, band rows 6–24, black rows 1–5 and 25; `src/app/web.test.ts`). Row 25 carries a remake hint line (the original program never writes it) and the original starts the mission right after the last character, while the remake waits for a key.
+  - The mission briefing is the same text-mode routine as the demo's Morse example: 40-column text, black on light grey (`COLOR 0,7`), a grey band that grows upwards as lines scroll, the `@` line printed as the rest of the line + 12 spaces + `DTG dd/hhmm ZULU` and sent in Morse like the rest. The remake's briefing screen is checked against capture `2660312` (cell positions of every text row, band rows 6–24, black rows 1–5 and 25; `src/app/web.test.ts`). Row 25 carries a remake hint line (the original program never writes it). The original abandons the orders at the first key and starts the mission right after the last character; the remake instead has a first key complete the message and a second key (or one key after the text finished by itself) continue.
   - Waypoint speed applies while travelling to that waypoint.
   - The world is 25000×20000 in 5×4 quadrants. `LOG1` (92 × 32-byte records) is the only persistent file.
   - Morse: 36 dispatch branches (A–Z, 0–9) matching International Morse, played with `PLAY` strings `B32P62` (dit, about 0.0625 s) and `B10P62` (dah, about 0.2 s).

@@ -272,11 +272,14 @@ describe("application shell", () => {
     expect(app.mode).toBe("menu");
   });
 
-  it("starts a mission with Morse orders that any key cuts short, then plays", () => {
+  it("starts a mission with Morse orders; the first key stops the Morse and shows the whole message, the second enters the control room", () => {
     const { app, oscs } = makeApp();
     press(app, "x", "1");
     expect(app.mode).toBe("orders");
     expect(oscs.length).toBeGreaterThan(5);
+    press(app, "x");
+    expect(app.mode).toBe("orders");
+    expect(oscs.every((o) => o.stopped)).toBe(true);
     press(app, "x");
     expect(app.mode).toBe("play");
     const sim = (app as unknown as { sim: Simulation }).sim;
@@ -292,7 +295,7 @@ describe("application shell", () => {
 
   it("GAME CONTROL changes difficulty, sound and time of day; sound off silences effects", () => {
     const { app, oscs } = makeApp();
-    press(app, "x", "1", "x", "Tab");
+    press(app, "x", "1", "x", "x", "Tab");
     expect(app.screen).toBe("gameControl");
     press(app, "1", "7", "Enter");
     expect(app.settings.difficulty).toBe(7);
@@ -309,7 +312,7 @@ describe("application shell", () => {
 
   it("hidden Z -> PAED -> coordinates command moves the boat from the chart only", () => {
     const { app } = makeApp();
-    press(app, "x", "1", "x");
+    press(app, "x", "1", "x", "x");
     const sim = (app as unknown as { sim: Simulation }).sim;
     press(app, "z");
     expect((app as unknown as { prompt: unknown }).prompt).toBeNull(); // not on the chart
@@ -324,7 +327,7 @@ describe("application shell", () => {
     const { app } = makeApp();
     press(app, "x"); // title -> menu
     app.startMission(7, 1);
-    press(app, "x"); // skip the orders
+    press(app, "x", "x"); // skip the orders: the first key shows the whole message, the second continues
     press(app, "Tab", "3", "Enter"); // TIME OF DAY -> night (0), as the orders ask
     expect(app.settings.timeOfDay).toBe(0);
     const sim = (app as unknown as { sim: Simulation }).sim;
@@ -447,7 +450,8 @@ describe("radio room and message overlay in the app", () => {
     const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
     const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.3);
     app.startMission(1, 5);
-    app.keydown({ key: "x" }); // skip the orders
+    app.keydown({ key: "x" }); // skip the orders (two keys)
+    app.keydown({ key: "x" });
     app.frame(0);
     return { app, sim: (app as unknown as { sim: Simulation }).sim };
   }
@@ -594,7 +598,7 @@ describe("every screen draws from the extracted layouts", () => {
   const startMission = (app: App): void => {
     press(app, "x");
     app.startMission(1, 1);
-    press(app, "x");
+    press(app, "x", "x");
   };
   const images = (calls: Call[]): unknown[] => calls.filter(([n]) => n === "image").map(([, a]) => a[0]);
 
@@ -677,7 +681,7 @@ describe("every screen draws from the extracted layouts", () => {
     app.frame(0);
     expect(calls.some(([n]) => n === "text")).toBe(true);
     expect(images(calls).some((i) => (SCREEN_NAMES as readonly string[]).some((n) => i === L.image(n as ScreenName)))).toBe(false);
-    press(app, "x");
+    press(app, "x", "x");
     expect(app.mode).toBe("play");
     const history = makeApp(L);
     press(history.app, "x", "3");
@@ -741,6 +745,7 @@ describe("persistent wake trails (key W)", () => {
     app.keydown({ key: "x" });
     app.startMission(1, 1);
     app.keydown({ key: "x" });
+    app.keydown({ key: "x" });
     const sim = (app as unknown as { sim: Simulation }).sim;
     app.setTrails(trails);
     app.screen = screen;
@@ -790,6 +795,7 @@ describe("persistent wake trails (key W)", () => {
     const app = new App(g, data, null, new SoundEngine(() => ctx), storage);
     app.keydown({ key: "x" });
     app.startMission(1, 1);
+    app.keydown({ key: "x" });
     app.keydown({ key: "x" });
     return app;
   }
@@ -964,7 +970,7 @@ describe("controls overlay and mission select", () => {
       const { app, calls, sim } = makeApp();
       press(app, "x");
       app.startMission(1, 1);
-      press(app, "x");
+      press(app, "x", "x");
       app.frame(0);
       expect(app.helpVisible).toBe(false);
       press(app, key);
@@ -992,7 +998,7 @@ describe("controls overlay and mission select", () => {
     const { app } = makeApp();
     press(app, "x");
     app.startMission(1, 1);
-    press(app, "x", "c", "z");
+    press(app, "x", "x", "c", "z");
     press(app, "h");
     expect(app.helpVisible).toBe(false); // H went into the PASSWORD prompt
     press(app, "Escape", "Tab", "?");
@@ -1008,7 +1014,7 @@ describe("controls overlay and mission select", () => {
     const { app, calls, sim } = makeApp();
     press(app, "x");
     app.startMission(1, 1);
-    press(app, "x", "Tab");
+    press(app, "x", "x", "Tab");
     expect(app.settings.mission ?? null).toBeNull();
     app.frame(0);
     expect(calls.some(([n, a]) => n === "text" && a[2] === "RANDOM")).toBe(true);
@@ -1023,7 +1029,7 @@ describe("controls overlay and mission select", () => {
     expect(app.mode).toBe("menu");
     press(app, "1");
     expect(sim().scenario.id).toBe(12);
-    press(app, "x", "Tab", "5", "R", "Enter");
+    press(app, "x", "x", "Tab", "5", "R", "Enter");
     expect(app.settings.mission).toBeNull();
     press(app, "5", "2", "1", "Enter");
     expect(app.settings.mission).toBeNull(); // 21 is out of range
@@ -1072,7 +1078,7 @@ describe("1984 pacing: 2.5 Hz simulation under 60 FPS rendering", () => {
     const h = makeApp(storage);
     press(h.app, "x");
     h.app.startMission(1, 1);
-    press(h.app, "x");
+    press(h.app, "x", "x");
     h.app.frame(0);
     return h;
   }
@@ -1564,23 +1570,53 @@ describe("mission orders on the text screen (reference screenshot 2660312)", () 
     expect(texts(shown.calls).some(([, , s]) => s.includes("LARGE NUMBER PATROL CRAFT EAST"))).toBe(true);
   });
 
-  it("any key ends the orders at once, stops the Morse and enters the control room; the row-25 hint follows the state", () => {
+  it("two-stage skip: the first key stops the Morse and completes the message (still hidden at difficulty 8+), the second enters the control room", () => {
     for (const difficulty of [0, 8]) {
       const { app, calls, oscs } = makeApp(difficulty);
       app.frame(10);
       expect(texts(calls).some(([c, r, s]) => c === 1 && r === 25 && /SKIP|SKIPS/.test(s))).toBe(true);
+      expect(texts(calls).some(([, , s]) => s.includes("MAKE MAX EFFORT."))).toBe(false); // only the start of the message so far
+      app.keydown({ key: "q" });
+      expect(app.mode).toBe("orders"); // not the control room yet
+      expect(oscs.every((o) => o.stopped)).toBe(true);
+      calls.length = 0;
+      app.frame(20);
+      const rows = texts(calls).filter(([c]) => c === 1);
+      expect(rows.some(([, r, s]) => r === 25 && s === "PRESS ANY KEY TO CONTINUE")).toBe(true);
+      expect(rows.some(([, , s]) => s.includes("MAKE MAX EFFORT."))).toBe(difficulty < 8);
+      expect(rows.some(([, , s]) => s.includes("LARGE NUMBER PATROL CRAFT EAST"))).toBe(difficulty < 8);
+      const grey = calls.filter(([n, a]) => n === "rect" && a[4] === "#aaaaaa").length;
+      expect(grey).toBe(19); // the whole band, as at the end of the typing
       app.keydown({ key: "q" });
       expect(app.mode).toBe("play");
-      expect(oscs.every((o) => o.stopped)).toBe(true);
       expect(app.screen).toBe("control");
     }
+  });
+
+  it("a message that finishes by itself waits for one key with the same prompt", () => {
     const { app, calls } = makeApp();
     const p = app as unknown as Priv;
     p.orders.start = p.lastFrame - (p.orders.timeline.duration + 1) * 1000;
     calls.length = 0;
     app.frame(0);
-    expect(texts(calls).some(([c, r, s]) => c === 1 && r === 25 && s === "PRESS ANY KEY")).toBe(true);
+    expect(texts(calls).some(([c, r, s]) => c === 1 && r === 25 && s === "PRESS ANY KEY TO CONTINUE")).toBe(true);
     expect(app.mode).toBe("orders"); // the remake waits for a key after the last character; the original starts the mission
+    app.keydown({ key: "q" });
+    expect(app.mode).toBe("play"); // one key is enough now
+  });
+
+  it("M re-reads the orders with the whole message already on screen: one key continues", () => {
+    const { app, calls } = makeApp();
+    app.keydown({ key: "q" });
+    app.keydown({ key: "q" });
+    expect(app.mode).toBe("play");
+    app.keydown({ key: "m" });
+    expect(app.mode).toBe("orders");
+    calls.length = 0;
+    app.frame(0);
+    expect(texts(calls).some(([, , s]) => s.includes("MAKE MAX EFFORT."))).toBe(true);
+    app.keydown({ key: "q" });
+    expect(app.mode).toBe("play");
   });
 
   it("hidden orders keep the cursor at column 1 and scroll only on blank lines", () => {

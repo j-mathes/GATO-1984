@@ -505,10 +505,21 @@ export class App {
     }
   }
 
-  /** Any key: stop the Morse and go to the control room (the original abandons the rest of the orders, 0x0bd86). */
+  /**
+   * Any key while the order is still being typed and sent: stop the Morse and show the whole message (text stays hidden at difficulty 8 and
+   * 9); a second key, or any key once the message is complete, goes to the control room. (The original abandons the orders at the first
+   * key, 0x0bd86; the two steps are a remake choice so the message can be read.)
+   */
   private finishOrders(): void {
-    if (!this.orders) return;
-    this.orders.handle?.cancel();
+    const o = this.orders;
+    if (!o) return;
+    if (!o.done && (this.lastFrame - o.start) / 1000 < o.timeline.duration) {
+      o.handle?.cancel();
+      o.handle = null;
+      o.done = true;
+      return;
+    }
+    o.handle?.cancel();
     this.orders = null;
     this.mode = "play";
     this.runner?.resetClock();
@@ -706,10 +717,10 @@ export class App {
   private frameOrders(timeMs: number): void {
     const o = this.orders;
     if (!o) return;
-    const elapsed = (timeMs - o.start) / 1000;
-    const finished = elapsed >= o.timeline.duration;
+    const elapsed = o.done ? Infinity : (timeMs - o.start) / 1000;
+    const finished = o.done || elapsed >= o.timeline.duration;
     const hidden = this.settings.difficulty >= 8;
-    drawOrders(this.g, { screen: ordersScreen(o.lines, revealedLines(o.lines, o.timeline, elapsed), hidden), hidden, finished, cursorOn: cursorBlink(timeMs) });
+    drawOrders(this.g, { screen: ordersScreen(o.lines, revealedLines(o.lines, o.timeline, finished ? Infinity : elapsed), hidden), hidden, finished, cursorOn: cursorBlink(timeMs) });
   }
 
   private framePlay(timeMs: number): void {
