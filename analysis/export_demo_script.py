@@ -25,6 +25,72 @@ UI_LABELS = re.compile(r"^(POWER|DEPTH|TORPEDOES|FUEL|BATT|CHARGING|DIESEL|\s*OF
 PRINT_RE = re.compile(r"mov bx, ('(?:[^']*)'|\"(?:[^\"]*)\"); lcall 0x5cb, 0x(3587|3573)")
 FORINIT_RE = re.compile(r"mov si, v[0-9a-f]+=(\d+(?:\.\d+)?); lcall 0x5cb, 0x131b")
 LIMIT_RE = re.compile(r"mov di, v[0-9a-f]+=(\d+(?:\.\d+)?); mov si, v[0-9a-f]+; lcall 0x5cb, 0x1d71; ja")
+# LOCATE row[,col]: the column operand is omitted when it equals the row (bx is left as it was)
+LOCATE_RE = re.compile(r"mov bx, (0x[0-9a-f]+|\d+); lcall 0x5cb, 0x125b; (?:mov bx, (0x[0-9a-f]+|\d+); )?lcall 0x5cb, 0x1275")
+# LINE (x1,y1)-(x2,y2),0,BF: 0x2865 sets the first corner, 0x28ad is the filled box with the colour in cx
+BOX_RE = re.compile(r"mov bx, (\S+); mov dx, (\S+); lcall 0x5cb, 0x2865; mov bx, (\S+); mov dx, (\S+); xor cx, cx; lcall 0x5cb, 0x28ad")
+INTRO_SECONDS = 4.0
+MORSE_END_RE = re.compile(r"mov di, v[0-9a-f]+=(\d+); lcall 0x5cb, 0x1d71; jbe")
+# The radio subroutine (GOSUB 0x4704) prints RADIO ROOM / REPORTS HEAVY DAMAGE only when ds:0x175e (radio damage) is above 0; DEMO never sets it
+DEAD_BRANCH = (0x06d05, 0x06daa)
+DEMORD_OPEN = "mov dx, 'DEMORD'"
+
+
+def number(token, bx=None):
+    """Immediate operand of a statement. The lister shows immediates of 0x100 or more as ``v0xxx``; 'bx' means 'same as bx'."""
+    if token == "bx":
+        return bx
+    if token.startswith("v"):
+        return int(token[1:], 16)
+    return int(token, 0)
+
+
+def printed_text(statement):
+    return eval(PRINT_RE.search(statement).group(1))
+
+
+def print_position(stmts, index, text):
+    """(row, col) of the LOCATE just before a PRINT statement."""
+    for back in (1, 2):
+        m = LOCATE_RE.search(stmts[index - back][1])
+        if m:
+            row = int(m.group(1), 0)
+            col = int(m.group(2), 0) if m.group(2) else row
+            return {"row": row, "col": col, "text": text}
+    return {"row": None, "col": None, "text": text}
+
+
+def narration_box(stmts, first_print):
+    """The `LINE (x1,y1)-(x2,y2),0,BF` that clears the box a page is printed into (None when there is none)."""
+    for back in range(1, 9):
+        m = BOX_RE.search(stmts[first_print - back][1])
+        if m:
+            x1 = number(m.group(1))
+            y1 = number(m.group(2), x1)
+            return {"x1": x1, "y1": y1, "x2": number(m.group(3)), "y2": number(m.group(4)), "color": 0}
+    return None
+
+
+def morse_example(stmts):
+    """The orders example shown right after the intro: the subroutine at 0x06d04 reads DEMORD and prints it while sending it in Morse."""
+    start = next(i for i, (_, s) in enumerate(stmts) if DEMORD_OPEN in s)
+    end = next(i for i in range(start, len(stmts)) if "lcall 0x5cb, 0x1dcc" in stmts[i][1])
+    hold = [int(m.group(1)) for _, s in stmts[start:end] for m in [MORSE_END_RE.search(s)] if m]
+    raw = Path(ROOT / "Original" / "DEMORD").read_bytes().split(b"\x1a")[0].decode("ascii")
+    lines = raw.split("\r\n")
+    if lines and lines[-1] == "":
+        lines.pop()
+    return {
+        "file": "DEMORD",
+        "file_offset": f"0x{stmts[start][0]:05x}",
+        "lines": lines,
+        "screen": "SCREEN 0,1 (text, 40 columns), COLOR 0,7,1: black text on light grey (#aaaaaa); the rest of the screen stays black",
+        "print": "LOCATE 24,1: PRINT of 40 spaces, then every character is printed as its Morse is sent; a blank line prints two newlines; "
+                 "the screen scrolls with the current colours, which is what builds the grey band",
+        "end_hold_loop_limit": hold[-1] if hold else None,
+        "end_hold_seconds_estimate": round(hold[-1] / NOMINAL_ITERATIONS_PER_SECOND, 2) if hold else None,
+        "keys": "any key stops the Morse and ends the screen at once (INKEY$ at 0x06fe8), also during the final hold",
+    }
 
 
 def main():
@@ -36,7 +102,7 @@ def main():
         if not m:
             continue
         t = eval(m.group(1))
-        if UI_LABELS.match(t) or len(t.strip()) < 4:
+        if UI_LABELS.match(t) or len(t.strip()) < 4 or DEAD_BRANCH[0] <= off < DEAD_BRANCH[1]:
             continue
         texts.append((i, off, t.rstrip(), m.group(2) == "3587"))
     pages, cur = [], []
@@ -56,14 +122,31 @@ def main():
             if m:
                 limit = float(m.group(1))
                 break
-        out.append({"page": p + 1, "file_offset": f"0x{page[0][1]:05x}", "lines": [t for _, _, t, _ in page],
-                    "delay_loop_limit": limit,
-                    "seconds_estimate": None if limit is None else round(limit / NOMINAL_ITERATIONS_PER_SECOND, 2)})
+        entry = {"page": p + 1, "file_offset": f"0x{page[0][1]:05x}", "lines": [t for _, _, t, _ in page],
+                 "delay_loop_limit": limit,
+                 "seconds_estimate": None if limit is None else round(limit / NOMINAL_ITERATIONS_PER_SECOND, 2),
+                 "text": [print_position(stmts, i, raw) for i, _, _, _ in page for raw in [printed_text(stmts[i][1])]],
+                 "box": narration_box(stmts, page[0][0])}
+        out.append(entry)
+    # page 1 is the title/instructions screen drawn while the program loads its data, not a narration box
+    intro = out.pop(0)
+    if intro["box"] is not None or [t["text"].strip() for t in intro["text"]] != [t.strip() for t in intro["lines"]]:
+        raise SystemExit("unexpected first page")
+    for n, page in enumerate(out):
+        page["page"] = n + 1
     doc = {
-        "_about": "Narration pages of DEMO.EXE in program order (see analysis/export_demo_script.py for what is exact).",
+        "_about": "Screens and narration pages of DEMO.EXE in program order (see analysis/export_demo_script.py for what is exact).",
         "exit_key": "F1 (the demo polls INKEY$ against the F1 key string ds:0x25e4)",
         "sound_toggle_key": "F2 (printed by the demo's title page)",
         "nominal_iterations_per_second": NOMINAL_ITERATIONS_PER_SECOND,
+        "intro": {
+            "file_offset": intro["file_offset"],
+            "screen": "SCREEN 1, COLOR 8,1 (grey #555555 background, white text), CLS, then the three PRINTs; the program goes on loading its sprite files with this page up",
+            "text": intro["text"],
+            "seconds_estimate": INTRO_SECONDS,
+            "seconds_note": "no delay loop or key wait follows the page: its time on screen is the loading time of the original, a remake estimate",
+        },
+        "morse": morse_example(stmts),
         "pages": out,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)

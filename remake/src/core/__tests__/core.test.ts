@@ -458,16 +458,72 @@ describe("launcher and demo", () => {
     expect(gc.settings.mission).toBeNull();
   });
 
-  it("plays the demo narration in order and stops on F1", () => {
+  it("plays the demo in order: intro page, Morse example, then the narrated pages; F1 stops it", () => {
     const player = new DemoPlayer(demoScript);
     const first = player.start();
-    expect(first[0]).toMatchObject({ type: "page", index: 0, screen: "title" });
-    const later = player.advance(1000);
+    expect(first).toEqual([{ type: "intro", screen: "intro" }]);
+    expect(player.stage).toBe("intro");
+    const seconds = demoScript.intro?.seconds_estimate ?? 0;
+    expect(player.advance(seconds - 0.1)).toEqual([]);
+    const morse = player.advance(0.2);
+    expect(morse).toHaveLength(1);
+    expect(morse[0]).toMatchObject({ type: "morse", screen: "morseExample" });
+    expect(player.advance(100)).toEqual([]); // the example stays up until the UI says how long it takes
+    player.setMorseSeconds(5);
+    const pages = player.advance(5);
+    expect(pages[0]).toMatchObject({ type: "page", index: 0, screen: "controlRoom" });
+    expect(player.stage).toBe("pages");
+    const later = [...pages, ...player.advance(1000)];
     expect(later.at(-1)).toMatchObject({ type: "finished", reason: "completed" });
     const again = new DemoPlayer(demoScript);
     again.start();
     expect(again.pressKey("F1")).toEqual([{ type: "finished", reason: "exit" }]);
     const radar = demoScript.pages.find((p) => p.lines.some((l) => l.includes("RADAR")));
     expect(radar && screenForPage(radar)).toBe("radar");
+  });
+
+  it("F2 only turns the sound off; any other key skips the intro, then ends the Morse example", () => {
+    const player = new DemoPlayer(demoScript);
+    player.start();
+    expect(player.pressKey("F2")).toEqual([]);
+    expect(player.soundOn).toBe(false);
+    expect(player.stage).toBe("intro");
+    const toMorse = player.pressKey("x");
+    expect(toMorse[0]).toMatchObject({ type: "morse" });
+    player.setMorseSeconds(60);
+    expect(player.pressKey("F2")).toEqual([]);
+    expect(player.stage).toBe("morse");
+    const toPages = player.pressKey("Enter");
+    expect(toPages[0]).toMatchObject({ type: "page", index: 0 });
+    expect(player.pressKey("x")).toEqual([]); // narrated pages are not skipped by keys
+    expect(player.currentPage).toBe(demoScript.pages[0]);
+  });
+
+  it("a script without the intro or the Morse example starts with the narration (older script files)", () => {
+    const player = new DemoPlayer({ pages: demoScript.pages, nominal_iterations_per_second: 2500 });
+    expect(player.start()[0]).toMatchObject({ type: "page", index: 0 });
+  });
+
+  it("the extracted demo script: intro cells, DEMORD, and boxes at the top of the screen", () => {
+    expect(demoScript.intro?.text).toEqual([
+      { row: 7, col: 12, text: "GATO DEMONSTRATION" },
+      { row: 10, col: 5, text: "PRESS FUNCTION KEY 1 (F1) TO EXIT" },
+      { row: 12, col: 2, text: " FUNCTION KEY 2 (F2) TO TURN OFF SOUND" },
+    ]);
+    expect(demoScript.morse?.file).toBe("DEMORD");
+    expect(demoScript.morse?.lines).toEqual(["   THIS IS AN EXAMPLE OF HOW YOU", "", "   RECEIVE YOUR ORDERS."]);
+    expect(demoScript.morse?.end_hold_seconds_estimate).toBe(2);
+    expect(demoScript.pages.some((p) => p.lines.some((l) => l.includes("GATO DEMONSTRATION")))).toBe(false); // it is the intro, not narration
+    expect(demoScript.pages.some((p) => p.lines.some((l) => l.includes("REPORTS HEAVY DAMAGE")))).toBe(false); // branch DEMO never takes
+    const [main, chart] = demoScript.pages;
+    expect(main?.box).toEqual({ x1: 5, y1: 5, x2: 314, y2: 50, color: 0 });
+    expect(main?.text?.map((t) => [t.row, t.col, t.text])).toEqual([
+      [2, 9, "THIS IS YOUR MAIN SCREEN"],
+      [4, 3, "YOU ARE NOW IN THE THE CONTROL ROOM"],
+      [5, 5, "YOU MAY CONTROL ALL OPERATIONS"],
+      [6, 7, "OF THE SUBMARINE FROM HERE"],
+    ]);
+    expect(chart?.text?.map((t) => [t.row, t.col])).toEqual([[3, 5], [6, 5]]);
+    for (const page of demoScript.pages) if (page.box) expect([page.box.x1, page.box.y1, page.box.color]).toEqual([5, 5, 0]);
   });
 });

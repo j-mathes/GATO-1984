@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { App, SPLASH_MS, TICKS_PER_SECOND, type AppData } from "./app.js";
+import { TELETYPE_ROWS, Teletype, ordersScreen } from "./teletype.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines } from "./orders.js";
@@ -1251,5 +1252,217 @@ describe("1984 pacing: 2.5 Hz simulation under 60 FPS rendering", () => {
     demo.calls.length = 0;
     demo.app.frame(100);
     expect(demo.calls.some(([n, a]) => n === "text" && a[2] === "[6] TIME COMPRESSION")).toBe(false);
+  });
+});
+
+describe("demo: intro page, Morse example, narration at the top", () => {
+  type Call = [string, unknown[]];
+  const canvasFactory = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+
+  function makeApp(withLayouts = false): { app: App; calls: Call[]; oscs: FakeOsc[]; sound: SoundEngine } {
+    const { ctx, oscs } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const layouts = withLayouts ? new CockpitLayouts(parseCockpitLayouts(read("public/assets/cockpit_layouts.json")), canvasFactory()) : null;
+    const sound = new SoundEngine(() => ctx);
+    const app = new App(g, data, null, sound, null, () => 0.5, null, layouts);
+    return { app, calls, oscs, sound };
+  }
+  const press = (app: App, ...keys: string[]) => keys.forEach((key) => app.keydown({ key }));
+  const texts = (calls: Call[]): [number, number, string][] => calls.filter(([n]) => n === "text").map(([, a]) => [a[0] as number, a[1] as number, a[2] as string]);
+  function startDemo(withLayouts = false) {
+    const h = makeApp(withLayouts);
+    press(h.app, "x", "2");
+    h.app.frame(0);
+    return h;
+  }
+  /** Frames at 60 FPS up to `to` ms. */
+  function runTo(app: App, from: number, to: number): number {
+    let t = from;
+    while (t < to) {
+      t += 1000 / 60;
+      app.frame(t);
+    }
+    return t;
+  }
+
+  it("starts on the grey GATO DEMONSTRATION page with the F1/F2 instructions on their LOCATE cells", () => {
+    const { app, calls } = makeApp();
+    press(app, "x", "2");
+    expect(app.mode).toBe("demo");
+    calls.length = 0;
+    app.frame(0);
+    expect(calls[0]).toEqual(["clear", ["#555555"]]); // COLOR 8,1
+    expect(texts(calls)).toEqual([
+      [12, 7, "GATO DEMONSTRATION"],
+      [5, 10, "PRESS FUNCTION KEY 1 (F1) TO EXIT"],
+      [2, 12, " FUNCTION KEY 2 (F2) TO TURN OFF SOUND"],
+    ]);
+    expect(calls.some(([n]) => n === "image")).toBe(false); // not the cockpit
+    expect(calls.every(([n, a]) => n !== "text" || a[3] === "#ffffff")).toBe(true);
+  });
+
+  it("with the extracted layouts the intro uses the control-room palette (grey #555555, white)", () => {
+    const { app, calls } = makeApp(true);
+    press(app, "x", "2");
+    calls.length = 0;
+    app.frame(0);
+    expect(calls[0]).toEqual(["clear", ["#555555"]]);
+    expect(texts(calls)).toHaveLength(3);
+  });
+
+  it("F1 exits to the launcher from the intro; F2 turns the sound off and stays on the intro", () => {
+    const f1 = startDemo();
+    press(f1.app, "F1");
+    expect(f1.app.mode).toBe("menu");
+    const f2 = startDemo();
+    expect(f2.sound.enabled).toBe(true);
+    press(f2.app, "F2");
+    expect(f2.sound.enabled).toBe(false);
+    expect(f2.app.mode).toBe("demo");
+    f2.calls.length = 0;
+    f2.app.frame(100);
+    expect(texts(f2.calls)[0]).toEqual([12, 7, "GATO DEMONSTRATION"]); // still the intro
+  });
+
+  it("the intro gives way to the Morse example after its hold time or at any other key", () => {
+    const timed = startDemo();
+    const hold = read<DemoScriptDocument>("src/data/demo_script.json").intro?.seconds_estimate ?? 0;
+    expect(hold).toBeGreaterThan(0);
+    let t = runTo(timed.app, 0, hold * 1000 - 100);
+    timed.calls.length = 0;
+    timed.app.frame(t + 10);
+    expect(texts(timed.calls)[0]).toEqual([12, 7, "GATO DEMONSTRATION"]);
+    runTo(timed.app, t, hold * 1000 + 200);
+    timed.calls.length = 0;
+    timed.app.frame(hold * 1000 + 300);
+    expect(texts(timed.calls).some(([, , s]) => s.includes("GATO DEMONSTRATION"))).toBe(false);
+    expect(timed.calls.some(([n, a]) => n === "rect" && a[4] === "#000000")).toBe(false); // no longer the grey screen
+    const keyed = startDemo();
+    press(keyed.app, "x");
+    keyed.calls.length = 0;
+    keyed.app.frame(50);
+    expect(keyed.calls[0]).toEqual(["clear", ["#000000"]]); // the black text screen of the Morse example
+  });
+
+  it("the Morse example types DEMORD into a light-grey band on the black screen while its Morse sounds, and any key skips it", () => {
+    const { app, calls, oscs } = startDemo();
+    press(app, "x");
+    expect(oscs.length).toBeGreaterThan(5); // the Morse of the whole text is scheduled
+    // start state: nothing typed yet, the band is the spaces line scrolled up to rows 22
+    calls.length = 0;
+    app.frame(10);
+    expect(calls[0]).toEqual(["clear", ["#000000"]]);
+    expect(texts(calls).every(([, , s]) => s.trim() === "")).toBe(true);
+    // part way: the first line is partly typed
+    calls.length = 0;
+    app.frame(10 + 4000);
+    const partial = texts(calls).find(([, , s]) => s.includes("THIS"));
+    expect(partial?.[2].trim().length).toBeGreaterThan(0);
+    expect(partial?.[2]).not.toContain("EXAMPLE OF HOW YOU");
+    // done: both lines, the grey band over rows 20-24 (y 152-191) and nothing grey above
+    calls.length = 0;
+    app.frame(10 + 120_000 * 0 + 59_000);
+    const rows = Object.fromEntries(texts(calls).map(([, row, s]) => [row, s]));
+    expect(rows[22]).toBe("   THIS IS AN EXAMPLE OF HOW YOU".padEnd(40, " "));
+    expect(rows[23]?.trim()).toBe("");
+    expect(rows[24]).toBe("   RECEIVE YOUR ORDERS.".padEnd(40, " "));
+    const grey = calls.filter(([n, a]) => n === "rect" && a[4] === "#aaaaaa").map(([, a]) => [a[0], a[1], a[2], a[3]]);
+    expect(grey).toEqual([20, 21, 22, 23, 24].map((r) => [0, (r - 1) * 8, 320, 8]));
+    expect(calls.filter(([n, a]) => n === "text" && a[3] !== "#000000")).toHaveLength(0); // black on grey
+    // any key ends it at once and stops the sound
+    press(app, "x");
+    expect(oscs.every((o) => o.stopped)).toBe(true);
+    calls.length = 0;
+    app.frame(10 + 59_100);
+    expect(calls.some(([n, a]) => n === "text" && String(a[2]).includes("THIS IS YOUR MAIN SCREEN"))).toBe(true);
+  });
+
+  it("the Morse example ends by itself after the typing and the closing hold; without sound it makes none", () => {
+    const quiet = startDemo();
+    press(quiet.app, "F2", "x");
+    expect(quiet.oscs).toHaveLength(0);
+    let t = 0;
+    const demo = quiet.app as unknown as { demo: { player: { stage: string } }; demoMorse: { timeline: { duration: number } } };
+    const seconds = demo.demoMorse.timeline.duration;
+    expect(seconds).toBeGreaterThan(1);
+    t = runTo(quiet.app, t, (seconds + 1.5) * 1000);
+    expect(demo.demo.player.stage).toBe("morse");
+    runTo(quiet.app, t, (seconds + 2.6) * 1000); // typing + the 2 s hold
+    expect(demo.demo.player.stage).toBe("pages");
+  });
+
+  it("narration is a box at the TOP of the screen in the background colour of the screen behind it, with no F1/F2 banner", () => {
+    const { app, calls } = startDemo(true);
+    press(app, "x", "x");
+    calls.length = 0;
+    app.frame(100);
+    const box = calls.find(([n, a]) => n === "rect" && a[0] === 5 && a[1] === 5);
+    expect(box?.[1]).toEqual([5, 5, 310, 46, "#555555"]); // LINE (5,5)-(314,50),0,BF on the control room's grey
+    expect(texts(calls).filter(([c, r]) => r <= 6 && c >= 1).map(([c, r, s]) => [c, r, s])).toEqual([
+      [9, 2, "THIS IS YOUR MAIN SCREEN"],
+      [3, 4, "YOU ARE NOW IN THE THE CONTROL ROOM"],
+      [5, 5, "YOU MAY CONTROL ALL OPERATIONS"],
+      [7, 6, "OF THE SUBMARINE FROM HERE"],
+    ]);
+    expect(texts(calls).some(([, , s]) => /F1|F2|EXIT|SOUND/.test(s) && !s.includes("CONTROL"))).toBe(false);
+    expect(calls.some(([n, a]) => n === "rect" && Number(a[1]) > 100 && a[4] === "#000000")).toBe(false); // nothing is boxed near the bottom gauges
+    // the chart page paints the box with the chart's green and the first quadrant text rows
+    const chart = (app as unknown as { demo: { player: { index: number; elapsed: number; pageHoldSeconds(p: unknown): number } } }).demo.player;
+    const pages = read<DemoScriptDocument>("src/data/demo_script.json").pages;
+    const idx = pages.findIndex((p) => p.lines[0]?.startsWith("THIS IS THE CHART"));
+    chart.index = idx - 1;
+    chart.elapsed = chart.pageHoldSeconds(pages[idx - 1]) + 0.01;
+    calls.length = 0;
+    app.frame(200);
+    expect(calls.find(([n, a]) => n === "rect" && a[0] === 5 && a[1] === 5)?.[1]).toEqual([5, 5, 310, 46, "#00aa00"]);
+    expect(texts(calls).slice(0, 4)).toEqual([
+      [2, 2, "THIS IS THE CHART OF YOUR PATROL AREA"],
+      [3, 4, "YOU ARE THE GREEN DOT IN QUADRANT 5"],
+      [5, 5, "YOUR SUB-TENDER IS IN QUADRANT 7"],
+      [7, 6, "ENEMY SHIPS ARE RED DOTS "],
+    ]);
+  });
+
+  it("F1 still exits from the narrated pages and F2 mutes", () => {
+    const { app, sound } = startDemo();
+    press(app, "x", "x");
+    app.frame(50);
+    press(app, "F2");
+    expect(sound.enabled).toBe(false);
+    expect(app.mode).toBe("demo");
+    press(app, "F1");
+    expect(app.mode).toBe("menu");
+  });
+});
+
+describe("text screen of the orders (SCREEN 0, COLOR 0,7)", () => {
+  it("scrolls with the current colours: the spaces line, then DEMORD, ends as rows 20-24 on a black screen", () => {
+    const lines = ["   THIS IS AN EXAMPLE OF HOW YOU", "", "   RECEIVE YOUR ORDERS."];
+    const screen = ordersScreen(lines, lines);
+    const rowText = (r: number): string => screen.cells[r - 1]?.map((c) => c.ch).join("") ?? "";
+    expect(rowText(22).trimEnd()).toBe("   THIS IS AN EXAMPLE OF HOW YOU");
+    expect(rowText(24).trimEnd()).toBe("   RECEIVE YOUR ORDERS.");
+    expect(screen.cells.slice(0, 19).every((cells) => cells.every((c) => !c.grey))).toBe(true);
+    expect(screen.cells[19]?.every((c) => c.grey)).toBe(true); // row 20
+    expect(screen.cells[20]?.every((c) => c.grey)).toBe(true);
+    expect(TELETYPE_ROWS).toBe(24); // row 25 is never written
+  });
+
+  it("types a line partly, waits for a blank line's predecessor, and wraps at column 40", () => {
+    const part = ordersScreen(["HELLO", "", "WORLD"], ["HEL", "", ""]);
+    expect(part.cells[23]?.map((c) => c.ch).join("").trimEnd()).toBe("HEL");
+    expect(part.row).toBe(23); // no newline yet: the blank line is only reached when HELLO is complete
+    const wrap = new Teletype();
+    wrap.print("x".repeat(45));
+    expect(wrap.cells[22]?.every((c) => c.ch === "x")).toBe(true); // the 40 characters scrolled up one row
+    expect(wrap.cells[23]?.slice(0, 5).map((c) => c.ch).join("")).toBe("xxxxx");
+    expect(wrap.col).toBe(5);
   });
 });

@@ -1,4 +1,5 @@
-import type { DemoPage, LauncherItem } from "../core/index.js";
+import type { DemoIntro, DemoPage, LauncherItem } from "../core/index.js";
+import type { Teletype } from "../app/teletype.js";
 import { LAUNCHER_MENU, LAUNCHER_PROMPT, TITLE_LINES } from "../core/index.js";
 import { CONTINUE_PROMPT, REREAD_PROMPT, RETURN_PROMPT, type HistoryView } from "../app/historyViewer.js";
 import { COLORS, Gfx } from "./gfx.js";
@@ -137,14 +138,50 @@ export function drawHistory(g: Gfx, view: HistoryView): void {
   }
 }
 
-/** Narration box laid over the screen the demo is showing. */
-export function drawDemoNarration(g: Gfx, page: DemoPage, soundOn: boolean): void {
-  const rows = page.lines.length;
-  const top = 25 - rows - 1;
-  g.rect(0, (top - 1) * 8 - 2, 320, rows * 8 + 12, COLORS.black);
-  g.rect(0, (top - 1) * 8 - 2, 320, rows * 8 + 12, COLORS.yellow, false);
-  page.lines.forEach((l, i) => g.text(2, top + i, l.slice(0, 38), COLORS.yellow));
-  g.text(1, 1, `F1 EXIT  F2 SOUND ${soundOn ? "ON " : "OFF"}`, COLORS.grey);
+/** Screens whose unboxed page text is drawn by the demo itself (the others, such as the damage report or GAME CONTROL, draw their own labels). */
+const OWN_TEXT_SCREENS: ReadonlySet<string> = new Set(["playAgain", "radioRoom", "captainsLog"]);
+
+/**
+ * Narration of the demo, as DEMO.EXE draws it: `LINE (5,5)-(314,y),0,BF` fills a box at the TOP of the screen with the background colour of the
+ * screen behind it and the lines are printed into it on their LOCATE cells in the foreground colour. Pages without a box are the text of
+ * the screen itself; those are only drawn for screens that have no labels of their own. There is no F1/F2 banner after the intro.
+ */
+export function drawDemoNarration(g: Gfx, page: DemoPage, screen: string, background: string, foreground: string): void {
+  const cells = page.text ?? [];
+  if (page.box) {
+    const { x1, y1, x2, y2 } = page.box;
+    g.rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1, background);
+  } else if (!OWN_TEXT_SCREENS.has(screen)) return;
+  if (cells.length > 0 && cells.every((c) => c.row !== null && c.col !== null)) {
+    for (const c of cells) g.text(c.col as number, c.row as number, c.text, foreground);
+  } else if (page.box) {
+    page.lines.forEach((l, i) => g.text(2, 2 + i, l.slice(0, 38), foreground));
+  }
+}
+
+/** The first page of the demo: SCREEN 1, COLOR 8,1 (grey background, white text), three lines on their LOCATE cells, the only place the F1/F2 keys are named. */
+export function drawDemoIntro(g: Gfx, intro: DemoIntro | undefined, background: string, foreground: string): void {
+  g.clear(background);
+  for (const t of intro?.text ?? []) g.text(t.col, t.row, t.text, foreground);
+}
+
+const TELETYPE_GREY = "#aaaaaa";
+
+/** The text screen of the orders (SCREEN 0, COLOR 0,7): black text on the light-grey band, the rest of the 40 x 25 screen black. */
+export function drawTeletype(g: Gfx, screen: Teletype): void {
+  g.clear(COLORS.black);
+  screen.cells.forEach((cells, r) => {
+    let start = -1;
+    for (let c = 0; c <= cells.length; c += 1) {
+      const grey = cells[c]?.grey ?? false;
+      if (grey && start < 0) start = c;
+      if (!grey && start >= 0) {
+        g.rect(start * 8, r * 8, (c - start) * 8, 8, TELETYPE_GREY);
+        start = -1;
+      }
+    }
+    g.text(1, r + 1, cells.map((cell) => cell.ch).join(""), COLORS.black);
+  });
 }
 
 /** One-line helm status for the toast shown right after a helm command (remake addition). */

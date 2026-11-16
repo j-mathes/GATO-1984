@@ -262,14 +262,50 @@ export interface HistoryPagesDocument {
   [key: string]: unknown;
 }
 
+export interface DemoTextCell {
+  /** 1-based LOCATE row and column of the 40 x 25 text grid; null where the PRINT continues the previous line. */
+  row: number | null;
+  col: number | null;
+  text: string;
+}
+
+/** `LINE (x1,y1)-(x2,y2),0,BF`: the box a narration page is printed into, filled with the background colour of the screen behind it. */
+export interface DemoBox {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  color: number;
+}
+
 export interface DemoPage {
   page: number;
   lines: string[];
   delay_loop_limit: number | null;
   seconds_estimate: number | null;
+  /** The printed lines with their cells (absent in old script files). */
+  text?: DemoTextCell[];
+  /** Narration box at the top of the screen; null for pages that are text of the drawn screen itself (damage report labels, GAME CONTROL, ...). */
+  box?: DemoBox | null;
+}
+
+/** The "GATO DEMONSTRATION" page drawn first (grey SCREEN 1 background, white text). */
+export interface DemoIntro {
+  text: { row: number; col: number; text: string }[];
+  seconds_estimate: number;
+}
+
+/** The orders example (file DEMORD) that is typed out with its Morse after the intro. */
+export interface DemoMorseExample {
+  file: string;
+  lines: string[];
+  /** Estimated seconds of the delay loop that ends the screen after the last character (any key ends it sooner). */
+  end_hold_seconds_estimate: number | null;
 }
 
 export interface DemoScriptDocument {
+  intro?: DemoIntro;
+  morse?: DemoMorseExample;
   pages: DemoPage[];
   nominal_iterations_per_second: number;
 }

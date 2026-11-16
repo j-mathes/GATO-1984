@@ -4,6 +4,8 @@ import { SoundEngine, type EffectName } from "../audio/soundEngine.js";
 import {
   DEFAULT_SETTINGS,
   DemoPlayer,
+  type DemoEvent,
+  type DemoMorseExample,
   GameControl,
   Launcher,
   Simulation,
@@ -36,7 +38,7 @@ import {
   type KeyLike,
   type PlayScreen,
 } from "../input/keyboard.js";
-import { Gfx } from "../render/gfx.js";
+import { COLORS, Gfx } from "../render/gfx.js";
 import {
   drawCaptainsLog,
   drawChart,
@@ -53,7 +55,7 @@ import {
 } from "../render/playScreens.js";
 import type { SpriteLibrary } from "../render/sprites.js";
 import type { TitleArt } from "../render/titleArt.js";
-import type { CockpitLayouts } from "../render/cockpitLayouts.js";
+import type { CockpitLayouts, ScreenName } from "../render/cockpitLayouts.js";
 import { createTrails } from "../render/trails.js";
 import {
   drawChartLayout,
@@ -64,10 +66,11 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { drawDemoNarration, drawHelpOverlay, drawHistory, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
+import { drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
+import { ordersScreen } from "./teletype.js";
 import { FixedTimestepRunner, takeSnapshot, type Snapshot } from "./runner.js";
 
 export interface AppData {
@@ -128,6 +131,8 @@ export class App {
   private prompt: { kind: "password" | "coords"; editor: LineEditor } | null = null;
   private history: HistoryViewer | null = null;
   private demo: { player: DemoPlayer; sim: Simulation; runner: FixedTimestepRunner; page: number; screen: string } | null = null;
+  /** The orders example of the demo while it is typed out: its text, Morse timeline and sound. */
+  private demoMorse: { start: number; lines: string[]; timeline: OrdersTimeline; handle: MorseHandle | null } | null = null;
   private demoLog: LogStore | null = null;
   private lastFrame = 0;
   private lastPlayMs: number | null = null;
@@ -291,8 +296,11 @@ export class App {
   private demoKey(e: KeyLike): void {
     if (!this.demo) return;
     const events = this.demo.player.pressKey(e.key);
-    if (e.key === "F2") this.sound.enabled = false;
-    if (events.some((ev) => ev.type === "finished")) this.endDemo();
+    if (e.key === "F2") {
+      this.sound.enabled = false;
+      this.demoMorse?.handle?.cancel();
+    }
+    this.applyDemoEvents(events, this.lastFrame);
   }
 
   private playKey(e: KeyLike): void {
@@ -594,8 +602,10 @@ export class App {
     const runner = new FixedTimestepRunner(sim, TICKS_PER_SECOND);
     const player = new DemoPlayer(this.data.demo);
     const events = player.start();
-    this.demo = { player, sim, runner, page: 0, screen: "title" };
-    for (const ev of events) if (ev.type === "page") this.demo.screen = ev.screen;
+    this.demo = { player, sim, runner, page: 0, screen: "intro" };
+    this.demoMorse = null;
+    this.lastDemoTime = null;
+    this.applyDemoEvents(events, this.lastFrame);
     this.demoLog = new LogStore(this.data.shipLog, null);
     this.demoLog.apply(
       this.data.shipLog.records.slice(0, 3).map((r) => ({ type: "shipSunk" as const, slot: 3, typeCode: 4, record: { slot: 3, typeCode: 4, record: r.record, name: r.name, tonnage: r.tonnage } })),
@@ -605,9 +615,53 @@ export class App {
   }
 
   private endDemo(): void {
+    this.stopDemoMorse();
     this.demo = null;
     this.demoLog = null;
     this.returnToMenu("demo");
+  }
+
+  /** Follow the demo player: which screen is up, and start or stop the Morse example. Returns true when the demo has ended. */
+  private applyDemoEvents(events: DemoEvent[], timeMs: number): boolean {
+    const d = this.demo;
+    if (!d) return true;
+    for (const ev of events) {
+      switch (ev.type) {
+        case "intro":
+          d.screen = ev.screen;
+          break;
+        case "morse":
+          d.screen = ev.screen;
+          this.startDemoMorse(ev.example, timeMs);
+          break;
+        case "page":
+          this.stopDemoMorse();
+          d.screen = ev.screen;
+          break;
+        case "finished":
+          this.lastDemoTime = null;
+          this.endDemo();
+          return true;
+      }
+    }
+    return false;
+  }
+
+  /** The orders example (DEMORD): typed out character by character as its Morse is sent, like the orders of a mission. */
+  private startDemoMorse(example: DemoMorseExample, timeMs: number): void {
+    const d = this.demo;
+    if (!d) return;
+    this.stopDemoMorse();
+    const soundOn = d.player.soundOn;
+    const timeline = buildOrdersTimeline(example.lines, this.data.morse, { difficulty: 0, soundOn });
+    const handle = this.sound.enabled && soundOn ? this.sound.playMorse(example.lines, this.data.morse, { soundOn }) : null;
+    this.demoMorse = { start: timeMs, lines: example.lines, timeline, handle };
+    d.player.setMorseSeconds(timeline.duration + (example.end_hold_seconds_estimate ?? 2));
+  }
+
+  private stopDemoMorse(): void {
+    this.demoMorse?.handle?.cancel();
+    this.demoMorse = null;
   }
 
   // ---------------------------------------------------------------------------------------------------------------
@@ -745,52 +799,64 @@ export class App {
     const dt = this.lastDemoTime === null ? 0 : (timeMs - this.lastDemoTime) / 1000;
     this.lastDemoTime = timeMs;
     const result = d.runner.frame(timeMs);
-    const events = d.player.advance(Math.min(dt, 0.25));
-    for (const ev of events) {
-      if (ev.type === "page") d.screen = ev.screen;
-      if (ev.type === "finished") {
-        this.lastDemoTime = null;
-        this.endDemo();
-        return;
-      }
-    }
+    if (this.applyDemoEvents(d.player.advance(Math.min(dt, 0.25)), timeMs)) return;
     const g = this.g;
+    if (d.screen === "intro") {
+      const L = this.cockpit;
+      const pal = L ? L.palette("control_room") : null; // COLOR 8,1: grey background, white text
+      drawDemoIntro(g, this.data.demo.intro, pal?.[0] ?? "#555555", pal?.[3] ?? "#ffffff");
+      return;
+    }
+    if (d.screen === "morseExample") {
+      const m = this.demoMorse;
+      const elapsed = m ? (timeMs - m.start) / 1000 : 0;
+      drawTeletype(g, m ? ordersScreen(m.lines, revealedLines(m.lines, m.timeline, elapsed)) : ordersScreen([], []));
+      return;
+    }
     const sim = d.sim;
     const view: PlayView = { sim, snap: result.render, settings: DEFAULT_SETTINGS, sprites: this.sprites, log: this.demoLog ?? this.log, timeMs };
+    let layer: ScreenName | null = "control_room";
     switch (d.screen) {
       case "chart":
         this.drawPlayScreen("chart", view, false, null);
+        layer = "chart";
         break;
       case "radar":
         this.drawPlayScreen("radar", view, false, null);
+        layer = "radar";
         break;
       case "quadrantMap":
         this.drawPlayScreen("quadrant", view, false, null);
+        layer = "quadrant_map";
         break;
       case "damageReport":
         sim.sub.damage[2] = 1;
         sim.sub.damage[5] = 1;
         this.drawPlayScreen("damage", view, false, null);
+        layer = "damage_report";
         break;
       case "captainsLog":
         this.drawPlayScreen("log", view, false, null);
+        layer = "captains_log";
         break;
       case "gameControl":
         this.drawPlayScreen("gameControl", view, false, null, false);
         break;
-      case "title":
-        drawTitle(g, this.titleArt, this.sprites, timeMs);
-        break;
       case "playAgain":
       case "radioRoom":
         g.clear();
+        layer = null;
         break;
       default:
         this.drawPlayScreen("control", view, false, null);
         break;
     }
     const page = d.player.currentPage;
-    if (page) drawDemoNarration(g, page, d.player.soundOn);
+    if (page) {
+      // the box is filled with the background colour of the screen behind it (LINE ...,0,BF) and the text is the screen's foreground
+      const pal = this.cockpit && layer ? this.cockpit.palette(layer) : null;
+      drawDemoNarration(g, page, d.screen, pal?.[0] ?? COLORS.black, pal?.[3] ?? COLORS.white);
+    }
   }
 
   private lastDemoTime: number | null = null;
