@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { App, type AppData } from "./app.js";
+import { App, SPLASH_MS, type AppData } from "./app.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines } from "./orders.js";
@@ -792,4 +792,78 @@ describe("persistent wake trails (key W)", () => {
     app.keydown({ key: "x" });
     return app;
   }
+});
+
+describe("Spectrum HoloByte splash", () => {
+  const raw = (): Record<string, any> => read<Record<string, any>>("public/assets/title_screen.json");
+  const canvas = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+  type Call = [string, unknown[]];
+
+  function bootApp(art: TitleArt | null): { app: App; calls: Call[]; art: TitleArt | null } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const data: AppData = { courses: {}, orders: {}, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    return { app: new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.5, art), calls, art };
+  }
+  const artwork = (): TitleArt => new TitleArt(parseTitleArt(raw()), canvas());
+
+  it("boots on the spectrum_logo frame with its black background and bright cyan/magenta/white palette", () => {
+    const { app, calls, art } = bootApp(artwork());
+    expect(app.mode).toBe("splash");
+    app.frame(100);
+    const logo = art?.frame("spectrum_logo");
+    expect(logo?.palette).toEqual(["#000000", "#55ffff", "#ff55ff", "#ffffff"]);
+    expect(calls[0]).toEqual(["clear", ["#000000"]]);
+    const image = calls.find(([n]) => n === "image");
+    expect(image?.[1][0]).toBe(art?.image("spectrum_logo"));
+    expect(image?.[1].slice(1)).toEqual([0, 0, 320, 200, 0, 0, 320, 200]); // the whole 320x200 picture; Authentic, Fit and CRT only scale the canvas
+    const text = calls.filter(([n]) => n === "text").map(([, a]) => a.slice(0, 3));
+    expect(text).toContainEqual([17, 23, "PRESENTS"]);
+    expect(text).toContainEqual([36, 3, "TM"]);
+    expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(false);
+    for (const mode of ["authentic", "fit", "crt"] as const) {
+      const size = computeDisplaySize(mode, 1280, 800);
+      expect(size.width / size.height).toBeCloseTo(1.6, 1);
+    }
+  });
+
+  it("moves on to the title page by itself after 2.5 s", () => {
+    const { app, calls, art } = bootApp(artwork());
+    app.frame(1000);
+    app.frame(1000 + SPLASH_MS - 1);
+    expect(app.mode).toBe("splash");
+    calls.length = 0;
+    app.frame(1000 + SPLASH_MS);
+    expect(app.mode).toBe("title");
+    expect(calls.find(([n]) => n === "image")?.[1][0]).toBe(art?.image("title"));
+    expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
+  });
+
+  it("any key or a click skips the splash straight to the title page, and the next key opens the menu", () => {
+    for (const skip of [(a: App) => a.keydown({ key: "x" }), (a: App) => a.keydown({ key: "Escape" }), (a: App) => a.tap()]) {
+      const { app } = bootApp(artwork());
+      app.frame(0);
+      skip(app);
+      expect(app.mode).toBe("title");
+      app.frame(10);
+      expect(app.mode).toBe("title"); // the timer must not fire again
+      app.keydown({ key: "x" });
+      expect(app.mode).toBe("menu");
+    }
+    const { app } = bootApp(artwork());
+    app.keydown({ key: "x" }); // before the first frame
+    expect(app.mode).toBe("title");
+    app.tap();
+    expect(app.mode).toBe("menu"); // a click also leaves the title page
+    app.tap();
+    expect(app.mode).toBe("menu"); // but does nothing in the menu
+  });
+
+  it("starts on the title page when the artwork or its logo frame is missing", () => {
+    expect(bootApp(null).app.mode).toBe("title");
+    const noLogo = raw();
+    delete noLogo.frames.spectrum_logo;
+    expect(bootApp(new TitleArt(parseTitleArt(noLogo), canvas())).app.mode).toBe("title");
+  });
 });

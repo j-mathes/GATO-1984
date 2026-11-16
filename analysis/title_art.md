@@ -35,6 +35,12 @@ Runtime behaviour that shapes the picture and is reproduced:
 
 After the hold, three more wipes dissolve the lettering, the text scrolls off, and the menu frame is drawn; GATO.EXE then waits for the item number. There is no "press any key" in the original; the prompt in the remake is an addition.
 
+### Intro timing and sound
+
+* **Logo hold:** the last statements of the logo scene (`0x94f`-`0x977`) are an empty `FOR I = 1 TO 2000 : NEXT` (start constant 1.0 at `ds:0x08d0`, limit 2000 as an MBF single at `ds:0x0bcc`; the body is a single add and compare through the runtime's float routines). The logo is therefore held for 2000 empty passes and then the program goes straight on to the GATO lettering (the title page is held for ~5000 passes). How long that was depended on the CPU; it is not in the file. The remake shows the logo for 2.5 s (`SPLASH_MS`) and lets any key or click skip it.
+* **Animation:** the original draws the logo (letters in colours 1, 2, 3, the beam growing along x = 10..152, two fans of 20 rays); the remake shows the finished frame, there is no frame-by-frame replay.
+* **Sound:** no `SOUND` or `PLAY` is called anywhere in the intro. None of the runtime calls made between `0x6a6` and `0xda2` is a speaker routine (the runtime's PIT/speaker code at `0x16e0` is never called from the program body), so the intro is silent. This was checked by call-target histogram of the program body, not by tracing every runtime path.
+
 The block at `0xf7c`-`0x1010` (a second coast/ship picture) follows the final `CHAIN "GATO1"` and is never reached.
 
 ## Colours

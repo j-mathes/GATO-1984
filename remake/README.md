@@ -15,7 +15,7 @@ npm run typecheck  # tsc for the app and, separately, for src/core with no DOM l
 npm run sync:data  # re-copy scenario JSON from ../analysis/json into src/data/scenarios
 ```
 
-Click or press a key once so the browser allows audio.
+Click or press a key once so the browser allows audio. The game opens on the "Spectrum HoloByte presents" logo (frame `spectrum_logo` of `title_screen.json`), which gives way to the title page after 2.5 s or at once on any key or click; the title page then waits for a key.
 
 ### Playing the built game on Windows
 

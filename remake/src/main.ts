@@ -76,6 +76,7 @@ async function boot(): Promise<void> {
     }
     app.keydown(e);
   });
+  canvas.addEventListener("pointerdown", () => app.tap());
   canvas.focus();
 
   const loop = (t: number): void => {

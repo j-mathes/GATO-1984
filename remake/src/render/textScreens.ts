@@ -7,6 +7,25 @@ import { TITLE_ART_HEIGHT, TITLE_ART_WIDTH, type TitleArt } from "./titleArt.js"
 
 /** Frame of title_screen.json that backs the launcher menu. */
 export const MENU_FRAME_ID = "launcher_menu";
+/** Frame of title_screen.json shown first: the "Spectrum HoloByte presents" logo (black background). */
+export const SPLASH_FRAME_ID = "spectrum_logo";
+
+/** Whether the loaded artwork can show the intro logo. */
+export function hasSplash(art: TitleArt | null): boolean {
+  return art?.frame(SPLASH_FRAME_ID) !== undefined;
+}
+
+/** First screen of GATO.EXE (0x6a6-0x979): the finished Spectrum HoloByte logo with its own palette; TM and PRESENTS sit on their LOCATE cells. */
+export function drawSplash(g: Gfx, art: TitleArt | null): void {
+  const frame = art?.frame(SPLASH_FRAME_ID);
+  if (!art || !frame) {
+    g.clear();
+    return;
+  }
+  g.clear(frame.palette[0]);
+  g.image(art.image(SPLASH_FRAME_ID), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
+  for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
+}
 
 /**
  * Title page of GATO.EXE. With the exported artwork it is the original picture (striped GATO lettering, credits and the (c) ring

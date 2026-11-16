@@ -60,7 +60,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { drawDemoNarration, drawHistory, drawLauncherMenu, drawOrders, drawTitle } from "../render/textScreens.js";
+import { drawDemoNarration, drawHistory, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -76,10 +76,15 @@ export interface AppData {
   morse: MorseTables;
 }
 
-export type AppMode = "title" | "menu" | "orders" | "play" | "demo" | "history";
+export type AppMode = "splash" | "title" | "menu" | "orders" | "play" | "demo" | "history";
 
 export const TICKS_PER_SECOND = 10;
 const TRAILS_KEY = "gato.trails";
+/**
+ * How long the Spectrum HoloByte logo stays up. GATO.EXE holds it with an empty FOR loop of 2000 passes (limit at ds:0x0bcc), whose real
+ * duration depended on the CPU, so the time is a remake choice in the 2.5-3 s range.
+ */
+export const SPLASH_MS = 2500;
 
 const todayStamp = (): string => {
   const d = new Date();
@@ -94,6 +99,7 @@ const todayStamp = (): string => {
  */
 export class App {
   mode: AppMode = "title";
+  private splashStart: number | null = null;
   screen: PlayScreen = "control";
   settings: GameSettings = { ...DEFAULT_SETTINGS };
   readonly launcher = new Launcher();
@@ -131,6 +137,7 @@ export class App {
     private readonly cockpit: CockpitLayouts | null = null,
   ) {
     this.storage = storage;
+    if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
@@ -164,6 +171,9 @@ export class App {
   keydown(e: KeyLike): void {
     void this.sound.unlock();
     switch (this.mode) {
+      case "splash":
+        this.mode = "title";
+        return;
       case "title":
         this.mode = "menu";
         this.launcher.pressAnyKey();
@@ -184,6 +194,11 @@ export class App {
         this.historyKey(e);
         return;
     }
+  }
+
+  /** A mouse click or touch: skips the splash and leaves the title page, like a key press; ignored everywhere else. */
+  tap(): void {
+    if (this.mode === "splash" || this.mode === "title") this.keydown({ key: "Enter" });
   }
 
   private menuKey(e: KeyLike): void {
@@ -520,7 +535,14 @@ export class App {
   frame(timeMs: number): void {
     this.lastFrame = timeMs;
     const g = this.g;
+    if (this.mode === "splash") {
+      this.splashStart ??= timeMs;
+      if (timeMs - this.splashStart >= SPLASH_MS) this.mode = "title";
+    }
     switch (this.mode) {
+      case "splash":
+        drawSplash(g, this.titleArt);
+        return;
       case "title":
         drawTitle(g, this.titleArt, this.sprites, timeMs);
         return;
