@@ -1,0 +1,628 @@
+DEMO.EXE analysis - Original\DEMO.EXE
+file size: 64256 bytes (0xfb00)   sha256: 962e2a65e7cf051c8a89945cd8ce7ae75c75862511bbed1b12baa2dc03db22b5
+====================================================================================================
+
+1. MZ HEADER
+----------------------------------------------------------------------------------------------------
+  +0x00  e_magic     0x5a4d  23117   signature 'MZ'
+  +0x02  e_cblp      0x00af    175   bytes used in last 512-byte page (0 = full)
+  +0x04  e_cp        0x007e    126   512-byte pages in file
+  +0x06  e_crlc      0x095b   2395   relocation entries
+  +0x08  e_cparhdr   0x0260    608   header size in 16-byte paragraphs
+  +0x0a  e_minalloc  0x0000      0   min extra paragraphs
+  +0x0c  e_maxalloc  0xffff  65535   max extra paragraphs
+  +0x0e  e_ss        0x1038   4152   initial SS (relative to load segment)
+  +0x10  e_sp        0x0200    512   initial SP
+  +0x12  e_csum      0x0f6c   3948   checksum (ignored by DOS)
+  +0x14  e_ip        0x001a     26   initial IP
+  +0x16  e_cs        0x0000      0   initial CS (relative to load segment)
+  +0x18  e_lfarlc    0x001c     28   file offset of relocation table
+  +0x1a  e_ovno      0x0000      0   overlay number (0 = main program)
+
+  header size      : 9728 bytes (608 paragraphs)
+  declared size    : 64175 bytes   load module: 54447 bytes   trailing bytes: 81
+  entry point      : CS:IP 0000:001a -> file offset 0x261a
+  stack            : SS:SP 1038:0200
+  relocations      : 2395 entries at file offset 0x1c
+  extra alloc      : min 0 / max 0xffff paragraphs
+
+2. EXECUTABLE COMPRESSION CHECKS
+----------------------------------------------------------------------------------------------------
+  [   overlay    ] Declared size vs file size
+                   header declares 64175 bytes, file is 64256 bytes; 81 bytes beyond the declared size (file offset 0xfaaf); all 0x00 (padding); first bytes 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  [    absent    ] LZEXE signature at file offset 0x1C
+                   bytes at 0x1C = 04 00 00 00 (b'\x04\x00\x00\x00')
+  [    absent    ] PKLITE signature at 0x1E ('PKLITE Copr.')
+                   bytes at 0x1C-0x23 = 04 00 00 00 06 00 00 00; e_ovno field (PKLITE version/flags) = 0x0000
+  [    absent    ] EXEPACK 'RB' marker in the CS:0 header
+                   checked CS:000E/0010/0012 at file offset 0x2600: ['c009', 'c009', 'c009']
+  [    absent    ] Packer signature strings anywhere in the file
+                   none of: PKLITE, PKLITE/PKWARE, LZEXE 0.91, LZEXE 0.90, LZEXE, EXEPACK, EXEPACK stub message, UPX, DIET, DIET (dlz), TINYPROG, WWPACK, PGMPAK, EXELITE, AINEXE, LHA/LZH data
+  [    plain     ] Entry-point code
+                   CS:IP = 0000:001a -> file offset 0x261a, bytes 9a 00 00 a9 0c 55 8b ec 81 ec 02 00  (far CALL (opcode 9A) into the program image); a packer would start with a decompression stub
+  [      OK      ] Relocation table
+                   2395 entries at 0x1c, all inside the image (packers typically leave 0-2; compiled BASIC programs have dozens to thousands)
+  [not compressed] Entropy (bits/byte)
+                   whole file 6.783, header 4.822 (relocation table), load module 6.962; 2 KB blocks min 2.15 / max 7.06 (compressed data is ~7.9-8.0)
+  [   present    ] Readable text in the load module
+                   350 ASCII strings incl. the runtime error-message table; a compressed image would hide them
+
+  VERDICT: NOT packed: no EXEPACK/PKLITE/LZEXE/DIET/UPX signature, ordinary header and relocation table, plain entry code and no high-entropy payload. This is a normal, uncompressed linked EXE.
+
+3. BASIC COMPILER / RUNTIME IDENTIFICATION
+----------------------------------------------------------------------------------------------------
+  Copyright/licence string: 'Licensed Material - Program Property of IBM' at 0x88a8
+  Other runtime/vendor markers searched: absent = BRUN, BASRUN, BC.LIB, BASCOM, Microsoft, MICROSOFT, MS-DOS, GW-BASIC, BASICA, QuickBASIC, Version, VERSION, Compiler, Copyright (C), (C) 
+  Embedded version strings: none
+  Device table: KYBD SCRN CAS1 COM1 COM2 LPT1-3 present; 'Bad record number' present => runtime supports random-access files (GET/PUT)
+
+  Runtime error-message table: file offsets 0x97e7-0x9a2e, 35 entries (code byte, then text whose last character has bit 7 set):
+    0x097e7  error              2  Syntax error
+    0x097f4  error              3  RETURN without GOSUB
+    0x09809  error              4  Out of DATA
+    0x09815  error              5  Illegal function call
+    0x0982b  error              6  Overflow
+    0x09834  error              7  Out of memory
+    0x09842  error              9  Subscript out of range
+    0x09859  error             11  Division by zero
+    0x0986a  error             13  Type mismatch
+    0x09878  error             14  Out of string space
+    0x0988c  error             16  String formula too complex
+    0x098a7  error             19  No RESUME
+    0x098b1  error             20  RESUME without error
+    0x098c6  error             24  Device Timeout
+    0x098d5  error             25  Device Fault
+    0x098e2  error             27  Out of Paper
+    0x098ef  error             50  FIELD overflow
+    0x098fe  error             51  Internal error
+    0x0990d  error             52  Bad file number
+    0x0991d  error             53  File not found
+    0x0992c  error             54  Bad file mode
+    0x0993a  error             55  File already open
+    0x0994c  error             57  Device I/O Error
+    0x0995d  error             58  File already exists
+    0x09971  error             61  Disk full
+    0x0997b  error             62  Input past end
+    0x0998a  error             63  Bad record number
+    0x0999c  error             64  Bad file name
+    0x099aa  error             67  Too many files
+    0x099b9  error             68  Device Unavailable
+    0x099cc  error             69  Communication buffer overflow
+    0x099ea  error             70  Disk Write Protect
+    0x099fd  error             71  Disk not Ready
+    0x09a0c  error             72  Disk Media Error
+    0x09a1d  error 0xFF (generic)  Unprintable error
+
+  Highest numbered runtime error: 72. Not in the table: 73 Advanced feature, 74 Rename across disks, 75 Path/File access error, 76 Path not found.
+
+  CONCLUSION
+    Compiler/runtime: IBM Personal Computer BASIC Compiler (BASCOM) family. The IBM BASIC runtime is
+    linked into the EXE itself (its error-message table and licence string are inside the file).
+    Error messages use bit-7-terminated text, and there are no Microsoft, GW-BASIC/BASICA or
+    QuickBASIC markers.
+    Version: NOT embedded. The runtime contains no version or release string, so the exact release
+    (e.g. 1.00 vs 1.10 vs 2.00) cannot be read from the strings. The error table stops at error 72 and
+    lacks the DOS 2.x-era path errors (73-76), so it is an early-generation runtime of that family;
+    treat anything more precise as a hypothesis until compared with a known compiler build or its
+    BASRUN/library object code. See exe_comparison.txt for how the four executables relate.
+
+4. ASCII STRINGS (runs of >= 4 bytes in 0x20-0x7E; 350 found)
+----------------------------------------------------------------------------------------------------
+  Offsets are file offsets. A string ending right before a byte with bit 7 set is shown with that
+  byte decoded in brackets (BASIC runtime stores the last character of many messages that way).
+  Tab/control bytes split strings. Length is in bytes.
+
+  offset     decimal  len  text
+  0x0070cb    28875    9  L$L:L`LvL
+  0x0070df    28895    9  M M>MTMrM
+  0x0070f5    28917    5  NJNpN
+  0x007101    28929    5  O6O\O
+  0x0082ba    33466    4  KYBD
+  0x0082bf    33471    4  SCRN  [+0xFE -> "SCRN~"]
+  0x0082c4    33476    4  CAS1  [+0xFD -> "CAS1}"]
+  0x0082c9    33481    4  COM1  [+0xFC -> "COM1|"]
+  0x0082ce    33486    4  COM2  [+0xFB -> "COM2{"]
+  0x0082d3    33491    4  LPT1  [+0xFA -> "LPT1z"]
+  0x0082d8    33496    4  LPT2  [+0xF9 -> "LPT2y"]
+  0x0082dd    33501    4  LPT3  [+0xF8 -> "LPT3x"]
+  0x0082e5    33509    5  Ne8M8  [+0xBA -> "Ne8M8:"]
+  0x0082eb    33515   15  M-F-FcLcLcL}8}8  [+0xBA -> "M-F-FcLcLcL}8}8:"]
+  0x0082fb    33531    7  M-F-F{L
+  0x008305    33541    5  L}8}8  [+0xC1 -> "L}8}8A"]
+  0x00830b    33547    5  M4F4F  [+0xAF -> "M4F4F/"]
+  0x00831b    33563    5  M5F5F  [+0xB0 -> "M5F5F0"]
+  0x008383    33667    4  [L^t
+  0x0083aa    33706    4  4LtR
+  0x00843b    33851    6  B[ZYCt
+  0x00845e    33886    5  _[OOu  [+0xF5 -> "_[OOuu"]
+  0x0085b5    34229    4  ^_Z2  [+0xC0 -> "^_Z2@"]
+  0x0085e9    34281    5  ^^^_Z  [+0xC3 -> "^^^_ZC"]
+  0x0088a8    34984   46  Licensed Material - Program Property of IBMUVW  [+0xCD -> "Licensed Material - Program Property of IBMUVWM"]
+  0x008b1b    35611    6  *Break  [+0xAA -> "*Break*"]
+  0x008cbe    36030    4   QSP  [+0xE8 -> " QSPh"]
+  0x008ce3    36067    8  tRPSQRVW
+  0x008d31    36145    6  _^ZY[X  [+0xC3 -> "_^ZY[XC"]
+  0x008d5d    36189    6  _^ZY[X  [+0xCB -> "_^ZY[XK"]
+  0x008d9f    36255    5  u=UVW  [+0xB4 -> "u=UVW4"]
+  0x008df0    36336    4  RSQP
+  0x008e44    36420    4  XY[Z  [+0xC3 -> "XY[ZC"]
+  0x008eb2    36530    4  ZXP<
+  0x008ffe    36862    4  F;7u
+  0x009012    36882    4  F;7u
+  0x009031    36913    4  PSQR  [+0xE8 -> "PSQRh"]
+  0x009055    36949    4  PSQR  [+0xB9 -> "PSQR9"]
+  0x009074    36980    4  ZY[X  [+0xCB -> "ZY[XK"]
+  0x0090aa    37034    6  PSQRVW
+  0x0090b8    37048    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+  0x0090c8    37064    6  PSQRVW
+  0x0090f4    37108    4  SQWV
+  0x009101    37121    6  ^_Y[C:  [+0xDD -> "^_Y[C:]"]
+  0x0091bf    37311    4  n?SQ
+  0x0091d9    37337    4  T?Y[
+  0x00922e    37422    6  PSQRVW  [+0xB6 -> "PSQRVW6"]
+  0x00925a    37466    6  _^ZY[X  [+0xC3 -> "_^ZY[XC"]
+  0x0092e3    37603    6  PSQRVW
+  0x0092f1    37617    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+  0x009301    37633    6  PSQRVW
+  0x0093e3    37859    5  PQRVW
+  0x00942c    37932    5  _^ZYX  [+0xCB -> "_^ZYXK"]
+  0x009488    38024    4  (2VW
+  0x0094a1    38049    4  1_^[  [+0xCB -> "1_^[K"]
+  0x0094aa    38058    4  QRVW
+  0x0094c6    38086    5  [_^ZY  [+0xCB -> "[_^ZYK"]
+  0x00950b    38155    6  PSQRVW
+  0x009519    38169    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+  0x009529    38185    6  PSQRVW
+  0x009554    38228    4  tA:6
+  0x009574    38260    4   s R  [+0xA2 -> " s R""]
+  0x00963b    38459    7  UVWPQRS
+  0x009646    38470    7  [ZYX_^]  [+0xCB -> "[ZYX_^]K"]
+  0x0097e8    38888   11  Syntax erro  [+0xF2 -> "Syntax error"]  <error table>
+  0x0097f5    38901   19  RETURN without GOSU  [+0xC2 -> "RETURN without GOSUB"]  <error table>
+  0x00980a    38922   10  Out of DAT  [+0xC1 -> "Out of DATA"]  <error table>
+  0x009816    38934   20  Illegal function cal  [+0xEC -> "Illegal function call"]  <error table>
+  0x00982c    38956    7  Overflo  [+0xF7 -> "Overflow"]  <error table>
+  0x009835    38965   12  Out of memor  [+0xF9 -> "Out of memory"]  <error table>
+  0x009843    38979   21  Subscript out of rang  [+0xE5 -> "Subscript out of range"]  <error table>
+  0x00985a    39002   15  Division by zer  [+0xEF -> "Division by zero"]  <error table>
+  0x00986b    39019   12  Type mismatc  [+0xE8 -> "Type mismatch"]  <error table>
+  0x009879    39033   18  Out of string spac  [+0xE5 -> "Out of string space"]  <error table>
+  0x00988d    39053   25  String formula too comple  [+0xF8 -> "String formula too complex"]  <error table>
+  0x0098a8    39080    8  No RESUM  [+0xC5 -> "No RESUME"]  <error table>
+  0x0098b2    39090   19  RESUME without erro  [+0xF2 -> "RESUME without error"]  <error table>
+  0x0098c7    39111   13  Device Timeou  [+0xF4 -> "Device Timeout"]  <error table>
+  0x0098d6    39126   11  Device Faul  [+0xF4 -> "Device Fault"]  <error table>
+  0x0098e3    39139   11  Out of Pape  [+0xF2 -> "Out of Paper"]  <error table>
+  0x0098ef    39151   14  2FIELD overflo  [+0xF7 -> "2FIELD overflow"]  <error table>
+  0x0098fe    39166   14  3Internal erro  [+0xF2 -> "3Internal error"]  <error table>
+  0x00990d    39181   15  4Bad file numbe  [+0xF2 -> "4Bad file number"]  <error table>
+  0x00991d    39197   14  5File not foun  [+0xE4 -> "5File not found"]  <error table>
+  0x00992c    39212   13  6Bad file mod  [+0xE5 -> "6Bad file mode"]  <error table>
+  0x00993a    39226   17  7File already ope  [+0xEE -> "7File already open"]  <error table>
+  0x00994c    39244   16  9Device I/O Erro  [+0xF2 -> "9Device I/O Error"]  <error table>
+  0x00995d    39261   19  :File already exist  [+0xF3 -> ":File already exists"]  <error table>
+  0x009971    39281    9  =Disk ful  [+0xEC -> "=Disk full"]  <error table>
+  0x00997b    39291   14  >Input past en  [+0xE4 -> ">Input past end"]  <error table>
+  0x00998a    39306   17  ?Bad record numbe  [+0xF2 -> "?Bad record number"]  <error table>
+  0x00999c    39324   13  @Bad file nam  [+0xE5 -> "@Bad file name"]  <error table>
+  0x0099aa    39338   14  CToo many file  [+0xF3 -> "CToo many files"]  <error table>
+  0x0099b9    39353   18  DDevice Unavailabl  [+0xE5 -> "DDevice Unavailable"]  <error table>
+  0x0099cc    39372   29  ECommunication buffer overflo  [+0xF7 -> "ECommunication buffer overflow"]  <error table>
+  0x0099ea    39402   18  FDisk Write Protec  [+0xF4 -> "FDisk Write Protect"]  <error table>
+  0x0099fd    39421   14  GDisk not Read  [+0xF9 -> "GDisk not Ready"]  <error table>
+  0x009a0c    39436   16  HDisk Media Erro  [+0xF2 -> "HDisk Media Error"]  <error table>
+  0x009a1e    39454   16  Unprintable erro  [+0xF2 -> "Unprintable error"]  <error table>
+  0x009c7a    40058    4  4STO  [+0xD0 -> "4STOP"]
+  0x009ca7    40103    9  4 in line  [+0xA0 -> "4 in line "]
+  0x009cb1    40113    4  ]XZU  [+0xE8 -> "]XZUh"]
+  0x009cc0    40128   12  4 at address  [+0xA0 -> "4 at address "]
+  0x009ccd    40141    4  ]_ZU  [+0xE8 -> "]_ZUh"]
+  0x009d3c    40252   32  (4Internal Error - No Line Numbe  [+0xF2 -> "(4Internal Error - No Line Number"]
+  0x009e62    40546   15  <%t,<#t(<!t$<Dt
+  0x009f6e    40814    5  PWUSR  [+0xD1 -> "PWUSRQ"]
+  0x00a06e    41070    5  x0_^X
+  0x00a192    41362    4  u;RS  [+0xBB -> "u;RS;"]
+  0x00a1ab    41387    4  #SRP
+  0x00a1d6    41430    5  PQRVW
+  0x00a1e7    41447    4  t?Jy
+  0x00a206    41478    5  u QVW
+  0x00a20f    41487    4  _^Yu  [+0xEE -> "_^Yun"]
+  0x00a216    41494    5  _^YZX
+  0x00a28c    41612    6  t>|AQP
+  0x00a318    41752    5  PQRVS
+  0x00a35a    41818    7  "S[^ZYX  [+0xCB -> ""S[^ZYXK"]
+  0x00a368    41832    4  PQRV  [+0xBB -> "PQRV;"]
+  0x00a370    41840    4  ["SR  [+0xB4 -> "["SR4"]
+  0x00a3b0    41904    5  PQRVS
+  0x00a3e0    41952    4  PQRV  [+0xBB -> "PQRV;"]
+  0x00a42e    42030    8  </t&<-t"  [+0xEB -> "</t&<-t"k"]
+  0x00a4c7    42183    5  _^[VW
+  0x00a4e8    42216    4  r!VW
+  0x00a574    42356    4  PQS+
+  0x00a594    42388    4  _[YX  [+0xCB -> "_[YXK"]
+  0x00a5db    42459    4  u/FF
+  0x00a6d9    42713    4  PSQV
+  0x00a6ec    42732    4  ^Y[X  [+0xFE -> "^Y[X~"]
+  0x00a733    42803    4  WR;&
+  0x00a778    42872    7  <;r@,;<
+  0x00a7be    42942    4  Z[Xr
+  0x00a81e    43038    4  X_WP
+  0x00a9b4    43444    4  w9WS  [+0xE8 -> "w9WSh"]
+  0x00aa7c    43644   17  Error in EXE file
+  0x00ab3b    43835    4  ZYQR
+  0x00abc7    43975    4  PQRV
+  0x00abdd    43997    4  ^ZYX  [+0xCB -> "^ZYXK"]
+  0x00acbb    44219    6  PQRVWU  [+0xE8 -> "PQRVWUh"]
+  0x00acca    44234    6  ]_^ZYX
+  0x00ae04    44548    4  "t%<
+  0x00ae44    44612    4  < u'  [+0xE8 -> "< u'h"]
+  0x00ae4b    44619    5  r"< t  [+0xF7 -> "r"< tw"]
+  0x00ae8d    44685   21  A],B],C],D],E],F],G],  [+0xCE -> "A],B],C],D],E],F],G],N"]
+  0x00aeb0    44720    5  ,M:-X  [+0xF2 -> ",M:-Xr"]
+  0x00aef4    44788    5  tA<Us
+  0x00af88    44936    4  tWQP  [+0xE8 -> "tWQPh"]
+  0x00afb4    44980    4  t,PQ
+  0x00b109    45321    4  r;t$
+  0x00b210    45584    5  t8<,t  [+0xAB -> "t8<,t+"]
+  0x00b21d    45597   15  ?Redo from star  [+0xF4 -> "?Redo from start"]
+  0x00b25c    45660    7  Overflo  [+0xF7 -> "Overflow"]
+  0x00b4d7    46295    5  s(PRS  [+0xE8 -> "s(PRSh"]
+  0x00b69a    46746    5  uCUP@  [+0xD1 -> "uCUP@Q"]
+  0x00b935    47413    4  QRSP  [+0xE8 -> "QRSPh"]
+  0x00b94e    47438    4  X[ZY  [+0xE8 -> "X[ZYh"]
+  0x00b956    47446    4  QRSP  [+0xE8 -> "QRSPh"]
+  0x00bb10    47888    5  8&9)9  [+0xAF -> "8&9)9/"]
+  0x00bb31    47921    4  QRS3  [+0xC9 -> "QRS3I"]
+  0x00bb6c    47980    4  QRS3  [+0xC9 -> "QRS3I"]
+  0x00bc83    48259    6  SQRVWU  [+0xA3 -> "SQRVWU#"]
+  0x00bca4    48292    6  ]_^ZY[  [+0xE8 -> "]_^ZY[h"]
+  0x00bd3a    48442    7  <=tx<+t  [+0xF5 -> "<=tx<+tu"]
+  0x00c023    49187    4  GJx1  [+0xF9 -> "GJx1y"]
+  0x00c4c8    50376    4  t5H;  [+0xC3 -> "t5H;C"]
+  0x00c53d    50493    4  PSVW  [+0xB8 -> "PSVW8"]
+  0x00c55e    50526    4  u)@;  [+0xF7 -> "u)@;w"]
+  0x00c584    50564    4  _^[X  [+0xC3 -> "_^[XC"]
+  0x00c58f    50575   11   during G.C  [+0xAE -> " during G.C."]
+  0x00c5a7    50599   36  Internal Error - String Space Corrup  [+0xF4 -> "Internal Error - String Space Corrupt"]
+  0x00c5d6    50646    4  t$VS  [+0xE8 -> "t$VSh"]
+  0x00c68d    50829    7  PQRVWQS
+  0x00c6ac    50860    5  _^ZYX  [+0xC3 -> "_^ZYXC"]
+  0x00c76b    51051    5  sdPQR  [+0xD1 -> "sdPQRQ"]
+  0x00c776    51062    4  DZYX  [+0xCB -> "DZYXK"]
+  0x00cb4b    52043    4  tHr#
+  0x00cbfc    52220    5  v|Nty
+  0x00cf69    53097    4  QRS3  [+0xC9 -> "QRS3I"]
+  0x00cffe    53246    5  PQRWS  [+0xBE -> "PQRWS>"]
+  0x00d038    53304    5  [_ZYX  [+0xC3 -> "[_ZYXC"]
+  0x00d195    53653    6  "ORO_O  [+0xFD -> ""ORO_O}"]
+  0x00d19c    53660    7  N|O%Q%P
+  0x00d1e4    53732    4  8\*u
+  0x00d256    53846    5  \)*\*  [+0xFE -> "\)*\*~"]
+  0x00d48d    54413    4  PQRS
+  0x00d4c0    54464    4  [ZYX  [+0xC3 -> "[ZYXC"]
+  0x00d4c6    54470    4  D'QW  [+0xB9 -> "D'QW9"]
+  0x00d58f    54671    4  VWFG  [+0xB9 -> "VWFG9"]
+  0x00d791    55185    7  <#t@<&t  [+0xB5 -> "<#t@<&t5"]
+  0x00d7a5    55205    7  <.tE<_t
+  0x00d805    55301    4  <^^u
+  0x00daa7    55975    7  "DIESEL
+  0x00dab1    55985    7  "  OFF 
+  0x00dabb    55995    6  " ELEC
+  0x00dad5    56021  165  "C1R1E1U2H1L1G1D2F1BR4R2L1U4G1BR4E1R1F1G3R3BR2BU1F1R1E1H1E1H1L1G1BR7D3U4G2D1R3BF1BR1R2E1H1L1H1U1R3BR4G2D1F1R1E1H1BE2BR1R3D1G2D1BR5R1E1H1E1H1L1G1F1G1F1BR5E2U1H1L1G1F1
+  0x00db7c    56188   21  ~#GATO DEMONSTRATION!
+  0x00db93    56211   34  #PRESS FUNCTION KEY 1 (F1) TO EXIT
+  0x00dbb9    56249   39  # FUNCTION KEY 2 (F2) TO TURN OFF SOUND
+  0x00dc3e    56382   35  @$POWER           DAMAGE     SCOPE 
+  0x00dc64    56420   31  f$DEPTH   SPEED   HEADING      
+  0x00dc87    56455   14  $TORPEDOES   _
+  0x00dcad    56493   14  $FUEL        O
+  0x00dcbf    56511   10  $BATT     
+  0x00dcd3    56531   15  $CHARGING     _
+  0x00dce5    56549    5  $####
+  0x00dd62    56674   27  d%THIS IS YOUR MAIN SCREEN#
+  0x00dd7f    56703   36  %YOU ARE NOW IN THE THE CONTROL ROOM
+  0x00dda7    56743   31  %YOU MAY CONTROL ALL OPERATIONS
+  0x00ddc9    56777   27  %OF THE SUBMARINE FROM HERE
+  0x00ddef    56815   34  %NOW LET'S LOOK AT SOME NAVIGATION
+  0x00de15    56853   33  &HERE IS THE MAIN CHART (KEY 'C')
+  0x00de3c    56892   37  >&NOW WE ARE BACK IN THE CONTROL ROOM
+  0x00de64    56932   37  f&LET'S SEE WHAT THE ENEMY LOOKS LIKE
+  0x00dea3    56995   14  &  FREIGHTER  
+  0x00deb5    57013   14  & OIL TANKER  
+  0x00dec7    57031   14  &  TRANSPORT  
+  0x00ded9    57049   14  & PATROL CRAFT
+  0x00deeb    57067   14  &  DESTROYER  
+  0x00df01    57089   38  'TO SHOOT A SHIP YOU WOULD PRESS 'T' !
+  0x00df28    57128   35  *'TO OPEN THE TORPEDO DOORS AND    
+  0x00df4e    57166   17  P'THEN F8 TO FIRE
+  0x00df62    57186   39  d'REMEMBER PATROL CRAFT AND DESTROYERS!
+  0x00df8b    57227   34  'WILL SHOOT AND DROP DEPTH CHARGES
+  0x00dfb1    57265   14  'SO BE CAREFUL
+  0x00dfc3    57283   35  'YOU HAVE TO PAY CLOSE ATTENTION TO
+  0x00dfe9    57321   32  'THE DAMAGE REPORT BECAUSE IF AN
+  0x00e00d    57357   33  (AREA IS DAMAGED IT CAN'T BE USED
+  0x00e03c    57404    9  >(HEADING
+  0x00e048    57416    8  J( SPEED
+  0x00e052    57426    8  T( DEPTH
+  0x00e05c    57436    6  ^(TORP
+  0x00e074    57460   22  v(S4C3R5F4D5G4L5H4U5E4
+  0x00e09d    57501    7  (S4C3U4
+  0x00e0b3    57523    4  (###
+  0x00e0cf    57551   28  (NOT MUCH IS HAPPENING HERE%
+  0x00e0ed    57581   38  (LETS READ THE CAPTAIN'S LOG (KEY 'L')
+  0x00e122    57634   21  $)S4C2U7R12D2R2D5L146
+  0x00e138    57656   57  :)S4C2E2R40D3R5D10L2D2BH11L20D1R20BD2L20D1R20BD2L20D1R202
+  0x00e172    57714   53  t)S4C2ND5R125D5L12D1L13NU6L25NU6L25NU6L25NU6L12U1L130
+  0x00e1a9    57769   50  )S4C2R60L2D1R13L1D1R8D2L2D1L8D1L10DL14D1L45H2U4E23
+  0x00e1dd    57821   52  )S4C2L25U2L6D4R6U2BL6L5U2L2D4U5L7ND6L1G1D4F1R8U1R2U2
+  0x00e215    57877   26  *S4C2NR53D8R53U8D3R22D3L22
+  0x00e236    57910    4  8*C=  [+0xB5 -> "8*C=5"]
+  0x00e23c    57916  183  >*S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1
+  0x00e2f7    58103  190  *L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3)
+  0x00e3b7    58295   42  +BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10
+  0x00e3e9    58345   32  +CONTROL RM        CONNING TOWER
+  0x00e40d    58381   29  ,ENGINE RM         PERISCOPES
+  0x00e42c    58412   30  .,BATTERY RM        FUEL TANKS
+  0x00e44c    58444   28  N,TORPEDO RM        RADIO RM
+  0x00e47a    58490   37  |,THIS IS THE DAMAGE REPORT (KEY 'R')
+  0x00e4a3    58531   34  ,THE AFFECTED AREA IS HIGHLIGHTED#
+  0x00e4c7    58567   36  ,AND RENDERED USELESS - REFER TO THE
+  0x00e4ef    58607   36  ,MANUAL FOR REPAIRS BY THE SUBTENDER
+  0x00e51b    58651   28  -LAST SHIP IN LOG LIST SUNK%
+  0x00e538    58680   39  :-DO YOU WISH TO REVIEW BEFORE DELETION
+  0x00e562    58722    6  d-LOG1
+  0x00e570    58736   13  r-LOG CLEARED
+  0x00e591    58769   14  -CAPTAIN'S LOG
+  0x00e5a3    58787   38  -SHIP          TONNAGE       DATE SUNK
+  0x00e5cd    58829   38  -_____________________________________
+  0x00e607    58887    7  .######
+  0x00e611    58897    7  .      
+  0x00e61b    58907    5  .1943
+  0x00e622    58914   23  $.\             \######
+  0x00e63c    58940   18  >.SHIPS SUNK      
+  0x00e650    58960   18  R.TOTAL TONNAGE   
+  0x00e664    58980   10  f.MISSIONS
+  0x00e670    58992   18  r.COMPLETED       
+  0x00e689    59017   29  .THE FIRST GROUP OF SHIPS ARE
+  0x00e6a9    59049   29  .FREIGHTERS THEN OIL TANKERS,
+  0x00e6c9    59081   24  .TRANSPORTS,PATROL BOATS
+  0x00e6e5    59109   18  . AND  DESTROYERS 
+  0x00e6f9    59129   34  .ALL OF THE NAMES AND TONNAGES OF 
+  0x00e71d    59165   33  /SHIPS SUNK WERE ACTUALLY SUNK OR
+  0x00e740    59200   31  B/DESTROYED DURING WORLD WAR II
+  0x00e762    59234   36  d/ALSO ALL OF THE DESTROYERS USED IN
+  0x00e789    59273   31  /THIS PROGRAM WERE SUNK BY GATO
+  0x00e7ab    59307   17  /CLASS SUBMARINES
+  0x00e7c3    59331   13  /GAME CONTROL
+  0x00e7d3    59347   26  /     [1] DIFFICULTY LEVEL  [+0xCC -> "/     [1] DIFFICULTY LEVELL"]
+  0x00e7f1    59377   15  /     [2] SOUND
+  0x00e803    59395   21  0     [3] TIME OF DAY
+  0x00e81b    59419   29  0     [4] RESET CAPTAIN'S LOG
+  0x00e83a    59450   28  <0(Press RETURN to continue)
+  0x00e858    59480   26  Z0NUMBER OF ITEM TO CHANGE
+  0x00e87a    59514   22  |0NEW DIFFICULTY LEVEL
+  0x00e8b3    59571   38  0THIS IS THE CHART OF YOUR PATROL AREA
+  0x00e8dd    59613   36  0YOU ARE THE GREEN DOT IN QUADRANT 5
+  0x00e905    59653   33  1YOUR SUB-TENDER IS IN QUADRANT 7
+  0x00e928    59688   27  *1ENEMY SHIPS ARE RED DOTS 
+  0x00e946    59718   33  H1WE CAN GET A CLOSER LOOK AT THE
+  0x00e96a    59754   33  l1QUADRANT WE ARE IN BY CHECKING 
+  0x00e98d    59789   33  1THE LOCAL QUADRANT MAP (KEY 'Q')
+  0x00e9b7    59831   10  1PASSWORD?
+  0x00e9c5    59845    6  1PAED 
+  0x00e9cd    59853   33  1ENTER NEW SUB COORDINATES (X,Y):
+  0x00ea0d    59917   44  2S4C3G30D20L50G40D7BL13H7U20H20L32H40L20H32O
+  0x00ea3a    59962   81  <2S4C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7
+  0x00ea8f    60047   82  2S4A2C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7
+  0x00eae9    60137   97  2S4A0C3NR7H12U10H5BR40G13D9G8D10NF11L10NG6BR10BF10BU4BE9NF5H10NL3E12R10BL24H13U7BD32NR3L13NG8NH11
+  0x00eb50    60240   22  R3S4C3D5L30G23D32G34D3
+  0x00eb6c    60268   18  n3S4C3L20H23U23H34
+  0x00eb85    60293   20  3S4A0C3G12L33NG23H12
+  0x00eba1    60321   22  3S4A0C3R35NE8R4NF23R12
+  0x00ebbf    60351   16  3S4A0C3G12D15NG9
+  0x00ebd3    60371   33  3DO YOU WANT DO PLAY AGAIN? (Y/N)
+  0x00ebfb    60411   11  3RADIO ROOM
+  0x00ec09    60425   30  4        REPORTS HEAVY DAMAGE 
+  0x00ec28    60456   34  *4     NO MESSAGES MAY BE RECEIVED
+  0x00ec4c    60492    9  N4DEMORD(
+  0x00ec56    60502   42  X4                                        
+  0x00ec89    60553    5  4DTG 
+  0x00ec97    60567    6  4 ZULU
+  0x00ecb5    60597    7  4B32P62
+  0x00ecbf    60607    7  4B10P62
+  0x00ecc9    60617   13  4B32P62B10P62
+  0x00ecd9    60633   13  4B10P62B32P62
+  0x00ece9    60649    4  4MXP
+  0x00ed01    60673   48  5S4C3BF4BD7E2L2U2R3E3H2G2HE5FG2F2E6FG9R9D2L10G3H
+  0x00ed34    60724    4  65S=  [+0xD3 -> "65S=S"]
+  0x00ed46    60742   33  H5THIS IS THE MAP FOR QUADRANT 5"
+  0x00ed68    60776   36  j5THE DOTTED RED LINE REPRESENTS THE
+  0x00ed8f    60815   30  5SHOALS SURROUNDING THE ISLAND
+  0x00edb1    60849   36  5IF YOU ARE ON THE SURFACE THEN YOU$
+  0x00edd7    60887   38  5WILL STOP WHEN YOU HIT THE RED LINES%
+  0x00edff    60927   38  6THE DEEPER YOU ARE THE SOONER YOU HIT
+  0x00ee28    60968   33  *6LET'S TAKE A LOOK AT RADAR (F6)
+  0x00ee58    61016    5  L}333
+  0x00ee68    61032    7  j6C0BR1
+  0x00ee72    61042  115  t6C3BR9BU1U3HUHU2E2UERF2RFE2U4H2LHLHL4GL4HL6G4D2G5LG2D6FD4GDGDGD2FDF4R3FR3FR4E2R6ER2E4U3ER3E2U2EHUHL4GLGL2HUEH2L3U2
+  0x00eee9    61161  130  6C3BR26R4U2H4LU2H4U4E2U4H3UL2H4U2EU3H2L7G3D2GDGD2G2L4G3LG3D5GD3GDGDG4L2G3D4F4D9GD2GD4GD3GD3F5R3FR6ER5ER5E5U4E3UERERERE7UE4UEUEUEU3
+  0x00ef6e    61294  112  p7C3BR16BU2U2HUHL2HL2GL2H2U2H2LHUE2U3HLHL5GLG2LG2D3GD2G3LGD4F2RFD2FD2FD2G3D2FDF2R5ER2FR3ERE2R2ERE3U2EU3ER2EU2EU4
+  0x00efe1    61409    4  7OBX
+  0x00efe9    61417    5  7GATO
+  0x00eff1    61425  155  < 19,35,5,.9,170,37,5,.9,208,22,6,1.5,38,80,10,.9,162,75,13,1.5,208,85,5,.9,48,134,5,.9,209,113,5,.9,269,128,6,1.5,95,174,13,1.5,214,168,9,.9,287,174,15,.9
+  0x00f1d6    61910   37  Random Number Seed (-32768 to 32767)$
+  0x00f200    61952   10  Z=>=<=S=H=
+  0x00f23d    62013    4  ]xEc
+  0x00f357    62295   82      !!!"""####$$$%%%&&&&'''((())))***+++,,,,---...////0001112222333444555566677788
+  0x00f412    62482    5  w-;uD  [+0xCD -> "w-;uDM"]
+  0x00f421    62497    4  mA4-  [+0xF7 -> "mA4-w"]
+  0x00f48e    62606    4  6A_p
+  0x00f49a    62618    4  +fCz  [+0xE5 -> "+fCze"]
+  0x00f4a2    62626    4  Vijl  [+0xAF -> "Vijl/"]
+  0x00f565    62821    4  @v:k
+  0x00f59e    62878    4  @aQY
+  0x00f5ce    62926    5  E@|o|  [+0xE7 -> "E@|o|g"]
+  0x00f647    63047    4  b/5`
+
+5. BASIC STRING-LITERAL POOL (decoded constants)
+----------------------------------------------------------------------------------------------------
+  The compiler stores each string constant as [length:u16][data-segment offset:u16][text bytes].
+  Data segment starts at file offset 0xb800 (paragraph 0x920 of the load module); 155 literals. Unlike section 4 this includes strings shorter than
+  4 bytes, keeps exact lengths and drops the printable length/pointer bytes that section 4 glues to the front.
+
+  file off    ds off  len  text
+  0x00daa8  0x22a8    6  DIESEL
+  0x00dab2  0x22b2    6    OFF 
+  0x00dabc  0x22bc    5   ELEC
+  0x00dad6  0x22d6  164  C1R1E1U2H1L1G1D2F1BR4R2L1U4G1BR4E1R1F1G3R3BR2BU1F1R1E1H1E1H1L1G1BR7D3U4G2D1R3BF1BR1R2E1H1L1H1U1R3BR4G2D1F1R1E1H1BE2BR1R3D1G2D1BR5R1E1H1E1H1L1G1F1G1F1BR5E2U1H1L1G1F1
+  0x00db7e  0x237e   18  GATO DEMONSTRATION
+  0x00db94  0x2394   33  PRESS FUNCTION KEY 1 (F1) TO EXIT
+  0x00dbba  0x23ba   38   FUNCTION KEY 2 (F2) TO TURN OFF SOUND
+  0x00dc40  0x2440   33  POWER           DAMAGE     SCOPE 
+  0x00dc66  0x2466   29  DEPTH   SPEED   HEADING      
+  0x00dc88  0x2488   13  TORPEDOES   _
+  0x00dcae  0x24ae   13  FUEL        O
+  0x00dcc0  0x24c0    9  BATT     
+  0x00dcce  0x24ce    1  _
+  0x00dcd4  0x24d4   14  CHARGING     _
+  0x00dce6  0x24e6    4  ####
+  0x00dcf2  0x24f2    2  ##
+  0x00dd64  0x2564   24  THIS IS YOUR MAIN SCREEN
+  0x00dd80  0x2580   35  YOU ARE NOW IN THE THE CONTROL ROOM
+  0x00dda8  0x25a8   30  YOU MAY CONTROL ALL OPERATIONS
+  0x00ddca  0x25ca   26  OF THE SUBMARINE FROM HERE
+  0x00ddf0  0x25f0   33  NOW LET'S LOOK AT SOME NAVIGATION
+  0x00de16  0x2616   32  HERE IS THE MAIN CHART (KEY 'C')
+  0x00de3e  0x263e   35  NOW WE ARE BACK IN THE CONTROL ROOM
+  0x00de66  0x2666   35  LET'S SEE WHAT THE ENEMY LOOKS LIKE
+  0x00de92  0x2692    2  S4
+  0x00de98  0x2698    2  S2
+  0x00de9e  0x269e    1  X
+  0x00dea4  0x26a4   13    FREIGHTER  
+  0x00deb6  0x26b6   13   OIL TANKER  
+  0x00dec8  0x26c8   13    TRANSPORT  
+  0x00deda  0x26da   13   PATROL CRAFT
+  0x00deec  0x26ec   13    DESTROYER  
+  0x00df02  0x2702   36  TO SHOOT A SHIP YOU WOULD PRESS 'T' 
+  0x00df2a  0x272a   33  TO OPEN THE TORPEDO DOORS AND    
+  0x00df50  0x2750   15  THEN F8 TO FIRE
+  0x00df64  0x2764   36  REMEMBER PATROL CRAFT AND DESTROYERS
+  0x00df8c  0x278c   33  WILL SHOOT AND DROP DEPTH CHARGES
+  0x00dfb2  0x27b2   13  SO BE CAREFUL
+  0x00dfc4  0x27c4   34  YOU HAVE TO PAY CLOSE ATTENTION TO
+  0x00dfea  0x27ea   31  THE DAMAGE REPORT BECAUSE IF AN
+  0x00e00e  0x280e   32  AREA IS DAMAGED IT CAN'T BE USED
+  0x00e03e  0x283e    7  HEADING
+  0x00e04a  0x284a    6   SPEED
+  0x00e054  0x2854    6   DEPTH
+  0x00e05e  0x285e    4  TORP
+  0x00e076  0x2876   20  S4C3R5F4D5G4L5H4U5E4
+  0x00e09e  0x289e    6  S4C3U4
+  0x00e0b4  0x28b4    3  ###
+  0x00e0d0  0x28d0   26  NOT MUCH IS HAPPENING HERE
+  0x00e0ee  0x28ee   37  LETS READ THE CAPTAIN'S LOG (KEY 'L')
+  0x00e118  0x2918    1  R
+  0x00e11e  0x291e    1  5
+  0x00e124  0x2924   18  S4C2U7R12D2R2D5L14
+  0x00e13a  0x293a   54  S4C2E2R40D3R5D10L2D2BH11L20D1R20BD2L20D1R20BD2L20D1R20
+  0x00e174  0x2974   50  S4C2ND5R125D5L12D1L13NU6L25NU6L25NU6L25NU6L12U1L13
+  0x00e1aa  0x29aa   48  S4C2R60L2D1R13L1D1R8D2L2D1L8D1L10DL14D1L45H2U4E2
+  0x00e1de  0x29de   51  S4C2L25U2L6D4R6U2BL6L5U2L2D4U5L7ND6L1G1D4F1R8U1R2U2
+  0x00e216  0x2a16   25  S4C2NR53D8R53U8D3R22D3L22
+  0x00e238  0x2a38    2  C=
+  0x00e23e  0x2a3e  181  S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1
+  0x00e2f8  0x2af8  188  L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3
+  0x00e3b8  0x2bb8   41  BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10
+  0x00e3ea  0x2bea   31  CONTROL RM        CONNING TOWER
+  0x00e40e  0x2c0e   28  ENGINE RM         PERISCOPES
+  0x00e42e  0x2c2e   28  BATTERY RM        FUEL TANKS
+  0x00e44e  0x2c4e   26  TORPEDO RM        RADIO RM
+  0x00e47c  0x2c7c   35  THIS IS THE DAMAGE REPORT (KEY 'R')
+  0x00e4a4  0x2ca4   32  THE AFFECTED AREA IS HIGHLIGHTED
+  0x00e4c8  0x2cc8   35  AND RENDERED USELESS - REFER TO THE
+  0x00e4f0  0x2cf0   35  MANUAL FOR REPAIRS BY THE SUBTENDER
+  0x00e51c  0x2d1c   26  LAST SHIP IN LOG LIST SUNK
+  0x00e53a  0x2d3a   37  DO YOU WISH TO REVIEW BEFORE DELETION
+  0x00e564  0x2d64    4  LOG1
+  0x00e56c  0x2d6c    1  Y
+  0x00e572  0x2d72   11  LOG CLEARED
+  0x00e592  0x2d92   13  CAPTAIN'S LOG
+  0x00e5a4  0x2da4   37  SHIP          TONNAGE       DATE SUNK
+  0x00e5ce  0x2dce   37  _____________________________________
+  0x00e608  0x2e08    6  ######
+  0x00e612  0x2e12    6        
+  0x00e61c  0x2e1c    4  1943
+  0x00e624  0x2e24   21  \             \######
+  0x00e63e  0x2e3e   16  SHIPS SUNK      
+  0x00e652  0x2e52   16  TOTAL TONNAGE   
+  0x00e666  0x2e66    8  MISSIONS
+  0x00e672  0x2e72   16  COMPLETED       
+  0x00e68a  0x2e8a   28  THE FIRST GROUP OF SHIPS ARE
+  0x00e6aa  0x2eaa   28  FREIGHTERS THEN OIL TANKERS,
+  0x00e6ca  0x2eca   23  TRANSPORTS,PATROL BOATS
+  0x00e6e6  0x2ee6   16   AND  DESTROYERS
+  0x00e6fa  0x2efa   32  ALL OF THE NAMES AND TONNAGES OF
+  0x00e71e  0x2f1e   32  SHIPS SUNK WERE ACTUALLY SUNK OR
+  0x00e742  0x2f42   29  DESTROYED DURING WORLD WAR II
+  0x00e764  0x2f64   34  ALSO ALL OF THE DESTROYERS USED IN
+  0x00e78a  0x2f8a   30  THIS PROGRAM WERE SUNK BY GATO
+  0x00e7ac  0x2fac   16  CLASS SUBMARINES
+  0x00e7c4  0x2fc4   12  GAME CONTROL
+  0x00e7d4  0x2fd4   25       [1] DIFFICULTY LEVEL
+  0x00e7f2  0x2ff2   14       [2] SOUND
+  0x00e804  0x3004   20       [3] TIME OF DAY
+  0x00e81c  0x301c   28       [4] RESET CAPTAIN'S LOG
+  0x00e83c  0x303c   26  (Press RETURN to continue)
+  0x00e85a  0x305a   24  NUMBER OF ITEM TO CHANGE
+  0x00e876  0x3076    1   
+  0x00e87c  0x307c   20  NEW DIFFICULTY LEVEL
+  0x00e8b4  0x30b4   37  THIS IS THE CHART OF YOUR PATROL AREA
+  0x00e8de  0x30de   35  YOU ARE THE GREEN DOT IN QUADRANT 5
+  0x00e906  0x3106   32  YOUR SUB-TENDER IS IN QUADRANT 7
+  0x00e92a  0x312a   25  ENEMY SHIPS ARE RED DOTS 
+  0x00e948  0x3148   31  WE CAN GET A CLOSER LOOK AT THE
+  0x00e96c  0x316c   30  QUADRANT WE ARE IN BY CHECKING
+  0x00e98e  0x318e   32  THE LOCAL QUADRANT MAP (KEY 'Q')
+  0x00e9b2  0x31b2    1  Z
+  0x00e9b8  0x31b8    9  PASSWORD?
+  0x00e9c6  0x31c6    4  PAED
+  0x00e9ce  0x31ce   32  ENTER NEW SUB COORDINATES (X,Y):
+  0x00ea0e  0x320e   42  S4C3G30D20L50G40D7BL13H7U20H20L32H40L20H32
+  0x00ea3c  0x323c   79  S4C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7
+  0x00ea90  0x3290   81  S4A2C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7
+  0x00eaea  0x32ea   96  S4A0C3NR7H12U10H5BR40G13D9G8D10NF11L10NG6BR10BF10BU4BE9NF5H10NL3E12R10BL24H13U7BD32NR3L13NG8NH11
+  0x00eb52  0x3352   20  S4C3D5L30G23D32G34D3
+  0x00eb6e  0x336e   16  S4C3L20H23U23H34
+  0x00eb86  0x3386   19  S4A0C3G12L33NG23H12
+  0x00eba2  0x33a2   21  S4A0C3R35NE8R4NF23R12
+  0x00ebc0  0x33c0   15  S4A0C3G12D15NG9
+  0x00ebd4  0x33d4   32  DO YOU WANT DO PLAY AGAIN? (Y/N)
+  0x00ebfc  0x33fc   10  RADIO ROOM
+  0x00ec0a  0x340a   28          REPORTS HEAVY DAMAGE
+  0x00ec2a  0x342a   32       NO MESSAGES MAY BE RECEIVED
+  0x00ec4e  0x344e    6  DEMORD
+  0x00ec58  0x3458   40                                          
+  0x00ec84  0x3484    1  @
+  0x00ec8a  0x348a    4  DTG 
+  0x00ec92  0x3492    1  /
+  0x00ec98  0x3498    5   ZULU
+  0x00ecb6  0x34b6    6  B32P62
+  0x00ecc0  0x34c0    6  B10P62
+  0x00ecca  0x34ca   12  B32P62B10P62
+  0x00ecda  0x34da   12  B10P62B32P62
+  0x00ecea  0x34ea    3  MXP
+  0x00ed02  0x3502   47  S4C3BF4BD7E2L2U2R3E3H2G2HE5FG2F2E6FG9R9D2L10G3H
+  0x00ed36  0x3536    2  S=
+  0x00ed48  0x3548   30  THIS IS THE MAP FOR QUADRANT 5
+  0x00ed6a  0x356a   34  THE DOTTED RED LINE REPRESENTS THE
+  0x00ed90  0x3590   29  SHOALS SURROUNDING THE ISLAND
+  0x00edb2  0x35b2   34  IF YOU ARE ON THE SURFACE THEN YOU
+  0x00edd8  0x35d8   36  WILL STOP WHEN YOU HIT THE RED LINES
+  0x00ee00  0x3600   37  THE DEEPER YOU ARE THE SOONER YOU HIT
+  0x00ee2a  0x362a   31  LET'S TAKE A LOOK AT RADAR (F6)
+  0x00ee6a  0x366a    5  C0BR1
+  0x00ee74  0x3674  113  C3BR9BU1U3HUHU2E2UERF2RFE2U4H2LHLHL4GL4HL6G4D2G5LG2D6FD4GDGDGD2FDF4R3FR3FR4E2R6ER2E4U3ER3E2U2EHUHL4GLGL2HUEH2L3U2
+  0x00eeea  0x36ea  129  C3BR26R4U2H4LU2H4U4E2U4H3UL2H4U2EU3H2L7G3D2GDGD2G2L4G3LG3D5GD3GDGDG4L2G3D4F4D9GD2GD4GD3GD3F5R3FR6ER5ER5E5U4E3UERERERE7UE4UEUEUEU3
+  0x00ef70  0x3770  110  C3BR16BU2U2HUHL2HL2GL2H2U2H2LHUE2U3HLHL5GLG2LG2D3GD2G3LGD4F2RFD2FD2FD2G3D2FDF2R5ER2FR3ERE2R2ERE3U2EU3ER2EU2EU4
+  0x00efe2  0x37e2    3  OBX
+  0x00efea  0x37ea    4  GATO

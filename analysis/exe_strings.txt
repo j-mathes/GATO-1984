@@ -1,5 +1,5 @@
-GATO.EXE analysis - Original\Gato.exe
-file size: 27248 bytes (0x6a70)
+Gato.exe analysis - Original\Gato.exe
+file size: 27248 bytes (0x6a70)   sha256: ec134e821a5ea97f692b2710d69e36d5b07413bf147e64b1589360c934815228
 ====================================================================================================
 
 1. MZ HEADER
@@ -20,7 +20,7 @@ file size: 27248 bytes (0x6a70)
   +0x1a  e_ovno      0x0000      0   overlay number (0 = main program)
 
   header size      : 1536 bytes (96 paragraphs)
-  declared size    : 27248 bytes   load module: 25712 bytes
+  declared size    : 27248 bytes   load module: 25712 bytes   trailing bytes: 0
   entry point      : CS:IP 0000:001a -> file offset 0x61a
   stack            : SS:SP 0915:0200
   relocations      : 306 entries at file offset 0x1c
@@ -29,7 +29,7 @@ file size: 27248 bytes (0x6a70)
 2. EXECUTABLE COMPRESSION CHECKS
 ----------------------------------------------------------------------------------------------------
   [      OK      ] Declared size vs file size
-                   header declares 27248 bytes, file is 27248 bytes (no overlay)
+                   header declares 27248 bytes, file is 27248 bytes; no bytes beyond the declared image size
   [    absent    ] LZEXE signature at file offset 0x1C
                    bytes at 0x1C = 04 00 00 00 (b'\x04\x00\x00\x00')
   [    absent    ] PKLITE signature at 0x1E ('PKLITE Copr.')
@@ -41,10 +41,10 @@ file size: 27248 bytes (0x6a70)
   [    plain     ] Entry-point code
                    CS:IP = 0000:001a -> file offset 0x61a, bytes 9a 00 00 86 05 55 8b ec 81 ec 00 00  (far CALL (opcode 9A) into the program image); a packer would start with a decompression stub
   [      OK      ] Relocation table
-                   306 entries at 0x1c, all inside the image
+                   306 entries at 0x1c, all inside the image (packers typically leave 0-2; compiled BASIC programs have dozens to thousands)
   [not compressed] Entropy (bits/byte)
-                   whole file 7.030, header 3.603 (inflated by the relocation table), load module 7.153; 2 KB blocks min 5.12 / max 7.12 (compressed data is ~7.9-8.0)
-  [   present    ] Readable runtime text in the load module
+                   whole file 7.030, header 3.603 (relocation table), load module 7.153; 2 KB blocks min 5.12 / max 7.12 (compressed data is ~7.9-8.0)
+  [   present    ] Readable text in the load module
                    193 ASCII strings incl. the runtime error-message table; a compressed image would hide them
 
   VERDICT: NOT packed: no EXEPACK/PKLITE/LZEXE/DIET/UPX signature, ordinary header and relocation table, plain entry code and no high-entropy payload. This is a normal, uncompressed linked EXE.
@@ -53,9 +53,9 @@ file size: 27248 bytes (0x6a70)
 ----------------------------------------------------------------------------------------------------
   Copyright/licence string: 'Licensed Material - Program Property of IBM' at 0x1016
   Program text: ' C Copyright 1984 by' at 0x5a46 (application copyright, not the runtime)
-  Other runtime/vendor markers searched: absent = BRUN, BRUN10, BRUN20, BRUN30, BASRUN, BC.LIB, BASCOM, BASCOM.LIB, Microsoft, MICROSOFT, MS-DOS, GW-BASIC, BASICA, QuickBASIC, Version, VERSION, Compiler, Copyright (C), (C) 
+  Other runtime/vendor markers searched: absent = BRUN, BASRUN, BC.LIB, BASCOM, Microsoft, MICROSOFT, MS-DOS, GW-BASIC, BASICA, QuickBASIC, Version, VERSION, Compiler, Copyright (C), (C) 
   Embedded version strings: none
-  Linked file-handling runtime: 'Bad record number' / 'Input past end' / device table KYBD SCRN CAS1 COM1-2 LPT1-3 => BASIC runtime with random-access file support (GET/PUT).
+  Device table: KYBD SCRN CAS1 COM1 COM2 LPT1-3 present; 'Bad record number' present => runtime supports random-access files (GET/PUT)
 
   Runtime error-message table: file offsets 0x1c84-0x1ecb, 35 entries (code byte, then text whose last character has bit 7 set):
     0x01c84  error              2  Syntax error
@@ -98,14 +98,14 @@ file size: 27248 bytes (0x6a70)
 
   CONCLUSION
     Compiler/runtime: IBM Personal Computer BASIC Compiler (BASCOM) family. The IBM BASIC runtime is
-    linked into the EXE itself (its error-message table and licence string are inside the file), and
-    the IBM licence string sits at 0x1016. Error messages use bit-7-terminated text, and there are
-    no Microsoft, GW-BASIC/BASICA or QuickBASIC markers.
+    linked into the EXE itself (its error-message table and licence string are inside the file).
+    Error messages use bit-7-terminated text, and there are no Microsoft, GW-BASIC/BASICA or
+    QuickBASIC markers.
     Version: NOT embedded. The runtime contains no version or release string, so the exact release
     (e.g. 1.00 vs 1.10 vs 2.00) cannot be read from the strings. The error table stops at error 72 and
     lacks the DOS 2.x-era path errors (73-76), so it is an early-generation runtime of that family;
     treat anything more precise as a hypothesis until compared with a known compiler build or its
-    BASRUN/library object code.
+    BASRUN/library object code. See exe_comparison.txt for how the four executables relate.
 
 4. ASCII STRINGS (runs of >= 4 bytes in 0x20-0x7E; 193 found)
 ----------------------------------------------------------------------------------------------------
@@ -307,3 +307,43 @@ file size: 27248 bytes (0x6a70)
   0x0069b2    27058    5  PPPSQ
   0x0069b8    27064    4  VWUR
   0x0069f4    27124    4  Z]_^
+
+5. BASIC STRING-LITERAL POOL (decoded constants)
+----------------------------------------------------------------------------------------------------
+  The compiler stores each string constant as [length:u16][data-segment offset:u16][text bytes].
+  Data segment starts at file offset 0x4d40 (paragraph 0x474 of the load module); 32 literals. Unlike section 4 this includes strings shorter than
+  4 bytes, keeps exact lengths and drops the printable length/pointer bytes that section 4 glues to the front.
+
+  file off    ds off  len  text
+  0x005618  0x08d8    2  C=
+  0x00561e  0x08de  157  S2;L32U10R22U10L20U30R30D10L20D10R20D30;BR10;U30R22F4D11G4L13D12NL8;BU19;BR1;U6R8D6L8;BD19;BR24;U30R25D8L15D5R10D6L10D5R15D8NL25;BR10;U30R25D8L15D14R15D8NL25
+  0x0056c0  0x0980  159  S2;BR18;U22L8U8R26D8L8D22NL9;BR18;U30R25F4D10G4L4D1F8D5L8H11U2D12NL8;BU19;BR1;U6R8D6L8;BD18;BR32;H4U27R9D22R12U22R9D27G4NL21;BR15;U30R8F8E8R8D30L8U20G8H8D20NL8
+  0x005764  0x0a24  168  S2;L12U20L14D20L12U50R12D20R14U20R12D50;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19;BR14;U30R10D20R15D10NL25;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19
+  0x005810  0x0ad0  181  S2;BR28;BU8;U12R8F2D8G2L8;BU24;U10R8F2D6G2L8;BL12;BD32;U50R27F6D13G6NL5R2F6D15G6NL28;BR24;U16H13U2R8F8E8R8D2G13D16NL8;BR30;U22L8U8R26D8L8D22NL9;BR18;U30R25D8L15D5R10D6L10D5R15D8NL25
+  0x0058ca  0x0b8a    2  TM
+  0x0058d8  0x0b98   15  C1BD10R40H20G20
+  0x005904  0x0bc4    8  PRESENTS
+  0x005914  0x0bd4   66  S4C2BL81L29H10U40E10R30F10D10L12U4H4L18G4D28F4R18E4U4L5U7R17D16G10
+  0x00595a  0x0c1a   60  S4C2BL6L12U24L28D24L12U40E20R12F20D40BL12BU34L28U2E12R4F12D2
+  0x00599a  0x0c5a   32  S4C2BR22U48L20U12R52D12L20D48L12
+  0x0059be  0x0c7e   59  S4C2BR77R24E15U30H15L24G15D30F15BR4BU12R16E8U20H8L16G8D20F8
+  0x005a12  0x0cd2   16  CLASS  SUBMARINE
+  0x005a26  0x0ce6   28  by Paul Arlton and Ed Dawson
+  0x005a46  0x0d06   20   C Copyright 1984 by
+  0x005a5e  0x0d1e   23  Spectrum HoloByte, Inc.
+  0x005a8e  0x0d4e   16                  
+  0x005aae  0x0d6e   39  C3S4BU13L27U1L47U1L47D1L2D1L1D1R1D1L1F6
+  0x005ada  0x0d9a  179  C3LUL2UL4UL6UL11RL20R5G2E4R4ND6R6ND6R4F4BU3BL24L10UR3DL13UR3DL35UL35UL20U4ERFND4R7DL7BL3L2UR2D4L30UL20U5R32BD5BLU4E2U2L4ND3L4ND3L6R2D3U12LNU10LD12L3U3NR2U11LNU8L2NU7L2FD8R3L10G2D3
+  0x005b92  0x0e52   50  C3BD5L21UL6U5E1R1F1ND4R2D1L2BL3L7U1R7BD5L41UL10U10
+  0x005bd0  0x0e90   28  [1]   NORMAL PLAY  (DEFAULT)
+  0x005bf0  0x0eb0   19  [2]   DEMONSTRATION
+  0x005c08  0x0ec8   32  [3]   HISTORY AND SPECIFICATIONS
+  0x005c2c  0x0eec   10  [4]   EXIT
+  0x005c3a  0x0efa   27  PLEASE ENTER AN ITEM NUMBER
+  0x005c5a  0x0f1a   20  FROM THE MENU ABOVE:
+  0x005c76  0x0f36    4  DEMO
+  0x005c7e  0x0f3e    7  HISTORY
+  0x005c8a  0x0f4a    5  GATO1
+  0x005c94  0x0f54  183  C3S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1
+  0x005d50  0x1010  190  C3L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3
+  0x005e12  0x10d2   41  BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10

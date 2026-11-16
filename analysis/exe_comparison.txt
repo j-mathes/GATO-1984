@@ -1,0 +1,147 @@
+GATO executables - comparison
+====================================================================================================
+
+A. LAYOUT
+----------------------------------------------------------------------------------------------------
+  file            size declared trail    hdr relocs  SS:SP     packed?  IBM string err table  strings  report
+  Gato.exe       27248    27248     0   1536    306  0915:0200  no       0x1016     0x1c84         193  exe_strings.txt
+  Gato1.exe      83975    83975     0  14848   3702  1390:0200  no       0xd9a4     0xe8e3         305  exe_strings_gato1.txt
+  DEMO.EXE       64256    64175    81   9728   2395  1038:0200  no       0x88a8     0x97e7         350  exe_strings_demo.txt
+  History.exe    19072    19039    33    512     72  0492:0200  no       0x364      0x15c4         154  exe_strings_history.txt
+
+B. RUNTIME RELATIONSHIP
+----------------------------------------------------------------------------------------------------
+  Decoded runtime error tables identical across 4 executables: YES (35 entries each)
+  Fraction of 32-byte code windows shared (|A and B| / smaller file's window count):
+                    Gato.exe    Gato1.exe     DEMO.EXE  History.exe
+  Gato.exe            100.0%        23.7%        24.4%        33.5%
+  Gato1.exe            23.7%       100.0%        17.4%        30.5%
+  DEMO.EXE             24.4%        17.4%       100.0%        31.3%
+  History.exe          33.5%        30.5%        31.3%       100.0%
+  (High overlap = the same linked IBM runtime library/modules; it does not show identical programs.)
+
+C. ROLE EVIDENCE (data-file names and screen text found in each executable)
+----------------------------------------------------------------------------------------------------
+  string                             Gato.exe    Gato1.exe     DEMO.EXE  History.exe
+  ORDXX                                     -           1x            -            -
+  COURXX                                    -           1x            -            -
+  MXP                                       -           1x           1x            -
+  OBX                                       -           1x           2x            -
+  DEMORD                                    -            -           1x            -
+  HISTORY                                  2x            -            -           1x
+  LOG1                                      -           1x           1x            -
+  CAPTAIN'S LOG                             -           2x           3x            -
+  PASSWORD?                                 -           1x           1x            -
+  ENTER NEW SUB COORDINATES                 -           1x           1x            -
+  HISTORY AND SPECIFICATIONS               1x            -            -            -
+  NORMAL PLAY                              1x            -            -            -
+  DEMONSTRATION                            1x            -           1x            -
+  Spectrum HoloByte                        1x            -            -            -
+  POUET                                     -           1x            -            -
+  CHAIN                                     -            -            -            -
+  GATO                                     1x            -           3x           1x
+  (counts are occurrences; first offsets are in each exe_strings*.txt)
+
+D. PROGRAM / DATA-FILE NAMES AND CHAIN TARGETS (string literals that name files or programs)
+----------------------------------------------------------------------------------------------------
+  Gato.exe     'DEMO'@0x5c76, 'HISTORY'@0x5c7e, 'GATO1'@0x5c8a
+  Gato1.exe    'LOG1'@0x1318e, 'LOG CLEARED'@0x135ba, "CAPTAIN'S LOG"@0x135da, 'ORDXX'@0x13a54, 'COURXX'@0x13ab4, 'MXP'@0x13b12, 'OBX'@0x13cf2
+  DEMO.EXE     'LOG1'@0xe564, 'LOG CLEARED'@0xe572, "CAPTAIN'S LOG"@0xe592, 'DEMORD'@0xec4e, 'MXP'@0xecea, 'OBX'@0xefe2, 'GATO'@0xefea
+  History.exe  'HISTORY'@0x40e4, 'GATO'@0x4172
+
+E. STRING LITERALS UNIQUE TO EACH EXECUTABLE (decoded literal pool; length >= 6, not present in any other executable)
+----------------------------------------------------------------------------------------------------
+  Gato.exe: 12 of 32 literals
+      0x005904  PRESENTS
+      0x005a12  CLASS  SUBMARINE
+      0x005a26  by Paul Arlton and Ed Dawson
+      0x005a46   C Copyright 1984 by
+      0x005a5e  Spectrum HoloByte, Inc.
+      0x005ada  C3LUL2UL4UL6UL11RL20R5G2E4R4ND6R6ND6R4F4BU3BL24L10UR3DL13UR3DL35UL35UL20U4ERFND4R7DL7BL3L2UR2D4L30UL20U5R32BD5BLU4E2U2L4ND3L4ND3L6R2D3U12LNU10LD12L3U3NR2U11LNU8L2NU7L2FD8R3L10G2D3
+      0x005bd0  [1]   NORMAL PLAY  (DEFAULT)
+      0x005bf0  [2]   DEMONSTRATION
+      0x005c08  [3]   HISTORY AND SPECIFICATIONS
+      0x005c2c  [4]   EXIT
+      0x005c3a  PLEASE ENTER AN ITEM NUMBER
+      0x005c5a  FROM THE MENU ABOVE:
+  Gato1.exe: 10 of 118 literals
+      0x01305e  CONTACT MADE
+      0x013072  MISSION COMPLETED
+      0x0130b0   No more oxygen 
+      0x0130f4  YOU HAVE SUCCESSFULLY 
+      0x01310e  COMPLETED YOUR MISSION
+      0x0136be        (Press any key to continue)
+      0x013ab4  COURXX
+      0x013abe  (Press any key to continue)
+      0x013d12  MBT40O4L64B-
+      0x013d22  MBT100L9B
+  DEMO.EXE: 56 of 155 literals
+      0x00db7e  GATO DEMONSTRATION
+      0x00db94  PRESS FUNCTION KEY 1 (F1) TO EXIT
+      0x00dbba   FUNCTION KEY 2 (F2) TO TURN OFF SOUND
+      0x00dd64  THIS IS YOUR MAIN SCREEN
+      0x00dd80  YOU ARE NOW IN THE THE CONTROL ROOM
+      0x00dda8  YOU MAY CONTROL ALL OPERATIONS
+      0x00ddca  OF THE SUBMARINE FROM HERE
+      0x00ddf0  NOW LET'S LOOK AT SOME NAVIGATION
+      0x00de16  HERE IS THE MAIN CHART (KEY 'C')
+      0x00de3e  NOW WE ARE BACK IN THE CONTROL ROOM
+      0x00de66  LET'S SEE WHAT THE ENEMY LOOKS LIKE
+      0x00dea4    FREIGHTER  
+      0x00deb6   OIL TANKER  
+      0x00dec8    TRANSPORT  
+      0x00deda   PATROL CRAFT
+      0x00deec    DESTROYER  
+      0x00df02  TO SHOOT A SHIP YOU WOULD PRESS 'T' 
+      0x00df2a  TO OPEN THE TORPEDO DOORS AND    
+      0x00df50  THEN F8 TO FIRE
+      0x00df64  REMEMBER PATROL CRAFT AND DESTROYERS
+      0x00df8c  WILL SHOOT AND DROP DEPTH CHARGES
+      0x00dfb2  SO BE CAREFUL
+      0x00dfc4  YOU HAVE TO PAY CLOSE ATTENTION TO
+      0x00dfea  THE DAMAGE REPORT BECAUSE IF AN
+      0x00e00e  AREA IS DAMAGED IT CAN'T BE USED
+      0x00e0d0  NOT MUCH IS HAPPENING HERE
+      0x00e0ee  LETS READ THE CAPTAIN'S LOG (KEY 'L')
+      0x00e47c  THIS IS THE DAMAGE REPORT (KEY 'R')
+      0x00e4a4  THE AFFECTED AREA IS HIGHLIGHTED
+      0x00e4c8  AND RENDERED USELESS - REFER TO THE
+      0x00e4f0  MANUAL FOR REPAIRS BY THE SUBTENDER
+      0x00e68a  THE FIRST GROUP OF SHIPS ARE
+      0x00e6aa  FREIGHTERS THEN OIL TANKERS,
+      0x00e6ca  TRANSPORTS,PATROL BOATS
+      0x00e6e6   AND  DESTROYERS
+      0x00e6fa  ALL OF THE NAMES AND TONNAGES OF
+      0x00e71e  SHIPS SUNK WERE ACTUALLY SUNK OR
+      0x00e742  DESTROYED DURING WORLD WAR II
+      0x00e764  ALSO ALL OF THE DESTROYERS USED IN
+      0x00e78a  THIS PROGRAM WERE SUNK BY GATO
+      0x00e7ac  CLASS SUBMARINES
+      0x00e8b4  THIS IS THE CHART OF YOUR PATROL AREA
+      0x00e8de  YOU ARE THE GREEN DOT IN QUADRANT 5
+      0x00e906  YOUR SUB-TENDER IS IN QUADRANT 7
+      0x00e92a  ENEMY SHIPS ARE RED DOTS 
+      0x00e948  WE CAN GET A CLOSER LOOK AT THE
+      0x00e96c  QUADRANT WE ARE IN BY CHECKING
+      0x00e98e  THE LOCAL QUADRANT MAP (KEY 'Q')
+      0x00ec4e  DEMORD
+      0x00ed48  THIS IS THE MAP FOR QUADRANT 5
+      0x00ed6a  THE DOTTED RED LINE REPRESENTS THE
+      0x00ed90  SHOALS SURROUNDING THE ISLAND
+      0x00edb2  IF YOU ARE ON THE SURFACE THEN YOU
+      0x00edd8  WILL STOP WHEN YOU HIT THE RED LINES
+      0x00ee00  THE DEEPER YOU ARE THE SOONER YOU HIT
+      0x00ee2a  LET'S TAKE A LOOK AT RADAR (F6)
+  History.exe: 3 of 8 literals
+      0x0040f6  PRESS ANY KEY TO CONTINUE
+      0x004122  PRESS 'R' TO REREAD THIS INFORMATION
+      0x00414a  PRESS ANY OTHER KEY TO RETURN
+
+F. NUMERIC DATA TEXT (probable DATA statements: runs of digits, commas and dots, >= 30 bytes)
+----------------------------------------------------------------------------------------------------
+  Gato.exe: none
+  Gato1.exe: 
+      0x013d32  48 values: 19,35,5,.9,170,37,5,.9,208,22,6,1.5,38,80,10,.9,162,75,13,1.5,208,85,5,.9,48,134,5,.9,209,113,5,.9,269,128,6,1.5,95,174,13,1.5,214,168,9,.9,287,174,15,.9
+  DEMO.EXE: 
+      0x00eff2  48 values: 19,35,5,.9,170,37,5,.9,208,22,6,1.5,38,80,10,.9,162,75,13,1.5,208,85,5,.9,48,134,5,.9,209,113,5,.9,269,128,6,1.5,95,174,13,1.5,214,168,9,.9,287,174,15,.9
+  History.exe: none

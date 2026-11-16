@@ -1,0 +1,285 @@
+History.exe analysis - Original\History.exe
+file size: 19072 bytes (0x4a80)   sha256: ae0a6539e327673533f303441f83713c63a46981c8f801816a9f91c1a8ecccba
+====================================================================================================
+
+1. MZ HEADER
+----------------------------------------------------------------------------------------------------
+  +0x00  e_magic     0x5a4d  23117   signature 'MZ'
+  +0x02  e_cblp      0x005f     95   bytes used in last 512-byte page (0 = full)
+  +0x04  e_cp        0x0026     38   512-byte pages in file
+  +0x06  e_crlc      0x0048     72   relocation entries
+  +0x08  e_cparhdr   0x0020     32   header size in 16-byte paragraphs
+  +0x0a  e_minalloc  0x0000      0   min extra paragraphs
+  +0x0c  e_maxalloc  0xffff  65535   max extra paragraphs
+  +0x0e  e_ss        0x0492   1170   initial SS (relative to load segment)
+  +0x10  e_sp        0x0200    512   initial SP
+  +0x12  e_csum      0x549a  21658   checksum (ignored by DOS)
+  +0x14  e_ip        0x001a     26   initial IP
+  +0x16  e_cs        0x0000      0   initial CS (relative to load segment)
+  +0x18  e_lfarlc    0x001c     28   file offset of relocation table
+  +0x1a  e_ovno      0x0000      0   overlay number (0 = main program)
+
+  header size      : 512 bytes (32 paragraphs)
+  declared size    : 19039 bytes   load module: 18527 bytes   trailing bytes: 33
+  entry point      : CS:IP 0000:001a -> file offset 0x21a
+  stack            : SS:SP 0492:0200
+  relocations      : 72 entries at file offset 0x1c
+  extra alloc      : min 0 / max 0xffff paragraphs
+
+2. EXECUTABLE COMPRESSION CHECKS
+----------------------------------------------------------------------------------------------------
+  [   overlay    ] Declared size vs file size
+                   header declares 19039 bytes, file is 19072 bytes; 33 bytes beyond the declared size (file offset 0x4a5f); all 0x00 (padding); first bytes 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  [    absent    ] LZEXE signature at file offset 0x1C
+                   bytes at 0x1C = 04 00 00 00 (b'\x04\x00\x00\x00')
+  [    absent    ] PKLITE signature at 0x1E ('PKLITE Copr.')
+                   bytes at 0x1C-0x23 = 04 00 00 00 06 00 00 00; e_ovno field (PKLITE version/flags) = 0x0000
+  [    absent    ] EXEPACK 'RB' marker in the CS:0 header
+                   checked CS:000E/0010/0012 at file offset 0x200: ['7008', '7008', '7008']
+  [    absent    ] Packer signature strings anywhere in the file
+                   none of: PKLITE, PKLITE/PKWARE, LZEXE 0.91, LZEXE 0.90, LZEXE, EXEPACK, EXEPACK stub message, UPX, DIET, DIET (dlz), TINYPROG, WWPACK, PGMPAK, EXELITE, AINEXE, LHA/LZH data
+  [    plain     ] Entry-point code
+                   CS:IP = 0000:001a -> file offset 0x21a, bytes 9a 00 00 f9 03 55 8b ec 81 ec 00 00  (far CALL (opcode 9A) into the program image); a packer would start with a decompression stub
+  [      OK      ] Relocation table
+                   72 entries at 0x1c, all inside the image (packers typically leave 0-2; compiled BASIC programs have dozens to thousands)
+  [not compressed] Entropy (bits/byte)
+                   whole file 7.020, header 2.623 (relocation table), load module 7.097; 2 KB blocks min -0.00 / max 7.03 (compressed data is ~7.9-8.0)
+  [   present    ] Readable text in the load module
+                   154 ASCII strings incl. the runtime error-message table; a compressed image would hide them
+
+  VERDICT: NOT packed: no EXEPACK/PKLITE/LZEXE/DIET/UPX signature, ordinary header and relocation table, plain entry code and no high-entropy payload. This is a normal, uncompressed linked EXE.
+
+3. BASIC COMPILER / RUNTIME IDENTIFICATION
+----------------------------------------------------------------------------------------------------
+  Copyright/licence string: 'Licensed Material - Program Property of IBM' at 0x364
+  Other runtime/vendor markers searched: absent = BRUN, BASRUN, BC.LIB, BASCOM, Microsoft, MICROSOFT, MS-DOS, GW-BASIC, BASICA, QuickBASIC, Version, VERSION, Compiler, Copyright (C), (C) 
+  Embedded version strings: none
+  Device table: KYBD SCRN CAS1 COM1 COM2 LPT1-3 present; 'Bad record number' present => runtime supports random-access files (GET/PUT)
+
+  Runtime error-message table: file offsets 0x15c4-0x180b, 35 entries (code byte, then text whose last character has bit 7 set):
+    0x015c4  error              2  Syntax error
+    0x015d1  error              3  RETURN without GOSUB
+    0x015e6  error              4  Out of DATA
+    0x015f2  error              5  Illegal function call
+    0x01608  error              6  Overflow
+    0x01611  error              7  Out of memory
+    0x0161f  error              9  Subscript out of range
+    0x01636  error             11  Division by zero
+    0x01647  error             13  Type mismatch
+    0x01655  error             14  Out of string space
+    0x01669  error             16  String formula too complex
+    0x01684  error             19  No RESUME
+    0x0168e  error             20  RESUME without error
+    0x016a3  error             24  Device Timeout
+    0x016b2  error             25  Device Fault
+    0x016bf  error             27  Out of Paper
+    0x016cc  error             50  FIELD overflow
+    0x016db  error             51  Internal error
+    0x016ea  error             52  Bad file number
+    0x016fa  error             53  File not found
+    0x01709  error             54  Bad file mode
+    0x01717  error             55  File already open
+    0x01729  error             57  Device I/O Error
+    0x0173a  error             58  File already exists
+    0x0174e  error             61  Disk full
+    0x01758  error             62  Input past end
+    0x01767  error             63  Bad record number
+    0x01779  error             64  Bad file name
+    0x01787  error             67  Too many files
+    0x01796  error             68  Device Unavailable
+    0x017a9  error             69  Communication buffer overflow
+    0x017c7  error             70  Disk Write Protect
+    0x017da  error             71  Disk not Ready
+    0x017e9  error             72  Disk Media Error
+    0x017fa  error 0xFF (generic)  Unprintable error
+
+  Highest numbered runtime error: 72. Not in the table: 73 Advanced feature, 74 Rename across disks, 75 Path/File access error, 76 Path not found.
+
+  CONCLUSION
+    Compiler/runtime: IBM Personal Computer BASIC Compiler (BASCOM) family. The IBM BASIC runtime is
+    linked into the EXE itself (its error-message table and licence string are inside the file).
+    Error messages use bit-7-terminated text, and there are no Microsoft, GW-BASIC/BASICA or
+    QuickBASIC markers.
+    Version: NOT embedded. The runtime contains no version or release string, so the exact release
+    (e.g. 1.00 vs 1.10 vs 2.00) cannot be read from the strings. The error table stops at error 72 and
+    lacks the DOS 2.x-era path errors (73-76), so it is an early-generation runtime of that family;
+    treat anything more precise as a hypothesis until compared with a known compiler build or its
+    BASRUN/library object code. See exe_comparison.txt for how the four executables relate.
+
+4. ASCII STRINGS (runs of >= 4 bytes in 0x20-0x7E; 154 found)
+----------------------------------------------------------------------------------------------------
+  Offsets are file offsets. A string ending right before a byte with bit 7 set is shown with that
+  byte decoded in brackets (BASIC runtime stores the last character of many messages that way).
+  Tab/control bytes split strings. Length is in bytes.
+
+  offset     decimal  len  text
+  0x000364      868   46  Licensed Material - Program Property of IBMUVW  [+0xCD -> "Licensed Material - Program Property of IBMUVWM"]
+  0x0005d7     1495    6  *Break  [+0xAA -> "*Break*"]
+  0x00077a     1914    4   QSP  [+0xE8 -> " QSPh"]
+  0x00079f     1951    8  tRPSQRVW
+  0x0007ed     2029    6  _^ZY[X  [+0xC3 -> "_^ZY[XC"]
+  0x000819     2073    6  _^ZY[X  [+0xCB -> "_^ZY[XK"]
+  0x00085b     2139    5  u=UVW  [+0xB4 -> "u=UVW4"]
+  0x0008ac     2220    4  RSQP
+  0x000900     2304    4  XY[Z  [+0xC3 -> "XY[ZC"]
+  0x00096e     2414    4  ZXP<
+  0x000aba     2746    4  F;7u
+  0x000ace     2766    4  F;7u
+  0x000aed     2797    4  PSQR  [+0xE8 -> "PSQRh"]
+  0x000b11     2833    4  PSQR  [+0xB9 -> "PSQR9"]
+  0x000b30     2864    4  ZY[X  [+0xCB -> "ZY[XK"]
+  0x000b66     2918    6  PSQRVW
+  0x000b74     2932    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+  0x000b84     2948    6  PSQRVW
+  0x000bb0     2992    4  SQWV
+  0x000bbd     3005    6  ^_Y[C:  [+0xDD -> "^_Y[C:]"]
+  0x000cea     3306    6  PSQRVW  [+0xB6 -> "PSQRVW6"]
+  0x000d16     3350    6  _^ZY[X  [+0xC3 -> "_^ZY[XC"]
+  0x000d9f     3487    6  PSQRVW
+  0x000dad     3501    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+  0x000dbd     3517    6  PSQRVW
+  0x000e9f     3743    5  PQRVW
+  0x000ee8     3816    5  _^ZYX  [+0xCB -> "_^ZYXK"]
+  0x000f66     3942    4  QRVW
+  0x000f82     3970    5  [_^ZY  [+0xCB -> "[_^ZYK"]
+  0x000fc7     4039    6  PSQRVW
+  0x000fd5     4053    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+  0x000fe5     4069    6  PSQRVW
+  0x001010     4112    4  tA:6  [+0xC6 -> "tA:6F"]
+  0x001030     4144    4   s R  [+0xA2 -> " s R""]
+  0x00106e     4206    4  KYBD
+  0x001073     4211    4  SCRN  [+0xFE -> "SCRN~"]
+  0x001078     4216    4  CAS1  [+0xFD -> "CAS1}"]
+  0x00107d     4221    4  COM1  [+0xFC -> "COM1|"]
+  0x001082     4226    4  COM2  [+0xFB -> "COM2{"]
+  0x001087     4231    4  LPT1  [+0xFA -> "LPT1z"]
+  0x00108c     4236    4  LPT2  [+0xF9 -> "LPT2y"]
+  0x001091     4241    4  LPT3  [+0xF8 -> "LPT3x"]
+  0x0010b3     4275    7  "'"6"6"
+  0x0010c3     4291    7  "["["["
+  0x0010d3     4307    7  "\"`"`"  [+0xE8 -> ""\"`"`"h"]
+  0x0011f0     4592    5  [ZYCt
+  0x001212     4626    5  _[OOu  [+0xF5 -> "_[OOuu"]
+  0x001369     4969    4  ^_Z2  [+0xC0 -> "^_Z2@"]
+  0x00139d     5021    5  ^^^_Z  [+0xC3 -> "^^^_ZC"]
+  0x001442     5186    4  u;RS  [+0xBB -> "u;RS;"]
+  0x001479     5241    5  [#XZ[  [+0xCB -> "[#XZ[K"]
+  0x001486     5254    5  PQRVW
+  0x001497     5271    4  t?Jy
+  0x0014b6     5302    5  u QVW
+  0x0014bf     5311    4  _^Yu  [+0xEE -> "_^Yun"]
+  0x0014c6     5318    5  _^YZX
+  0x00153c     5436    6  t>|AQP
+  0x0015c5     5573   11  Syntax erro  [+0xF2 -> "Syntax error"]  <error table>
+  0x0015d2     5586   19  RETURN without GOSU  [+0xC2 -> "RETURN without GOSUB"]  <error table>
+  0x0015e7     5607   10  Out of DAT  [+0xC1 -> "Out of DATA"]  <error table>
+  0x0015f3     5619   20  Illegal function cal  [+0xEC -> "Illegal function call"]  <error table>
+  0x001609     5641    7  Overflo  [+0xF7 -> "Overflow"]  <error table>
+  0x001612     5650   12  Out of memor  [+0xF9 -> "Out of memory"]  <error table>
+  0x001620     5664   21  Subscript out of rang  [+0xE5 -> "Subscript out of range"]  <error table>
+  0x001637     5687   15  Division by zer  [+0xEF -> "Division by zero"]  <error table>
+  0x001648     5704   12  Type mismatc  [+0xE8 -> "Type mismatch"]  <error table>
+  0x001656     5718   18  Out of string spac  [+0xE5 -> "Out of string space"]  <error table>
+  0x00166a     5738   25  String formula too comple  [+0xF8 -> "String formula too complex"]  <error table>
+  0x001685     5765    8  No RESUM  [+0xC5 -> "No RESUME"]  <error table>
+  0x00168f     5775   19  RESUME without erro  [+0xF2 -> "RESUME without error"]  <error table>
+  0x0016a4     5796   13  Device Timeou  [+0xF4 -> "Device Timeout"]  <error table>
+  0x0016b3     5811   11  Device Faul  [+0xF4 -> "Device Fault"]  <error table>
+  0x0016c0     5824   11  Out of Pape  [+0xF2 -> "Out of Paper"]  <error table>
+  0x0016cc     5836   14  2FIELD overflo  [+0xF7 -> "2FIELD overflow"]  <error table>
+  0x0016db     5851   14  3Internal erro  [+0xF2 -> "3Internal error"]  <error table>
+  0x0016ea     5866   15  4Bad file numbe  [+0xF2 -> "4Bad file number"]  <error table>
+  0x0016fa     5882   14  5File not foun  [+0xE4 -> "5File not found"]  <error table>
+  0x001709     5897   13  6Bad file mod  [+0xE5 -> "6Bad file mode"]  <error table>
+  0x001717     5911   17  7File already ope  [+0xEE -> "7File already open"]  <error table>
+  0x001729     5929   16  9Device I/O Erro  [+0xF2 -> "9Device I/O Error"]  <error table>
+  0x00173a     5946   19  :File already exist  [+0xF3 -> ":File already exists"]  <error table>
+  0x00174e     5966    9  =Disk ful  [+0xEC -> "=Disk full"]  <error table>
+  0x001758     5976   14  >Input past en  [+0xE4 -> ">Input past end"]  <error table>
+  0x001767     5991   17  ?Bad record numbe  [+0xF2 -> "?Bad record number"]  <error table>
+  0x001779     6009   13  @Bad file nam  [+0xE5 -> "@Bad file name"]  <error table>
+  0x001787     6023   14  CToo many file  [+0xF3 -> "CToo many files"]  <error table>
+  0x001796     6038   18  DDevice Unavailabl  [+0xE5 -> "DDevice Unavailable"]  <error table>
+  0x0017a9     6057   29  ECommunication buffer overflo  [+0xF7 -> "ECommunication buffer overflow"]  <error table>
+  0x0017c7     6087   18  FDisk Write Protec  [+0xF4 -> "FDisk Write Protect"]  <error table>
+  0x0017da     6106   14  GDisk not Read  [+0xF9 -> "GDisk not Ready"]  <error table>
+  0x0017e9     6121   16  HDisk Media Erro  [+0xF2 -> "HDisk Media Error"]  <error table>
+  0x0017fb     6139   16  Unprintable erro  [+0xF2 -> "Unprintable error"]  <error table>
+  0x001a85     6789    8   in line  [+0xA0 -> " in line "]
+  0x001a8e     6798    4  ]XZU  [+0xE8 -> "]XZUh"]
+  0x001a9e     6814   11   at address  [+0xA0 -> " at address "]
+  0x001aaa     6826    4  ]_ZU  [+0xE8 -> "]_ZUh"]
+  0x001b1b     6939   30  Internal Error - No Line Numbe  [+0xF2 -> "Internal Error - No Line Number"]
+  0x001b8a     7050    5  _^[VW
+  0x001c61     7265    4  w9WS  [+0xE8 -> "w9WSh"]
+  0x001d29     7465   17  Error in EXE file
+  0x001d95     7573    4  "t%<
+  0x001dd5     7637    4  < u'  [+0xE8 -> "< u'h"]
+  0x001ddc     7644    5  r"< t  [+0xF7 -> "r"< tw"]
+  0x001f7c     8060    4  QRS3  [+0xC9 -> "QRS3I"]
+  0x001fb7     8119    4  QRS3  [+0xC9 -> "QRS3I"]
+  0x0022f7     8951    4  t5H;  [+0xC3 -> "t5H;C"]
+  0x00236c     9068    4  PSVW  [+0xB8 -> "PSVW8"]
+  0x00238d     9101    4  u)@;  [+0xF7 -> "u)@;w"]
+  0x0023b3     9139    4  _^[X  [+0xC3 -> "_^[XC"]
+  0x0023be     9150   11   during G.C  [+0xAE -> " during G.C."]
+  0x0023d6     9174   36  Internal Error - String Space Corrup  [+0xF4 -> "Internal Error - String Space Corrupt"]
+  0x002405     9221    4  t$VS  [+0xE8 -> "t$VSh"]
+  0x0024bc     9404    7  PQRVWQS
+  0x0024db     9435    5  _^ZYX  [+0xC3 -> "_^ZYXC"]
+  0x0025c5     9669    4  QRS3  [+0xC9 -> "QRS3I"]
+  0x002838    10296    5  PQRWS  [+0xBE -> "PQRWS>"]
+  0x002872    10354    5  [_ZYX  [+0xC3 -> "[_ZYXC"]
+  0x002aed    10989    4  GJx1  [+0xF9 -> "GJx1y"]
+  0x002e2e    11822    4  8\*u
+  0x002ea0    11936    5  \)*\*  [+0xFE -> "\)*\*~"]
+  0x0030d7    12503    4  PQRS
+  0x00310a    12554    4  [ZYX  [+0xC3 -> "[ZYXC"]
+  0x003110    12560    4  D'QW  [+0xB9 -> "D'QW9"]
+  0x0031d9    12761    4  VWFG  [+0xB9 -> "VWFG9"]
+  0x003366    13158    7  UVWPQRS
+  0x003371    13169    7  [ZYX_^]  [+0xCB -> "[ZYX_^]K"]
+  0x0033e7    13287    5  t8<,t  [+0xAB -> "t8<,t+"]
+  0x0033f4    13300   15  ?Redo from star  [+0xF4 -> "?Redo from start"]
+  0x003433    13363    7  Overflo  [+0xF7 -> "Overflow"]
+  0x0034b9    13497    6  PQRVWU  [+0xE8 -> "PQRVWUh"]
+  0x0034c8    13512    6  ]_^ZYX
+  0x00363d    13885    4  r;t$
+  0x0039c9    14793    4  tHr#
+  0x003a7a    14970    5  v|Nty
+  0x003edc    16092   15  <%t,<#t(<!t$<Dt
+  0x003fe8    16360    5  PWUSR  [+0xD1 -> "PWUSRQ"]
+  0x0040e4    16612    7  HISTORY
+  0x0040f6    16630   25  PRESS ANY KEY TO CONTINUE
+  0x004118    16664    7        $
+  0x004122    16674   36  PRESS 'R' TO REREAD THIS INFORMATION
+  0x00414a    16714   29  PRESS ANY OTHER KEY TO RETURN
+  0x004172    16754    4  GATO
+  0x0042ff    17151    4  ]xEc
+  0x004419    17433   82      !!!"""####$$$%%%&&&&'''((())))***+++,,,,---...////0001112222333444555566677788
+  0x00449a    17562    5  w-;uD  [+0xCD -> "w-;uDM"]
+  0x0044a9    17577    4  mA4-  [+0xF7 -> "mA4-w"]
+  0x004516    17686    4  6A_p
+  0x004522    17698    4  +fCz  [+0xE5 -> "+fCze"]
+  0x00452a    17706    4  Vijl  [+0xAF -> "Vijl/"]
+  0x0045ed    17901    4  @v:k
+  0x004626    17958    4  @aQY
+  0x004656    18006    5  E@|o|  [+0xE7 -> "E@|o|g"]
+  0x0046cf    18127    4  b/5`
+  0x004724    18212   13  t'X'V'm'b'*.*
+
+5. BASIC STRING-LITERAL POOL (decoded constants)
+----------------------------------------------------------------------------------------------------
+  The compiler stores each string constant as [length:u16][data-segment offset:u16][text bytes].
+  Data segment starts at file offset 0x3860 (paragraph 0x366 of the load module); 8 literals. Unlike section 4 this includes strings shorter than
+  4 bytes, keeps exact lengths and drops the printable length/pointer bytes that section 4 glues to the front.
+
+  file off    ds off  len  text
+  0x0040e4  0x0884    7  HISTORY
+  0x0040f0  0x0890    1  *
+  0x0040f6  0x0896   25  PRESS ANY KEY TO CONTINUE
+  0x004118  0x08b8    6        
+  0x004122  0x08c2   36  PRESS 'R' TO REREAD THIS INFORMATION
+  0x00414a  0x08ea   29  PRESS ANY OTHER KEY TO RETURN
+  0x00416c  0x090c    1  R
+  0x004172  0x0912    4  GATO
