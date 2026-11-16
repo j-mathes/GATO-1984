@@ -52,10 +52,33 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 | Any key | Skips the Morse order broadcast |
 | Esc | Quit to the launcher |
 | V | Display mode |
+| W | Wake trails on/off: persistent track dots on the radar, chart and quadrant map (the original's behaviour, default) or clean redraws. Remembered in `localStorage` (`gato.trails`) |
 
 The launcher menu is `1` play, `2` demo, `3` history, `4` exit.
 
 The log, damage report and GAME CONTROL pause the world; radar, chart and quadrant map do not.
+
+### Wake trails
+
+The original plots the boat and ship positions with `PSET` and never erases them while a track screen is shown, so dots build up on the chart, quadrant map and radar. The remake keeps a small per-screen position buffer (`src/render/trails.ts`), records one dot per simulation step, and empties it whenever the screen is entered again. The radar sweep line and the island blip are not recorded. Demo screens never use trails.
+
+## Pixel-accuracy verification
+
+The control room, damage report, radar, chart, quadrant map, captain's log and GAME CONTROL are drawn from `public/assets/cockpit_layouts.json`, replayed from GATO1's p-code. They were compared with the real captures in `analysis/reference_screenshots/` (`python analysis/verify_cockpit_layouts.py` from the repository root, needs Pillow):
+
+| Screen | Differing pixels | What remains |
+| --- | --- | --- |
+| Damage report | 0 of 3489 | - |
+| Damage report, compartments 2 and 6 damaged | 0 of 3789 | - |
+| Captain's log (flag) | 0 of 1025 | - |
+| Quadrant map frame and ticks | 0 of 1116 | island and tracks are dynamic |
+| Control-room panel, live remake render vs capture | 0 of 3790 | text glyphs only |
+| Chart | 277 of 60846 | un-erased tracks, now reproduced with W |
+| Radar | 130 of 3969 | sweep line and tracks |
+
+The script's static-layer comparison of the control room reports 0 differing of 261 compared pixels (it only compares the fixed parts); the live-render figure above covers the needles and values as well. Text is drawn with the remake's own font on the original `LOCATE` cells because the BIOS font is not in the executables, and the marker and arrow bitmaps of the control room come from a screenshot.
+
+Test coverage (`src/app/web.test.ts`): every mission screen, GAME CONTROL and the demo's screens are asserted to blit their layer from `cockpit_layouts.json` (and to fall back only when it is absent); the loader is tested with a stubbed `fetch`. Orders and History are text screens that never had a bitmap layout in the original, so they are tested to render without it.
 
 ## Layout
 

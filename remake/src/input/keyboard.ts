@@ -8,6 +8,8 @@ export type InputAction =
   | { type: "screen"; screen: PlayScreen }
   /** M: radio room (0x0d13c -> 0x0ba3d): reports heavy damage, or (remake) re-reads the orders, then returns to the control room. */
   | { type: "radioRoom" }
+  /** W: persistent track dots on the radar, chart and quadrant map (the original's behaviour) or clean redraws. */
+  | { type: "toggleTrails" }
   /** Z on the chart: PASSWORD? prompt of the hidden coordinate command (0x0b4d4). */
   | { type: "debugPrompt" }
   /** ESC: the original ends the program (rt_1049 + rt_19da at 0x0d17e); the remake returns to the launcher. */
@@ -32,6 +34,7 @@ export interface KeyLike {
  *   D / E        diesel / electric                               F P A S          scope facing
  *   C / Q / L / R / M   chart, quadrant map, captain's log, damage report, radio room (then the control room)
  *   Tab          GAME CONTROL                                    Z (on chart)     hidden coordinate command
+ *   W            track dots on radar, chart and quadrant map on/off
  */
 export function translatePlayKey(e: KeyLike): InputAction | null {
   if (e.ctrlKey || e.altKey || e.metaKey) return null;
@@ -100,6 +103,8 @@ export function translatePlayKey(e: KeyLike): InputAction | null {
       return { type: "radioRoom" };
     case "Z":
       return { type: "debugPrompt" };
+    case "W":
+      return { type: "toggleTrails" };
     default:
       return null;
   }

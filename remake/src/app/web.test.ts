@@ -16,6 +16,8 @@ import { drawLauncherMenu, drawTitle } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
 import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
 import type { PlayView } from "../render/playScreens.js";
+import type { PlayScreen as PlayScreenName } from "../input/keyboard.js";
+import { TrailBuffer } from "../render/trails.js";
 import { TitleArt, frameToRgba, parseTitleArt } from "../render/titleArt.js";
 
 const root = new URL("../../", import.meta.url);
@@ -566,4 +568,228 @@ describe("cockpit layouts extracted from GATO1.EXE", () => {
     drawDamageLayout(g, view(sim), L);
     expect(calls.filter(([n]) => n === "text").map(([, a]) => a[2])).toEqual(expect.arrayContaining(["CONTROL RM", "RADIO RM", "CONNING TOWER"]));
   });
+});
+
+describe("every screen draws from the extracted layouts", () => {
+  const canvasFactory = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+  const layouts = (): CockpitLayouts => new CockpitLayouts(parseCockpitLayouts(read("public/assets/cockpit_layouts.json")), canvasFactory());
+  type Call = [string, unknown[]];
+
+  function makeApp(cockpit: CockpitLayouts | null, storage: { getItem(k: string): string | null; setItem(k: string, v: string): void } | null = null): { app: App; calls: Call[]; sim: () => Simulation } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    let seed = 0.3;
+    const app = new App(g, data, null, new SoundEngine(() => ctx), storage, () => (seed = (seed * 9301 + 0.49297) % 1), null, cockpit);
+    return { app, calls, sim: () => (app as unknown as { sim: Simulation }).sim };
+  }
+  const press = (app: App, ...keys: string[]) => keys.forEach((key) => app.keydown({ key }));
+  const startMission = (app: App): void => {
+    press(app, "x");
+    app.startMission(1, 1);
+    press(app, "x");
+  };
+  const images = (calls: Call[]): unknown[] => calls.filter(([n]) => n === "image").map(([, a]) => a[0]);
+
+  const SCREENS: [PlayScreenName, ScreenName][] = [
+    ["control", "control_room"],
+    ["radar", "radar"],
+    ["chart", "chart"],
+    ["quadrant", "quadrant_map"],
+    ["log", "captains_log"],
+    ["damage", "damage_report"],
+  ];
+
+  it.each(SCREENS)("mission screen %s blits the %s layer and never the legacy drawing", (screen, name) => {
+    const L = layouts();
+    const { app, calls } = makeApp(L);
+    startMission(app);
+    app.screen = screen;
+    calls.length = 0;
+    app.frame(0);
+    expect(images(calls)).toContain(L.image(name));
+  });
+
+  it("without the layouts the same screens fall back, so the checks above really discriminate", () => {
+    const L = layouts();
+    const { app, calls } = makeApp(null);
+    startMission(app);
+    for (const [screen] of SCREENS) {
+      app.screen = screen;
+      calls.length = 0;
+      app.frame(0);
+      expect(images(calls).some((i) => (SCREEN_NAMES as readonly string[]).some((n) => i === L.image(n as ScreenName)))).toBe(false);
+    }
+  });
+
+  it("GAME CONTROL uses the grey layout background and the original title cell", () => {
+    const { app, calls } = makeApp(layouts());
+    startMission(app);
+    press(app, "Tab");
+    expect(app.screen).toBe("gameControl");
+    calls.length = 0;
+    app.frame(0);
+    expect(calls).toContainEqual(["clear", ["#555555"]]);
+    expect(calls.find(([n, a]) => n === "text" && a[2] === "GAME CONTROL")?.[1].slice(0, 2)).toEqual([15, 2]);
+  });
+
+  it("the demo draws chart, radar, quadrant map, damage report and captain's log from the layouts too", () => {
+    const L = layouts();
+    const { app, calls } = makeApp(L);
+    press(app, "x", "2");
+    expect(app.mode).toBe("demo");
+    const demo = (app as unknown as { demo: { screen: string } }).demo;
+    const expected: [string, ScreenName][] = [
+      ["chart", "chart"],
+      ["radar", "radar"],
+      ["quadrantMap", "quadrant_map"],
+      ["damageReport", "damage_report"],
+      ["captainsLog", "captains_log"],
+      ["periscope", "control_room"],
+    ];
+    let t = 0;
+    for (const [screen, name] of expected) {
+      demo.screen = screen;
+      calls.length = 0;
+      t += 100;
+      app.frame(t);
+      expect(images(calls), screen).toContain(L.image(name));
+    }
+    demo.screen = "gameControl";
+    calls.length = 0;
+    app.frame(t + 100);
+    expect(calls).toContainEqual(["clear", ["#555555"]]);
+  });
+
+  it("Orders and History are text screens: the original has no bitmap layout for them, so they draw without cockpit_layouts.json", () => {
+    const L = layouts();
+    const { app, calls } = makeApp(L);
+    press(app, "x", "1");
+    expect(app.mode).toBe("orders");
+    calls.length = 0;
+    app.frame(0);
+    expect(calls.some(([n]) => n === "text")).toBe(true);
+    expect(images(calls).some((i) => (SCREEN_NAMES as readonly string[]).some((n) => i === L.image(n as ScreenName)))).toBe(false);
+    press(app, "x");
+    expect(app.mode).toBe("play");
+    const history = makeApp(L);
+    press(history.app, "x", "3");
+    expect(history.app.mode).toBe("history");
+    history.calls.length = 0;
+    history.app.frame(0);
+    expect(history.calls.some(([n]) => n === "text80")).toBe(true);
+    expect(images(history.calls).some((i) => (SCREEN_NAMES as readonly string[]).some((n) => i === L.image(n as ScreenName)))).toBe(false);
+  });
+
+  it("CockpitLayouts.load fetches and validates the asset, and rejects a failed request", async () => {
+    const doc = read("public/assets/cockpit_layouts.json");
+    const original = globalThis.fetch;
+    try {
+      globalThis.fetch = (async () => ({ ok: true, status: 200, json: async () => doc })) as unknown as typeof fetch;
+      const L = await CockpitLayouts.load("x.json", canvasFactory());
+      expect(L.palette("control_room")[0]).toBe("#555555");
+      globalThis.fetch = (async () => ({ ok: false, status: 404, json: async () => ({}) })) as unknown as typeof fetch;
+      await expect(CockpitLayouts.load("x.json", canvasFactory())).rejects.toThrow(/404/);
+    } finally {
+      globalThis.fetch = original;
+    }
+  });
+});
+
+describe("persistent wake trails (key W)", () => {
+  it("TrailBuffer remembers dots only while recording, dedupes, clips, caps and clears", () => {
+    const t = new TrailBuffer(10);
+    t.mark(5, 5, 2, 2, 3);
+    expect(t.size).toBe(0);
+    t.recording = true;
+    t.mark(5, 5, 2, 2, 3);
+    t.mark(5, 5, 2, 2, 3);
+    expect(t.size).toBe(4);
+    t.mark(-1, -1, 2, 2, 1); // only (0,0) is inside
+    t.mark(319, 199, 3, 3, 1); // only (319,199)
+    expect(t.size).toBe(6);
+    t.mark(100, 100, 10, 10, 2);
+    expect(t.size).toBe(10);
+    const rects: unknown[][] = [];
+    t.draw({ rect: (...a: unknown[]) => rects.push(a) } as unknown as Gfx, ["#000", "#111", "#222", "#333"]);
+    expect(rects).toHaveLength(10);
+    expect(rects).toContainEqual([5, 5, 1, 1, "#333"]);
+    t.clear();
+    expect(t.size).toBe(0);
+  });
+
+  function run(trails: boolean, screen: PlayScreenName): number {
+    const { ctx } = fakeAudio();
+    const calls: [string, unknown[]][] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const canvases = () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+    const L = new CockpitLayouts(parseCockpitLayouts(read("public/assets/cockpit_layouts.json")), () => canvases());
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.5, null, L);
+    app.keydown({ key: "x" });
+    app.startMission(1, 1);
+    app.keydown({ key: "x" });
+    const sim = (app as unknown as { sim: Simulation }).sim;
+    app.setTrails(trails);
+    app.screen = screen;
+    (app as unknown as { setScreen(s: PlayScreenName): void }).setScreen(screen);
+    let t = 0;
+    for (let i = 0; i < 8; i += 1) {
+      // sail next to a ship so the radar has a blip, and move so that every frame leaves a new dot
+      const ship = sim.vessels.find((s) => s.slot < 9 && s.slot >= 2 && s.typeCode !== 0 && !s.sunk);
+      sim.sub.x = (ship?.x ?? 0) - 300 - 100 * i;
+      sim.sub.y = (ship?.y ?? 0) - 200;
+      sim.sub.depth = 0;
+      t += 100;
+      app.frame(t);
+    }
+    calls.length = 0;
+    app.frame(t + 1); // same tick: draws the remembered dots without adding any
+    return calls.filter(([n]) => n === "rect").length;
+  }
+
+  it.each(["chart", "quadrant", "radar"] as const)("%s: tracks build up with W on and are clean with W off", (screen) => {
+    expect(run(true, screen)).toBeGreaterThan(run(false, screen));
+  });
+
+  it("W toggles and remembers the choice; the default is the original's persistent tracks", () => {
+    const store = new Map<string, string>();
+    const storage = { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => void store.set(k, v) };
+    const first = makeAppWith(storage);
+    expect(first.trails).toBe(true);
+    first.keydown({ key: "x" });
+    first.keydown({ key: "w" });
+    expect(first.trails).toBe(false);
+    expect(makeAppWith(storage).trails).toBe(false);
+    first.keydown({ key: "W" });
+    expect(first.trails).toBe(true);
+    expect(translatePlayKey({ key: "w" })).toEqual({ type: "toggleTrails" });
+  });
+
+  function makeAppWith(storage: { getItem(k: string): string | null; setItem(k: string, v: string): void }): App {
+    const { ctx } = fakeAudio();
+    const g = new Proxy({}, { get: () => () => undefined }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), storage);
+    app.keydown({ key: "x" });
+    app.startMission(1, 1);
+    app.keydown({ key: "x" });
+    return app;
+  }
 });

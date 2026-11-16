@@ -2,6 +2,7 @@ import { COMPARTMENT, ENGINE, SLOT, compassDegrees, quadrantOf, scopeUsable } fr
 import type { CockpitLayouts, ScreenName } from "./cockpitLayouts.js";
 import { LOGICAL_HEIGHT, LOGICAL_WIDTH, Gfx } from "./gfx.js";
 import { drawScopeContacts, type PlayView } from "./playScreens.js";
+import type { TrailBuffer } from "./trails.js";
 
 /**
  * Screens drawn from the layouts extracted out of GATO1.EXE (analysis/export_cockpit_layouts.py): the static picture of each screen is
@@ -165,7 +166,13 @@ export function drawDamageLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
 // Radar (0x09ce2-0x0a2df)
 // --------------------------------------------------------------------------------------------------------------------
 
-export function drawRadarLayout(g: Gfx, v: PlayView, L: CockpitLayouts, contacts: { relative: number; distance: number; slot: number }[]): void {
+/** A dot on a track screen: drawn now and, while the buffer is recording, remembered as a persistent track dot. */
+function dot(g: Gfx, trail: TrailBuffer | undefined, pal: readonly string[], x: number, y: number, w: number, h: number, index: number): void {
+  g.rect(x, y, w, h, pal[index] as string);
+  trail?.mark(x, y, w, h, index);
+}
+
+export function drawRadarLayout(g: Gfx, v: PlayView, L: CockpitLayouts, contacts: { relative: number; distance: number; slot: number }[], trail?: TrailBuffer): void {
   const { sim, snap } = v;
   const pal = blit(g, L, "radar");
   g.text(32, 5, String(compassDegrees(snap.sub.heading)).padStart(3, "0"), pal[3] as string);
@@ -173,6 +180,7 @@ export function drawRadarLayout(g: Gfx, v: PlayView, L: CockpitLayouts, contacts
   g.text(32, 15, pad(Math.trunc(sim.sub.depth), 3), pal[3] as string);
   g.text(34, 21, String(sim.sub.torpedoes), pal[3] as string);
   if (sim.sub.depth > 45) return; // the sweep and the blips are only drawn at periscope depth
+  trail?.draw(g, pal);
   const a = ((v.timeMs / 1000) * 1.2) % (Math.PI * 2);
   drawLinePx(g, 111, 100, Math.round(111 + Math.cos(a) * 99), Math.round(100 + Math.sin(a) * 89), pal[2] as string);
   for (const c of contacts) {
@@ -182,7 +190,7 @@ export function drawRadarLayout(g: Gfx, v: PlayView, L: CockpitLayouts, contacts
     if (c.slot === SLOT.island) {
       const r = 3 + 1200 / Math.max(c.distance, 1);
       g.ellipse(x, y, r, r * 0.9, pal[2] as string);
-    } else g.rect(x - 1, y - 1, 2, 2, pal[2] as string);
+    } else dot(g, trail, pal, x - 1, y - 1, 2, 2, 2);
   }
 }
 
@@ -190,24 +198,26 @@ export function drawRadarLayout(g: Gfx, v: PlayView, L: CockpitLayouts, contacts
 // Chart (0x0b169-0x0b4a3), quadrant map (0x0c7d8-0x0cd0c)
 // --------------------------------------------------------------------------------------------------------------------
 
-export function drawChartLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
+export function drawChartLayout(g: Gfx, v: PlayView, L: CockpitLayouts, trail?: TrailBuffer): void {
   const { sim, snap, settings } = v;
   const pal = blit(g, L, "chart");
+  trail?.draw(g, pal);
   const px = (x: number): number => Math.round(x * 0.01252);
   const py = (y: number): number => Math.round(196 - y * 0.009650499);
   if (settings.difficulty <= 2) {
     for (const s of snap.vessels) {
       const vessel = sim.vessels[s.slot];
       if (!vessel || s.slot === SLOT.island || vessel.sunk) continue;
-      g.rect(px(s.x) - 1, py(s.y) - 1, 2, 2, (s.slot === SLOT.tender ? pal[0] : pal[2]) as string);
+      dot(g, trail, pal, px(s.x) - 1, py(s.y) - 1, 2, 2, s.slot === SLOT.tender ? 0 : 2);
     }
   }
-  g.rect(px(snap.sub.x) - 1, py(snap.sub.y) - 1, 2, 2, pal[0] as string);
+  dot(g, trail, pal, px(snap.sub.x) - 1, py(snap.sub.y) - 1, 2, 2, 0);
 }
 
-export function drawQuadrantLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
+export function drawQuadrantLayout(g: Gfx, v: PlayView, L: CockpitLayouts, trail?: TrailBuffer): void {
   const { sim, snap, settings } = v;
   const pal = blit(g, L, "quadrant_map");
+  trail?.draw(g, pal);
   const q = sim.currentQuadrant;
   const px = (x: number): number => (x % 5000) * 0.0638;
   const py = (y: number): number => 199 - (y % 5000) * 0.0398;
@@ -227,10 +237,10 @@ export function drawQuadrantLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void
     for (const s of snap.vessels) {
       const vessel = sim.vessels[s.slot];
       if (!vessel || s.slot === SLOT.island || vessel.sunk || quadrantOf(s.x, s.y) !== q) continue;
-      g.rect(Math.round(px(s.x)) - 1, Math.round(py(s.y)) - 1, 2, 2, pal[2] as string);
+      dot(g, trail, pal, Math.round(px(s.x)) - 1, Math.round(py(s.y)) - 1, 2, 2, 2);
     }
   }
-  g.rect(Math.round(px(snap.sub.x)) - 1, Math.round(py(snap.sub.y)) - 1, 2, 2, pal[1] as string);
+  dot(g, trail, pal, Math.round(px(snap.sub.x)) - 1, Math.round(py(snap.sub.y)) - 1, 2, 2, 1);
 }
 
 // --------------------------------------------------------------------------------------------------------------------

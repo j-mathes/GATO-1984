@@ -50,6 +50,7 @@ import {
 import type { SpriteLibrary } from "../render/sprites.js";
 import type { TitleArt } from "../render/titleArt.js";
 import type { CockpitLayouts } from "../render/cockpitLayouts.js";
+import { createTrails } from "../render/trails.js";
 import {
   drawChartLayout,
   drawControlRoomLayout,
@@ -78,6 +79,7 @@ export interface AppData {
 export type AppMode = "title" | "menu" | "orders" | "play" | "demo" | "history";
 
 export const TICKS_PER_SECOND = 10;
+const TRAILS_KEY = "gato.trails";
 
 const todayStamp = (): string => {
   const d = new Date();
@@ -113,6 +115,10 @@ export class App {
   private currentOrders: OrdersJson | null = null;
   /** Radio/status messages of the original (core/radio.ts), shown over the control room while the mission runs. */
   readonly radio = new RadioInbox();
+  private trailsOn = true;
+  private readonly storage: StorageLike | null;
+  private readonly trailBuffers = createTrails();
+  private lastTrailTick = -1;
 
   constructor(
     private readonly g: Gfx,
@@ -124,9 +130,26 @@ export class App {
     private readonly titleArt: TitleArt | null = null,
     private readonly cockpit: CockpitLayouts | null = null,
   ) {
+    this.storage = storage;
+    this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
     this.sound.enabled = this.settings.sound;
+  }
+
+  /** Persistent track dots on the radar, chart and quadrant map (authentic) or clean redraws; key W, remembered in storage. */
+  get trails(): boolean {
+    return this.trailsOn;
+  }
+
+  setTrails(on: boolean): void {
+    this.trailsOn = on;
+    for (const b of Object.values(this.trailBuffers)) b.clear();
+    try {
+      this.storage?.setItem(TRAILS_KEY, on ? "1" : "0");
+    } catch {
+      // storage may be unavailable (private mode)
+    }
   }
 
   // ---------------------------------------------------------------------------------------------------------------
@@ -249,6 +272,9 @@ export class App {
       case "radioRoom":
         this.radioRoom();
         return;
+      case "toggleTrails":
+        this.setTrails(!this.trails);
+        return;
       case "debugPrompt":
         // Hidden command (0x0b4d4): only on the chart and only while no enemy is alerted (ds:0x21aa = 0).
         if (this.screen === "chart" && sim.sub.alertTimer === 0) this.prompt = { kind: "password", editor: new LineEditor(12) };
@@ -261,6 +287,7 @@ export class App {
 
   private setScreen(screen: PlayScreen): void {
     this.screen = screen;
+    if (screen === "radar" || screen === "chart" || screen === "quadrant") this.trailBuffers[screen].clear(); // a track screen starts empty
     this.sim?.setInControlRoom(screen === "control");
     if (screen === "gameControl") this.difficultyEditor = null;
     this.runner?.resetClock();
@@ -547,22 +574,42 @@ export class App {
   private draw(timeMs: number, sim: Simulation, snap: Snapshot): void {
     const g = this.g;
     const view: PlayView = { sim, snap, settings: this.settings, sprites: this.sprites, log: this.log, timeMs };
+    // tracks are only remembered once per simulation step (the original plots once per pass of its loop)
+    const record = sim.tick !== this.lastTrailTick;
+    this.lastTrailTick = sim.tick;
+    for (const b of Object.values(this.trailBuffers)) b.recording = this.trailsOn && record;
+    this.drawPlayScreen(this.screen, view, this.trailsOn, this.difficultyEditor);
+    if (this.prompt) {
+      drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
+    }
+    if (sim.status !== "running") drawEnd(g, sim.status, sim.completedBy);
+    else {
+      const message = this.radio.current;
+      if (message) drawRadioMessage(g, message);
+    }
+  }
+
+  /** One mission screen, from the extracted GATO1 layouts when they are loaded, otherwise the approximated drawing. Shared with the demo. */
+  private drawPlayScreen(screen: PlayScreen, view: PlayView, trails: boolean, editor: LineEditor | null): void {
+    const g = this.g;
     const L = this.cockpit;
-    switch (this.screen) {
+    const trail = trails && (screen === "radar" || screen === "chart" || screen === "quadrant") ? this.trailBuffers[screen] : undefined;
+    const prompt = editor ? "NEW DIFFICULTY LEVEL" : null;
+    switch (screen) {
       case "control":
         if (L) drawControlRoomLayout(g, view, L);
         else drawControlRoom(g, view);
         break;
       case "radar":
-        if (L) drawRadarLayout(g, view, L, liveContacts(view));
+        if (L) drawRadarLayout(g, view, L, liveContacts(view), trail);
         else drawRadar(g, view);
         break;
       case "chart":
-        if (L) drawChartLayout(g, view, L);
+        if (L) drawChartLayout(g, view, L, trail);
         else drawChart(g, view);
         break;
       case "quadrant":
-        if (L) drawQuadrantLayout(g, view, L);
+        if (L) drawQuadrantLayout(g, view, L, trail);
         else drawQuadrantMap(g, view);
         break;
       case "log":
@@ -574,17 +621,9 @@ export class App {
         else drawDamageReport(g, view);
         break;
       case "gameControl":
-        if (L) drawGameControlLayout(g, L, this.settings, this.difficultyEditor ? "NEW DIFFICULTY LEVEL" : null, this.difficultyEditor?.value ?? "");
-        else drawGameControl(g, this.settings, this.difficultyEditor ? "NEW DIFFICULTY LEVEL" : null, this.difficultyEditor?.value ?? "");
+        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "");
+        else drawGameControl(g, view.settings, prompt, editor?.value ?? "");
         break;
-    }
-    if (this.prompt) {
-      drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
-    }
-    if (sim.status !== "running") drawEnd(g, sim.status, sim.completedBy);
-    else {
-      const message = this.radio.current;
-      if (message) drawRadioMessage(g, message);
     }
   }
 
@@ -608,24 +647,24 @@ export class App {
     const view: PlayView = { sim, snap: result.render, settings: DEFAULT_SETTINGS, sprites: this.sprites, log: this.demoLog ?? this.log, timeMs };
     switch (d.screen) {
       case "chart":
-        drawChart(g, view);
+        this.drawPlayScreen("chart", view, false, null);
         break;
       case "radar":
-        drawRadar(g, view);
+        this.drawPlayScreen("radar", view, false, null);
         break;
       case "quadrantMap":
-        drawQuadrantMap(g, view);
+        this.drawPlayScreen("quadrant", view, false, null);
         break;
       case "damageReport":
         sim.sub.damage[2] = 1;
         sim.sub.damage[5] = 1;
-        drawDamageReport(g, view);
+        this.drawPlayScreen("damage", view, false, null);
         break;
       case "captainsLog":
-        drawCaptainsLog(g, view);
+        this.drawPlayScreen("log", view, false, null);
         break;
       case "gameControl":
-        drawGameControl(g, DEFAULT_SETTINGS, null, "");
+        this.drawPlayScreen("gameControl", view, false, null);
         break;
       case "title":
         drawTitle(g, this.titleArt, this.sprites, timeMs);
@@ -635,7 +674,7 @@ export class App {
         g.clear();
         break;
       default:
-        drawControlRoom(g, view);
+        this.drawPlayScreen("control", view, false, null);
         break;
     }
     const page = d.player.currentPage;

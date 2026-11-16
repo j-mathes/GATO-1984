@@ -75,4 +75,4 @@ The overlays are drawn under the cyan hull; the damaged light is the filled-ligh
 * The default colour of CIRCLE/BOX without a colour argument (see above); PUT actions (-1 XOR, 0 PSET, 1 PRESET) are inferred from their use; `0x2938` (the aspect to fixed-point conversion) was not traced.
 * Three white ticks beside the oxygen gauge `(312..319, 127/143/159)` are not in the traced code and are measured from a screenshot.
 * The 8x8 text of the log and GAME CONTROL is not scrolled; the original scrolls the whole graphics screen when more than 9 ships are listed.
-* Ship pictures in the scope are drawn in colour 0 (line art) by day in the screenshots; the remake tints its outline atlas accordingly. Radar and quadrant trails are not kept.
+* Ship pictures in the scope are drawn in colour 0 (line art) by day in the screenshots; the remake tints its outline atlas accordingly. Radar and quadrant trails are optional in the remake (key W, `src/render/trails.ts`).
