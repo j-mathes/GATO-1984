@@ -38,9 +38,11 @@ export interface GameSettings {
   difficulty: number;
   sound: boolean;
   timeOfDay: TimeOfDay;
+  /** Remake addition: scenario 1..20 to play next, or null/absent for the original's random pick (1 + FIX(RND*20)). */
+  mission?: number | null;
 }
 
-export const DEFAULT_SETTINGS: Readonly<GameSettings> = { difficulty: 0, sound: true, timeOfDay: 1 };
+export const DEFAULT_SETTINGS: Readonly<GameSettings> = { difficulty: 0, sound: true, timeOfDay: 1, mission: null };
 
 export class Launcher {
   private state: LauncherState = { screen: "title" };
@@ -73,12 +75,13 @@ export class Launcher {
   }
 }
 
-export type GameControlItem = 1 | 2 | 3 | 4;
+export type GameControlItem = 1 | 2 | 3 | 4 | 5;
 
 /**
  * GAME CONTROL screen of GATO1 (0x0aeea-0x0b165):
  * [1] DIFFICULTY LEVEL, typed value clamped to 0..9; [2] SOUND toggles 1/0; [3] TIME OF DAY toggles 1/0;
  * [4] RESET CAPTAIN'S LOG. Any other input (or RETURN) leaves the screen.
+ * [5] MISSION SELECT is a remake addition: 1..20 picks the next scenario, 0 (or anything else) goes back to the original's random pick.
  */
 export class GameControl {
   constructor(
@@ -86,7 +89,7 @@ export class GameControl {
     private readonly resetLog: () => void = () => undefined,
   ) {}
 
-  /** Apply the item the player typed; `value` is only used for item 1. Returns false when the input closes the screen. */
+  /** Apply the item the player typed; `value` is only used for items 1 and 5. Returns false when the input closes the screen. */
   apply(item: number, value = 0): boolean {
     switch (item) {
       case 1:
@@ -101,6 +104,11 @@ export class GameControl {
       case 4:
         this.resetLog();
         return true;
+      case 5: {
+        const n = Math.round(value);
+        this.settings.mission = n >= GAME_CONTROL.minMission && n <= GAME_CONTROL.maxMission ? n : null;
+        return true;
+      }
       default:
         return false;
     }

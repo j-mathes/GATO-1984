@@ -340,7 +340,7 @@ export function drawCaptainsLog(g: Gfx, v: PlayView): void {
 // GAME CONTROL, prompts, end of mission
 // --------------------------------------------------------------------------------------------------------------------
 
-export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string | null, entry: string): void {
+export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string | null, entry: string, showMission = true): void {
   g.clear();
   g.centered(3, "GAME CONTROL", COLORS.white);
   g.text(6, 7, "[1] DIFFICULTY LEVEL", COLORS.grey);
@@ -350,6 +350,10 @@ export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string |
   g.text(6, 11, "[3] TIME OF DAY", COLORS.grey);
   g.text(35, 11, settings.timeOfDay === 1 ? "1" : "0", COLORS.yellow);
   g.text(6, 13, "[4] RESET CAPTAIN'S LOG", COLORS.grey);
+  if (showMission) {
+    g.text(6, 15, "[5] NEXT MISSION", COLORS.grey);
+    g.text(35, 15, settings.mission ? String(settings.mission) : "RANDOM", COLORS.yellow);
+  }
   if (prompt) {
     g.text(7, 18, `${prompt} ${entry}_`, COLORS.white);
   } else {

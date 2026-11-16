@@ -174,9 +174,14 @@ function isWarship(v: Vessel): boolean {
   return v.typeCode > TYPE.troopCarrier;
 }
 
-/** Turn direction test shared by merchants (turn away, 0.028) and warships (turn towards, 0.035, opposite sign). */
-function turnsPositive(phi: number): boolean {
-  return phi < 0 || (phi > 0 && Math.abs(phi) > PI);
+/**
+ * Turn direction test shared by merchants (turn away, 0.028) and warships (turn towards, 0.035, opposite sign), 0x0768f / 0x07799:
+ * `(phi < 0 AND ABS(phi) < pi) OR (phi > 0 AND ABS(phi) > pi)`. The first ABS(phi) is the expression temporary at ds:0x23a6; it makes the
+ * boat turn the short way round (an earlier port read it as 0).
+ */
+export function turnsPositive(phi: number): boolean {
+  const a = Math.abs(phi);
+  return (phi < 0 && a < PI) || (phi > 0 && a > PI);
 }
 
 function selectWaypoint(v: Vessel, difficulty: number): void {

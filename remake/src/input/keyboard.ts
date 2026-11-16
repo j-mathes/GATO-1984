@@ -10,6 +10,8 @@ export type InputAction =
   | { type: "radioRoom" }
   /** W: persistent track dots on the radar, chart and quadrant map (the original's behaviour) or clean redraws. */
   | { type: "toggleTrails" }
+  /** ? or H: controls quick-reference overlay (remake addition). */
+  | { type: "help" }
   /** Z on the chart: PASSWORD? prompt of the hidden coordinate command (0x0b4d4). */
   | { type: "debugPrompt" }
   /** ESC: the original ends the program (rt_1049 + rt_19da at 0x0d17e); the remake returns to the launcher. */
@@ -35,6 +37,7 @@ export interface KeyLike {
  *   C / Q / L / R / M   chart, quadrant map, captain's log, damage report, radio room (then the control room)
  *   Tab          GAME CONTROL                                    Z (on chart)     hidden coordinate command
  *   W            track dots on radar, chart and quadrant map on/off
+ *   ? or H       controls quick-reference overlay (remake addition; pauses the world while shown)
  */
 export function translatePlayKey(e: KeyLike): InputAction | null {
   if (e.ctrlKey || e.altKey || e.metaKey) return null;
@@ -105,6 +108,9 @@ export function translatePlayKey(e: KeyLike): InputAction | null {
       return { type: "debugPrompt" };
     case "W":
       return { type: "toggleTrails" };
+    case "H":
+    case "?":
+      return { type: "help" };
     default:
       return null;
   }
@@ -118,11 +124,11 @@ export function shouldPreventDefault(e: KeyLike): boolean {
 
 /** GAME CONTROL screen (0x0aeea-0x0b165): item number typed at "NUMBER OF ITEM TO CHANGE", then an optional value. */
 export type GameControlAction =
-  | { type: "item"; item: 1 | 2 | 3 | 4 }
+  | { type: "item"; item: 1 | 2 | 3 | 4 | 5 }
   | { type: "leave" };
 
 export function translateGameControlKey(e: KeyLike): GameControlAction | null {
-  if (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4") return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 };
+  if (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4" || e.key === "5") return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 | 5 };
   if (e.key === "Enter" || e.key === "Escape" || e.key === "Tab") return { type: "leave" };
   return null;
 }

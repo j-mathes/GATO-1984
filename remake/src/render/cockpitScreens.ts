@@ -265,7 +265,7 @@ export function drawLogLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
 }
 
 /** GAME CONTROL (0x0aed9-0x0b0d4): COLOR 8,1, title at LOCATE 2,15, items from row 6 with the value at TAB(34), prompts at 13,6 / 16,6. */
-export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { difficulty: number; sound: boolean; timeOfDay: number }, prompt: string | null, entry: string): void {
+export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { difficulty: number; sound: boolean; timeOfDay: number; mission?: number | null }, prompt: string | null, entry: string, showMission = true): void {
   const pal = L.palette("control_room");
   const white = pal[3] as string;
   g.clear(pal[0]);
@@ -277,6 +277,10 @@ export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { dif
   g.text(6, 8, "[3] TIME OF DAY", white);
   g.text(35, 8, String(settings.timeOfDay), white);
   g.text(6, 9, "[4] RESET CAPTAIN'S LOG", white);
+  if (showMission) {
+    g.text(6, 10, "[5] NEXT MISSION", white); // remake addition, not on the original screen
+    g.text(35, 10, settings.mission ? String(settings.mission) : "RANDOM", white);
+  }
   if (prompt) g.text(6, 16, `${prompt}? ${entry}_`, white);
   else {
     g.text(6, 13, "NUMBER OF ITEM TO CHANGE? _", white);

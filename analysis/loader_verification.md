@@ -172,11 +172,47 @@ second step and above 20 loses the boat at such a step (0x06441-0x065b6). Depth 
   `-0.04 + 0.000112 depth` below 350; ship detection chance; evade/pursue turns (0.028 / 0.035); waypoint traversal; torpedo speed 17,
   range 960, three sub-steps per step, hit ellipse `9.9 + cos^6 * 18` (patrol boat `9.24 + cos^6 * 14`); depth charges; scope windows;
   radar range 1350; resupply at the subtender (range 150).
-* **Faithful quirks kept on purpose**: the heading wraps to 0 / 6.28 instead of modulo 2 pi; `ds:0x23a6` (read as a variable that is
-  never assigned, so 0) makes the tender-alignment test in the resupply condition vacuous; damaged ships are marked by speed 1.75;
+* **Faithful quirks kept on purpose**: the heading wraps to 0 / 6.28 instead of modulo 2 pi; `ds:0x23a6` is the runtime's expression temporary, not an unassigned variable (corrected in the third audit: `headingsAligned` in `physics.ts` makes the tender-alignment test of the resupply condition real, `turnsPositive` in `ai.ts` makes ships turn the short way round - see section 10); damaged ships are marked by speed 1.75;
   an animated hit can be survived with probability difficulty/12 and can destroy the own boat when the target is closer than about 22
   units; hits outside the visible scope sink the target directly.
 * **Remake choices (not in the original)**: the step rate (default 10 per second); durations of the resupply loops (their original
   timing depended on the CPU); the damage alarm interval in steps; demo page durations (`demo_script.json`, estimated).
 * **Not decoded / not ported**: radio messages, quadrant map and chart drawing, log screens, the PLAY note frequencies and the
   explosion animation timing. DEMO.EXE is modelled as a narration script (it does not run the simulation).
+
+## 10. Audit of the remaining GATO1 edge cases (`ds:0x23a6`, compartments 7 and 8)
+
+**`ds:0x23a6` is the runtime's expression temporary, not a variable.** Evidence (all `Gato1.exe` file offsets):
+
+* Eight places hold the bytes `a6 23`. Seven are operands: `mov si,0x23a6` at `0x719e`, `0x76bc`, `0x77c6` (comparisons), `mov dx,0x23a6` at
+  `0x6575`, `0xb674`, `0xb7a0` (the duration argument of `SOUND`), `mov bx,0x23a6` at `0xca62` (the quadrant map's ring). The eighth, at
+  `0x3a13`, is the program header `a6 23 d0 23 32 34`, which sits next to `0x23d0`, the start of the constants. Nothing stores to the address by
+  name, and the runtime never refers to it either.
+* Every use is directly preceded by a value computed into the floating accumulator (`FAC`, `ds:0x00b2`) and a call of runtime routine `0x132b`
+  that copies `FAC` to memory and loads the operand at `di` (`0x132b` followed by an inline byte and the compare routine `0x1ac8`). The
+  first operand of a comparison is therefore fetched from the temporary. That is what a compiler without common-subexpression handling does
+  with `X < a OR X > b`, where `X` is evaluated once and kept.
+* The quadrant map shows it works that way: `x = cx + COS(v23a6) * inner * 0.064` can only be the dot angle `i * 0.1571`, as the elliptical
+  ring of the screenshot `2660548` proves (with a constant 0 all 40 dots would sit in one vertical line).
+
+What each use means:
+
+| Use | Statement | Meaning |
+| --- | --- | --- |
+| `0x07153` (resupply entry) | `IF dist(tender) < 150 AND fuel < 35950 AND (ABS(h_tender - h_boat) < 0.393 OR ABS(h_tender - h_boat) > 5.887)` | `ds:0x1eae` is `A1ea6[2]`, the tender's heading, `ds:0x219a` the boat's heading. The tender must be on a roughly parallel course (within pi/8, also across the 0 / 2 pi wrap) before the resupply loop at `0x0cd8e` starts. The loop itself has no alignment test. |
+| `0x0768f`, `0x07799` (ship steering) | `IF (phi < 0 AND ABS(phi) < pi) OR (phi > 0 AND ABS(phi) > pi)` with `phi = heading - bearing` (`ds:0x225e`) | the shortest-turn test: the ship turns the short way round. Before this audit the port read the temporary as 0, which sent a ship with `phi < -pi` the long way round. |
+| `0x0655c`, `0x0b656`, `0x0b782` (damage alarm, sub-lost sweeps) | `SOUND freq, 0.05 * ds:0x09e2` | the duration is the temporary holding `0.05 * SOUND flag`; with sound off it is 0 and nothing is heard. How the runtime converts such a short duration to timer ticks was not traced, so the remake's alarm and sub-lost sounds stay inferred. |
+| `0x0ca22` (quadrant map ring) | `COS(i * 0.1571)` | as above |
+
+Port changes: `RESUPPLY.alignmentLow` / `alignmentHigh` in `constants.ts`, `headingsAligned()` in `physics.ts` (used by `Simulation.stepResupply`), the
+corrected `turnsPositive()` in `ai.ts`, with tests in `core.test.ts`. The integration test of the depth-charge loss no longer expects six
+charges: with the short-way turns the destroyers need fewer passes, and the boat is lost either by more than five damaged compartments or by an index sum above 20.
+
+**Compartments 7 (control room) and 8 (conning tower).** `A177a` is addressed by `A177a[CINT(v214e)]` loops and by direct cells `ds:0x177e` ... `ds:0x179a`
+(compartment `k` at `0x177a + 4k`). Direct reads: 1 radio `0x0ba4a` (radio room, `M`); 2 torpedo room `0x07fbd` (no firing); 3 battery `0x07239`;
+4 fuel `0x071d1`; 5 engine `0x054c5`-`0x055c9` (ordered speed x (1 - 0.5 d)); 6 periscopes `0x0515e` (and set to 1 at `0x06f79` when a ship within 20 units meets a raised scope at depth < 61, which is the remake's scope-ram rule). Cells 7
+(`0x1796`) and 8 (`0x179a`) are read only by the damage report (`0x0a428`, `0x0a75a`, `0x0a77e`) and by the two loops over all eight cells: the damaged
+count at `0x05b80` (more than 5 destroys the boat) and the index sum at `0x06459` (above 14 an alarm, above 20 the boat is lost). Depth charges write a random cell 1..8
+(`0x0d226`). So 7 and 8 never change a control; they only raise the two totals. `physics.ts` already summed all eight cells, so nothing changed there; a test now pins this.
+
+**`GAME CONTROL` item 5 and the title wipe** are remake additions: see `remake/README.md` and `title_art.md`.

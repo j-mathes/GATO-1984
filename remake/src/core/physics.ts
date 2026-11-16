@@ -1,4 +1,4 @@
-import { COMPASS, COMPARTMENT, DEPTH, ENGINE, HELM, ISLAND, RESOURCES, START, WORLD } from "./constants.js";
+import { COMPASS, COMPARTMENT, DEPTH, ENGINE, HELM, ISLAND, RESOURCES, RESUPPLY, START, WORLD } from "./constants.js";
 import { cint } from "./rng.js";
 import type { EngineMode, Rng, ScopeFacing, SimEvent, SubmarineState } from "./types.js";
 
@@ -220,4 +220,14 @@ export function crushRoll(sub: SubmarineState, rng: Rng): boolean {
 export function compassDegrees(heading: number): number {
   const d = cint(COMPASS.offset - heading * COMPASS.degreesPerRadian) % 360;
   return d < 0 ? d + 360 : d;
+}
+
+/**
+ * Resupply alignment test of the original (0x07153-0x071b7): `ABS(tender heading - boat heading) < 0.393 OR ... > 5.887`, i.e. the two
+ * headings are within pi/8 of each other, also across the 0 / 2 pi wrap. The value compared is the runtime's expression temporary at
+ * ds:0x23a6 (the pushed ABS result), not a variable.
+ */
+export function headingsAligned(tenderHeading: number, boatHeading: number): boolean {
+  const d = Math.abs(tenderHeading - boatHeading);
+  return d < RESUPPLY.alignmentLow || d > RESUPPLY.alignmentHigh;
 }

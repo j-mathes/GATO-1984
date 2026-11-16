@@ -27,6 +27,7 @@ import {
   stepPosition,
   stepResources,
   stepSpeed,
+  headingsAligned,
   type HelmCommand,
 } from "./physics.js";
 import { quadrantOf } from "./scenario.js";
@@ -269,7 +270,7 @@ export class Simulation {
     const sub = this.sub;
     const tender = this.tender;
     if (!sub.resupply) {
-      if (!tender.sunk && tender.distance < RESUPPLY.range && sub.fuel < RESUPPLY.fuelFullThreshold) {
+      if (!tender.sunk && tender.distance < RESUPPLY.range && sub.fuel < RESUPPLY.fuelFullThreshold && headingsAligned(tender.heading, sub.heading)) {
         sub.resupply = { stepsRemaining: 0, reloadTicks: 0 };
         events.push({ type: "resupplyStarted" });
       }

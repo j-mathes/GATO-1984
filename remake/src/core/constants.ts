@@ -151,6 +151,8 @@ export const DEPTH_CHARGE = {
 /** Resupply at the subtender, 0x07108-0x071bf and 0x0cd8e-0x0cf8b. */
 export const RESUPPLY = {
   range: 150, // ds:0x278c
+  alignmentLow: 0.393, // ds:0x270e: headings of tender and boat must differ by less than this ...
+  alignmentHigh: 5.887, // ds:0x2794: ... or by more than this (the same thing across the 2 pi wrap)
   fuelFullThreshold: 35950, // ds:0x2790
   fuelPerStep: 9, // fuel = v231a*90 with v231a += 0.1
   fuelCeiling: 36000, // v231a stops at 400
@@ -170,6 +172,8 @@ export const ISLAND = {
 export const GAME_CONTROL = {
   minDifficulty: 0,
   maxDifficulty: 9,
+  minMission: 1, // remake addition: [5] MISSION SELECT
+  maxMission: 20,
 } as const;
 
 /** Display conversion, 0x0a183: compass degrees = CINT(450.0117 - radians*57.2958) MOD 360. */

@@ -27,14 +27,46 @@ export function drawSplash(g: Gfx, art: TitleArt | null): void {
   for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
 }
 
+/** Frame with the solid GATO lettering that the title page's venetian-blind wipe starts from. */
+export const TITLE_LETTERS_FRAME_ID = "title_letters";
+
+/**
+ * The erase lines GATO.EXE draws over the solid lettering (0x0a3f-0x0ab0): `FOR Y = 103 TO 19 STEP -4 : LINE (0,Y)-(319,Y),0`, then
+ * `FOR Y = 20 TO 100 STEP 4 : LINE (0,Y)-(319,Y),0`. Together they leave the striped lettering of the `title` frame.
+ */
+export const TITLE_WIPE_ROWS: readonly number[] = [
+  ...Array.from({ length: 22 }, (_, i) => 103 - 4 * i),
+  ...Array.from({ length: 21 }, (_, i) => 20 + 4 * i),
+];
+/** The original draws the solid letters and wipes at once; its speed depended on the CPU, so these times are remake choices. */
+export const TITLE_HOLD_MS = 400;
+export const TITLE_WIPE_MS = 900;
+
+/** How many of the wipe lines are on screen `sinceMs` after the title page appeared. */
+export function titleWipeLines(sinceMs: number): number {
+  const progress = (sinceMs - TITLE_HOLD_MS) / TITLE_WIPE_MS;
+  return Math.max(0, Math.min(TITLE_WIPE_ROWS.length, Math.floor(progress * TITLE_WIPE_ROWS.length)));
+}
+
 /**
  * Title page of GATO.EXE. With the exported artwork it is the original picture (striped GATO lettering, credits and the (c) ring
  * as drawn by the BASIC program, text placed on the original LOCATE cells); the old sprite layout is only a fallback when the
  * asset could not be loaded. "PRESS ANY KEY" is a remake addition: the original advances by itself.
+ * `sinceMs` is the time since the page appeared: the solid `title_letters` frame is shown first and the original's erase lines
+ * run over it one by one until the striped `title` frame is reached; leave it out to show the finished page.
  */
-export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary | null, timeMs: number): void {
+export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary | null, timeMs: number, sinceMs?: number): void {
   const frame = art?.primary;
   if (art && frame) {
+    const letters = art.frame(TITLE_LETTERS_FRAME_ID);
+    const lines = sinceMs === undefined || !letters ? TITLE_WIPE_ROWS.length : titleWipeLines(sinceMs);
+    if (letters && lines < TITLE_WIPE_ROWS.length) {
+      g.clear(letters.palette[0]);
+      g.image(art.image(TITLE_LETTERS_FRAME_ID), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
+      for (const y of TITLE_WIPE_ROWS.slice(0, lines)) g.rect(0, y, TITLE_ART_WIDTH, 1, letters.palette[0] as string);
+      for (const t of letters.text) g.text(t.col, t.row, t.text, letters.palette[t.colorIndex]);
+      return;
+    }
     g.clear(frame.palette[0]);
     g.image(art.image(), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
     for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
@@ -113,4 +145,33 @@ export function drawDemoNarration(g: Gfx, page: DemoPage, soundOn: boolean): voi
   g.rect(0, (top - 1) * 8 - 2, 320, rows * 8 + 12, COLORS.yellow, false);
   page.lines.forEach((l, i) => g.text(2, top + i, l.slice(0, 38), COLORS.yellow));
   g.text(1, 1, `F1 EXIT  F2 SOUND ${soundOn ? "ON " : "OFF"}`, COLORS.grey);
+}
+
+/** Controls quick-reference (remake addition, key ? or H), one string per row of the 40-column text grid. */
+export const CONTROLS_HELP: readonly string[] = [
+  "CONTROLS              (any key closes)",
+  "F1 F3 F5 F7  ahead flank/full/std/slow",
+  "F9 / F10     all stop / reverse",
+  "F2 / F4      periscope up / down",
+  "F6 radar     F8 fire torpedo",
+  "LEFT/RIGHT   rudder     UP/DOWN planes",
+  "5            centre rudder and planes",
+  "P A S F      scope port/aft/stbd/fwd",
+  "D / E        diesel / electric",
+  "T            torpedo doors",
+  "C Q L R M    chart quadrant log damage",
+  "             radio room",
+  "TAB          GAME CONTROL",
+  "W            wake trails on / off",
+  "V            display mode",
+  "ESC          quit to the menu",
+];
+
+/** Dimmed quick-reference box over the current mission screen. */
+export function drawHelpOverlay(g: Gfx): void {
+  const top = 3;
+  const height = CONTROLS_HELP.length * 8 + 8;
+  g.rect(8, (top - 1) * 8 - 4, 304, height, COLORS.black);
+  g.rect(8, (top - 1) * 8 - 4, 304, height, COLORS.cyan, false);
+  CONTROLS_HELP.forEach((line, i) => g.text(2, top + i, line, i === 0 ? COLORS.yellow : COLORS.white));
 }

@@ -53,7 +53,8 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 | L | Captain's log |
 | R | Damage report |
 | M | Radio room, then the control room: with a damaged radio room (compartment 1) the "REPORTS HEAVY DAMAGE" message appears; otherwise the orders are shown again (the original requests a new mission here) |
-| Tab | GAME CONTROL (items 1–4; difficulty takes a typed 0–9) |
+| Tab | GAME CONTROL (items 1–4 as in the original; difficulty takes a typed 0–9). Item 5 is a remake addition: NEXT MISSION, `1`–`20` or `R`/`0` for the original's random pick (the default); it applies when the next mission starts, not to the one running |
+| ? or H | Controls quick-reference overlay (remake addition). The world pauses while it is shown; any key closes it and is not passed on |
 | Z (on the chart) | Hidden debug command: type `PAED`, Enter, then `x,y`, Enter to teleport (only while no enemy is alerted) |
 | Any key | Skips the Morse order broadcast |
 | Esc | Quit to the launcher |
@@ -108,18 +109,20 @@ Details live in `../analysis/` (`loader_verification.md`, `exe_architecture.md`,
   - Waypoint speed applies while travelling to that waypoint.
   - The world is 25000×20000 in 5×4 quadrants. `LOG1` (92 × 32-byte records) is the only persistent file.
   - Morse: 36 dispatch branches (A–Z, 0–9) matching International Morse, played with `PLAY` strings `B32P62` (dit, about 0.0625 s) and `B10P62` (dah, about 0.2 s).
-  - Compartments: 1 radio, 2 torpedo room, 3 battery, 4 fuel tanks, 5 engine, 6 periscopes, 7 control room, 8 conning tower (7 and 8 have no effect).
+  - Compartments: 1 radio, 2 torpedo room, 3 battery, 4 fuel tanks, 5 engine, 6 periscopes, 7 control room, 8 conning tower. 7 and 8 are only shown on the damage report: they have no effect of their own, but, like every compartment, count towards "more than 5 damaged" and the index sum (above 14 an alarm, above 20 the boat is lost), so a hit on them is dangerous without changing any control.
+  - `ds:0x23a6` is not a variable but, inferred from the code, the runtime's expression temporary: nothing ever stores to it by name, the data-segment header at the start of the program lists `0x23a6` right below the constants (`0x23d0`), and at every use a value was just computed into the floating accumulator and pushed there by runtime routine `0x132b` (the quadrant map's `COS(v23a6)` can only be the dot angle, which the screenshot's elliptical ring confirms). Read that way, it makes the resupply at the subtender require the tender's heading to be within 0.393 rad (pi/8) of the boat's, and ships turn the short way round (`ABS(phi) < pi` test at `0x0768f`/`0x07799`). An earlier port read it as a never-assigned 0 and ignored both.
 - **DEMO.EXE** is a narration slide show, not the simulation. Page timings in the remake are estimates.
 - **HISTORY.EXE** is a pager. The encyclopedia text is in the data file `History`, not in the EXE.
 - **Graphics:** there are no raw CGA bitmaps. Sprites are BASIC `DRAW` strings (`OBX1`, `OBX3`–`OBX8` hold 16 view-angle frames each), exported as PNG atlases and JSON.
 - **Instrument screens:** the control room, damage report, radar, chart, quadrant map, captain's log and GAME CONTROL are drawn from layouts replayed out of GATO1's p-code (`analysis/export_cockpit_layouts.py` -> `public/assets/cockpit_layouts.json`, details in `../analysis/gato1_screens.md`). The damage report and the control-room panel match screenshots of the original pixel for pixel (`python analysis/verify_cockpit_layouts.py`); text is drawn with the remake's font on the original cells.
-- **Title screen:** also drawn at run time (`DRAW`/`PAINT`/`LINE`/`CIRCLE`), not stored. `analysis/export_title_art.py` replays the program's drawing statements into `public/assets/title_screen.json`; the striped GATO lettering, credits and the launcher's surfaced-submarine backdrop come from that. Details and what is inferred (palette, the (c) ring) are in `../analysis/title_art.md`. Regenerate with `python analysis/export_title_art.py` from the repository root (needs Pillow).
+- **Title screen:** also drawn at run time (`DRAW`/`PAINT`/`LINE`/`CIRCLE`), not stored. `analysis/export_title_art.py` replays the program's drawing statements into `public/assets/title_screen.json`; the striped GATO lettering, credits and the launcher's surfaced-submarine backdrop come from that. The striping is the original's own venetian-blind wipe (43 `LINE (0,Y)-(319,Y),0` statements over the solid `title_letters` frame), which the remake replays line by line before showing the page. Details and what is inferred (palette, the (c) ring, the wipe timing) are in `../analysis/title_art.md`. Regenerate with `python analysis/export_title_art.py` from the repository root (needs Pillow).
 - **Sound:** the runtime programs the PIT channel 2 speaker.
 
 ## Caveats
 
 - `PLAY` note tables beyond the Morse tones are not ported. GATO1 contains no table of mid-mission radio traffic: the only messages are CONTACT MADE / MISSION COMPLETED, YOU HAVE SUCCESSFULLY COMPLETED YOUR MISSION, "No more oxygen" and the radio-room damage report (`src/core/radio.ts`, details in `../analysis/radio_and_explosions.md`). The radio alert tone is a remake addition.
 - Torpedo-hit explosions follow the original's stages and frame counts (`src/core/explosion.ts`), but the original is CPU bound, so their durations in seconds (about 1.5-5 s) are estimated from the empty-loop lengths. The original blocks the whole game while it plays; the remake keeps the world running.
-- `ds:0x23a6` is treated as 0. Some effect durations and the damage-alarm, sub-lost and mission-complete sounds are inferred; the original hit animation has no sound, the explosion boom is a remake addition.
+- Sound durations: the damage-alarm and sub-lost sweeps call `SOUND freq, duration` with the duration taken from `ds:0x23a6`, i.e. the temporary holding `0.05 * ds:0x09e2` (the sound flag), so they are mute with sound off; how the runtime rounds a duration that short was not determined, so the remake's alarm, sub-lost and mission-complete sounds are inferred. The original hit animation has no sound, the explosion boom is a remake addition.
+- Remake additions that are not in the original: the radio alert tone, the display modes and CRT overlay, wake-trail toggle (`W`), the controls overlay (`?`/`H`), GAME CONTROL item 5 (next mission) and the 2.5 s logo hold (the original's hold is an empty 2000-pass loop whose duration depended on the CPU).
 - The original runs unthrottled; the fixed 10 Hz tick, the display modes and the CRT overlay are remake choices.
 - Confirm the rights to the original history text before distributing it.

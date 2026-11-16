@@ -5,6 +5,8 @@ import {
   Simulation,
   buildScenario,
   createRng,
+  damageCount,
+  damageIndexSum,
   sequenceRng,
   type CourseJson,
   type MxpJson,
@@ -185,7 +187,7 @@ describe("submarine lost", () => {
     expect(sim.status).toBe("running");
   });
 
-  it("is lost to depth charges once more than five compartments are damaged", () => {
+  it("is lost to depth charges once more than five compartments are damaged or the damaged indexes add up past 20", () => {
     const sim = makeSim(5, createRng(3), { difficulty: 9 });
     // scenario 5: patrol boats anchored at the island in quadrant 18; sit among them, deep enough not to be rammed
     sim.teleport(17150, 18600);
@@ -193,10 +195,9 @@ describe("submarine lost", () => {
     sim.sub.alertTimer = 1;
     const events = run(sim, 2000);
     expect(sim.status).toBe("destroyed");
-    const charges = events.filter((e) => e.type === "depthCharge");
-    expect(charges.length).toBeGreaterThanOrEqual(6);
+    expect(events.filter((e) => e.type === "depthCharge").length).toBeGreaterThanOrEqual(3);
     expect(events.some((e) => e.type === "subDestroyed" && e.reason === "damage")).toBe(true);
-    expect(sim.sub.damage.slice(1).filter((d) => d > 0).length).toBeGreaterThan(0);
+    expect(damageCount(sim.sub) > 5 || damageIndexSum(sim.sub) > 20).toBe(true);
   });
 
   it("is lost when it rams a ship above 34 units of depth", () => {

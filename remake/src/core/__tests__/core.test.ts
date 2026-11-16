@@ -16,7 +16,10 @@ import {
   createRng,
   createTorpedoes,
   createVessels,
+  damageCount,
+  damageIndexSum,
   detectionChance,
+  headingsAligned,
   launchTorpedo,
   quadrantOf,
   screenForPage,
@@ -25,6 +28,7 @@ import {
   stepHeading,
   stepSpeed,
   torpedoHits,
+  turnsPositive,
   ShipLog,
   type CourseJson,
   type DemoScriptDocument,
@@ -300,11 +304,66 @@ describe("mission rules", () => {
     for (let i = 0; i < 400 && sim.sub.damage[4] !== 0; i += 1) {
       tender.x = sim.sub.x + 50;
       tender.y = sim.sub.y;
+      tender.heading = sim.sub.heading; // resupply needs the tender on a parallel course
       sim.step();
     }
     expect(sim.sub.fuel).toBeGreaterThan(35000);
     expect(sim.sub.torpedoes).toBe(24);
     expect(sim.sub.damage[4]).toBe(0);
+  });
+
+  it("resupply only starts when the tender's heading is within 0.393 rad of the boat's (also across the wrap): ds:0x23a6 is the pushed ABS", () => {
+    expect(headingsAligned(1, 1.3)).toBe(true);
+    expect(headingsAligned(1, 1.5)).toBe(false);
+    expect(headingsAligned(0.1, 6.2)).toBe(true); // 6.1 apart = 0.18 rad across the wrap
+    expect(headingsAligned(3, 0.2)).toBe(false);
+    const sim = newSim();
+    sim.sub.fuel = 20000;
+    const tender = sim.vessels[2];
+    if (!tender) throw new Error("missing");
+    const events: SimEvent[] = [];
+    for (const [offset, expected] of [[1.5, false], [0.2, true]] as const) {
+      tender.x = sim.sub.x + 50;
+      tender.y = sim.sub.y;
+      tender.heading = sim.sub.heading + offset;
+      tender.speed = 0;
+      tender.waypointIndex = 8;
+      events.length = 0;
+      events.push(...sim.step());
+      expect(events.some((e) => e.type === "resupplyStarted")).toBe(expected);
+    }
+  });
+
+  it("ships turn the short way round: the first ABS(phi) of 0x0768f is the temporary at ds:0x23a6, not 0", () => {
+    expect(turnsPositive(-1)).toBe(true);
+    expect(turnsPositive(-4)).toBe(false); // phi < -pi: the long way would be +, so turn the other way
+    expect(turnsPositive(1)).toBe(false);
+    expect(turnsPositive(4)).toBe(true);
+    expect(turnsPositive(0)).toBe(false);
+  });
+
+  it("compartments 7 and 8 have no direct effect, but count towards the damaged total and the alarm index sum like the others", () => {
+    const ordered = (damaged: boolean): number => {
+      const s = newSim();
+      if (damaged) {
+        s.sub.damage[7] = 1;
+        s.sub.damage[8] = 1;
+      }
+      s.command({ type: "speed", level: "F3" });
+      s.step();
+      return s.sub.orderedSpeed;
+    };
+    expect(ordered(true)).toBe(ordered(false));
+    const sim = newSim();
+    sim.sub.damage[7] = 1;
+    sim.sub.damage[8] = 1;
+    expect(damageCount(sim.sub)).toBe(2);
+    expect(damageIndexSum(sim.sub)).toBe(15); // 7 + 8 > 14: the boat sounds the alarm
+    sim.sub.damage[6] = 1;
+    sim.sub.damage[5] = 1;
+    sim.sub.damage[4] = 1;
+    expect(damageCount(sim.sub)).toBe(5);
+    expect(damageIndexSum(sim.sub)).toBe(30);
   });
 
   it("runs deterministically under the fixed-step loop", () => {
@@ -349,6 +408,16 @@ describe("launcher and demo", () => {
     gc.apply(3);
     expect(gc.settings.timeOfDay).toBe(0);
     expect(gc.apply(9)).toBe(false);
+    expect(gc.settings.mission).toBeNull(); // random, like the original, by default
+    gc.apply(5, 7);
+    expect(gc.settings.mission).toBe(7);
+    gc.apply(5, 20);
+    expect(gc.settings.mission).toBe(20);
+    gc.apply(5, 21);
+    expect(gc.settings.mission).toBeNull();
+    gc.apply(5, 3);
+    gc.apply(5, 0);
+    expect(gc.settings.mission).toBeNull();
   });
 
   it("plays the demo narration in order and stops on F1", () => {

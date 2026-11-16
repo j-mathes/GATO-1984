@@ -12,7 +12,7 @@ import { Simulation, buildScenario, createRng, type CourseJson, type DemoScriptD
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
-import { drawLauncherMenu, drawTitle } from "../render/textScreens.js";
+import { CONTROLS_HELP, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, drawLauncherMenu, drawTitle, titleWipeLines } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
 import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
 import type { PlayView } from "../render/playScreens.js";
@@ -836,6 +836,10 @@ describe("Spectrum HoloByte splash", () => {
     calls.length = 0;
     app.frame(1000 + SPLASH_MS);
     expect(app.mode).toBe("title");
+    expect(calls.find(([n]) => n === "image")?.[1][0]).toBe(art?.image("title_letters")); // the wipe starts from the solid lettering
+    expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(false);
+    calls.length = 0;
+    app.frame(1000 + SPLASH_MS + TITLE_HOLD_MS + TITLE_WIPE_MS + 50);
     expect(calls.find(([n]) => n === "image")?.[1][0]).toBe(art?.image("title"));
     expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
   });
@@ -865,5 +869,176 @@ describe("Spectrum HoloByte splash", () => {
     const noLogo = raw();
     delete noLogo.frames.spectrum_logo;
     expect(bootApp(new TitleArt(parseTitleArt(noLogo), canvas())).app.mode).toBe("title");
+  });
+});
+
+describe("title wipe (title_letters -> title)", () => {
+  const raw = (): Record<string, any> => read<Record<string, any>>("public/assets/title_screen.json");
+
+  it("the original's 43 erase lines turn the solid lettering into the striped title frame exactly", () => {
+    expect(TITLE_WIPE_ROWS).toHaveLength(43);
+    expect(TITLE_WIPE_ROWS.slice(0, 3)).toEqual([103, 99, 95]);
+    expect(TITLE_WIPE_ROWS[21]).toBe(19);
+    expect(TITLE_WIPE_ROWS.slice(22, 25)).toEqual([20, 24, 28]);
+    expect(TITLE_WIPE_ROWS[42]).toBe(100);
+    const doc = raw();
+    const letters: string[] = doc.frames.title_letters.rows.slice();
+    for (const y of TITLE_WIPE_ROWS) letters[y] = "0".repeat(320);
+    // the lines paint the background colour (0); below row 110 the title frame adds the credits and the (c) ring
+    expect(letters.slice(0, 110)).toEqual(doc.frames.title.rows.slice(0, 110));
+    expect(doc.frames.title_letters.palette[0]).toBe(doc.frames.title.palette[0]);
+  });
+
+  it("progress: nothing during the hold, everything after the wipe time", () => {
+    expect(titleWipeLines(0)).toBe(0);
+    expect(titleWipeLines(TITLE_HOLD_MS)).toBe(0);
+    let last = 0;
+    for (let t = TITLE_HOLD_MS; t <= TITLE_HOLD_MS + TITLE_WIPE_MS; t += 25) {
+      const n = titleWipeLines(t);
+      expect(n).toBeGreaterThanOrEqual(last);
+      last = n;
+    }
+    expect(titleWipeLines(TITLE_HOLD_MS + TITLE_WIPE_MS)).toBe(43);
+    expect(titleWipeLines(1e9)).toBe(43);
+  });
+
+  it("draws the letters with the erase lines in the background colour, then the finished page with the prompt", () => {
+    const canvas = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+    const art = new TitleArt(parseTitleArt(raw()), canvas());
+    const calls: [string, unknown[]][] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    drawTitle(g, art, null, 0, TITLE_HOLD_MS + TITLE_WIPE_MS / 2);
+    const lines = titleWipeLines(TITLE_HOLD_MS + TITLE_WIPE_MS / 2);
+    expect(lines).toBeGreaterThan(15);
+    expect(lines).toBeLessThan(30);
+    expect(calls.find(([n]) => n === "image")?.[1][0]).toBe(art.image("title_letters"));
+    const erase = calls.filter(([n, a]) => n === "rect" && a[3] === 1 && a[2] === 320).map(([, a]) => [a[1], a[4]]);
+    expect(erase).toEqual(TITLE_WIPE_ROWS.slice(0, lines).map((y) => [y, "#5555ff"]));
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "TM")).toBe(true);
+    expect(calls.some(([n]) => n === "centered")).toBe(false);
+    calls.length = 0;
+    drawTitle(g, art, null, 0); // no timing: the finished page (demo)
+    expect(calls.find(([n]) => n === "image")?.[1][0]).toBe(art.image("title"));
+    expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
+  });
+
+  it("a key press during the wipe still leaves the title page", () => {
+    const { ctx } = fakeAudio();
+    const g = new Proxy({}, { get: () => () => undefined }) as unknown as Gfx;
+    const canvas = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+    const data: AppData = { courses: {}, orders: {}, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.5, new TitleArt(parseTitleArt(raw()), canvas()));
+    app.keydown({ key: "x" }); // splash
+    app.frame(0);
+    app.frame(100);
+    expect(app.mode).toBe("title");
+    app.keydown({ key: "x" });
+    expect(app.mode).toBe("menu");
+  });
+});
+
+describe("controls overlay and mission select", () => {
+  type Call = [string, unknown[]];
+  function makeApp(): { app: App; calls: Call[]; sim: () => Simulation } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.5);
+    return { app, calls, sim: () => (app as unknown as { sim: Simulation }).sim };
+  }
+  const press = (app: App, ...keys: string[]) => keys.forEach((key) => app.keydown({ key }));
+
+  it("? and H open a quick reference that pauses the world; any key closes it without acting", () => {
+    expect(translatePlayKey({ key: "?" })).toEqual({ type: "help" });
+    expect(translatePlayKey({ key: "h" })).toEqual({ type: "help" });
+    expect(translatePlayKey({ key: "H" })).toEqual({ type: "help" });
+    expect(CONTROLS_HELP.every((l) => l.length <= 38)).toBe(true); // 40 columns minus the margin
+    for (const key of ["?", "h"]) {
+      const { app, calls, sim } = makeApp();
+      press(app, "x");
+      app.startMission(1, 1);
+      press(app, "x");
+      app.frame(0);
+      expect(app.helpVisible).toBe(false);
+      press(app, key);
+      expect(app.helpVisible).toBe(true);
+      const tick = sim().tick;
+      calls.length = 0;
+      app.frame(1000);
+      app.frame(2000);
+      expect(sim().tick).toBe(tick); // paused
+      const text = calls.filter(([n]) => n === "text").map(([, a]) => a[2]);
+      expect(text).toEqual(expect.arrayContaining(["CONTROLS              (any key closes)", "TAB          GAME CONTROL"]));
+      press(app, "t"); // closes the overlay and is not passed on
+      expect(app.helpVisible).toBe(false);
+      expect(sim().sub.doorsOpen).toBe(false);
+      app.frame(2100);
+      calls.length = 0;
+      app.frame(2200);
+      expect(calls.some(([n, a]) => n === "text" && a[2] === "CONTROLS              (any key closes)")).toBe(false);
+      press(app, "t");
+      expect(sim().sub.doorsOpen).toBe(true);
+    }
+  });
+
+  it("the overlay is not opened while typing into a prompt or on GAME CONTROL, and is cleared with the mission", () => {
+    const { app } = makeApp();
+    press(app, "x");
+    app.startMission(1, 1);
+    press(app, "x", "c", "z");
+    press(app, "h");
+    expect(app.helpVisible).toBe(false); // H went into the PASSWORD prompt
+    press(app, "Escape", "Tab", "?");
+    expect(app.helpVisible).toBe(false);
+    press(app, "Enter", "?");
+    expect(app.helpVisible).toBe(true);
+    press(app, "x", "Escape"); // leave the overlay, then quit to the menu
+    expect(app.mode).toBe("menu");
+    expect(app.helpVisible).toBe(false);
+  });
+
+  it("GAME CONTROL [5] picks the next mission (1-20) or goes back to the original's random pick", () => {
+    const { app, calls, sim } = makeApp();
+    press(app, "x");
+    app.startMission(1, 1);
+    press(app, "x", "Tab");
+    expect(app.settings.mission ?? null).toBeNull();
+    app.frame(0);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "RANDOM")).toBe(true);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "[5] NEXT MISSION")).toBe(true);
+    press(app, "5", "1", "2", "Enter");
+    expect(app.settings.mission).toBe(12);
+    calls.length = 0;
+    app.frame(10);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "12")).toBe(true);
+    expect(sim().scenario.id).toBe(1); // the running mission is not changed
+    press(app, "Enter", "Escape"); // leave GAME CONTROL, quit to the menu
+    expect(app.mode).toBe("menu");
+    press(app, "1");
+    expect(sim().scenario.id).toBe(12);
+    press(app, "x", "Tab", "5", "R", "Enter");
+    expect(app.settings.mission).toBeNull();
+    press(app, "5", "2", "1", "Enter");
+    expect(app.settings.mission).toBeNull(); // 21 is out of range
+    press(app, "5", "0", "Enter");
+    expect(app.settings.mission).toBeNull();
+    press(app, "Enter", "Escape", "1");
+    expect(sim().scenario.id).toBe(11); // random with a fixed generator: 1 + FIX(0.5 * 20)
+  });
+
+  it("the demo's GAME CONTROL screen stays as in the original, without the remake's mission row", () => {
+    const { app, calls } = makeApp();
+    press(app, "x", "2");
+    (app as unknown as { demo: { screen: string } }).demo.screen = "gameControl";
+    calls.length = 0;
+    app.frame(100);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "[4] RESET CAPTAIN'S LOG")).toBe(true);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "[5] NEXT MISSION")).toBe(false);
   });
 });

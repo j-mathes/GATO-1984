@@ -60,7 +60,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { drawDemoNarration, drawHistory, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
+import { drawDemoNarration, drawHelpOverlay, drawHistory, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -100,6 +100,7 @@ const todayStamp = (): string => {
 export class App {
   mode: AppMode = "title";
   private splashStart: number | null = null;
+  private titleSince: number | null = null;
   screen: PlayScreen = "control";
   settings: GameSettings = { ...DEFAULT_SETTINGS };
   readonly launcher = new Launcher();
@@ -112,6 +113,9 @@ export class App {
   private orders: { lines: string[]; header: string[]; timeline: OrdersTimeline; start: number; handle: MorseHandle | null; done: boolean } | null = null;
   private gameControl = new GameControl(this.settings);
   private difficultyEditor: LineEditor | null = null;
+  /** Which GAME CONTROL item `difficultyEditor` is editing: 1 DIFFICULTY LEVEL, 5 NEXT MISSION (remake addition). */
+  private editorItem: 1 | 5 = 1;
+  private helpOpen = false;
   private prompt: { kind: "password" | "coords"; editor: LineEditor } | null = null;
   private history: HistoryViewer | null = null;
   private demo: { player: DemoPlayer; sim: Simulation; runner: FixedTimestepRunner; page: number; screen: string } | null = null;
@@ -250,6 +254,10 @@ export class App {
   private playKey(e: KeyLike): void {
     const sim = this.sim;
     if (!sim) return;
+    if (this.helpOpen) {
+      this.closeHelp(); // any key closes the overlay and is not passed on
+      return;
+    }
     if (this.prompt) {
       this.promptKey(e);
       return;
@@ -290,6 +298,9 @@ export class App {
       case "toggleTrails":
         this.setTrails(!this.trails);
         return;
+      case "help":
+        this.helpOpen = true;
+        return;
       case "debugPrompt":
         // Hidden command (0x0b4d4): only on the chart and only while no enemy is alerted (ds:0x21aa = 0).
         if (this.screen === "chart" && sim.sub.alertTimer === 0) this.prompt = { kind: "password", editor: new LineEditor(12) };
@@ -298,6 +309,16 @@ export class App {
         this.returnToMenu("simulation");
         return;
     }
+  }
+
+  /** Controls quick-reference overlay (key ? or H during a mission); the world is paused while it is shown. */
+  get helpVisible(): boolean {
+    return this.helpOpen;
+  }
+
+  private closeHelp(): void {
+    this.helpOpen = false;
+    this.runner?.resetClock();
   }
 
   private setScreen(screen: PlayScreen): void {
@@ -312,8 +333,12 @@ export class App {
     if (this.difficultyEditor) {
       const done = this.difficultyEditor.handle(e);
       if (done === "enter") {
-        const n = Number.parseFloat(this.difficultyEditor.value);
-        if (Number.isFinite(n)) this.gameControl.apply(1, n);
+        const text = this.difficultyEditor.value.trim();
+        if (this.editorItem === 5) this.gameControl.apply(5, /^\d+$/.test(text) ? Number(text) : 0); // R, 0 or junk = random
+        else {
+          const n = Number.parseFloat(text);
+          if (Number.isFinite(n)) this.gameControl.apply(1, n);
+        }
         this.applySettings();
         this.difficultyEditor = null;
       } else if (done === "escape") this.difficultyEditor = null;
@@ -325,8 +350,10 @@ export class App {
       this.setScreen("control");
       return;
     }
-    if (action.item === 1) this.difficultyEditor = new LineEditor(3);
-    else {
+    if (action.item === 1 || action.item === 5) {
+      this.editorItem = action.item;
+      this.difficultyEditor = new LineEditor(3);
+    } else {
       this.gameControl.apply(action.item);
       this.applySettings();
     }
@@ -365,7 +392,7 @@ export class App {
   // ---------------------------------------------------------------------------------------------------------------
 
   /** Pick a random scenario (1..20 like 0x0bb10), build the simulation and show the orders. */
-  startMission(scenarioId: number = pickScenarioId(this.random()), seed: number = Math.floor(this.random() * 2 ** 31)): void {
+  startMission(scenarioId: number = this.settings.mission ?? pickScenarioId(this.random()), seed: number = Math.floor(this.random() * 2 ** 31)): void {
     const course = this.data.courses[scenarioId];
     const orders = this.data.orders[scenarioId];
     if (!course || !orders) throw new Error(`scenario ${scenarioId} is missing`);
@@ -383,6 +410,7 @@ export class App {
     this.snapshot = takeSnapshot(sim);
     this.screen = "control";
     this.prompt = null;
+    this.helpOpen = false;
     this.radio.clear();
     this.lastPlayMs = null;
     this.startOrders(orders);
@@ -484,6 +512,7 @@ export class App {
     this.sim = null;
     this.runner = null;
     this.orders = null;
+    this.helpOpen = false;
     this.radio.clear();
     this.launcher.returnFrom(from === "simulation" ? "demo" : from);
     this.mode = "menu";
@@ -539,12 +568,14 @@ export class App {
       this.splashStart ??= timeMs;
       if (timeMs - this.splashStart >= SPLASH_MS) this.mode = "title";
     }
+    if (this.mode !== "title") this.titleSince = null;
     switch (this.mode) {
       case "splash":
         drawSplash(g, this.titleArt);
         return;
       case "title":
-        drawTitle(g, this.titleArt, this.sprites, timeMs);
+        this.titleSince ??= timeMs;
+        drawTitle(g, this.titleArt, this.sprites, timeMs, timeMs - this.titleSince);
         return;
       case "menu":
         drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
@@ -583,7 +614,7 @@ export class App {
     if (!sim || !runner) return;
     const dt = this.lastPlayMs === null ? 0 : Math.min((timeMs - this.lastPlayMs) / 1000, 0.25);
     this.lastPlayMs = timeMs;
-    const paused = this.screen === "log" || this.screen === "damage" || this.screen === "gameControl" || this.prompt !== null;
+    const paused = this.screen === "log" || this.screen === "damage" || this.screen === "gameControl" || this.prompt !== null || this.helpOpen;
     runner.paused = paused;
     const result = runner.frame(timeMs);
     this.handleEvents(result.events);
@@ -600,7 +631,7 @@ export class App {
     const record = sim.tick !== this.lastTrailTick;
     this.lastTrailTick = sim.tick;
     for (const b of Object.values(this.trailBuffers)) b.recording = this.trailsOn && record;
-    this.drawPlayScreen(this.screen, view, this.trailsOn, this.difficultyEditor);
+    this.drawPlayScreen(this.screen, view, this.trailsOn, this.difficultyEditor, true);
     if (this.prompt) {
       drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
     }
@@ -608,15 +639,16 @@ export class App {
     else {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);
+      if (this.helpOpen) drawHelpOverlay(g);
     }
   }
 
   /** One mission screen, from the extracted GATO1 layouts when they are loaded, otherwise the approximated drawing. Shared with the demo. */
-  private drawPlayScreen(screen: PlayScreen, view: PlayView, trails: boolean, editor: LineEditor | null): void {
+  private drawPlayScreen(screen: PlayScreen, view: PlayView, trails: boolean, editor: LineEditor | null, remakeExtras = true): void {
     const g = this.g;
     const L = this.cockpit;
     const trail = trails && (screen === "radar" || screen === "chart" || screen === "quadrant") ? this.trailBuffers[screen] : undefined;
-    const prompt = editor ? "NEW DIFFICULTY LEVEL" : null;
+    const prompt = editor ? (this.editorItem === 5 ? "MISSION 1-20, R = RANDOM" : "NEW DIFFICULTY LEVEL") : null;
     switch (screen) {
       case "control":
         if (L) drawControlRoomLayout(g, view, L);
@@ -643,8 +675,8 @@ export class App {
         else drawDamageReport(g, view);
         break;
       case "gameControl":
-        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "");
-        else drawGameControl(g, view.settings, prompt, editor?.value ?? "");
+        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", remakeExtras);
+        else drawGameControl(g, view.settings, prompt, editor?.value ?? "", remakeExtras);
         break;
     }
   }
@@ -686,7 +718,7 @@ export class App {
         this.drawPlayScreen("log", view, false, null);
         break;
       case "gameControl":
-        this.drawPlayScreen("gameControl", view, false, null);
+        this.drawPlayScreen("gameControl", view, false, null, false);
         break;
       case "title":
         drawTitle(g, this.titleArt, this.sprites, timeMs);
