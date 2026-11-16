@@ -1,0 +1,212 @@
+{
+  "_about": "GATO 'History and Specifications' content (menu item [3]). Original text (c) 1984 Spectrum HoloByte; reproduce only with the right to do so.",
+  "source": {
+    "text_file": {
+      "path": "Original/History",
+      "size_bytes": 4083,
+      "sha256": "470a23b3d7a02582c8aeb9ab6cd1e260070479948497c8a7f5fe3f148a0b4815"
+    },
+    "viewer": {
+      "path": "Original/History.exe",
+      "size_bytes": 19072,
+      "sha256": "ae0a6539e327673533f303441f83713c63a46981c8f801816a9f91c1a8ecccba"
+    },
+    "note": "The text is NOT inside History.exe; the executable only reads the data file named by the string literal 'HISTORY' and contains the prompts listed under 'viewer'."
+  },
+  "format": {
+    "encoding": "7-bit ASCII (one stray 0x8A byte, see control_codes)",
+    "line_ending": "CR LF",
+    "end_of_file": "single 0x1A",
+    "page_separator": "a line consisting only of '*'",
+    "pages": 5,
+    "total_lines_without_separators": 90,
+    "max_line_length": 68,
+    "paragraph_convention": "first line of a paragraph is indented by 5 spaces; others start at column 0",
+    "specification_layout": "labels at column 5, values from column 24; continuation lines indented to column 24",
+    "typography_notes": "'Torpedos:' is the original spelling; 'sub-' / 'marines.' is a hyphenation across lines (joined as 'submarines' in paragraphs/note)."
+  },
+  "control_codes": [
+    {
+      "offset": 2744,
+      "byte": "0x8A",
+      "context_hex": "4f 4e 53 0d 8a 0d 0a 20",
+      "where": "line 'SPECIFICATIONS' (page 4): bytes 0D 8A 0D 0A instead of 0D 0A",
+      "interpretation": "Stray lone CR followed by 0x8A = 0x0A with bit 7 set, the WordStar 'soft line feed' convention, left over from the word processor that produced the file. Not displayable text; strip it for the remake.",
+      "unresolved": "How the original BASIC viewer rendered it (an extra blank line, or CP437 glyph 0x8A) was not determined; it was not decoded from the viewer's code."
+    },
+    {"offset": 4082, "byte": "0x1A", "meaning": "Ctrl-Z end-of-file marker"},
+    {
+      "offsets": [1111, 2246, 2704, 3405],
+      "byte": "'*' alone on a line (0x2A)",
+      "meaning": "page break; the viewer's literal \"*\" is compared with each line read"
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "kind": "prose",
+      "byte_range": [0, 1111],
+      "line_count": 21,
+      "trailing_blank_lines": 0,
+      "lines": [
+        "     The GATO class formed the backbone of the American",
+        "submarine fleet during the Second World War.  Seventy-three",
+        "of these oceanic vessels were built between 1940 and 1943.",
+        "They were fast, strong, well armed, and capable of", "patrolling for long periods.",
+        "     GATO class submarines bore the brunt of the undersea",
+        "Pacific campaign.  Their primary functions were to patrol",
+        "enemy sea lanes, bombard enemy islands, lay mine fields, land",
+        "supplies for guerrillas and coast watchers, and rescue",
+        "downed aircraft crews.  Rescue missions were particularly",
+        "hazardous since they forced the submarine to remain", "vulnerable in dangerous waters for seemingly endless",
+        "periods.  Even with these unfavorable odds, submarines",
+        "were still credited with saving the lives of 380 airmen", "during the war.",
+        "     The usual armament of a GATO class submarine included",
+        "24 torpedoes, with six torpedo tubes forward and four tubes",
+        "aft (the enclosed video game allows use of only four",
+        "forward tubes).  Up to forty underwater mines could be",
+        "carried in lieu of spare torpedoes, and these were laid", "through the torpedo tubes."
+      ],
+      "paragraphs": [
+        "The GATO class formed the backbone of the American submarine fleet during the Second World War.  Seventy-three of these oceanic vessels were built between 1940 and 1943. They were fast, strong, well armed, and capable of patrolling for long periods.",
+        "GATO class submarines bore the brunt of the undersea Pacific campaign.  Their primary functions were to patrol enemy sea lanes, bombard enemy islands, lay mine fields, land supplies for guerrillas and coast watchers, and rescue downed aircraft crews.  Rescue missions were particularly hazardous since they forced the submarine to remain vulnerable in dangerous waters for seemingly endless periods.  Even with these unfavorable odds, submarines were still credited with saving the lives of 380 airmen during the war.",
+        "The usual armament of a GATO class submarine included 24 torpedoes, with six torpedo tubes forward and four tubes aft (the enclosed video game allows use of only four forward tubes).  Up to forty underwater mines could be carried in lieu of spare torpedoes, and these were laid through the torpedo tubes."
+      ]
+    },
+    {
+      "page": 2,
+      "kind": "prose",
+      "byte_range": [1114, 2246],
+      "line_count": 21,
+      "trailing_blank_lines": 0,
+      "lines": [
+        "     All boats were fitted with two deck gun mounts, one",
+        "forward of the conning tower and one aft.  Often, however,",
+        "only one gun was actually mounted.  Gun calibers",
+        "varied greatly.  The first boats had 3 inch (76 mm) 50-cal.",
+        "guns, several had 20 mm 70-cal. anti-aircraft guns,",
+        "and, toward the end of the war, some boats were fitted with", "5 inch (127 mm) 25-cal. guns.",
+        "     GATO class submarines were built with two hulls.  The",
+        "inner, or pressure hull, contained the crew, engines and",
+        "controls.  The space between inner and outer hulls held the",
+        "ballast tanks and fuel and was open to the circulation of",
+        "sea water.  As fuel was used, sea water was allowed to enter",
+        "the fuel tanks to maintain a constant buoyancy.  (Diesel fuel",
+        "floats on top of water and was siphoned from the top of the", "tanks.)",
+        "     The size and shape of the conning tower underwent several",
+        "modifications during the war.  The use of larger surface",
+        "armament required enlargement and strengthening of the tower.",
+        "     Normally, each submarine had two periscopes, one",
+        "large spotting scope and one smaller (slimmer and harder to", "detect) attack scope."
+      ],
+      "paragraphs": [
+        "All boats were fitted with two deck gun mounts, one forward of the conning tower and one aft.  Often, however, only one gun was actually mounted.  Gun calibers varied greatly.  The first boats had 3 inch (76 mm) 50-cal. guns, several had 20 mm 70-cal. anti-aircraft guns, and, toward the end of the war, some boats were fitted with 5 inch (127 mm) 25-cal. guns.",
+        "GATO class submarines were built with two hulls.  The inner, or pressure hull, contained the crew, engines and controls.  The space between inner and outer hulls held the ballast tanks and fuel and was open to the circulation of sea water.  As fuel was used, sea water was allowed to enter the fuel tanks to maintain a constant buoyancy.  (Diesel fuel floats on top of water and was siphoned from the top of the tanks.)",
+        "The size and shape of the conning tower underwent several modifications during the war.  The use of larger surface armament required enlargement and strengthening of the tower.",
+        "Normally, each submarine had two periscopes, one large spotting scope and one smaller (slimmer and harder to detect) attack scope."
+      ]
+    },
+    {
+      "page": 3,
+      "kind": "prose",
+      "byte_range": [2249, 2704],
+      "line_count": 11,
+      "trailing_blank_lines": 3,
+      "lines": [
+        "     After 1942, the radar antenna was installed aft of the",
+        "periscopes.  The periscope radar complex also contained the",
+        "radio antenna and two crew member lookout stations.",
+        "     The diesel-electric propulsion system provided power",
+        "with either four diesel engines or four electric motors coupled",
+        "in pairs to drive two propeller shafts through reduction gears.",
+        "The diesel engines also charged the batteries, which were made", "up of 252 elements.", "", "", ""
+      ],
+      "paragraphs": [
+        "After 1942, the radar antenna was installed aft of the periscopes.  The periscope radar complex also contained the radio antenna and two crew member lookout stations.",
+        "The diesel-electric propulsion system provided power with either four diesel engines or four electric motors coupled in pairs to drive two propeller shafts through reduction gears. The diesel engines also charged the batteries, which were made up of 252 elements."
+      ]
+    },
+    {
+      "page": 4,
+      "kind": "specifications",
+      "byte_range": [2707, 3405],
+      "line_count": 18,
+      "trailing_blank_lines": 0,
+      "lines": [
+        "                      SPECIFICATIONS", "     Builders:          Electric Boat, Groton",
+        "                        Portsmouth Navy Yard", "                        Mare Island Navy Yard",
+        "                        Manitowoc Shipyards", "", "     Displacement:      1825 tons surfaced",
+        "                        2417 (+ or - 7) tons submerged", "",
+        "     Dimensions:        311 ft. 9 in. x 27 ft. 3 in. x 15 ft. 3 in.", "",
+        "     Machinery:         Diesel   - 4 General Motors",
+        "                                    or Fairbanks Morse", "                        Electric - 4 Elliot or",
+        "                                    General Electric", "", "     Maximum Power:     5400 hp surfaced",
+        "                        2740 hp submerged"
+      ]
+    },
+    {
+      "page": 5,
+      "kind": "specifications",
+      "byte_range": [3408, 4082],
+      "line_count": 19,
+      "trailing_blank_lines": 0,
+      "lines": [
+        "     Maximum Speed:     20.25 knots surfaced", "                        8.75 knots submerged", "",
+        "     Fuel Load:         378-472 tons", "", "     Range:             11,800 miles at 10 knots surfaced",
+        "                        95 miles at 5 knots submerged", "", "     Torpedos:          24, 21-inch diameter",
+        "", "     Maximum Depth:     300 feet", "", "     Complement:        65", "",
+        "     Cost:              $6,288,200", "NOTE: As of 1972, twelve GATO class submarines were still in use by",
+        "      the United States Navy. As of 1984, all diesel-powered sub-",
+        "      marines are retired.  PRESENTLY, the USS GATO,a 594 class",
+        "      nuclear submarine, is docked at the New London Submarine Base."
+      ]
+    }
+  ],
+  "specifications": {
+    "value_column": 24,
+    "fields": [
+      {
+        "label": "Builders",
+        "lines": ["Electric Boat, Groton", "Portsmouth Navy Yard", "Mare Island Navy Yard", "Manitowoc Shipyards"]
+      },
+      {"label": "Displacement", "lines": ["1825 tons surfaced", "2417 (+ or - 7) tons submerged"]},
+      {"label": "Dimensions", "lines": ["311 ft. 9 in. x 27 ft. 3 in. x 15 ft. 3 in."]},
+      {
+        "label": "Machinery",
+        "lines": ["Diesel   - 4 General Motors", "or Fairbanks Morse", "Electric - 4 Elliot or", "General Electric"]
+      },
+      {"label": "Maximum Power", "lines": ["5400 hp surfaced", "2740 hp submerged"]},
+      {"label": "Maximum Speed", "lines": ["20.25 knots surfaced", "8.75 knots submerged"]},
+      {"label": "Fuel Load", "lines": ["378-472 tons"]},
+      {"label": "Range", "lines": ["11,800 miles at 10 knots surfaced", "95 miles at 5 knots submerged"]},
+      {"label": "Torpedos", "lines": ["24, 21-inch diameter"]},
+      {"label": "Maximum Depth", "lines": ["300 feet"]},
+      {"label": "Complement", "lines": ["65"]},
+      {"label": "Cost", "lines": ["$6,288,200"]}
+    ],
+    "note": "As of 1972, twelve GATO class submarines were still in use by the United States Navy. As of 1984, all diesel-powered submarines are retired.  PRESENTLY, the USS GATO,a 594 class nuclear submarine, is docked at the New London Submarine Base."
+  },
+  "viewer": {
+    "program": "History.exe",
+    "string_literals": [
+      {"file_offset": 16612, "data_segment_offset": 2180, "text": "HISTORY"},
+      {"file_offset": 16624, "data_segment_offset": 2192, "text": "*"},
+      {"file_offset": 16630, "data_segment_offset": 2198, "text": "PRESS ANY KEY TO CONTINUE"},
+      {"file_offset": 16664, "data_segment_offset": 2232, "text": "      "},
+      {"file_offset": 16674, "data_segment_offset": 2242, "text": "PRESS 'R' TO REREAD THIS INFORMATION"},
+      {"file_offset": 16714, "data_segment_offset": 2282, "text": "PRESS ANY OTHER KEY TO RETURN"},
+      {"file_offset": 16748, "data_segment_offset": 2316, "text": "R"},
+      {"file_offset": 16754, "data_segment_offset": 2322, "text": "GATO"}
+    ],
+    "behaviour_inferred_from_literals": [
+      "opens the data file 'HISTORY' and reads it line by line",
+      "a line equal to '*' ends a page; after each page it shows 'PRESS ANY KEY TO CONTINUE'",
+      "after the last page it shows \"PRESS 'R' TO REREAD THIS INFORMATION\" and 'PRESS ANY OTHER KEY TO RETURN'; 'R' restarts, any other key chains to 'GATO' (the menu)"
+    ],
+    "certainty": "literals are exact; the control flow is inferred from them and the data format, not from a full disassembly of History.exe"
+  },
+  "diagrams": {
+    "found": [],
+    "searched": "History.exe has no DRAW/PAINT/GET/PUT strings and no graphics-mode setup; History has no non-text bytes except the 0x8A and 0x1A noted above. The history screens are text only."
+  }
+}
