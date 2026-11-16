@@ -6,6 +6,8 @@ export type PlayScreen = "control" | "radar" | "chart" | "quadrant" | "log" | "d
 export type InputAction =
   | { type: "sim"; command: SimCommand }
   | { type: "screen"; screen: PlayScreen }
+  /** M: radio room (0x0d13c -> 0x0ba3d): reports heavy damage, or (remake) re-reads the orders, then returns to the control room. */
+  | { type: "radioRoom" }
   /** Z on the chart: PASSWORD? prompt of the hidden coordinate command (0x0b4d4). */
   | { type: "debugPrompt" }
   /** ESC: the original ends the program (rt_1049 + rt_19da at 0x0d17e); the remake returns to the launcher. */
@@ -28,7 +30,7 @@ export interface KeyLike {
  *   Left/Right   rudder +0.005 / -0.005                          Up/Down          rise / dive
  *   5 (keypad)   rudder and planes to neutral                    T                torpedo doors
  *   D / E        diesel / electric                               F P A S          scope facing
- *   C / Q / L / R / M   chart, quadrant map, captain's log, damage report, control room
+ *   C / Q / L / R / M   chart, quadrant map, captain's log, damage report, radio room (then the control room)
  *   Tab          GAME CONTROL                                    Z (on chart)     hidden coordinate command
  */
 export function translatePlayKey(e: KeyLike): InputAction | null {
@@ -95,7 +97,7 @@ export function translatePlayKey(e: KeyLike): InputAction | null {
     case "R":
       return { type: "screen", screen: "damage" };
     case "M":
-      return { type: "screen", screen: "control" };
+      return { type: "radioRoom" };
     case "Z":
       return { type: "debugPrompt" };
     default:

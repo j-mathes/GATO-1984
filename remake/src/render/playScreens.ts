@@ -10,12 +10,16 @@ import {
   compassDegrees,
   inScopeWindow,
   quadrantOf,
+  scopeScreenX,
   scopeUsable,
+  RADIO_MESSAGES,
   type GameSettings,
+  type RadioView,
   type Simulation,
 } from "../core/index.js";
 import type { LogStore } from "../app/logStore.js";
 import type { Snapshot } from "../app/runner.js";
+import { drawExplosion } from "./explosions.js";
 import { COLORS, Gfx, LOGICAL_WIDTH } from "./gfx.js";
 import type { SpriteLibrary } from "./sprites.js";
 
@@ -90,8 +94,6 @@ function liveContacts(view: PlayView): LiveContact[] {
 // --------------------------------------------------------------------------------------------------------------------
 // Control room
 // --------------------------------------------------------------------------------------------------------------------
-
-const FACING_SIGN = { F: 1, P: -1, A: 1, S: -1 } as const;
 
 function dial(g: Gfx, cx: number, cy: number, angle: number, color: string, fromMath: boolean): void {
   g.ellipse(cx, cy, 26, 22, COLORS.grey);
@@ -169,8 +171,16 @@ function drawScope(g: Gfx, v: PlayView): void {
     let a = c.relative - SCOPE_OFFSET[sub.scopeFacing];
     while (a < 0) a += 6.2832;
     // screen x of the original (0x06ccd): 160 - SIN(a) * (227 + size * (0.5 + |SIN(frame*0.393)| * 1.5) * facingSign)
-    const x = 160 - Math.sin(a) * (227 + c.size * (0.5 + Math.abs(Math.sin(c.frame * 0.393)) * 1.5) * FACING_SIGN[sub.scopeFacing]);
+    const x = scopeScreenX(a, c.size, c.frame, sub.scopeFacing);
     drawContact(g, v, c, x, 68, day);
+  }
+  // torpedo hits: the sunk ship stays drawn until its spikes are erased, then the plume/debris of core/explosion.ts
+  for (const ex of sim.explosions) {
+    if (ex.shipVisible && !ex.plan.survived) {
+      const ghost: LiveContact = { slot: 0, typeCode: ex.plan.typeCode, distance: 0, relative: 0, size: ex.plan.drawnSize, frame: ex.plan.frame, x: 0, y: 0 };
+      drawContact(g, v, ghost, ex.plan.x, 68, day);
+    }
+    drawExplosion(g, ex, day);
   }
   g.unclip();
 }
@@ -346,15 +356,22 @@ export function drawPrompt(g: Gfx, lines: string[], entry: string): void {
   g.text(4, 10 + lines.length, `${entry}_`, COLORS.yellow);
 }
 
-export function drawEnd(g: Gfx, status: Simulation["status"]): void {
+export function drawEnd(g: Gfx, status: Simulation["status"], completedBy: Simulation["completedBy"] = null): void {
   g.rect(24, 70, 272, 56, COLORS.black);
   g.rect(24, 70, 272, 56, COLORS.white, false);
   const text =
     status === "missionComplete"
-      ? ["YOU HAVE SUCCESSFULLY", "COMPLETED YOUR MISSION"]
+      ? (completedBy === "island" ? ["CONTACT MADE", "MISSION COMPLETED"] : RADIO_MESSAGES.convoyDestroyed.lines.map((l) => l.text.trim()))
       : status === "suffocated"
-        ? [" No more oxygen "]
+        ? RADIO_MESSAGES.oxygenExhausted.lines.map((l) => l.text)
         : ["YOUR SUBMARINE HAS BEEN LOST"];
   text.forEach((t, i) => g.centered(10 + i, t, status === "missionComplete" ? COLORS.green : COLORS.red));
   g.centered(13, "DO YOU WANT DO PLAY AGAIN? (Y/N)", COLORS.white);
+}
+
+/** A radio/status message over the control room: the original's black box (BF, colour 0) with the text on its LOCATE cells. */
+export function drawRadioMessage(g: Gfx, view: RadioView): void {
+  const b = view.box;
+  if (b) g.rect(b.x0, b.y0, b.x1 - b.x0 + 1, b.y1 - b.y0 + 1, COLORS.black);
+  for (const l of view.lines) g.text(l.col, l.row, l.text, COLORS.white);
 }

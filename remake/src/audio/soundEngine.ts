@@ -50,12 +50,13 @@ export type EffectName =
   | "resupplyDone"
   | "explosion"
   | "subDestroyed"
-  | "missionComplete";
+  | "missionComplete"
+  | "radioAlert";
 
 export interface EffectDef {
   steps: SoundStep[];
-  /** "original" = frequency and duration read from the SOUND statement; "inferred" = frequency read, duration/shape chosen. */
-  provenance: "original" | "inferred";
+  /** "original" = frequency and duration read from the SOUND statement; "inferred" = frequency read, duration/shape chosen; "remake" = not in the original. */
+  provenance: "original" | "inferred" | "remake";
   source: string;
 }
 
@@ -94,8 +95,16 @@ export const EFFECTS: Record<EffectName, EffectDef> = {
   resupplyDone: { steps: [{ frequency: 1500, ticks: 9 }], provenance: "original", source: "SOUND 1500, 9*snd at 0x0cda6 / 0x0ce0c" },
   explosion: {
     steps: sweep(900, 80, 14, 0.8),
-    provenance: "inferred",
-    source: "the original draws the explosion with computed SOUND frequencies (region 51); this descending sweep is a remake approximation",
+    provenance: "remake",
+    source: "the original's torpedo-hit animation (0x086dd-0x09c24) has no SOUND statement; this descending sweep is a remake addition",
+  },
+  radioAlert: {
+    steps: [
+      { frequency: 1500, ticks: 1 },
+      { frequency: 1200, ticks: 1 },
+    ],
+    provenance: "remake",
+    source: "optional alert for radio messages (core/radio.ts); the original prints them silently",
   },
   subDestroyed: {
     steps: sweep(1400, 100, 40, 0.6),

@@ -11,6 +11,8 @@ import {
 } from "./ai.js";
 import { advanceTorpedoes, createTorpedoes, launchTorpedo, ShipLog } from "./combat.js";
 import { DAMAGE, ENGINE, RESUPPLY, DEPTH, SLOT, START } from "./constants.js";
+import type { Explosion } from "./explosion.js";
+import { radioRoomReport, type RadioMessage } from "./radio.js";
 import {
   applyHelmCommand,
   centreControls,
@@ -60,6 +62,10 @@ export class Simulation {
   status: GameStatus = "running";
   tick = 0;
   missionComplete = false;
+  /** How the mission was won, once it has been. */
+  completedBy: "island" | "convoySunk" | null = null;
+  /** Running explosion animations; they only advance through {@link advanceExplosions} (the world does not wait for them). */
+  readonly explosions: Explosion[] = [];
   /** Set once the island objective has been used (the original overwrites trailer[0] with 1, 0x070f4). */
   objectiveDone = false;
 
@@ -148,6 +154,7 @@ export class Simulation {
         closeList: this.closeList,
         inControlRoom: o.inControlRoom,
         date: this.date,
+        explosions: this.explosions,
       });
       if (result.ownBoatDestroyed) return this.destroy("ownTorpedo", events);
     }
@@ -181,6 +188,7 @@ export class Simulation {
 
     if (stepResources(sub) === "suffocated") {
       this.status = "suffocated";
+      events.push({ type: "radio", message: "oxygenExhausted" });
       events.push({ type: "subDestroyed", reason: "oxygen" });
       return events;
     }
@@ -228,15 +236,32 @@ export class Simulation {
     ) {
       this.objectiveDone = true;
       events.push({ type: "objectiveReached" });
+      events.push({ type: "radio", message: "contactMade" });
+      events.push({ type: "radio", message: "missionCompleted" });
       this.completeMission("island", events);
     }
   }
 
   private completeMission(reason: "island" | "convoySunk", events: SimEvent[]): void {
     this.missionComplete = true;
+    this.completedBy = reason;
     this.status = "missionComplete";
     this.log.totals.missionsCompleted += 1;
+    if (reason === "convoySunk") events.push({ type: "radio", message: "convoyDestroyed" });
     events.push({ type: "missionComplete", reason });
+  }
+
+  /** Key M: ask the radio room. Queues the "heavy damage" report when the radio room is damaged and returns it, otherwise null. */
+  requestRadioRoom(): RadioMessage | null {
+    const report = radioRoomReport(this.sub);
+    if (report) this.pending.push({ type: "radio", message: report.id });
+    return report;
+  }
+
+  /** Advance the explosion animations by real time and drop the finished ones. */
+  advanceExplosions(seconds: number): void {
+    for (const e of this.explosions) e.advance(seconds);
+    for (let i = this.explosions.length - 1; i >= 0; i -= 1) if (this.explosions[i]?.finished) this.explosions.splice(i, 1);
   }
 
   /** Subtender resupply (0x07108-0x071bf, 0x0cd8e-0x0cf8b): refuel, reload torpedoes, repair all compartments. */

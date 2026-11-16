@@ -11,6 +11,7 @@ import {
   buildScenario,
   createRng,
   pickScenarioId,
+  RadioInbox,
   type CourseJson,
   type DemoScriptDocument,
   type GameSettings,
@@ -42,6 +43,7 @@ import {
   drawPrompt,
   drawQuadrantMap,
   drawRadar,
+  drawRadioMessage,
   type PlayView,
 } from "../render/playScreens.js";
 import type { SpriteLibrary } from "../render/sprites.js";
@@ -96,6 +98,10 @@ export class App {
   private demo: { player: DemoPlayer; sim: Simulation; runner: FixedTimestepRunner; page: number; screen: string } | null = null;
   private demoLog: LogStore | null = null;
   private lastFrame = 0;
+  private lastPlayMs: number | null = null;
+  private currentOrders: OrdersJson | null = null;
+  /** Radio/status messages of the original (core/radio.ts), shown over the control room while the mission runs. */
+  readonly radio = new RadioInbox();
 
   constructor(
     private readonly g: Gfx,
@@ -228,6 +234,9 @@ export class App {
       case "screen":
         this.setScreen(action.screen);
         return;
+      case "radioRoom":
+        this.radioRoom();
+        return;
       case "debugPrompt":
         // Hidden command (0x0b4d4): only on the chart and only while no enemy is alerted (ds:0x21aa = 0).
         if (this.screen === "chart" && sim.sub.alertTimer === 0) this.prompt = { kind: "password", editor: new LineEditor(12) };
@@ -320,16 +329,36 @@ export class App {
     this.snapshot = takeSnapshot(sim);
     this.screen = "control";
     this.prompt = null;
+    this.radio.clear();
+    this.lastPlayMs = null;
     this.startOrders(orders);
     this.mode = "orders";
   }
 
-  private startOrders(orders: OrdersJson): void {
+  private startOrders(orders: OrdersJson, instant = false): void {
+    this.currentOrders = orders;
     const body = orders.raw_lines.slice(1);
     const header = [(orders.classification ?? "SECRET").toUpperCase(), dtgLine()];
     const timeline = buildOrdersTimeline(body, this.data.morse, { difficulty: this.settings.difficulty, soundOn: this.settings.sound });
-    const handle = this.sound.enabled ? this.sound.playMorse(body, this.data.morse, { soundOn: this.settings.sound }) : null;
-    this.orders = { lines: body, header, timeline, start: this.lastFrame, handle, done: false };
+    const handle = !instant && this.sound.enabled ? this.sound.playMorse(body, this.data.morse, { soundOn: this.settings.sound }) : null;
+    const start = instant ? this.lastFrame - (timeline.duration + 1) * 1000 : this.lastFrame;
+    this.orders = { lines: body, header, timeline, start, handle, done: false };
+  }
+
+  /**
+   * Key M (0x0d13c -> radio room routine 0x0ba3d): with a damaged radio room the boat gets the "REPORTS HEAVY DAMAGE" message; otherwise the
+   * original asks for a new mission, which the remake replaces by showing the current orders again (text at once; Morse from difficulty 8,
+   * where the text is hidden). Either way the control room follows.
+   */
+  private radioRoom(): void {
+    const sim = this.sim;
+    if (!sim) return;
+    this.setScreen("control");
+    if (sim.requestRadioRoom()) return;
+    if (this.currentOrders) {
+      this.startOrders(this.currentOrders, this.settings.difficulty < 8);
+      this.mode = "orders";
+    }
   }
 
   /** Any key: stop the Morse and go to the control room (the original abandons the rest of the orders, 0x0bd86). */
@@ -364,6 +393,10 @@ export class App {
         case "damageAlarm":
           this.play("damageAlarm");
           break;
+        case "radio":
+          this.radio.push(e.message);
+          this.play("radioAlert");
+          break;
         case "fuelLow":
           this.play("lowFuel");
           break;
@@ -397,6 +430,7 @@ export class App {
     this.sim = null;
     this.runner = null;
     this.orders = null;
+    this.radio.clear();
     this.launcher.returnFrom(from === "simulation" ? "demo" : from);
     this.mode = "menu";
   }
@@ -452,7 +486,7 @@ export class App {
         drawTitle(g, this.titleArt, this.sprites, timeMs);
         return;
       case "menu":
-        drawLauncherMenu(g, this.menuEntry);
+        drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
         return;
       case "orders":
         this.frameOrders(timeMs);
@@ -486,10 +520,14 @@ export class App {
     const sim = this.sim;
     const runner = this.runner;
     if (!sim || !runner) return;
+    const dt = this.lastPlayMs === null ? 0 : Math.min((timeMs - this.lastPlayMs) / 1000, 0.25);
+    this.lastPlayMs = timeMs;
     const paused = this.screen === "log" || this.screen === "damage" || this.screen === "gameControl" || this.prompt !== null;
     runner.paused = paused;
     const result = runner.frame(timeMs);
     this.handleEvents(result.events);
+    sim.advanceExplosions(dt);
+    this.radio.advance(dt);
     this.snapshot = result.render;
     this.draw(timeMs, sim, result.render);
   }
@@ -523,7 +561,11 @@ export class App {
     if (this.prompt) {
       drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
     }
-    if (sim.status !== "running") drawEnd(g, sim.status);
+    if (sim.status !== "running") drawEnd(g, sim.status, sim.completedBy);
+    else {
+      const message = this.radio.current;
+      if (message) drawRadioMessage(g, message);
+    }
   }
 
   private frameDemo(timeMs: number): void {

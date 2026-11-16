@@ -46,7 +46,7 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 | Q | Quadrant map |
 | L | Captain's log |
 | R | Damage report |
-| M | Back to the control room |
+| M | Radio room, then the control room: with a damaged radio room (compartment 1) the "REPORTS HEAVY DAMAGE" message appears; otherwise the orders are shown again (the original requests a new mission here) |
 | Tab | GAME CONTROL (items 1–4; difficulty takes a typed 0–9) |
 | Z (on the chart) | Hidden debug command: type `PAED`, Enter, then `x,y`, Enter to teleport (only while no enemy is alerted) |
 | Any key | Skips the Morse order broadcast |
@@ -88,7 +88,8 @@ Details live in `../analysis/` (`loader_verification.md`, `exe_architecture.md`,
 
 ## Caveats
 
-- Radio messages, `PLAY` note tables beyond the Morse tones and explosion animation timing are not ported.
-- `ds:0x23a6` is treated as 0. Some effect durations and the damage-alarm, explosion, sub-lost and mission-complete sounds are inferred.
+- `PLAY` note tables beyond the Morse tones are not ported. GATO1 contains no table of mid-mission radio traffic: the only messages are CONTACT MADE / MISSION COMPLETED, YOU HAVE SUCCESSFULLY COMPLETED YOUR MISSION, "No more oxygen" and the radio-room damage report (`src/core/radio.ts`, details in `../analysis/radio_and_explosions.md`). The radio alert tone is a remake addition.
+- Torpedo-hit explosions follow the original's stages and frame counts (`src/core/explosion.ts`), but the original is CPU bound, so their durations in seconds (about 1.5-5 s) are estimated from the empty-loop lengths. The original blocks the whole game while it plays; the remake keeps the world running.
+- `ds:0x23a6` is treated as 0. Some effect durations and the damage-alarm, sub-lost and mission-complete sounds are inferred; the original hit animation has no sound, the explosion boom is a remake addition.
 - The original runs unthrottled; the fixed 10 Hz tick, the display modes and the CRT overlay are remake choices.
 - Confirm the rights to the original history text before distributing it.

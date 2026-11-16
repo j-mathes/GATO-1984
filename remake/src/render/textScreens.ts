@@ -5,6 +5,9 @@ import { COLORS, Gfx } from "./gfx.js";
 import type { SpriteLibrary } from "./sprites.js";
 import { TITLE_ART_HEIGHT, TITLE_ART_WIDTH, type TitleArt } from "./titleArt.js";
 
+/** Frame of title_screen.json that backs the launcher menu. */
+export const MENU_FRAME_ID = "launcher_menu";
+
 /**
  * Title page of GATO.EXE. With the exported artwork it is the original picture (striped GATO lettering, credits and the (c) ring
  * as drawn by the BASIC program, text placed on the original LOCATE cells); the old sprite layout is only a fallback when the
@@ -32,7 +35,20 @@ export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary |
   g.centered(24, "PRESS ANY KEY", COLORS.white);
 }
 
-export function drawLauncherMenu(g: Gfx, entry: string, items: readonly LauncherItem[] = LAUNCHER_MENU): void {
+/**
+ * Launcher menu. With the exported artwork it is the original screen: the `launcher_menu` frame (sky, sea and the surfaced submarine on the
+ * COLOR 1,1 palette) with the six text lines on their LOCATE cells and the typed item at row 22, column 24. Without the frame the old
+ * plain layout is used.
+ */
+export function drawLauncherMenu(g: Gfx, entry: string, items: readonly LauncherItem[] = LAUNCHER_MENU, art: TitleArt | null = null): void {
+  const frame = art?.frame(MENU_FRAME_ID);
+  if (art && frame) {
+    g.clear(frame.palette[0]);
+    g.image(art.image(MENU_FRAME_ID), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
+    for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
+    g.text(24, 22, `${entry}_`, frame.palette[3]);
+    return;
+  }
   g.clear();
   g.centered(3, TITLE_LINES[0], COLORS.yellow);
   items.forEach((item, i) => g.text(6, 8 + i * 2, `[${item.number}]   ${item.label}`, COLORS.grey));

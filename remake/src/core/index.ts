@@ -5,6 +5,8 @@ export * from "./scenario.js";
 export * from "./physics.js";
 export * from "./ai.js";
 export * from "./combat.js";
+export * from "./explosion.js";
+export * from "./radio.js";
 export * from "./simulation.js";
 export * from "./launcher.js";
 export * from "./demoPlayer.js";

@@ -1,4 +1,5 @@
 import { COMPARTMENT, DEPTH, DEPTH_CHARGE, ENEMY, SCOPE_OFFSET, SLOT, TORPEDO, TYPE } from "./constants.js";
+import { Explosion, cosmeticRng, planExplosion, scopeScreenX } from "./explosion.js";
 import type {
   LogTotals,
   Rng,
@@ -110,6 +111,8 @@ export interface CombatContext extends DepthChargeContext {
   closeList: number[];
   inControlRoom: boolean;
   date: string;
+  /** Running explosion animations (appended to when a hit is visible through the scope). */
+  explosions?: Explosion[];
 }
 
 export interface CombatResult {
@@ -163,10 +166,11 @@ export function torpedoHits(t: Torpedo, ship: Vessel): boolean {
   return Math.sqrt(dx * dx + dy * dy) < shape.base + Math.cos(phi - ship.heading) ** 6 * shape.length;
 }
 
-function explosionVisible(ctx: CombatContext, t: Torpedo): boolean {
+/** Angle of the torpedo relative to the scope facing when the explosion is visible through the scope, otherwise null. */
+function explosionAngle(ctx: CombatContext, t: Torpedo): number | null {
   const sub = ctx.sub;
   const skip = !ctx.inControlRoom || (!sub.periscopeUp && sub.depth > DEPTH.shallow) || sub.depth > DEPTH.periscopeMax;
-  if (skip) return false;
+  if (skip) return null;
   const dx = t.x - sub.x;
   const dy = t.y - sub.y;
   let a = dx === 0 ? Math.sign(dy) * 1.5708 : Math.atan(dy / dx);
@@ -176,7 +180,7 @@ function explosionVisible(ctx: CombatContext, t: Torpedo): boolean {
   while (rel < 0) rel += TWO_PI;
   rel -= SCOPE_OFFSET[sub.scopeFacing];
   while (rel < 0) rel += TWO_PI;
-  return !(rel < 5.4978 && rel > 0.7854);
+  return rel < 5.4978 && rel > 0.7854 ? null : rel;
 }
 
 /** Returns true when the hit destroyed the own boat. 0x086dd-0x09c24. */
@@ -184,12 +188,29 @@ function resolveHit(ctx: CombatContext, t: Torpedo, ship: Vessel): boolean {
   ship.speed = TORPEDO.damagedSpeed;
   ship.damaged = true;
   t.spent = true;
-  const visible = explosionVisible(ctx, t);
+  const angle = explosionAngle(ctx, t);
+  const visible = angle !== null;
   let survived = false;
   if (visible) {
     const size = ship.typeCode === TYPE.patrolBoat ? ship.apparentSize * 2 : ship.apparentSize;
     if (ctx.rng.next() < ctx.difficulty / 12) survived = true;
     else if (size > TORPEDO.ownBoatKillSize) return true;
+    ctx.explosions?.push(
+      new Explosion(
+        planExplosion(
+          {
+            x: scopeScreenX(angle, ship.apparentSize, ship.frame, ctx.sub.scopeFacing),
+            size,
+            drawnSize: ship.apparentSize,
+            typeCode: ship.typeCode,
+            frame: ship.frame,
+            survived,
+          },
+          cosmeticRng((Math.floor(t.x) * 31 + Math.floor(t.y) * 17 + ship.slot) | 0),
+        ),
+      ),
+    );
+    ctx.events.push({ type: "explosionStarted", slot: ship.slot, survived });
   }
   ctx.events.push({ type: "torpedoHit", slot: ship.slot, typeCode: ship.typeCode, survived });
   if (!survived) sinkVessel(ctx, ship, visible);

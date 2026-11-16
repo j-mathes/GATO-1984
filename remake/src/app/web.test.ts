@@ -12,7 +12,7 @@ import { Simulation, buildScenario, createRng, type CourseJson, type DemoScriptD
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
-import { drawTitle } from "../render/textScreens.js";
+import { drawLauncherMenu, drawTitle } from "../render/textScreens.js";
 import { TitleArt, frameToRgba, parseTitleArt } from "../render/titleArt.js";
 
 const root = new URL("../../", import.meta.url);
@@ -402,5 +402,74 @@ describe("title artwork", () => {
     expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
     drawTitle(g, null, null, 0); // asset missing: the old layout still draws the credits
     expect(calls.some(([n, a]) => n === "centered" && a[1] === "by Paul Arlton and Ed Dawson")).toBe(true);
+  });
+
+  it("draws the launcher_menu frame (surfaced submarine, COLOR 1,1 palette) behind the menu and falls back without it", () => {
+    const puts: { data: Uint8ClampedArray }[] = [];
+    const art = new TitleArt(parseTitleArt(raw()), fakeCanvas(puts));
+    const calls: [string, unknown[]][] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    drawLauncherMenu(g, "2", undefined, art);
+    expect(art.frame("launcher_menu")?.palette).toEqual(["#0000aa", "#00aaaa", "#aa00aa", "#aaaaaa"]);
+    expect([...(puts[0]?.data.slice(0, 4) ?? [])]).toEqual([0x00, 0xaa, 0xaa, 255]); // sky is colour 1 (cyan), above the sea
+    expect(calls.find(([n]) => n === "image")?.[1].slice(1)).toEqual([0, 0, 320, 200, 0, 0, 320, 200]);
+    const text = calls.filter(([n]) => n === "text").map(([, a]) => a.slice(0, 3));
+    expect(text).toContainEqual([4, 15, "[1]   NORMAL PLAY  (DEFAULT)"]);
+    expect(text).toContainEqual([4, 22, "FROM THE MENU ABOVE:"]);
+    expect(text).toContainEqual([24, 22, "2_"]);
+
+    const noMenu = raw();
+    delete noMenu.frames.launcher_menu;
+    calls.length = 0;
+    drawLauncherMenu(g, "", undefined, new TitleArt(parseTitleArt(noMenu), fakeCanvas([])));
+    expect(calls.some(([n]) => n === "image")).toBe(false);
+    expect(calls.some(([n, a]) => n === "text" && String(a[2]).startsWith("[1]"))).toBe(true);
+    calls.length = 0;
+    drawLauncherMenu(g, "", undefined, null);
+    expect(calls.some(([n]) => n === "image")).toBe(false);
+  });
+});
+
+describe("radio room and message overlay in the app", () => {
+  function startApp(): { app: App; sim: Simulation } {
+    const { ctx } = fakeAudio();
+    const g = new Proxy({}, { get: () => () => undefined }) as unknown as Gfx;
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[Number(/(\d+)\.json$/.exec(f)?.[1])] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[Number(/(\d+)\.json$/.exec(f)?.[1])] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.3);
+    app.startMission(1, 5);
+    app.keydown({ key: "x" }); // skip the orders
+    app.frame(0);
+    return { app, sim: (app as unknown as { sim: Simulation }).sim };
+  }
+  const frames = (app: App, from: number, count: number): void => {
+    for (let i = 1; i <= count; i += 1) app.frame(from + i * 250);
+  };
+
+  it("M with a damaged radio room shows RADIO ROOM REPORTS HEAVY DAMAGE for its hold time, then returns to the control room", () => {
+    const { app, sim } = startApp();
+    sim.sub.damage[1] = 1;
+    app.keydown({ key: "c" });
+    expect(app.screen).toBe("chart");
+    app.keydown({ key: "m" });
+    expect(app.screen).toBe("control");
+    expect(app.mode).toBe("play");
+    frames(app, 0, 2);
+    expect(app.radio.current?.message.id).toBe("radioDamaged");
+    expect(app.radio.current?.lines.map((l) => l.text)).toEqual(["RADIO ROOM", "REPORTS HEAVY DAMAGE", "NO MESSAGES MAY BE RECEIVED"]);
+    frames(app, 500, 6); // 1.5 s > the 10000-pass hold (about 1.1 s)
+    expect(app.radio.current).toBeNull();
+  });
+
+  it("M with a working radio re-reads the orders (remake) and any key returns to play", () => {
+    const { app } = startApp();
+    app.keydown({ key: "m" });
+    expect(app.mode).toBe("orders");
+    app.keydown({ key: "x" });
+    expect(app.mode).toBe("play");
+    expect(app.radio.current).toBeNull();
   });
 });

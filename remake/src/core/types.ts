@@ -1,4 +1,5 @@
 import type { ENGINE } from "./constants.js";
+import type { RadioMessageId } from "./radio.js";
 
 /** Source of uniform random numbers in [0, 1), the equivalent of BASIC's RND. */
 export interface Rng {
@@ -240,7 +241,11 @@ export type SimEvent =
   | { type: "fuelLow" }
   | { type: "damageAlarm" }
   | { type: "batteryLow" }
-  | { type: "engineCutOut"; mode: EngineMode };
+  | { type: "engineCutOut"; mode: EngineMode }
+  /** A message of the original's radio/status set (core/radio.ts), emitted at its trigger. */
+  | { type: "radio"; message: RadioMessageId }
+  /** A visible torpedo hit started its explosion animation (core/explosion.ts). */
+  | { type: "explosionStarted"; slot: number; survived: boolean };
 
 // --------------------------------------------------------------------------------------------------------------------
 // Static data
