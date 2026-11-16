@@ -1,0 +1,19 @@
+{
+  "source_file": "ORDXX18",
+  "size_bytes": 180,
+  "sha256": "84d641ef34abf23b6424d0cdced29face7937d3b9b4d33ae7ae5d7138f291356",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "INTELLIGENCE REPORT.", "POSSIBLE RENDEZVOUS NORTH", "WEST OF ISLAND IN SECTOR 14.",
+    "CONTINUING NW AT 7 KNOTS."
+  ],
+  "message": "INTELLIGENCE REPORT. POSSIBLE RENDEZVOUS NORTH WEST OF ISLAND IN SECTOR 14. CONTINUING NW AT 7 KNOTS.",
+  "raw_lines": [
+    "@ SECRET  ", "", "", " TO: GROWLER", "", " FROM: COMSUBPAC", "", "     INTELLIGENCE REPORT.", "",
+    "   POSSIBLE RENDEZVOUS NORTH ", "", "   WEST OF ISLAND IN SECTOR 14.", "",
+    "   CONTINUING NW AT 7 KNOTS."
+  ]
+}

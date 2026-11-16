@@ -1,0 +1,165 @@
+import type { SimCommand } from "../core/index.js";
+
+/** Screens reachable while a mission runs (the keys of the dispatcher at Gato1.exe 0x0d0c0 plus F6). */
+export type PlayScreen = "control" | "radar" | "chart" | "quadrant" | "log" | "damage" | "gameControl";
+
+export type InputAction =
+  | { type: "sim"; command: SimCommand }
+  | { type: "screen"; screen: PlayScreen }
+  /** Z on the chart: PASSWORD? prompt of the hidden coordinate command (0x0b4d4). */
+  | { type: "debugPrompt" }
+  /** ESC: the original ends the program (rt_1049 + rt_19da at 0x0d17e); the remake returns to the launcher. */
+  | { type: "quit" };
+
+export interface KeyLike {
+  key: string;
+  code?: string;
+  ctrlKey?: boolean;
+  altKey?: boolean;
+  metaKey?: boolean;
+}
+
+/**
+ * Key bindings of GATO1. Function keys and cursor keys are BASIC ON KEY handlers (0x050b2-0x0514e, KEY(1..14));
+ * letters are INKEY$ tests in the main loop (0x0581c-0x05b47) and in the screen dispatcher (0x0d0c1-0x0d19e).
+ *
+ *   F1/F3/F5/F7  ordered speed 10/8/6/3 (x engine factor)       F9 all stop      F10 reverse
+ *   F2/F4        raise/lower periscope (depth <= 45)             F6 radar         F8 fire torpedo
+ *   Left/Right   rudder +0.005 / -0.005                          Up/Down          rise / dive
+ *   5 (keypad)   rudder and planes to neutral                    T                torpedo doors
+ *   D / E        diesel / electric                               F P A S          scope facing
+ *   C / Q / L / R / M   chart, quadrant map, captain's log, damage report, control room
+ *   Tab          GAME CONTROL                                    Z (on chart)     hidden coordinate command
+ */
+export function translatePlayKey(e: KeyLike): InputAction | null {
+  if (e.ctrlKey || e.altKey || e.metaKey) return null;
+  const sim = (command: SimCommand): InputAction => ({ type: "sim", command });
+  switch (e.key) {
+    case "F1":
+      return sim({ type: "speed", level: "F1" });
+    case "F3":
+      return sim({ type: "speed", level: "F3" });
+    case "F5":
+      return sim({ type: "speed", level: "F5" });
+    case "F7":
+      return sim({ type: "speed", level: "F7" });
+    case "F9":
+      return sim({ type: "speed", level: "stop" });
+    case "F10":
+      return sim({ type: "speed", level: "reverse" });
+    case "F2":
+      return sim({ type: "periscope", direction: "raise" });
+    case "F4":
+      return sim({ type: "periscope", direction: "lower" });
+    case "F8":
+      return sim({ type: "fire" });
+    case "F6":
+      return { type: "screen", screen: "radar" };
+    case "ArrowLeft":
+      return sim({ type: "rudder", direction: "left" });
+    case "ArrowRight":
+      return sim({ type: "rudder", direction: "right" });
+    case "ArrowUp":
+      return sim({ type: "planes", direction: "up" });
+    case "ArrowDown":
+      return sim({ type: "planes", direction: "down" });
+    case "Tab":
+      return { type: "screen", screen: "gameControl" };
+    case "Escape":
+      return { type: "quit" };
+    default:
+      break;
+  }
+  if (e.code === "Numpad5" || e.key === "5") return sim({ type: "neutral" });
+  switch (e.key.toUpperCase()) {
+    case "D":
+      return sim({ type: "engine", mode: "diesel" });
+    case "E":
+      return sim({ type: "engine", mode: "electric" });
+    case "F":
+      return sim({ type: "scope", facing: "F" });
+    case "P":
+      return sim({ type: "scope", facing: "P" });
+    case "A":
+      return sim({ type: "scope", facing: "A" });
+    case "S":
+      return sim({ type: "scope", facing: "S" });
+    case "T":
+      return sim({ type: "doors" });
+    case "C":
+      return { type: "screen", screen: "chart" };
+    case "Q":
+      return { type: "screen", screen: "quadrant" };
+    case "L":
+      return { type: "screen", screen: "log" };
+    case "R":
+      return { type: "screen", screen: "damage" };
+    case "M":
+      return { type: "screen", screen: "control" };
+    case "Z":
+      return { type: "debugPrompt" };
+    default:
+      return null;
+  }
+}
+
+/** Keys the page must not handle itself (scrolling, focus change, browser function keys). */
+export function shouldPreventDefault(e: KeyLike): boolean {
+  if (e.ctrlKey || e.altKey || e.metaKey) return false;
+  return /^F([1-9]|10)$/.test(e.key) || e.key.startsWith("Arrow") || e.key === "Tab" || e.key === " " || e.key === "Backspace";
+}
+
+/** GAME CONTROL screen (0x0aeea-0x0b165): item number typed at "NUMBER OF ITEM TO CHANGE", then an optional value. */
+export type GameControlAction =
+  | { type: "item"; item: 1 | 2 | 3 | 4 }
+  | { type: "leave" };
+
+export function translateGameControlKey(e: KeyLike): GameControlAction | null {
+  if (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4") return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 };
+  if (e.key === "Enter" || e.key === "Escape" || e.key === "Tab") return { type: "leave" };
+  return null;
+}
+
+/** A single line of typed input (the BASIC INPUT statement used by the prompts). */
+export class LineEditor {
+  value = "";
+
+  constructor(readonly maxLength = 24) {}
+
+  /** Returns "enter" / "escape" when the line is finished, otherwise null. */
+  handle(e: KeyLike): "enter" | "escape" | null {
+    if (e.key === "Enter") return "enter";
+    if (e.key === "Escape") return "escape";
+    if (e.key === "Backspace") this.value = this.value.slice(0, -1);
+    else if (e.key.length === 1 && this.value.length < this.maxLength && !e.ctrlKey && !e.altKey && !e.metaKey) this.value += e.key;
+    return null;
+  }
+}
+
+/** Parse "x,y" (INPUT with two numeric items). Returns null for anything else. */
+export function parseCoordinates(text: string): { x: number; y: number } | null {
+  const parts = text.split(/[,\s]+/).filter((p) => p !== "");
+  if (parts.length !== 2) return null;
+  const x = Number(parts[0]);
+  const y = Number(parts[1]);
+  return Number.isFinite(x) && Number.isFinite(y) ? { x, y } : null;
+}
+
+/** The hidden command's password (Gato1.exe 0x0b51a compares the input with 'PAED'). */
+export const DEBUG_PASSWORD = "PAED";
+
+export interface KeyboardHandle {
+  detach(): void;
+}
+
+/** Attach a keydown listener; `handler` receives every key, and default browser behaviour is suppressed for game keys. */
+export function attachKeyboard(target: Pick<EventTarget, "addEventListener" | "removeEventListener">, handler: (e: KeyboardEvent) => void): KeyboardHandle {
+  const listener = (ev: Event): void => {
+    const e = ev as KeyboardEvent;
+    if (e.repeat && !/^Arrow/.test(e.key)) return;
+    if (shouldPreventDefault(e)) e.preventDefault();
+    handler(e);
+  };
+  target.addEventListener("keydown", listener);
+  return { detach: () => target.removeEventListener("keydown", listener) };
+}

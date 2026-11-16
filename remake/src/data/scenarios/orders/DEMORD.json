@@ -1,0 +1,9 @@
+{
+  "source_file": "DEMORD",
+  "size_bytes": 62,
+  "sha256": "105c15a7a06bcc84af863a67accede6f766ea4576bd2f9aa9cfa06f0f70713b5",
+  "format": "free_text",
+  "message": "THIS IS AN EXAMPLE OF HOW YOU RECEIVE YOUR ORDERS.",
+  "body_lines": ["THIS IS AN EXAMPLE OF HOW YOU", "RECEIVE YOUR ORDERS."],
+  "raw_lines": ["   THIS IS AN EXAMPLE OF HOW YOU", "", "   RECEIVE YOUR ORDERS."]
+}

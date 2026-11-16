@@ -1,0 +1,19 @@
+{
+  "source_file": "ORDXX13",
+  "size_bytes": 208,
+  "sha256": "4782ff17539f76066821899bf35eec20b9b88d5bc3958018844c2e34ecdd84b5",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "FLASHER REPORTS UNESCORTED", "CONVOY HEADING 225/7 KNOTS IN", "QUADRANT 20. FLASHER CANNOT",
+    "ENGAGE DUE TO DAMAGE IN ATTACK", "ON ESCORT."
+  ],
+  "message": "FLASHER REPORTS UNESCORTED CONVOY HEADING 225/7 KNOTS IN QUADRANT 20. FLASHER CANNOT ENGAGE DUE TO DAMAGE IN ATTACK ON ESCORT.",
+  "raw_lines": [
+    "@ SECRET  ", "", "", " TO: GROWLER", "", " FROM: COMSUBPAC", "", "   FLASHER REPORTS UNESCORTED", "",
+    "   CONVOY HEADING 225/7 KNOTS IN", "", "   QUADRANT 20. FLASHER CANNOT", "",
+    "   ENGAGE DUE TO DAMAGE IN ATTACK", "", "   ON ESCORT."
+  ]
+}

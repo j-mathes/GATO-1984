@@ -2,3 +2,4 @@ ghidra/
 __pycache__/
 node_modules/
 analysis/tmp/
+dist/

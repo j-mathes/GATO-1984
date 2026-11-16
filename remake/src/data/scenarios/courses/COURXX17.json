@@ -1,0 +1,135 @@
+{
+  "source_file": "COURXX17",
+  "size_bytes": 1162,
+  "sha256": "5cb0f7966b55e847a2e3086edc7fc7da6de94efc24988d4599cdd98d3233dcc8",
+  "format": "course_grid",
+  "ships": [
+    {
+      "index": 0,
+      "role": "subtender",
+      "type_code": 3,
+      "type_name": "subtender",
+      "start": {"x": 8000, "y": 4000, "quadrant": 2},
+      "waypoints": [
+        {"seq": 1, "x": 7000, "y": 5000, "speed_knots": 7, "used": true, "quadrant": 7},
+        {"seq": 2, "x": 3500, "y": 7800, "speed_knots": 7, "used": true, "quadrant": 6},
+        {"seq": 3, "x": 2000, "y": 7500, "speed_knots": 7, "used": true, "quadrant": 6},
+        {"seq": 4, "x": 1800, "y": 5500, "speed_knots": 7, "used": true, "quadrant": 6},
+        {"seq": 5, "x": 4500, "y": 4500, "speed_knots": 7, "used": true, "quadrant": 1},
+        {"seq": 6, "x": 6200, "y": 500, "speed_knots": 7, "used": true, "quadrant": 2},
+        {"seq": 7, "x": 9600, "y": 1000, "speed_knots": 7, "used": true, "quadrant": 2}
+      ]
+    },
+    {
+      "index": 1,
+      "role": "enemy",
+      "type_code": 7,
+      "type_name": "patrol_boat",
+      "start": {"x": 17000, "y": 1500, "quadrant": 4},
+      "waypoints": [
+        {"seq": 1, "x": 18000, "y": 2000, "speed_knots": 5, "used": true, "quadrant": 4},
+        {"seq": 2, "x": 18300, "y": 3000, "speed_knots": 5, "used": true, "quadrant": 4},
+        {"seq": 3, "x": 18000, "y": 4000, "speed_knots": 5, "used": true, "quadrant": 4},
+        {"seq": 4, "x": 16000, "y": 4000, "speed_knots": 4, "used": true, "quadrant": 4},
+        {"seq": 5, "x": 15600, "y": 3500, "speed_knots": 4, "used": true, "quadrant": 4},
+        {"seq": 6, "x": 16000, "y": 3000, "speed_knots": 4, "used": true, "quadrant": 4},
+        {"seq": 7, "x": 16800, "y": 2000, "speed_knots": 5, "used": true, "quadrant": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "role": "enemy",
+      "type_code": 7,
+      "type_name": "patrol_boat",
+      "start": {"x": 22000, "y": 6000, "quadrant": 10},
+      "waypoints": [
+        {"seq": 1, "x": 22500, "y": 6300, "speed_knots": 5, "used": true, "quadrant": 10},
+        {"seq": 2, "x": 23000, "y": 8000, "speed_knots": 6, "used": true, "quadrant": 10},
+        {"seq": 3, "x": 22000, "y": 8500, "speed_knots": 5, "used": true, "quadrant": 10},
+        {"seq": 4, "x": 20800, "y": 7800, "speed_knots": 4, "used": true, "quadrant": 10},
+        {"seq": 5, "x": 20500, "y": 6800, "speed_knots": 4, "used": true, "quadrant": 10},
+        {"seq": 6, "x": 21000, "y": 6400, "speed_knots": 4, "used": true, "quadrant": 10},
+        {"seq": 7, "x": 21500, "y": 6000, "speed_knots": 5, "used": true, "quadrant": 10}
+      ]
+    },
+    {
+      "index": 3,
+      "role": "enemy",
+      "type_code": 7,
+      "type_name": "patrol_boat",
+      "start": {"x": 17000, "y": 9500, "quadrant": 9},
+      "waypoints": [
+        {"seq": 1, "x": 16000, "y": 9500, "speed_knots": 4, "used": true, "quadrant": 9},
+        {"seq": 2, "x": 15750, "y": 8500, "speed_knots": 5, "used": true, "quadrant": 9},
+        {"seq": 3, "x": 16000, "y": 7600, "speed_knots": 4, "used": true, "quadrant": 9},
+        {"seq": 4, "x": 17000, "y": 7800, "speed_knots": 4, "used": true, "quadrant": 9},
+        {"seq": 5, "x": 17200, "y": 9000, "speed_knots": 4, "used": true, "quadrant": 9},
+        {"seq": 6, "x": 16600, "y": 9500, "speed_knots": 4, "used": true, "quadrant": 9},
+        {"seq": 7, "x": 16300, "y": 9200, "speed_knots": 5, "used": true, "quadrant": 9}
+      ]
+    },
+    {
+      "index": 4,
+      "role": "enemy",
+      "type_code": 8,
+      "type_name": "destroyer",
+      "start": {"x": 17200, "y": 11000, "quadrant": 14},
+      "waypoints": [
+        {"seq": 1, "x": 16700, "y": 10800, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 2, "x": 15800, "y": 11000, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 3, "x": 15600, "y": 12000, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 4, "x": 16800, "y": 12500, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 5, "x": 17200, "y": 11800, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 6, "x": 17000, "y": 11450, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 7, "x": 17000, "y": 11100, "speed_knots": 5, "used": true, "quadrant": 14}
+      ]
+    },
+    {
+      "index": 5,
+      "role": "enemy",
+      "type_code": 7,
+      "type_name": "patrol_boat",
+      "start": {"x": 13500, "y": 10500, "quadrant": 13},
+      "waypoints": [
+        {"seq": 1, "x": 14200, "y": 11000, "speed_knots": 5, "used": true, "quadrant": 13},
+        {"seq": 2, "x": 14000, "y": 13600, "speed_knots": 6, "used": true, "quadrant": 13},
+        {"seq": 3, "x": 13000, "y": 14300, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 4, "x": 11800, "y": 13600, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 5, "x": 11800, "y": 12000, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 6, "x": 12000, "y": 11200, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 7, "x": 13800, "y": 11000, "speed_knots": 5, "used": true, "quadrant": 13}
+      ]
+    },
+    {
+      "index": 6,
+      "role": "enemy",
+      "type_code": 7,
+      "type_name": "patrol_boat",
+      "start": {"x": 14500, "y": 16000, "quadrant": 18},
+      "waypoints": [
+        {"seq": 1, "x": 14100, "y": 16500, "speed_knots": 4, "used": true, "quadrant": 18},
+        {"seq": 2, "x": 14200, "y": 17100, "speed_knots": 4, "used": true, "quadrant": 18},
+        {"seq": 3, "x": 13000, "y": 17000, "speed_knots": 4, "used": true, "quadrant": 18},
+        {"seq": 4, "x": 12800, "y": 16400, "speed_knots": 4, "used": true, "quadrant": 18},
+        {"seq": 5, "x": 13100, "y": 15800, "speed_knots": 4, "used": true, "quadrant": 18},
+        {"seq": 6, "x": 13500, "y": 15900, "speed_knots": 4, "used": true, "quadrant": 18},
+        {"seq": 7, "x": 14100, "y": 16000, "speed_knots": 5, "used": true, "quadrant": 18}
+      ]
+    }
+  ],
+  "trailer": {"objective_quadrant": 14, "flag_b": 0, "value_c": 8},
+  "raw_rows": [
+    [3, 7, 7, 7, 8, 7, 7], [8000, 17000, 22000, 17000, 17200, 13500, 14500],
+    [4000, 1500, 6000, 9500, 11000, 10500, 16000], [7000, 18000, 22500, 16000, 16700, 14200, 14100],
+    [5000, 2000, 6300, 9500, 10800, 11000, 16500], [7, 5, 5, 4, 4, 5, 4],
+    [3500, 18300, 23000, 15750, 15800, 14000, 14200], [7800, 3000, 8000, 8500, 11000, 13600, 17100],
+    [7, 5, 6, 5, 4, 6, 4], [2000, 18000, 22000, 16000, 15600, 13000, 13000],
+    [7500, 4000, 8500, 7600, 12000, 14300, 17000], [7, 5, 5, 4, 4, 4, 4],
+    [1800, 16000, 20800, 17000, 16800, 11800, 12800], [5500, 4000, 7800, 7800, 12500, 13600, 16400],
+    [7, 4, 4, 4, 4, 4, 4], [4500, 15600, 20500, 17200, 17200, 11800, 13100],
+    [4500, 3500, 6800, 9000, 11800, 12000, 15800], [7, 4, 4, 4, 4, 4, 4],
+    [6200, 16000, 21000, 16600, 17000, 12000, 13500], [500, 3000, 6400, 9500, 11450, 11200, 15900],
+    [7, 4, 4, 4, 4, 4, 4], [9600, 16800, 21500, 16300, 17000, 13800, 14100],
+    [1000, 2000, 6000, 9200, 11100, 11000, 16000], [7, 5, 5, 5, 5, 5, 5], [14, 0, 8]
+  ]
+}

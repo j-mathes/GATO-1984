@@ -1,0 +1,19 @@
+{
+  "source_file": "ORDXX7",
+  "size_bytes": 233,
+  "sha256": "e6172cbd1496850832a4d5abd4cdedf728b232a5eb4d8cdb9dbf2f48e6c62ca2",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "ALL SUBS",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "PILOT REPORTS MAYDAY.", "DITCHING PLANE IN SECTOR 14.", "NEED IMMEDIATE RESCUE",
+    "FROM ISLAND IN SECTOR 14.", "SUGGEST NIGHT RESCUE DUE", "TO HEAVY PATROLLING."
+  ],
+  "message": "PILOT REPORTS MAYDAY. DITCHING PLANE IN SECTOR 14. NEED IMMEDIATE RESCUE FROM ISLAND IN SECTOR 14. SUGGEST NIGHT RESCUE DUE TO HEAVY PATROLLING.",
+  "raw_lines": [
+    "@ SECRET  ", "", "", " TO: ALL SUBS", "", " FROM: COMSUBPAC", "", "   PILOT REPORTS MAYDAY.", "",
+    "   DITCHING PLANE IN SECTOR 14.", "", "   NEED IMMEDIATE RESCUE", "", "   FROM ISLAND IN SECTOR 14.",
+    "", "   SUGGEST NIGHT RESCUE DUE", "", "   TO HEAVY PATROLLING."
+  ]
+}

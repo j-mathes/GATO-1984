@@ -1,0 +1,19 @@
+{
+  "source_file": "ORDXX1",
+  "size_bytes": 196,
+  "sha256": "e010cf6e6f1e8bee7f33ca46ead0f3866ae1826325f318095046d7f67cb94ae8",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "LARGE CONVOY LEAVING MAIN", "ISLAND QUADRANT 5 HEADING 350", "8 KNOTS. PROBABLE DESTINATION",
+    "ISLANDS QUADRANT 13 18 OR 19"
+  ],
+  "message": "LARGE CONVOY LEAVING MAIN ISLAND QUADRANT 5 HEADING 350 8 KNOTS. PROBABLE DESTINATION ISLANDS QUADRANT 13 18 OR 19",
+  "raw_lines": [
+    "@  SECRET", "", "", "  TO: GROWLER", "", "  FROM: COMSUBPAC", "", "    LARGE CONVOY LEAVING MAIN", "",
+    "    ISLAND QUADRANT 5 HEADING 350", "", "    8 KNOTS. PROBABLE DESTINATION", "",
+    "    ISLANDS QUADRANT 13 18 OR 19 "
+  ]
+}

@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Remake of the 1984 submarine simulation GATO. src/core is pure TypeScript with no DOM or Canvas dependency.",
+  "description": "Remake of the 1984 submarine simulation GATO. src/core is pure TypeScript with no DOM or Canvas dependency; the rest is a Vite + Canvas 2D + Web Audio front end.",
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "sync:data": "node scripts/sync-scenarios.mjs",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.core.json",
     "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.6.0",
+    "vite": "^5.4.21",
     "vitest": "^2.1.0"
   }
 }

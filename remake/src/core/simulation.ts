@@ -153,6 +153,7 @@ export class Simulation {
     }
 
     if (this.alarmStep()) {
+      events.push({ type: "damageAlarm" });
       const sum = damageIndexSum(sub);
       if (sum > DAMAGE.lostIndexSum) return this.destroy("damage", events);
     }

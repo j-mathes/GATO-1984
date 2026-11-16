@@ -1,0 +1,19 @@
+{
+  "source_file": "ORDXX10",
+  "size_bytes": 207,
+  "sha256": "5f44473e17c1dd902e4040d92b7d116cc6d75e139eb28f2a43256113a574b4d4",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "TWO CONVOYS BRINGING SUPPLIES", "FOR REPAIR OF AIRSTRIP ON", "ISLAND IN SECTOR 13. LEAVING",
+    "FROM NORTH AND WEST OF MAIN", "ISLAND 8 KNOTS."
+  ],
+  "message": "TWO CONVOYS BRINGING SUPPLIES FOR REPAIR OF AIRSTRIP ON ISLAND IN SECTOR 13. LEAVING FROM NORTH AND WEST OF MAIN ISLAND 8 KNOTS.",
+  "raw_lines": [
+    "@ SECRET  ", "", " TO: GROWLER", "", " FROM:COMSUBPAC", "", "   TWO CONVOYS BRINGING SUPPLIES", "",
+    "   FOR REPAIR OF AIRSTRIP ON", "", "   ISLAND IN SECTOR 13. LEAVING", "",
+    "   FROM NORTH AND WEST OF MAIN", "", "   ISLAND 8 KNOTS."
+  ]
+}

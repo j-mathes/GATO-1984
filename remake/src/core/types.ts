@@ -238,6 +238,7 @@ export type SimEvent =
   | { type: "missionComplete"; reason: "island" | "convoySunk" }
   | { type: "subDestroyed"; reason: "damage" | "crush" | "collision" | "ownTorpedo" | "oxygen" }
   | { type: "fuelLow" }
+  | { type: "damageAlarm" }
   | { type: "batteryLow" }
   | { type: "engineCutOut"; mode: EngineMode };
 
