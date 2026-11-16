@@ -26,4 +26,4 @@ Immediates of 0x100 or more are printed by `list_statements.py` as `v0xxx`: `v01
 * Every duration: the intro (4 s, the loading time), the Morse speed (the dit/dah lengths of the remake's `PLAY`), the closing hold (5000 passes at the nominal 2500 passes a second = 2 s) and the page holds.
 * The key rule "any key skips the intro" (remake convenience).
 * The order of the narrated pages follows the file, which is also the program's drawing order but was not traced through every `GOSUB`/`GOTO`.
-* The original orders printer is also what `GATO1.EXE` uses for the mission briefing (`Original` capture `2660312`: the same black screen with a growing grey band); the remake's briefing screen does not use this text-screen model yet.
+* The original orders printer is also what `GATO1.EXE` uses for the mission briefing (capture `2660312`); the remake's briefing screen now uses the same text-screen model (`src/app/teletype.ts`), including the header line, the cursor and the hidden-text mode of difficulty 8 and 9.

@@ -66,7 +66,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
+import { cursorBlink, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -122,7 +122,7 @@ export class App {
   private runner: FixedTimestepRunner | null = null;
   private snapshot: Snapshot | null = null;
   private menuEntry = "";
-  private orders: { lines: string[]; header: string[]; timeline: OrdersTimeline; start: number; handle: MorseHandle | null; done: boolean } | null = null;
+  private orders: { lines: string[]; timeline: OrdersTimeline; start: number; handle: MorseHandle | null; done: boolean } | null = null;
   private gameControl = new GameControl(this.settings);
   private difficultyEditor: LineEditor | null = null;
   /** Which GAME CONTROL item `difficultyEditor` is editing: 1 DIFFICULTY LEVEL, 5 NEXT MISSION (remake addition). */
@@ -481,12 +481,12 @@ export class App {
 
   private startOrders(orders: OrdersJson, instant = false): void {
     this.currentOrders = orders;
-    const body = orders.raw_lines.slice(1);
-    const header = [(orders.classification ?? "SECRET").toUpperCase(), dtgLine()];
-    const timeline = buildOrdersTimeline(body, this.data.morse, { difficulty: this.settings.difficulty, soundOn: this.settings.sound });
-    const handle = !instant && this.sound.enabled ? this.sound.playMorse(body, this.data.morse, { soundOn: this.settings.sound }) : null;
+    // the '@' line carries the classification: the program prints the rest of it, 12 spaces and "DTG dd/hhmm ZULU" as one line (0x0bc0d)
+    const lines = orders.raw_lines.map((l, i) => (i === 0 && l.startsWith("@") ? `${l.slice(1)}${" ".repeat(12)}${dtgLine()}` : l));
+    const timeline = buildOrdersTimeline(lines, this.data.morse, { difficulty: this.settings.difficulty, soundOn: this.settings.sound });
+    const handle = !instant && this.sound.enabled ? this.sound.playMorse(lines, this.data.morse, { soundOn: this.settings.sound }) : null;
     const start = instant ? this.lastFrame - (timeline.duration + 1) * 1000 : this.lastFrame;
-    this.orders = { lines: body, header, timeline, start, handle, done: false };
+    this.orders = { lines, timeline, start, handle, done: false };
   }
 
   /**
@@ -708,12 +708,8 @@ export class App {
     if (!o) return;
     const elapsed = (timeMs - o.start) / 1000;
     const finished = elapsed >= o.timeline.duration;
-    drawOrders(this.g, {
-      header: o.header,
-      body: revealedLines(o.lines, o.timeline, elapsed),
-      hidden: this.settings.difficulty >= 8,
-      finished,
-    });
+    const hidden = this.settings.difficulty >= 8;
+    drawOrders(this.g, { screen: ordersScreen(o.lines, revealedLines(o.lines, o.timeline, elapsed), hidden), hidden, finished, cursorOn: cursorBlink(timeMs) });
   }
 
   private framePlay(timeMs: number): void {
@@ -810,7 +806,7 @@ export class App {
     if (d.screen === "morseExample") {
       const m = this.demoMorse;
       const elapsed = m ? (timeMs - m.start) / 1000 : 0;
-      drawTeletype(g, m ? ordersScreen(m.lines, revealedLines(m.lines, m.timeline, elapsed)) : ordersScreen([], []));
+      drawTeletype(g, m ? ordersScreen(m.lines, revealedLines(m.lines, m.timeline, elapsed)) : ordersScreen([], []), cursorBlink(timeMs));
       return;
     }
     const sim = d.sim;

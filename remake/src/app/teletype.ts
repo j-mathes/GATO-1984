@@ -49,8 +49,9 @@ export class Teletype {
  * The screen of the orders routine after the lines have been printed up to now. `source` are the lines of the file, `revealed` the part of
  * each that has been typed (same length, as from revealedLines). Start: LOCATE 24,1, PRINT of 40 spaces and a newline (the print wraps at
  * column 40 and the newline scrolls once more); a non-blank line is printed as it is; a blank line is two newlines.
+ * With `hidden` (difficulty 8 and 9) the characters are not printed at all (0x0bce6), but the blank lines still scroll the grey band.
  */
-export function ordersScreen(source: readonly string[], revealed: readonly string[]): Teletype {
+export function ordersScreen(source: readonly string[], revealed: readonly string[], hidden = false): Teletype {
   const t = new Teletype();
   t.print(" ".repeat(TELETYPE_COLUMNS));
   t.newline();
@@ -64,7 +65,7 @@ export function ordersScreen(source: readonly string[], revealed: readonly strin
       t.newline();
       continue;
     }
-    t.print(typed);
+    if (!hidden) t.print(typed);
     if (typed.length < full.length) break;
   }
   return t;

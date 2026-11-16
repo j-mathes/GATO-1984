@@ -1359,7 +1359,7 @@ describe("demo: intro page, Morse example, narration at the top", () => {
     calls.length = 0;
     app.frame(10);
     expect(calls[0]).toEqual(["clear", ["#000000"]]);
-    expect(texts(calls).every(([, , s]) => s.trim() === "")).toBe(true);
+    expect(texts(calls).filter(([, , s]) => s !== "_").every(([, , s]) => s.trim() === "")).toBe(true);
     // part way: the first line is partly typed
     calls.length = 0;
     app.frame(10 + 4000);
@@ -1369,7 +1369,7 @@ describe("demo: intro page, Morse example, narration at the top", () => {
     // done: both lines, the grey band over rows 20-24 (y 152-191) and nothing grey above
     calls.length = 0;
     app.frame(10 + 120_000 * 0 + 59_000);
-    const rows = Object.fromEntries(texts(calls).map(([, row, s]) => [row, s]));
+    const rows = Object.fromEntries(texts(calls).filter(([, , s]) => s !== "_").map(([, row, s]) => [row, s]));
     expect(rows[22]).toBe("   THIS IS AN EXAMPLE OF HOW YOU".padEnd(40, " "));
     expect(rows[23]?.trim()).toBe("");
     expect(rows[24]).toBe("   RECEIVE YOUR ORDERS.".padEnd(40, " "));
@@ -1464,5 +1464,133 @@ describe("text screen of the orders (SCREEN 0, COLOR 0,7)", () => {
     expect(wrap.cells[22]?.every((c) => c.ch === "x")).toBe(true); // the 40 characters scrolled up one row
     expect(wrap.cells[23]?.slice(0, 5).map((c) => c.ch).join("")).toBe("xxxxx");
     expect(wrap.col).toBe(5);
+  });
+});
+
+describe("mission orders on the text screen (reference screenshot 2660312)", () => {
+  type Call = [string, unknown[]];
+  type Priv = { orders: { lines: string[]; start: number; timeline: { duration: number; chars: { line: number; printAt: number; tones: unknown[] }[] } }; lastFrame: number };
+
+  function makeApp(difficulty = 0): { app: App; calls: Call[]; oscs: FakeOsc[] } {
+    const { ctx, oscs } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.5);
+    app.settings.difficulty = difficulty;
+    app.keydown({ key: "x" });
+    app.startMission(4, 1); // ORDXX4 is the order of the screenshot: "LARGE NUMBER PATROL CRAFT EAST ..."
+    return { app, calls, oscs };
+  }
+  const texts = (calls: Call[]): [number, number, string][] => calls.filter(([n]) => n === "text").map(([, a]) => [a[0] as number, a[1] as number, a[2] as string]);
+  const occupancy = (s: string): string => [...s.padEnd(40)].map((c) => (c === " " ? "." : "#")).join("");
+  /** Make the typing look as if it had reached the end of `fragment` (the first time it is printed). */
+  function typedThrough(app: App, fragment: string): void {
+    const p = app as unknown as Priv;
+    const line = p.orders.lines.findIndex((l) => l.includes(fragment));
+    const column = (p.orders.lines[line] as string).indexOf(fragment) + fragment.length - 1;
+    const at = p.orders.timeline.chars.filter((c) => c.line === line)[column];
+    p.orders.start = p.lastFrame - ((at?.printAt ?? 0) + 0.001) * 1000;
+  }
+
+  // cells of the screenshot with dark pixels (text) per row, from 2660312 (row 25 is black, rows 6-24 grey)
+  const REFERENCE: Record<number, string> = {
+    8: ".######..............###.#######.####...",
+    12: ".###.#######............................",
+    14: ".#####.#########........................",
+    16: "..#####.######.######.#####.####........",
+    18: "..####.######.########.###.########.....",
+    20: "..########.###########.####.######......",
+    22: "..####.######.##.#######................",
+    24: "..####.###.###..........................",
+  };
+
+  it("types the order on the grey band exactly where the original does (rows, columns, band rows 6-24, black elsewhere)", () => {
+    const { app, calls } = makeApp();
+    expect(app.mode).toBe("orders");
+    typedThrough(app, "MAKE MAX EF");
+    calls.length = 0;
+    app.frame(0); // cursor blink phase: on
+    expect(calls[0]).toEqual(["clear", ["#000000"]]);
+    const rows = Object.fromEntries(texts(calls).filter(([c, r]) => c === 1 && r <= 24).map(([, r, s]) => [r, s]));
+    const underscore = texts(calls).find(([, , s]) => s === "_");
+    expect(underscore).toEqual([14, 24, "_"]); // the cursor, where the screenshot has its underscore
+    for (const [row, expected] of Object.entries(REFERENCE)) {
+      const typed = (rows[Number(row)] ?? "").trimEnd();
+      const withCursor = Number(row) === 24 ? typed + "_".padStart(14 - typed.length, " ") : typed;
+      expect(occupancy(withCursor), `row ${row}`).toBe(expected);
+    }
+    const grey = calls.filter(([n, a]) => n === "rect" && a[4] === "#aaaaaa").map(([, a]) => [a[0], a[1], a[2], a[3]]);
+    expect(grey).toEqual(Array.from({ length: 19 }, (_, i) => [0, (5 + i) * 8, 320, 8])); // rows 6..24
+    expect(calls.filter(([n, a]) => n === "text" && a[3] !== "#000000" && a[1] !== 25)).toHaveLength(0); // black on grey
+  });
+
+  it("types the header (classification and DTG) as part of the order and sends it in Morse too", () => {
+    const { app, oscs } = makeApp();
+    const p = app as unknown as Priv;
+    const header = p.orders.lines[0] as string;
+    expect(header).toMatch(/^ SECRET {14}DTG \d\d\/\d{4} ZULU$/); // rest of the '@' line + 12 spaces + the date-time group, DTG on column 22
+    expect(header.indexOf("DTG")).toBe(21);
+    expect(p.orders.timeline.chars.filter((c) => c.line === 0 && c.tones.length > 0).length).toBeGreaterThan(8);
+    expect(oscs.length).toBeGreaterThan(20);
+    expect(p.orders.lines.slice(0, 3).map((l) => l.trim())).toEqual([header.trim(), "", ""]);
+  });
+
+  it("difficulty 8 and 9 print nothing (the Morse still sounds) but the blank lines still scroll the band", () => {
+    for (const difficulty of [8, 9]) {
+      const { app, calls, oscs } = makeApp(difficulty);
+      expect(oscs.length).toBeGreaterThan(20);
+      app.frame(10);
+      expect(texts(calls).some(([c, r, s]) => c === 1 && r === 25 && s.includes("MORSE ONLY"))).toBe(true);
+      const p = app as unknown as Priv;
+      p.orders.start = p.lastFrame - (p.orders.timeline.duration + 1) * 1000;
+      calls.length = 0;
+      app.frame(0);
+      const printed = texts(calls).filter(([c, r, s]) => r < 25 && s !== "_" && c === 1).map(([, , s]) => s.trim());
+      expect(printed.every((s) => s === "")).toBe(true);
+      const grey = calls.filter(([n, a]) => n === "rect" && a[4] === "#aaaaaa").length;
+      expect(grey).toBe(19); // 3 rows from the start line + 2 for each of the 8 blank lines of ORDXX4, as with the text shown
+    }
+    const shown = makeApp(7);
+    const p = shown.app as unknown as Priv;
+    p.orders.start = p.lastFrame - (p.orders.timeline.duration + 1) * 1000;
+    shown.calls.length = 0;
+    shown.app.frame(0);
+    expect(texts(shown.calls).some(([, , s]) => s.includes("LARGE NUMBER PATROL CRAFT EAST"))).toBe(true);
+  });
+
+  it("any key ends the orders at once, stops the Morse and enters the control room; the row-25 hint follows the state", () => {
+    for (const difficulty of [0, 8]) {
+      const { app, calls, oscs } = makeApp(difficulty);
+      app.frame(10);
+      expect(texts(calls).some(([c, r, s]) => c === 1 && r === 25 && /SKIP|SKIPS/.test(s))).toBe(true);
+      app.keydown({ key: "q" });
+      expect(app.mode).toBe("play");
+      expect(oscs.every((o) => o.stopped)).toBe(true);
+      expect(app.screen).toBe("control");
+    }
+    const { app, calls } = makeApp();
+    const p = app as unknown as Priv;
+    p.orders.start = p.lastFrame - (p.orders.timeline.duration + 1) * 1000;
+    calls.length = 0;
+    app.frame(0);
+    expect(texts(calls).some(([c, r, s]) => c === 1 && r === 25 && s === "PRESS ANY KEY")).toBe(true);
+    expect(app.mode).toBe("orders"); // the remake waits for a key after the last character; the original starts the mission
+  });
+
+  it("hidden orders keep the cursor at column 1 and scroll only on blank lines", () => {
+    const lines = ["   SECRET", "", "", "  TO: X", "", "  TEXT"];
+    const shown = ordersScreen(lines, lines);
+    const hidden = ordersScreen(lines, lines.map((l) => " ".repeat(l.length)), true);
+    expect(hidden.col).toBe(0);
+    expect(hidden.cells.every((cells) => cells.every((c) => c.ch === " "))).toBe(true);
+    const greyRows = (t: Teletype): number => t.cells.filter((cells) => cells.some((c) => c.grey)).length;
+    expect(greyRows(hidden)).toBe(3 + 2 * 3); // start line + two newlines for each of the three blank lines
+    expect(greyRows(shown)).toBe(greyRows(hidden));
   });
 });

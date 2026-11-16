@@ -110,20 +110,21 @@ export function drawLauncherMenu(g: Gfx, entry: string, items: readonly Launcher
 }
 
 export interface OrdersView {
-  header: string[];
-  /** Body lines revealed so far. */
-  body: string[];
+  /** The text screen as printed so far (see ordersScreen). */
+  screen: Teletype;
   hidden: boolean;
   finished: boolean;
+  cursorOn?: boolean;
 }
 
-/** The incoming order message, printed character by character while it is sounded in Morse. */
+/**
+ * The incoming order message, printed character by character while it is sounded in Morse: the text screen of the original (black text on
+ * the growing light-grey band, row 25 never used by the program). The line on row 25 is a remake addition that says how to continue.
+ */
 export function drawOrders(g: Gfx, view: OrdersView): void {
-  g.clear();
-  view.header.forEach((l, i) => g.text(2, 2 + i, l, COLORS.yellow));
-  view.body.forEach((l, i) => g.text(2, 7 + i, l, COLORS.white));
-  if (view.hidden) g.centered(21, "(ORDERS RECEIVED IN MORSE ONLY)", COLORS.red);
-  g.centered(24, view.finished ? "PRESS ANY KEY" : "PRESS ANY KEY TO SKIP", COLORS.grey);
+  drawTeletype(g, view.screen, view.cursorOn);
+  const note = view.finished ? "PRESS ANY KEY" : view.hidden ? "ORDERS IN MORSE ONLY - ANY KEY SKIPS" : "PRESS ANY KEY TO SKIP";
+  g.text(1, 25, note, COLORS.grey);
 }
 
 export function drawHistory(g: Gfx, view: HistoryView): void {
@@ -168,7 +169,7 @@ export function drawDemoIntro(g: Gfx, intro: DemoIntro | undefined, background: 
 const TELETYPE_GREY = "#aaaaaa";
 
 /** The text screen of the orders (SCREEN 0, COLOR 0,7): black text on the light-grey band, the rest of the 40 x 25 screen black. */
-export function drawTeletype(g: Gfx, screen: Teletype): void {
+export function drawTeletype(g: Gfx, screen: Teletype, cursorOn = false): void {
   g.clear(COLORS.black);
   screen.cells.forEach((cells, r) => {
     let start = -1;
@@ -182,6 +183,13 @@ export function drawTeletype(g: Gfx, screen: Teletype): void {
     }
     g.text(1, r + 1, cells.map((cell) => cell.ch).join(""), COLORS.black);
   });
+  // the blinking BIOS cursor, an underscore in the cell the next character goes to
+  if (cursorOn) g.text(screen.col + 1, screen.row + 1, "_", COLORS.black);
+}
+
+/** Blink phase of the text cursor (about 2 Hz). */
+export function cursorBlink(timeMs: number): boolean {
+  return Math.floor(timeMs / 266) % 2 === 0;
 }
 
 /** One-line helm status for the toast shown right after a helm command (remake addition). */
