@@ -1,0 +1,133 @@
+{
+  "source_file": "COURXX20",
+  "size_bytes": 1139,
+  "sha256": "40b9466321e3b1e59c3248709a26dd811a6130d68600a8842dfc3fc70b69c080",
+  "format": "course_grid",
+  "ships": [
+    {
+      "index": 0,
+      "role": "subtender",
+      "type_code": 3,
+      "type_name": "subtender",
+      "start": {"x": 8000, "y": 4000, "quadrant": 2},
+      "waypoints": [
+        {"seq": 1, "x": 7000, "y": 5000, "speed_knots": 7, "used": true, "quadrant": 7},
+        {"seq": 2, "x": 3500, "y": 7800, "speed_knots": 7, "used": true, "quadrant": 6},
+        {"seq": 3, "x": 2000, "y": 7500, "speed_knots": 7, "used": true, "quadrant": 6},
+        {"seq": 4, "x": 1800, "y": 5500, "speed_knots": 7, "used": true, "quadrant": 6},
+        {"seq": 5, "x": 4500, "y": 4500, "speed_knots": 7, "used": true, "quadrant": 1},
+        {"seq": 6, "x": 6200, "y": 500, "speed_knots": 7, "used": true, "quadrant": 2},
+        {"seq": 7, "x": 9000, "y": 1000, "speed_knots": 7, "used": true, "quadrant": 2}
+      ]
+    },
+    {
+      "index": 1,
+      "role": "enemy",
+      "type_code": 4,
+      "type_name": "freighter",
+      "start": {"x": 22650, "y": 4000, "quadrant": 5},
+      "waypoints": [
+        {"seq": 1, "x": 22650, "y": 9000, "speed_knots": 5, "used": true, "quadrant": 10},
+        {"seq": 2, "x": 21800, "y": 10000, "speed_knots": 5, "used": true, "quadrant": 15},
+        {"seq": 3, "x": 16200, "y": 9800, "speed_knots": 4, "used": true, "quadrant": 9},
+        {"seq": 4, "x": 13750, "y": 11900, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 5, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 6, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 7, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "role": "enemy",
+      "type_code": 6,
+      "type_name": "troop_carrier",
+      "start": {"x": 22950, "y": 4000, "quadrant": 5},
+      "waypoints": [
+        {"seq": 1, "x": 22950, "y": 9000, "speed_knots": 5, "used": true, "quadrant": 10},
+        {"seq": 2, "x": 22000, "y": 10400, "speed_knots": 5, "used": true, "quadrant": 15},
+        {"seq": 3, "x": 16200, "y": 10200, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 4, "x": 13750, "y": 12100, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 5, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 6, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 7, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1}
+      ]
+    },
+    {
+      "index": 3,
+      "role": "enemy",
+      "type_code": 4,
+      "type_name": "freighter",
+      "start": {"x": 20999, "y": 1100, "quadrant": 5},
+      "waypoints": [
+        {"seq": 1, "x": 13899, "y": 1100, "speed_knots": 5, "used": true, "quadrant": 3},
+        {"seq": 2, "x": 11600, "y": 3970, "speed_knots": 5, "used": true, "quadrant": 3},
+        {"seq": 3, "x": 13250, "y": 5999, "speed_knots": 4, "used": true, "quadrant": 8},
+        {"seq": 4, "x": 11900, "y": 7999, "speed_knots": 4, "used": true, "quadrant": 8},
+        {"seq": 5, "x": 12650, "y": 10999, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 6, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 7, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1}
+      ]
+    },
+    {
+      "index": 4,
+      "role": "enemy",
+      "type_code": 5,
+      "type_name": "tanker",
+      "start": {"x": 20999, "y": 1300, "quadrant": 5},
+      "waypoints": [
+        {"seq": 1, "x": 13799, "y": 1400, "speed_knots": 5, "used": true, "quadrant": 3},
+        {"seq": 2, "x": 11950, "y": 3970, "speed_knots": 5, "used": true, "quadrant": 3},
+        {"seq": 3, "x": 13450, "y": 5999, "speed_knots": 4, "used": true, "quadrant": 8},
+        {"seq": 4, "x": 12100, "y": 7999, "speed_knots": 4, "used": true, "quadrant": 8},
+        {"seq": 5, "x": 12750, "y": 10999, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 6, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 7, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1}
+      ]
+    },
+    {
+      "index": 5,
+      "role": "enemy",
+      "type_code": 8,
+      "type_name": "destroyer",
+      "start": {"x": 22850, "y": 4000, "quadrant": 5},
+      "waypoints": [
+        {"seq": 1, "x": 22850, "y": 9000, "speed_knots": 5, "used": true, "quadrant": 10},
+        {"seq": 2, "x": 22000, "y": 10100, "speed_knots": 5, "used": true, "quadrant": 15},
+        {"seq": 3, "x": 16200, "y": 10100, "speed_knots": 4, "used": true, "quadrant": 14},
+        {"seq": 4, "x": 13750, "y": 12000, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 5, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 6, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 7, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "role": "enemy",
+      "type_code": 8,
+      "type_name": "destroyer",
+      "start": {"x": 20999, "y": 850, "quadrant": 5},
+      "waypoints": [
+        {"seq": 1, "x": 13999, "y": 850, "speed_knots": 5, "used": true, "quadrant": 3},
+        {"seq": 2, "x": 11400, "y": 3979, "speed_knots": 5, "used": true, "quadrant": 3},
+        {"seq": 3, "x": 12900, "y": 5999, "speed_knots": 4, "used": true, "quadrant": 8},
+        {"seq": 4, "x": 11700, "y": 7999, "speed_knots": 4, "used": true, "quadrant": 8},
+        {"seq": 5, "x": 12550, "y": 10999, "speed_knots": 4, "used": true, "quadrant": 13},
+        {"seq": 6, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1},
+        {"seq": 7, "x": 0, "y": 0, "speed_knots": 0, "used": false, "quadrant": 1}
+      ]
+    }
+  ],
+  "trailer": {"objective_quadrant": 0, "flag_b": 0, "value_c": 6},
+  "raw_rows": [
+    [3, 4, 6, 4, 5, 8, 8], [8000, 22650, 22950, 20999, 20999, 22850, 20999],
+    [4000, 4000, 4000, 1100, 1300, 4000, 850], [7000, 22650, 22950, 13899, 13799, 22850, 13999],
+    [5000, 9000, 9000, 1100, 1400, 9000, 850], [7, 5, 5, 5, 5, 5, 5],
+    [3500, 21800, 22000, 11600, 11950, 22000, 11400], [7800, 10000, 10400, 3970, 3970, 10100, 3979],
+    [7, 5, 5, 5, 5, 5, 5], [2000, 16200, 16200, 13250, 13450, 16200, 12900],
+    [7500, 9800, 10200, 5999, 5999, 10100, 5999], [7, 4, 4, 4, 4, 4, 4],
+    [1800, 13750, 13750, 11900, 12100, 13750, 11700], [5500, 11900, 12100, 7999, 7999, 12000, 7999],
+    [7, 4, 4, 4, 4, 4, 4], [4500, 0, 0, 12650, 12750, 0, 12550], [4500, 0, 0, 10999, 10999, 0, 10999],
+    [7, 0, 0, 4, 4, 0, 4], [6200, 0, 0, 0, 0, 0, 0], [500, 0, 0, 0, 0, 0, 0], [7, 0, 0, 0, 0, 0, 0],
+    [9000, 0, 0, 0, 0, 0, 0], [1000, 0, 0, 0, 0, 0, 0], [7, 0, 0, 0, 0, 0, 0], [0, 0, 6]
+  ]
+}

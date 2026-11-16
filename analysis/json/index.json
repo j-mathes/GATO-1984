@@ -1,0 +1,343 @@
+{
+  "generated_by": "analysis/parse_scenarios.py",
+  "source_dir": "Original",
+  "formats": {
+    "encoding": "ASCII, CR LF line ends, one 0x1A end-of-file byte. No binary records, no MBF floats, no 16-bit integers: every number is decimal text (speeds may be fractional).",
+    "coordinate_system": {
+      "map": "25000 x 20000 units = 5 columns x 4 rows of 5000-unit quadrants.",
+      "quadrant_number": "1 + floor(x/5000) + 5*floor(y/5000) (row-major). Allied quadrants per the manual are 1, 2, 6, 7 (x,y < 10000), where the subtender patrols.",
+      "y_axis": "inferred: y grows toward the compass heading 0 (north); ORDXX1 'heading 350' and ORDXX3 'heading 225' match the first-leg vectors of COURXX1/COURXX3 with y up."
+    },
+    "duplicates": "Files numbered 11-20 are byte-identical copies of 1-10 for ORDXX and COURXX, so only 10 distinct scenarios exist.",
+    "COURXX": {
+      "layout": "24 rows x 7 numbers + trailer row of 3 numbers; column 0 = subtender, columns 1-6 = enemy vessels. Row 1 type codes; rows 2-3 start x/y; rows 4-5 waypoint-1 x/y; row 6 waypoint-1 speed; then waypoints 2-7 as (x row, y row, speed row).",
+      "certain": [
+        "row/column layout", "column 0 is the subtender (its coordinates stay inside quadrants 1,2,6,7)",
+        "type row", "(0,0) waypoints mark unused slots / anchored ships"
+      ],
+      "inferred": [
+        "type codes 3..8 = subtender, freighter, tanker, troop carrier, patrol boat, destroyer: confirmed by rendering OBX3-OBX8 and comparing with the manual's ship catalog; the orders text agrees (unescorted convoys contain only 4/5/6, 'patrol craft' scenarios are mostly 7)",
+        "speed row k belongs to waypoint k (stored after it); the file does not say whether it is the speed used to reach or to leave the waypoint",
+        "trailer[0] objective_quadrant: 0 = none, 18 / 14 in scenarios 5 / 7 match the island quadrants named in ORDXX5 / ORDXX7"
+      ],
+      "unknown": [
+        "trailer[1] flag_b (1 in scenarios 1-5, 0 in 6-10)",
+        "trailer[2] value_c (3..9; same in scenarios with identical routes)"
+      ]
+    },
+    "ORDXX": "Order text; '@' prefix on line 1 is a marker before the classification. The game adds the date-time group when displaying.",
+    "MXP": {
+      "layout": "20 rows (quadrant 1..20) x 6 numbers; -1,-1 = no island.",
+      "certain": ["row index = quadrant number", "center_x/center_y fall inside their quadrant"],
+      "inferred": [
+        "radius_inner < radius_outer; the outer value (500/1000/1500) is probably the shoal or island size, the inner one the island/collision core"
+      ],
+      "unknown": ["attr_5 (1..3) and attr_6 (3..10) meaning"]
+    },
+    "OBX": "DRAW macro language of GW-BASIC/BASICA, 16 lines per file. OBX1 = island silhouettes, OBX3-8 = ships by type code. Lines are 16 view angles (inferred from the symmetric width profile and renders). Colour command is always C0."
+  },
+  "ship_types": {
+    "3": "subtender",
+    "4": "freighter",
+    "5": "tanker",
+    "6": "troop_carrier",
+    "7": "patrol_boat",
+    "8": "destroyer"
+  },
+  "files": {
+    "ORDXX1": {
+      "json": "orders/ORDXX1.json",
+      "format": "order_text",
+      "size_bytes": 196,
+      "sha256": "e010cf6e6f1e8bee7f33ca46ead0f3866ae1826325f318095046d7f67cb94ae8"
+    },
+    "COURXX1": {
+      "json": "courses/COURXX1.json",
+      "format": "course_grid",
+      "size_bytes": 1160,
+      "sha256": "8eedb27ffd153b0f62b4180d5a80e4b869f65bf8bd87c4c853cf86e987ce98c1"
+    },
+    "ORDXX2": {
+      "json": "orders/ORDXX2.json",
+      "format": "order_text",
+      "size_bytes": 215,
+      "sha256": "9014e3f0c19f6b638961115b066671467d7986f36b09db7f26a393bd73b66da1"
+    },
+    "COURXX2": {
+      "json": "courses/COURXX2.json",
+      "format": "course_grid",
+      "size_bytes": 1184,
+      "sha256": "65e476c065b370c969b84b15c4aa76b8a92a45c13a972f7728956f135a25ff20"
+    },
+    "ORDXX3": {
+      "json": "orders/ORDXX3.json",
+      "format": "order_text",
+      "size_bytes": 208,
+      "sha256": "4782ff17539f76066821899bf35eec20b9b88d5bc3958018844c2e34ecdd84b5"
+    },
+    "COURXX3": {
+      "json": "courses/COURXX3.json",
+      "format": "course_grid",
+      "size_bytes": 1159,
+      "sha256": "ecc74dac05095b033fb7a7bf0eff0ad6c10ef36ad9f7dc63230bcf5fcd8372b6"
+    },
+    "ORDXX4": {
+      "json": "orders/ORDXX4.json",
+      "format": "order_text",
+      "size_bytes": 214,
+      "sha256": "2e04811c77da18a8a22039ab171b5bf01dc6d37e41d09fd066c2b596771d7df4"
+    },
+    "COURXX4": {
+      "json": "courses/COURXX4.json",
+      "format": "course_grid",
+      "size_bytes": 1163,
+      "sha256": "37968f5d138af3977096a0a307df11809cb55b0847d96cefca5a467e9590d056"
+    },
+    "ORDXX5": {
+      "json": "orders/ORDXX5.json",
+      "format": "order_text",
+      "size_bytes": 167,
+      "sha256": "f90fb440c425b34e996ce19d465b151cfcadb666e93362af5008a862892e67ea"
+    },
+    "COURXX5": {
+      "json": "courses/COURXX5.json",
+      "format": "course_grid",
+      "size_bytes": 1157,
+      "sha256": "a2b90df94f647e06fec4d87913d1c977150338c48795f6edaff173a77d4df949"
+    },
+    "ORDXX6": {
+      "json": "orders/ORDXX6.json",
+      "format": "order_text",
+      "size_bytes": 213,
+      "sha256": "4733afee7b9c7db65c58748b376a3b5032710265e73dab3d80351ef4ca501e6f"
+    },
+    "COURXX6": {
+      "json": "courses/COURXX6.json",
+      "format": "course_grid",
+      "size_bytes": 1158,
+      "sha256": "5c5d1f914ea9c77376b28afb15dc3f0fc7e0c63154eb38102594dc270ce531e8"
+    },
+    "ORDXX7": {
+      "json": "orders/ORDXX7.json",
+      "format": "order_text",
+      "size_bytes": 233,
+      "sha256": "e6172cbd1496850832a4d5abd4cdedf728b232a5eb4d8cdb9dbf2f48e6c62ca2"
+    },
+    "COURXX7": {
+      "json": "courses/COURXX7.json",
+      "format": "course_grid",
+      "size_bytes": 1162,
+      "sha256": "5cb0f7966b55e847a2e3086edc7fc7da6de94efc24988d4599cdd98d3233dcc8"
+    },
+    "ORDXX8": {
+      "json": "orders/ORDXX8.json",
+      "format": "order_text",
+      "size_bytes": 180,
+      "sha256": "84d641ef34abf23b6424d0cdced29face7937d3b9b4d33ae7ae5d7138f291356"
+    },
+    "COURXX8": {
+      "json": "courses/COURXX8.json",
+      "format": "course_grid",
+      "size_bytes": 1162,
+      "sha256": "729b8e0113dd6cb07a2a50dcc2f5c70958e8bbfcfd63ca184855bb7b9515dd68"
+    },
+    "ORDXX9": {
+      "json": "orders/ORDXX9.json",
+      "format": "order_text",
+      "size_bytes": 143,
+      "sha256": "1e7e8e2771819e19810c03d4a884a7c9fdf620647391e18de8b5d96c96a054a2"
+    },
+    "COURXX9": {
+      "json": "courses/COURXX9.json",
+      "format": "course_grid",
+      "size_bytes": 1162,
+      "sha256": "7a9552eff22bcc862fb6d757c73f35ce929434b5c297469158ca514549157464"
+    },
+    "ORDXX10": {
+      "json": "orders/ORDXX10.json",
+      "format": "order_text",
+      "size_bytes": 207,
+      "sha256": "5f44473e17c1dd902e4040d92b7d116cc6d75e139eb28f2a43256113a574b4d4"
+    },
+    "COURXX10": {
+      "json": "courses/COURXX10.json",
+      "format": "course_grid",
+      "size_bytes": 1139,
+      "sha256": "40b9466321e3b1e59c3248709a26dd811a6130d68600a8842dfc3fc70b69c080"
+    },
+    "ORDXX11": {
+      "json": "orders/ORDXX11.json",
+      "format": "order_text",
+      "size_bytes": 196,
+      "sha256": "e010cf6e6f1e8bee7f33ca46ead0f3866ae1826325f318095046d7f67cb94ae8"
+    },
+    "COURXX11": {
+      "json": "courses/COURXX11.json",
+      "format": "course_grid",
+      "size_bytes": 1160,
+      "sha256": "8eedb27ffd153b0f62b4180d5a80e4b869f65bf8bd87c4c853cf86e987ce98c1"
+    },
+    "ORDXX12": {
+      "json": "orders/ORDXX12.json",
+      "format": "order_text",
+      "size_bytes": 215,
+      "sha256": "9014e3f0c19f6b638961115b066671467d7986f36b09db7f26a393bd73b66da1"
+    },
+    "COURXX12": {
+      "json": "courses/COURXX12.json",
+      "format": "course_grid",
+      "size_bytes": 1184,
+      "sha256": "65e476c065b370c969b84b15c4aa76b8a92a45c13a972f7728956f135a25ff20"
+    },
+    "ORDXX13": {
+      "json": "orders/ORDXX13.json",
+      "format": "order_text",
+      "size_bytes": 208,
+      "sha256": "4782ff17539f76066821899bf35eec20b9b88d5bc3958018844c2e34ecdd84b5"
+    },
+    "COURXX13": {
+      "json": "courses/COURXX13.json",
+      "format": "course_grid",
+      "size_bytes": 1159,
+      "sha256": "ecc74dac05095b033fb7a7bf0eff0ad6c10ef36ad9f7dc63230bcf5fcd8372b6"
+    },
+    "ORDXX14": {
+      "json": "orders/ORDXX14.json",
+      "format": "order_text",
+      "size_bytes": 214,
+      "sha256": "2e04811c77da18a8a22039ab171b5bf01dc6d37e41d09fd066c2b596771d7df4"
+    },
+    "COURXX14": {
+      "json": "courses/COURXX14.json",
+      "format": "course_grid",
+      "size_bytes": 1163,
+      "sha256": "37968f5d138af3977096a0a307df11809cb55b0847d96cefca5a467e9590d056"
+    },
+    "ORDXX15": {
+      "json": "orders/ORDXX15.json",
+      "format": "order_text",
+      "size_bytes": 167,
+      "sha256": "f90fb440c425b34e996ce19d465b151cfcadb666e93362af5008a862892e67ea"
+    },
+    "COURXX15": {
+      "json": "courses/COURXX15.json",
+      "format": "course_grid",
+      "size_bytes": 1157,
+      "sha256": "a2b90df94f647e06fec4d87913d1c977150338c48795f6edaff173a77d4df949"
+    },
+    "ORDXX16": {
+      "json": "orders/ORDXX16.json",
+      "format": "order_text",
+      "size_bytes": 213,
+      "sha256": "4733afee7b9c7db65c58748b376a3b5032710265e73dab3d80351ef4ca501e6f"
+    },
+    "COURXX16": {
+      "json": "courses/COURXX16.json",
+      "format": "course_grid",
+      "size_bytes": 1158,
+      "sha256": "5c5d1f914ea9c77376b28afb15dc3f0fc7e0c63154eb38102594dc270ce531e8"
+    },
+    "ORDXX17": {
+      "json": "orders/ORDXX17.json",
+      "format": "order_text",
+      "size_bytes": 233,
+      "sha256": "e6172cbd1496850832a4d5abd4cdedf728b232a5eb4d8cdb9dbf2f48e6c62ca2"
+    },
+    "COURXX17": {
+      "json": "courses/COURXX17.json",
+      "format": "course_grid",
+      "size_bytes": 1162,
+      "sha256": "5cb0f7966b55e847a2e3086edc7fc7da6de94efc24988d4599cdd98d3233dcc8"
+    },
+    "ORDXX18": {
+      "json": "orders/ORDXX18.json",
+      "format": "order_text",
+      "size_bytes": 180,
+      "sha256": "84d641ef34abf23b6424d0cdced29face7937d3b9b4d33ae7ae5d7138f291356"
+    },
+    "COURXX18": {
+      "json": "courses/COURXX18.json",
+      "format": "course_grid",
+      "size_bytes": 1162,
+      "sha256": "729b8e0113dd6cb07a2a50dcc2f5c70958e8bbfcfd63ca184855bb7b9515dd68"
+    },
+    "ORDXX19": {
+      "json": "orders/ORDXX19.json",
+      "format": "order_text",
+      "size_bytes": 143,
+      "sha256": "1e7e8e2771819e19810c03d4a884a7c9fdf620647391e18de8b5d96c96a054a2"
+    },
+    "COURXX19": {
+      "json": "courses/COURXX19.json",
+      "format": "course_grid",
+      "size_bytes": 1162,
+      "sha256": "7a9552eff22bcc862fb6d757c73f35ce929434b5c297469158ca514549157464"
+    },
+    "ORDXX20": {
+      "json": "orders/ORDXX20.json",
+      "format": "order_text",
+      "size_bytes": 207,
+      "sha256": "5f44473e17c1dd902e4040d92b7d116cc6d75e139eb28f2a43256113a574b4d4"
+    },
+    "COURXX20": {
+      "json": "courses/COURXX20.json",
+      "format": "course_grid",
+      "size_bytes": 1139,
+      "sha256": "40b9466321e3b1e59c3248709a26dd811a6130d68600a8842dfc3fc70b69c080"
+    },
+    "DEMORD": {
+      "json": "orders/DEMORD.json",
+      "format": "free_text",
+      "size_bytes": 62,
+      "sha256": "105c15a7a06bcc84af863a67accede6f766ea4576bd2f9aa9cfa06f0f70713b5"
+    },
+    "MXP": {
+      "json": "map/MXP.json",
+      "format": "island_table",
+      "size_bytes": 822,
+      "sha256": "0a196a8a5b8cdfad70f3c280c34f37019fb5410fb9ed5b288f2ca206a13ea574"
+    },
+    "OBX1": {
+      "json": "sprites/OBX1.json",
+      "format": "draw_sprite",
+      "size_bytes": 653,
+      "sha256": "10c2eefdd92e19182fe807d1451800415a39742e0a23beac19b6128e04e561ad"
+    },
+    "OBX3": {
+      "json": "sprites/OBX3.json",
+      "format": "draw_sprite",
+      "size_bytes": 1695,
+      "sha256": "00b31ffed4d11aa107a8a63999bca90517107b9a1ef7fc67e773eeea8e3a1257"
+    },
+    "OBX4": {
+      "json": "sprites/OBX4.json",
+      "format": "draw_sprite",
+      "size_bytes": 1454,
+      "sha256": "c8742ad857f777e1bed7b83c6307032ce2cad0b3c1e8309289097c9a7726af2e"
+    },
+    "OBX5": {
+      "json": "sprites/OBX5.json",
+      "format": "draw_sprite",
+      "size_bytes": 1754,
+      "sha256": "e674a2113bad58a2691beffb70053c10a6f708712632389e9688f22f33e936f4"
+    },
+    "OBX6": {
+      "json": "sprites/OBX6.json",
+      "format": "draw_sprite",
+      "size_bytes": 1391,
+      "sha256": "20dc09c025d3656ac0f43ca8c8ec39b09c6fb1b753ce6b966840d41d29a88d76"
+    },
+    "OBX7": {
+      "json": "sprites/OBX7.json",
+      "format": "draw_sprite",
+      "size_bytes": 1728,
+      "sha256": "f7411739b37eeff6f992bed1be6cd8774459f479aff97c110becb104e1d05968"
+    },
+    "OBX8": {
+      "json": "sprites/OBX8.json",
+      "format": "draw_sprite",
+      "size_bytes": 1629,
+      "sha256": "c8b676750446a2e9f62fe7f7ced8d1106c66b3b12a975b8a84904f4727576149"
+    }
+  }
+}

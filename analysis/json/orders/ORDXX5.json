@@ -1,0 +1,18 @@
+{
+  "source_file": "ORDXX5",
+  "size_bytes": 167,
+  "sha256": "f90fb440c425b34e996ce19d465b151cfcadb666e93362af5008a862892e67ea",
+  "format": "order_text",
+  "classification": "TOP SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "RESUPPLY SPOTTER ON ISLAND IN", "QUADRANT 18 EAST COAST.", "MAKE DAYLIGHT CONTACT.  ENEMY",
+    "PTS IN AREA."
+  ],
+  "message": "RESUPPLY SPOTTER ON ISLAND IN QUADRANT 18 EAST COAST. MAKE DAYLIGHT CONTACT.  ENEMY PTS IN AREA.",
+  "raw_lines": [
+    "@TOP SECRET", "", "", "TO: GROWLER", "", "FROM: COMSUBPAC", "", "  RESUPPLY SPOTTER ON ISLAND IN", "",
+    "  QUADRANT 18 EAST COAST.", "", "  MAKE DAYLIGHT CONTACT.  ENEMY", "", "  PTS IN AREA."
+  ]
+}

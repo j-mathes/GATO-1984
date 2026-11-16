@@ -1,0 +1,19 @@
+{
+  "source_file": "ORDXX2",
+  "size_bytes": 215,
+  "sha256": "9014e3f0c19f6b638961115b066671467d7986f36b09db7f26a393bd73b66da1",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": [
+    "INTERCEPT FREIGHTER LEAVING", "ISLAND QUADRANT 13. CARGO IS", "ADVANCED SJ RADAR. DESTINATION",
+    "UNKNOWN. ENEMY ALERTED TO SUBS", "IN AREA."
+  ],
+  "message": "INTERCEPT FREIGHTER LEAVING ISLAND QUADRANT 13. CARGO IS ADVANCED SJ RADAR. DESTINATION UNKNOWN. ENEMY ALERTED TO SUBS IN AREA.",
+  "raw_lines": [
+    "@  SECRET", "", "", "  TO: GROWLER", "", "  FROM: COMSUBPAC", "", "    INTERCEPT FREIGHTER LEAVING", "",
+    "    ISLAND QUADRANT 13. CARGO IS", "", "    ADVANCED SJ RADAR. DESTINATION", "",
+    "    UNKNOWN. ENEMY ALERTED TO SUBS", "", "    IN AREA."
+  ]
+}

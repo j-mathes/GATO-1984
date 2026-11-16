@@ -1,0 +1,172 @@
+{
+  "source_file": "OBX1",
+  "size_bytes": 653,
+  "sha256": "10c2eefdd92e19182fe807d1451800415a39742e0a23beac19b6128e04e561ad",
+  "format": "draw_sprite",
+  "object_id": 1,
+  "object_name": "island",
+  "frame_count": 16,
+  "frame_meaning": "inferred: 16 view angles at 22.5 degree steps; frame 0 and 8 are end-on (narrowest), frames 4 and 12 are broadside mirror images (widest). For OBX1 the frames are island silhouette variants.",
+  "command_schema": "[op, arg, flags?]: op in U D L R E F G H -> arg = pixels, flags 'B' (move without drawing) and/or 'N' (draw, then return to start); op 'C' -> arg = colour",
+  "frames": [
+    {
+      "index": 0,
+      "draw_string": "C0BL24E10F3NG7E8F8BGH4G10BR8E18R4F18",
+      "commands": [
+        ["C", 0], ["L", 24, "B"], ["E", 10], ["F", 3], ["G", 7, "N"], ["E", 8], ["F", 8], ["G", 1, "B"],
+        ["H", 4], ["G", 10], ["R", 8, "B"], ["E", 18], ["R", 4], ["F", 18]
+      ],
+      "pen_end": {"x": 38, "y": 0},
+      "drawn_bounds": {"min_x": -24, "max_x": 38, "min_y": -18, "max_y": 0, "width": 62, "height": 18}
+    },
+    {
+      "index": 1,
+      "draw_string": "C0BL13E15F2NG13E5R4F18",
+      "commands": [["C", 0], ["L", 13, "B"], ["E", 15], ["F", 2], ["G", 13, "N"], ["E", 5], ["R", 4], ["F", 18]],
+      "pen_end": {"x": 31, "y": 0},
+      "drawn_bounds": {"min_x": -13, "max_x": 31, "min_y": -18, "max_y": 0, "width": 44, "height": 18}
+    },
+    {
+      "index": 2,
+      "draw_string": "C0BL18E18R4F16BH2E2F6",
+      "commands": [["C", 0], ["L", 18, "B"], ["E", 18], ["R", 4], ["F", 16], ["H", 2, "B"], ["E", 2], ["F", 6]],
+      "pen_end": {"x": 26, "y": 0},
+      "drawn_bounds": {"min_x": -18, "max_x": 26, "min_y": -18, "max_y": 0, "width": 44, "height": 18}
+    },
+    {
+      "index": 3,
+      "draw_string": "C0BL26E18R4F14G1E3F6BL1BH6H9G1BF6BR3E2F10",
+      "commands": [
+        ["C", 0], ["L", 26, "B"], ["E", 18], ["R", 4], ["F", 14], ["G", 1], ["E", 3], ["F", 6],
+        ["L", 1, "B"], ["H", 6, "B"], ["H", 9], ["G", 1], ["F", 6, "B"], ["R", 3, "B"], ["E", 2], ["F", 10]
+      ],
+      "pen_end": {"x": 22, "y": 0},
+      "drawn_bounds": {"min_x": -26, "max_x": 22, "min_y": -18, "max_y": 0, "width": 48, "height": 18}
+    },
+    {
+      "index": 4,
+      "draw_string": "C0BL33E18R4F14NG3E2F6BR12H15G7F3H5G1BR16F2E3F10",
+      "commands": [
+        ["C", 0], ["L", 33, "B"], ["E", 18], ["R", 4], ["F", 14], ["G", 3, "N"], ["E", 2], ["F", 6],
+        ["R", 12, "B"], ["H", 15], ["G", 7], ["F", 3], ["H", 5], ["G", 1], ["R", 16, "B"], ["F", 2],
+        ["E", 3], ["F", 10]
+      ],
+      "pen_end": {"x": 29, "y": 0},
+      "drawn_bounds": {"min_x": -33, "max_x": 29, "min_y": -18, "max_y": 0, "width": 62, "height": 18}
+    },
+    {
+      "index": 5,
+      "draw_string": "C0BL40E18R4F14NG4E2F6BR5H10G4BR9BF1E10F12BH4E3F10",
+      "commands": [
+        ["C", 0], ["L", 40, "B"], ["E", 18], ["R", 4], ["F", 14], ["G", 4, "N"], ["E", 2], ["F", 6],
+        ["R", 5, "B"], ["H", 10], ["G", 4], ["R", 9, "B"], ["F", 1, "B"], ["E", 10], ["F", 12],
+        ["H", 4, "B"], ["E", 3], ["F", 10]
+      ],
+      "pen_end": {"x": 36, "y": 0},
+      "drawn_bounds": {"min_x": -40, "max_x": 36, "min_y": -18, "max_y": 0, "width": 76, "height": 18}
+    },
+    {
+      "index": 6,
+      "draw_string": "C0BL47E18R4F14NG4E2NF6BF2E6F9BH1E13F9G3E7F10",
+      "commands": [
+        ["C", 0], ["L", 47, "B"], ["E", 18], ["R", 4], ["F", 14], ["G", 4, "N"], ["E", 2], ["F", 6, "N"],
+        ["F", 2, "B"], ["E", 6], ["F", 9], ["H", 1, "B"], ["E", 13], ["F", 9], ["G", 3], ["E", 7], ["F", 10]
+      ],
+      "pen_end": {"x": 43, "y": 0},
+      "drawn_bounds": {"min_x": -47, "max_x": 43, "min_y": -18, "max_y": 0, "width": 90, "height": 18}
+    },
+    {
+      "index": 7,
+      "draw_string": "C0BL6H6G6BL22E18R4F12NG3E4F6NG4E11F8NG7E3F10",
+      "commands": [
+        ["C", 0], ["L", 6, "B"], ["H", 6], ["G", 6], ["L", 22, "B"], ["E", 18], ["R", 4], ["F", 12],
+        ["G", 3, "N"], ["E", 4], ["F", 6], ["G", 4, "N"], ["E", 11], ["F", 8], ["G", 7, "N"], ["E", 3],
+        ["F", 10]
+      ],
+      "pen_end": {"x": 36, "y": 0},
+      "drawn_bounds": {"min_x": -40, "max_x": 36, "min_y": -18, "max_y": 0, "width": 76, "height": 18}
+    },
+    {
+      "index": 8,
+      "draw_string": "C0BL10H6G6BL11E18R4F9NG8E1F3NG7E8F6NG9E1F10",
+      "commands": [
+        ["C", 0], ["L", 10, "B"], ["H", 6], ["G", 6], ["L", 11, "B"], ["E", 18], ["R", 4], ["F", 9],
+        ["G", 8, "N"], ["E", 1], ["F", 3], ["G", 7, "N"], ["E", 8], ["F", 6], ["G", 9, "N"], ["E", 1],
+        ["F", 10]
+      ],
+      "pen_end": {"x": 27, "y": 0},
+      "drawn_bounds": {"min_x": -33, "max_x": 27, "min_y": -18, "max_y": 0, "width": 60, "height": 18}
+    },
+    {
+      "index": 9,
+      "draw_string": "C0BL13H6G6BL1E18R4F7BG3H2G10BR4E15F15BL4H10G10",
+      "commands": [
+        ["C", 0], ["L", 13, "B"], ["H", 6], ["G", 6], ["L", 1, "B"], ["E", 18], ["R", 4], ["F", 7],
+        ["G", 3, "B"], ["H", 2], ["G", 10], ["R", 4, "B"], ["E", 15], ["F", 15], ["L", 4, "B"], ["H", 10],
+        ["G", 10]
+      ],
+      "pen_end": {"x": -2, "y": 0},
+      "drawn_bounds": {"min_x": -26, "max_x": 22, "min_y": -18, "max_y": 0, "width": 48, "height": 18}
+    },
+    {
+      "index": 10,
+      "draw_string": "C0BL28E6F6E18R4F18BL5H15G15BR3E10F10",
+      "commands": [
+        ["C", 0], ["L", 28, "B"], ["E", 6], ["F", 6], ["E", 18], ["R", 4], ["F", 18], ["L", 5, "B"],
+        ["H", 15], ["G", 15], ["R", 3, "B"], ["E", 10], ["F", 10]
+      ],
+      "pen_end": {"x": 12, "y": 0},
+      "drawn_bounds": {"min_x": -28, "max_x": 24, "min_y": -18, "max_y": 0, "width": 52, "height": 18}
+    },
+    {
+      "index": 11,
+      "draw_string": "C0BL24E6F3NG3E7NF10BF2E7NF15BF3E6R4F18",
+      "commands": [
+        ["C", 0], ["L", 24, "B"], ["E", 6], ["F", 3], ["G", 3, "N"], ["E", 7], ["F", 10, "N"], ["F", 2, "B"],
+        ["E", 7], ["F", 15, "N"], ["F", 3, "B"], ["E", 6], ["R", 4], ["F", 18]
+      ],
+      "pen_end": {"x": 32, "y": 0},
+      "drawn_bounds": {"min_x": -24, "max_x": 32, "min_y": -18, "max_y": 0, "width": 56, "height": 18}
+    },
+    {
+      "index": 12,
+      "draw_string": "C0BL26E10F10BH6E9F15BR2H10G1BF3BE1E11R4F18",
+      "commands": [
+        ["C", 0], ["L", 26, "B"], ["E", 10], ["F", 10], ["H", 6, "B"], ["E", 9], ["F", 15], ["R", 2, "B"],
+        ["H", 10], ["G", 1], ["F", 3, "B"], ["E", 1, "B"], ["E", 11], ["R", 4], ["F", 18]
+      ],
+      "pen_end": {"x": 40, "y": 0},
+      "drawn_bounds": {"min_x": -26, "max_x": 40, "min_y": -18, "max_y": 0, "width": 66, "height": 18}
+    },
+    {
+      "index": 13,
+      "draw_string": "C0BL33E10NF7BF5E10F15BH6E4F10BH4E14R4F18",
+      "commands": [
+        ["C", 0], ["L", 33, "B"], ["E", 10], ["F", 7, "N"], ["F", 5, "B"], ["E", 10], ["F", 15],
+        ["H", 6, "B"], ["E", 4], ["F", 10], ["H", 4, "B"], ["E", 14], ["R", 4], ["F", 18]
+      ],
+      "pen_end": {"x": 47, "y": 0},
+      "drawn_bounds": {"min_x": -33, "max_x": 47, "min_y": -18, "max_y": 0, "width": 80, "height": 18}
+    },
+    {
+      "index": 14,
+      "draw_string": "C0BL39E10F6G2E13F15BH4E6F10E18R4F18",
+      "commands": [
+        ["C", 0], ["L", 39, "B"], ["E", 10], ["F", 6], ["G", 2], ["E", 13], ["F", 15], ["H", 4, "B"],
+        ["E", 6], ["F", 10], ["E", 18], ["R", 4], ["F", 18]
+      ],
+      "pen_end": {"x": 55, "y": 0},
+      "drawn_bounds": {"min_x": -39, "max_x": 55, "min_y": -18, "max_y": 0, "width": 94, "height": 18}
+    },
+    {
+      "index": 15,
+      "draw_string": "C0BL32E10F5NG4E10F7G2E4F7BG3E18R4F18",
+      "commands": [
+        ["C", 0], ["L", 32, "B"], ["E", 10], ["F", 5], ["G", 4, "N"], ["E", 10], ["F", 7], ["G", 2],
+        ["E", 4], ["F", 7], ["G", 3, "B"], ["E", 18], ["R", 4], ["F", 18]
+      ],
+      "pen_end": {"x": 46, "y": 0},
+      "drawn_bounds": {"min_x": -32, "max_x": 46, "min_y": -18, "max_y": 0, "width": 78, "height": 18}
+    }
+  ]
+}

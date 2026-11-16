@@ -1,0 +1,15 @@
+{
+  "source_file": "ORDXX19",
+  "size_bytes": 143,
+  "sha256": "1e7e8e2771819e19810c03d4a884a7c9fdf620647391e18de8b5d96c96a054a2",
+  "format": "order_text",
+  "classification": "SECRET",
+  "to": "GROWLER",
+  "from": "COMSUBPAC",
+  "body_lines": ["INTERCEPT AND DESTROY", "PATROL BOATS CRUISING", "PERIMETER OF ENEMY ISLANDS."],
+  "message": "INTERCEPT AND DESTROY PATROL BOATS CRUISING PERIMETER OF ENEMY ISLANDS.",
+  "raw_lines": [
+    "@ SECRET  ", "", "", " TO: GROWLER", "", " FROM: COMSUBPAC", "", "", "   INTERCEPT AND DESTROY", "",
+    "   PATROL BOATS CRUISING", "", "   PERIMETER OF ENEMY ISLANDS."
+  ]
+}
