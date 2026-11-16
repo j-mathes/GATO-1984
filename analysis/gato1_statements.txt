@@ -1,0 +1,1774 @@
+03a1a lcall 0x103d, 0; push bp; mov bp, sp; sub sp, 2; rt_24b3; rt_2609
+03a31 mov bx, 0x40; rt_17bc
+03a3a mov bx, 0x17; mov ax, 0x60; mov ds, word ptr [0x98]; mov byte ptr [bx], al; push es; pop ds
+03a4a xor bx, bx; rt_17bc
+03a52 mov bx, v0410; mov dx, bx; mov ds, word ptr [0x98]; mov bl, byte ptr [bx]; xor bh, bh; push es; pop ds; and bx, 0xcf; or bx, 0x10; mov cx, bx; mov bx, dx; xchg cx, ax; mov ds, word ptr [0x98]; mov byte ptr [bx], al; push es; pop ds
+03a76 mov bx, 1; rt_102f; xor bx, bx; rt_102f; rt_102f; rt_1049
+03a90 xor bx, bx; rt_1049
+03a98 mov bx, 0x28; rt_396e
+03aa1 rt_1265; rt_1265; mov bx, 1; rt_1257; mov bx, 6; rt_1257; mov bx, 7; rt_1271
+03ac4 rt_23d6; mov dx, 2; RIGHT$; rt_1b05; rt_205f; rt_2b81
+03ae1 mov di, v09e2; mov si, v23d0=1; ASSIGN
+03aed mov bx, 1; rt_102f; xor bx, bx; rt_1049
+03afd mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+03b0e xor bx, bx; rt_0eda
+03b19 rt_0d79
+03b1f mov bx, 2; rt_1257; rt_1271
+03b2d PRINT_BEGIN; mov bx, 0x10; rt_2186; PRINT_STRNL
+03b40 mov bx, 7; mov dx, bx; rt_2a48; mov bx, 0xd; mov dx, 0x10; rt_2a4e; mov bx, v108a; mov dx, 0x18; rt_2a54
+03b61 rt_0d79
+03b67 mov bx, 2; rt_1257; rt_1271
+03b75 PRINT_BEGIN; mov bx, 0x18; rt_2186; PRINT_STRNL
+03b88 mov bx, 8; mov dx, bx; rt_2a48; mov bx, 0xf; mov dx, bx; rt_2a4e; mov bx, v10d6; mov dx, 0x18; rt_2a54
+03ba8 rt_0d79
+03bae mov bx, 2; rt_1257; rt_1271
+03bbc PRINT_BEGIN; mov bx, 0x1a; rt_2186; PRINT_STRNL
+03bcf mov bx, 7; mov dx, 8; rt_2a48; mov bx, 0xe; mov dx, 0x10; rt_2a4e; mov bx, v10ee; mov dx, 0x18; rt_2a54
+03bf1 rt_0d79
+03bf7 mov bx, 2; rt_1257; rt_1271
+03c05 PRINT_BEGIN; mov bx, 0x19; rt_2186; PRINT_STRNL
+03c18 mov bx, 8; mov dx, bx; rt_2a48; mov bx, 0xe; mov dx, 0xf; rt_2a4e; mov bx, v1106; mov dx, 0x18; rt_2a54
+03c39 rt_0d79
+03c3f mov bx, 2; rt_1257; rt_1271
+03c4d PRINT_BEGIN; mov bx, 0x1b; rt_2186; PRINT_STRNL
+03c60 mov bx, 7; mov dx, 8; rt_2a48; mov bx, 0xe; mov dx, 0xf; rt_2a4e; mov bx, v111e; mov dx, 0x18; rt_2a54
+03c82 rt_0d79
+03c88 rt_0d79
+03c8e mov bx, v23d4; rt_33ea; mov bx, 0xa0; mov dx, 0x64; mov cx, 4; mov ax, 2; rt_33fe
+03ca8 mov bx, v23d8; rt_33ea; mov bx, 0xa0; mov dx, 0x64; mov cx, 6; mov ax, 0xffff; rt_33fe
+03cc2 mov bx, 0xa0; mov dx, 0x64; mov cx, 2; mov ax, cx; rt_30d4
+03cd3 mov bx, 0x9a; mov dx, 0x5e; rt_2a48; mov bx, 0xa6; mov dx, 0x6a; rt_2a4e; mov bx, v0bf2; mov dx, 0x38; rt_2a54
+03cf5 rt_0d79
+03cfb mov bx, v23d8; rt_33ea; mov bx, 0xa0; mov dx, 0x64; mov cx, 6; mov ax, 0xffff; rt_33fe
+03d15 mov bx, 0x9a; mov dx, 0x5e; rt_2a48; mov bx, 0xa6; mov dx, 0x6a; rt_2a4e; mov bx, v0bb6; mov dx, 0x3c; rt_2a54
+03d37 mov bx, 2; mov dx, bx; rt_297b; mov bx, 8; mov dx, bx; mov cx, 2; rt_29c3
+03d4f mov bx, 2; mov dx, bx; rt_2a48; mov bx, 8; mov dx, bx; rt_2a4e; mov bx, v1136; mov dx, 0x14; rt_2a54
+03d6f rt_0d79
+03d75 mov bx, 2; rt_1257; rt_1271
+03d83 PRINT_BEGIN; mov bx, 'DIESEL'; PRINT_STRNL
+03d91 mov bx, 7; mov dx, bx; rt_2a48; mov bx, 0x37; mov dx, 0xf; rt_2a4e; mov bx, v0cb2; mov dx, 0x7c; rt_2a54
+03db2 rt_0d79
+03db8 mov bx, 2; rt_1257; rt_1271
+03dc6 PRINT_BEGIN; mov bx, '  OFF '; PRINT_STRNL
+03dd4 mov bx, 0xa; mov dx, 7; rt_2a48; mov bx, 0x3a; mov dx, 0xf; rt_2a4e; mov bx, v0daa; mov dx, 0x7c; rt_2a54
+03df6 rt_0d79
+03dfc mov bx, 2; rt_1257; rt_1271
+03e0a PRINT_BEGIN; mov bx, ' ELEC'; PRINT_STRNL
+03e18 mov bx, 7; mov dx, bx; rt_2a48; mov bx, 0x37; mov dx, 0xf; rt_2a4e; mov bx, v0d2e; mov dx, 0x7c; rt_2a54
+03e39 rt_0d79
+03e3f rt_0d79
+03e45 mov bx, 1; mov dx, bx; rt_297b; mov bx, 0x5b; mov dx, 5; mov cx, 1; rt_29c3
+03e5e mov bx, 1; mov dx, 3; rt_297b; mov bx, 0x5b; xor cx, cx; rt_2981
+03e74 mov si, v23fa=15; FORINIT; jmp @3ea6
+03e80 mov si, v214a; INT; mov dx, 1; rt_297b; mov dx, 5; xor cx, cx; rt_2981
+03e9b mov di, v23fa=15; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v23fe=76; CMP; jbe @3e7f
+03ebb mov bx, 1; mov dx, bx; rt_2a48; mov bx, 0x5b; mov dx, 5; rt_2a4e; mov bx, v0a86; mov dx, 0xb8; rt_2a54
+03edc rt_0d79
+03ee2 mov bx, 1; mov dx, bx; rt_297b; mov bx, 5; mov dx, 0x3a; mov cx, 1; rt_29c3
+03efb mov bx, 3; xor dx, dx; rt_297b; mov dx, 0x3a; xor cx, cx; rt_2981
+03f10 mov si, v2402=16; FORINIT; jmp @3f44
+03f1c mov si, v214e; INT; mov dx, bx; mov bx, 1; rt_297b; mov bx, 5; xor cx, cx; rt_2981
+03f39 mov di, v23fa=15; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2406=58; CMP; jbe @3f1b
+03f59 mov bx, 1; mov dx, bx; rt_2a48; mov bx, 5; mov dx, 0x3a; rt_2a4e; mov bx, v0b3e; mov dx, 0x78; rt_2a54
+03f7a rt_0d79
+03f80 mov bx, 'C1R1E1U2H1L1G1D2F1BR4R2L1U4G1BR4E1R1F1G3R3BR2BU1F1R1E1H1E1H1L1G1BR7D3U4G2D1R3BF1BR1R2E1H1L1H1U1R3BR4G2D1F1R1E1H1BE2BR1R3D1G2D1BR5R1E1H1E1H1L1G1F1G1F1BR5E2U1H1L1G1F1'; rt_325c
+03f89 mov bx, 0x9f; mov dx, 0x60; rt_2a48; mov bx, 0xa3; mov dx, 0x64; rt_2a4e; mov bx, v09e6; mov dx, 0x10; rt_2a54
+03fab mov bx, 0xa4; mov dx, 0x60; rt_2a48; mov bx, 0xa7; mov dx, 0x64; rt_2a4e; mov bx, v09f6; mov dx, 0x10; rt_2a54
+03fcd mov bx, 0xa8; mov dx, 0x60; rt_2a48; mov bx, 0xab; mov dx, 0x64; rt_2a4e; mov bx, v0a06; mov dx, 0x10; rt_2a54
+03fef mov bx, 0xac; mov dx, 0x60; rt_2a48; mov bx, 0xb0; mov dx, 0x64; rt_2a4e; mov bx, v0a16; mov dx, 0x10; rt_2a54
+04011 mov bx, 0xb1; mov dx, 0x60; rt_2a48; mov bx, 0xb5; mov dx, 0x64; rt_2a4e; mov bx, v0a26; mov dx, 0x10; rt_2a54
+04033 mov bx, 0xb6; mov dx, 0x60; rt_2a48; mov bx, 0xba; mov dx, 0x64; rt_2a4e; mov bx, v0a36; mov dx, 0x10; rt_2a54
+04055 mov bx, 0xbb; mov dx, 0x60; rt_2a48; mov bx, 0xbf; mov dx, 0x64; rt_2a4e; mov bx, v0a46; mov dx, 0x10; rt_2a54
+04077 mov bx, 0xc0; mov dx, 0x60; rt_2a48; mov bx, 0xc4; mov dx, 0x64; rt_2a4e; mov bx, v0a56; mov dx, 0x10; rt_2a54
+04099 mov bx, 0xc5; mov dx, 0x60; rt_2a48; mov bx, 0xc9; mov dx, 0x64; rt_2a4e; mov bx, v0a66; mov dx, 0x10; rt_2a54
+040bb mov bx, 0xca; mov dx, 0x60; rt_2a48; mov bx, 0xce; mov dx, 0x64; rt_2a4e; mov bx, v0a76; mov dx, 0x10; rt_2a54
+040dd rt_0d79
+040e3 GOSUB ->cf91
+040eb GOSUB ->ba3d
+040f3 GOSUB ->c612
+040fd mov di, v2152; mov si, v24b2=79; ASSIGN
+04109 rt_2afa; mov di, v24b6=5000; LOADFAC; mov bx, 0xb2; rt_1468; SUB; mov di, v2156; STORE
+0412c rt_2afa; mov di, v24b6=5000; LOADFAC; mov bx, 0xb2; rt_1468; SUB; mov di, v215a; STORE
+0414f mov di, v215e; mov si, v24ba=36; ASSIGN
+0415b mov di, v2162; mov si, v24be=114; ASSIGN
+04167 mov di, v2166; mov si, v24c2=103; ASSIGN
+04173 mov di, v216a; mov si, v24be=114; ASSIGN
+0417f mov di, v216e; mov si, v24c6=170; ASSIGN
+0418b mov di, v2172; mov si, v24be=114; ASSIGN
+04197 GOSUB ->c6c7
+041a0 mov di, v2176; mov si, v24ca=0; ASSIGN
+041ac mov di, v217a; mov si, v24ca=0; ASSIGN
+041b8 mov di, v217e; mov si, v24ca=0; ASSIGN
+041c4 mov di, v2182; mov si, v24ce=2; ASSIGN
+041d0 mov di, v2186; mov si, v24d2=36040; ASSIGN
+041dc mov di, v218a; mov si, v24d6=1000; ASSIGN
+041e8 mov di, v218e; mov si, v24da=0; ASSIGN
+041f4 mov di, v2192; mov si, v24da=0; ASSIGN
+04200 mov di, v2196; mov si, v24da=0; ASSIGN
+0420c mov di, v219a; mov si, v24de; ASSIGN
+04218 mov di, v219e; mov si, v24e2=-1; ASSIGN
+04224 mov di, v21a2; mov si, v24e6=1426; ASSIGN
+04230 mov di, v21a6; mov si, v24ea=24; ASSIGN
+0423c mov di, v21aa; mov si, v24ee=0; ASSIGN
+04249 mov di, v21ae; mov si, v24ee=0; ASSIGN
+04255 mov di, v21b2; mov si, v23d0=1; ASSIGN
+04261 mov di, v21b6; mov si, v24f2; ASSIGN
+0426d mov di, v21ba=0; mov si, v24f6; ASSIGN
+04279 mov di, v21be; mov si, v24fa; ASSIGN
+04285 mov di, v21c2; mov si, v24fe; ASSIGN
+04291 mov di, v21c6; mov si, v2502=0; ASSIGN
+0429d mov di, v21ca; mov si, v23d0=1; ASSIGN
+042a9 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+042ba mov di, v21ce; mov si, v2506=0; ASSIGN
+042c6 mov bx, 0x18; rt_1257; mov bx, 3; rt_1271
+042d7 PRINT_BEGIN; mov bx, 'POWER           DAMAGE     SCOPE '; PRINT_STR
+042e5 mov bx, 0x16; rt_1257; mov bx, 3; rt_1271
+042f6 PRINT_BEGIN; mov bx, 'DEPTH   SPEED   HEADING      '; PRINT_STRNL
+04304 mov bx, 0x14; rt_1257; mov bx, 0x1c; rt_1271
+04315 PRINT_BEGIN; mov bx, 'TORPEDOES   _'; PRINT_STRNL
+04323 rt_21a6; mov di, v21d2; STORE
+04331 mov bx, v21ae; rt_1468; mov di, v23d0=1; CMP; jb @4346; jmp @435c
+04347 mov bx, v0118; mov dx, 0xb8; LINE?; mov bx, v10d6; xor dx, dx; rt_2abb
+0435d mov bx, v21ae; rt_1468; mov di, v23d0=1; CMP; je @4372; jmp @4388
+04373 mov bx, v0117; mov dx, 0xb8; LINE?; mov bx, v111e; xor dx, dx; rt_2abb
+04389 mov bx, v21ae; rt_1468; mov di, v2564=3; CMP; je @439e; jmp @43b4
+0439f mov bx, v0118; mov dx, 0xb8; LINE?; mov bx, v1106; xor dx, dx; rt_2abb
+043b5 mov bx, v21ae; rt_1468; mov di, v2568=4; CMP; je @43ca; jmp @43e0
+043cb mov bx, v0117; mov dx, 0xb8; LINE?; mov bx, v10ee; xor dx, dx; rt_2abb
+043e1 mov di, v23d0=1; mov si, v21d6; CMP; je @43f1; jmp @4407
+043f2 mov bx, 0xd5; mov dx, 0xa5; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+04408 mov di, v256c=100; mov si, v21da; ADD; mov di, si; STORE
+0441b mov di, v2570; mov si, v2196; MULFAC; mov bx, 0xb2; rt_37df; mov di, v2574=26; LOADFAC; mov di, v24c2=103; SUB; mov di, v2166; STORE
+04447 mov di, v2570; mov si, v2196; MULFAC; mov bx, 0xb2; rt_37c4; mov di, v2578=22; LOADFAC; mov si, v257c=135; MUL; mov di, v216a; STORE
+04473 mov di, v2580; mov si, v2192; MULFAC; mov bx, 0xb2; rt_37df; mov di, v2574=26; LOADFAC; mov di, v24ba=36; SUB; mov di, v215e; STORE
+0449f mov di, v2580; mov si, v2192; MULFAC; mov bx, 0xb2; rt_37c4; mov di, v2578=22; LOADFAC; mov si, v257c=135; MUL; mov di, v2162; STORE
+044cb mov bx, v219a; rt_37c4; mov di, v2574=26; LOADFAC; mov di, v24c6=170; SUB; mov di, v216e; STORE
+044ec mov bx, v219a; rt_37df; mov di, v2578=22; LOADFAC; mov si, v257c=135; MUL; mov di, v2172; STORE
+0450d mov bx, 0x67; mov dx, 0x87; rt_297b; mov si, v216a; INT; mov dx, bx; mov si, v2166; INT; mov cx, 3; rt_2981
+04533 mov bx, v23d8; rt_33ea; mov bx, 0x67; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; rt_33fe
+0454d mov bx, 0x24; mov dx, 0x87; rt_297b; mov si, v2162; INT; mov dx, bx; mov si, v215e; INT; mov cx, 3; rt_2981
+04573 mov bx, v23d8; rt_33ea; mov bx, 0x24; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; rt_33fe
+0458d mov bx, 0xaa; mov dx, 0x87; rt_297b; mov si, v2172; INT; mov dx, bx; mov si, v216e; INT; mov cx, 3; rt_2981
+045b3 mov di, v23d0=1; mov si, v2182; CMP; je @45c3; jmp @45dd
+045c4 mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0d2e; mov dx, 1; rt_2abb; jmp @461e
+045de mov di, v24ce=2; mov si, v2182; CMP; je @45ee; jmp @4607
+045ef mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0cb2; xor dx, dx; rt_2abb; jmp @461e
+04608 mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0daa; mov dx, 1; rt_2abb
+0461f mov bx, 0xe; rt_1257; mov bx, 0x1b; rt_1271
+04630 PRINT_BEGIN; mov bx, 'FUEL        O'; PRINT_STRNL
+0463e mov bx, 0x10; rt_1257; mov bx, 0x1b; rt_1271
+0464f PRINT_BEGIN; mov bx, 'BATT     '; PRINT_STR; mov bx, 4; rt_2906; mov bx, '_'; PRINT_STRNL
+0466d mov bx, 0x12; rt_1257; mov bx, 0x1b; rt_1271
+0467e PRINT_BEGIN; mov bx, 'CHARGING     _'; PRINT_STRNL
+0468c mov bx, 0xe; rt_1257; mov bx, 0x20; rt_1271
+0469d mov bx, '####'; rt_3984; mov di, v25c4=90; mov si, v2186; rt_01de; rt_2092; rt_364a
+046bb mov bx, 0x10; rt_1257; mov bx, 0x20; rt_1271
+046cc mov bx, '####'; rt_3984; mov bx, v218a; rt_3640
+046dd mov bx, 0x16; rt_1257; mov bx, 0x1e; rt_1271
+046ee mov bx, '##'; rt_3984; mov bx, v21a6; rt_3640
+046ff mov bx, 0x23; mov dx, 0x6c; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+04716 mov bx, 0x66; mov dx, 0x6c; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+0472d mov bx, 0xa9; mov dx, 0x6c; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+04744 mov bx, v0138; mov dx, 0x6b; LINE?; mov bx, v0a06; mov dx, 0xffff; rt_2abb
+0475b mov bx, v0139; mov dx, 0x71; LINE?; mov bx, v09f6; mov dx, 0xffff; rt_2abb
+04772 mov bx, 5; mov dx, 0x85; LINE?; mov bx, v0a16; mov dx, 0xffff; rt_2abb
+04789 mov bx, 0xa; mov dx, 0x85; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+047a0 mov bx, 0xe; mov dx, 0x85; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+047b7 mov bx, 0x37; mov dx, 0x85; LINE?; mov bx, v09f6; mov dx, 0xffff; rt_2abb
+047ce mov bx, 0x3b; mov dx, 0x85; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+047e5 mov bx, 0x40; mov dx, 0x85; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+047fc mov bx, 0x49; mov dx, 0x85; LINE?; mov bx, v09f6; mov dx, 0xffff; rt_2abb
+04813 mov bx, 0x4c; mov dx, 0x85; LINE?; mov bx, v0a36; mov dx, 0xffff; rt_2abb
+0482a mov bx, 0x81; mov dx, 0x85; LINE?; mov bx, v0a36; mov dx, 0xffff; rt_2abb
+04841 mov bx, 0x8c; mov dx, 0x85; LINE?; mov bx, v0a06; mov dx, 0xffff; rt_2abb
+04858 mov bx, 0x90; mov dx, 0x85; LINE?; mov bx, v0a56; mov dx, 0xffff; rt_2abb
+0486f mov bx, 0x96; mov dx, 0x85; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+04886 mov bx, 0xbf; mov dx, 0x85; LINE?; mov bx, v0a76; mov dx, 0xffff; rt_2abb
+0489d mov bx, 0xc5; mov dx, 0x85; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+048b4 mov bx, v0139; mov dx, 0xad; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+048cb mov bx, 0x1e; mov dx, 0x9e; LINE?; mov bx, v0a06; mov dx, 0xffff; rt_2abb
+048e2 mov bx, 0x23; mov dx, 0x9e; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+048f9 mov bx, 0x28; mov dx, 0x9e; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+04910 mov bx, 0x64; mov dx, 0x9e; LINE?; mov bx, v09f6; mov dx, 0xffff; rt_2abb
+04927 mov bx, 0x68; mov dx, 0x9e; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+0493e mov bx, 0xa4; mov dx, 0x9e; LINE?; mov bx, v09f6; mov dx, 0xffff; rt_2abb
+04955 mov bx, 0xa7; mov dx, 0x9e; LINE?; mov bx, v0a66; mov dx, 0xffff; rt_2abb
+0496c mov bx, 0xad; mov dx, 0x9e; LINE?; mov bx, v09e6; mov dx, 0xffff; rt_2abb
+04983 mov di, v25ce; mov si, v21a2; MULFAC; rt_2092; mov dx, 0xae; sub dx, bx; mov bx, v012c=0; LINE?; mov bx, v108a; xor dx, dx; rt_2abb
+049ab mov bx, v0100; mov dx, 0xa9; LINE?; mov bx, v09f6; mov dx, 0xffff; rt_2abb
+049c2 mov bx, v010a; mov dx, 0xa9; LINE?; mov bx, v0a06; mov dx, 0xffff; rt_2abb
+049d9 mov bx, v0113; mov dx, 0xa9; LINE?; mov bx, v0a16; mov dx, 0xffff; rt_2abb
+049f0 mov bx, v011c; mov dx, 0xa9; LINE?; mov bx, v0a26; mov dx, 0xffff; rt_2abb
+04a07 mov si, v23d0=1; FORINIT; jmp @4a8b
+04a13 mov si, v214e; mov dx, si; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1172; CMP0; mov bx, 0; jne @4a32; dec bx; mov di, dx; mov si, v2568=4; FADD?; mov di, v21a6; CMP; mov dx, 0; jae @4a4a; dec dx; and dx, bx; and dx, dx; jne @4a53; jmp @4a7f
+04a54 mov di, v25d2=10; mov si, v214e; MULFAC; mov di, v25d6=244; SUB; rt_2092; mov dx, 0xa8; LINE?; mov bx, v1136; mov dx, 0xffff; rt_2abb
+04a80 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2568=4; CMP; ja @4aa2; jmp @4a12
+04aa3 mov si, v2192; rt_141d; add bh, byte ptr [bp + 0x24b2]; MUL; mov di, v2152; STORE
+04abd mov di, v25da=46; mov si, v2192; CMP; mov bx, 0; jae @4ace; dec bx; mov di, v23d0=1; mov si, v219e; CMP; mov dx, 0; jne @4adf; dec dx; and dx, bx; and dx, dx; jne @4ae8; jmp @4af7
+04ae9 mov di, v2152; mov si, v24b2=79; ASSIGN; jmp @4b11
+04af8 mov si, v2152; CMP0; jb @4b05; jmp @4b11
+04b06 mov di, v2152; mov si, v24e2=-1; ASSIGN
+04b12 xor bx, bx; mov dx, bx; rt_297b; mov si, v21ca; INT; mov cx, bx; mov bx, v013f; mov dx, 0x50; rt_29c3
+04b31 mov di, v23d0=1; mov si, v2152; ADD; rt_2092; mov dx, bx; xor bx, bx; rt_297b; mov bx, v013f; mov dx, 0x61; mov cx, 2; rt_29c3
+04b59 mov bx, 2; mov dx, 0x66; rt_297b; mov bx, 0xcd; mov dx, 0xb2; mov cx, 0xffff; rt_298a
+04b73 mov bx, 0xd1; mov dx, 0x96; rt_297b; mov bx, v0127; mov dx, 0xb2; mov cx, 0xffff; rt_298a
+04b8d mov si, v24ba=36; FORINIT; jmp @4be2
+04b99 mov bx, v23d8; rt_33ea; mov si, v214e; INT; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; rt_33fe
+04bb8 mov bx, v23d8; rt_33ea; mov si, v214e; INT; mov dx, 0x87; mov cx, 0x20; mov ax, 0xffff; rt_33fe
+04bd7 mov di, v25de=67; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v25e2=180; CMP; jbe @4b98
+04bf7 mov si, v24ba=36; FORINIT; jmp @4d8d
+04c03 mov si, v23d0=1; FORINIT; jmp @4d6a
+04c0f mov di, v25e6; mov si, v21de; MULFAC; mov di, v214a; STORE
+04c23 mov di, v24ba=36; mov si, v214e; CMP; mov bx, 0; jne @4c34; dec bx; mov di, v25ea=5; mov si, v21de; CMP; mov dx, 0; jne @4c45; dec dx; mov di, v2568=4; CMP; mov cx, 0; jne @4c53; dec cx; or cx, dx; mov di, v25d2=10; CMP; mov dx, 0; jne @4c63; dec dx; or dx, cx; mov di, v25ee=6; CMP; mov cx, 0; jne @4c73; dec cx; or cx, dx; mov di, v23fa=15; CMP; mov dx, 0; jne @4c83; dec dx; or dx, cx; and dx, bx; and dx, dx; jne @4c8e; jmp @4c92
+04c8f jmp @4d5e
+04c93 mov di, v25ea=5; mov si, v21de; CMP; mov bx, 0; jne @4ca4; dec bx; mov di, v25d2=10; CMP; mov dx, 0; jne @4cb2; dec dx; or dx, bx; mov di, v23fa=15; CMP; mov bx, 0; jne @4cc2; dec bx; or bx, dx; and bx, bx; jne @4ccb; jmp @4ccf
+04ccc jmp @4d5e
+04cd0 mov bx, v214a; rt_37df; mov di, v2574=26; LOADFAC; mov di, v257c=135; SUB; mov dx, bx; rt_2092; mov cx, bx; mov bx, dx; rt_37c4; mov ax, di; mov di, v25f2=27; LOADFAC; mov di, v214e; SUB; rt_2092; mov word ptr [bp - 2], dx; mov dx, cx; rt_297b; mov bx, word ptr [bp - 2]; rt_37df; mov dx, di; mov di, v25f6=29; LOADFAC; xchg di, ax; SUB; mov cx, bx; rt_2092; mov ax, bx; mov bx, cx; rt_37c4; mov di, v25fa=30; LOADFAC; mov di, dx; SUB; rt_2092; xchg dx, ax; mov cx, 1; rt_2981
+04d5f mov di, v23d0=1; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v25fe=19; CMP; ja @4d81; jmp @4c0e
+04d82 mov di, v25de=67; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2602=113; CMP; ja @4da4; jmp @4c02
+04da5 mov si, v23d0=1; FORINIT; jmp @4e9c
+04db1 mov di, v2606; mov si, v21de; MULFAC; mov di, v214a; STORE
+04dc5 mov di, v2568=4; mov si, v21de; CMP; mov bx, 0; jne @4dd6; dec bx; mov di, v260a=8; CMP; mov dx, 0; jne @4de4; dec dx; or dx, bx; mov di, v260e=12; CMP; mov bx, 0; jne @4df4; dec bx; or bx, dx; and bx, bx; jne @4dfd; jmp @4e01
+04dfe jmp @4e90
+04e02 mov bx, v214a; rt_37df; mov di, v2574=26; LOADFAC; mov di, v257c=135; SUB; mov dx, bx; rt_2092; mov cx, bx; mov bx, dx; rt_37c4; mov ax, di; mov di, v25f2=27; LOADFAC; mov di, v24c6=170; SUB; rt_2092; mov word ptr [bp - 2], dx; mov dx, cx; rt_297b; mov bx, word ptr [bp - 2]; rt_37df; mov dx, di; mov di, v25f6=29; LOADFAC; xchg di, ax; SUB; mov cx, bx; rt_2092; mov ax, bx; mov bx, cx; rt_37c4; mov di, v25fa=30; LOADFAC; mov di, dx; SUB; rt_2092; xchg dx, ax; mov cx, 1; rt_2981
+04e91 mov di, v23d0=1; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v23fa=15; CMP; ja @4eb3; jmp @4db0
+04eb4 xor bx, bx; mov dx, 0x64; rt_297b; mov bx, v013f; mov dx, 0xc4; mov cx, 0xffff; rt_298a
+04ecd mov bx, v012b; mov dx, 0x70; rt_297b; mov bx, v0135; mov dx, 0xb2; mov cx, 0xffff; rt_298a
+04ee7 mov bx, 0xe5; mov dx, 0xa6; rt_297b; mov bx, 0xf9; mov dx, 0xb0; mov cx, 0xffff; rt_298a
+04f01 mov bx, 0xfc; mov dx, 0xa6; rt_297b; mov bx, v0124; mov dx, 0xb0; mov cx, 3; rt_298a
+04f1b mov bx, 0x3d; mov dx, 0xb5; rt_297b; mov bx, 0x71; mov dx, 0xc1; mov cx, 0xffff; rt_298a
+04f35 mov si, v2612=262; FORINIT; jmp @4f68
+04f41 mov si, v214a; INT; mov dx, 0xa6; rt_297b; mov dx, 0xb0; mov cx, 0xffff; rt_2981
+04f5d mov di, v25d2=10; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v2616=282; CMP; jbe @4f40
+04f7d mov bx, v23d8; rt_33ea; mov bx, 0xc8; mov dx, 0xbb; mov cx, 6; mov ax, 0xffff; rt_33fe
+04f97 mov bx, v23d8; rt_33ea; mov bx, v011b; mov dx, 0xbb; mov cx, 8; mov ax, 0xffff; rt_33fe
+04fb1 mov bx, v23d8; rt_33ea; mov bx, 0xdb; mov dx, 0xab; mov cx, 6; mov ax, 0xffff; rt_33fe
+04fcb mov bx, v23d8; rt_33ea; mov bx, v0121; mov dx, 0x8b; mov cx, 6; mov ax, 0xffff; rt_33fe
+04fe5 mov si, v2506=0; FORINIT; jmp @5060
+04ff1 mov di, v261a=102; mov si, v214e; ADD; mov dx, si; rt_2092; mov cx, dx; mov dx, bx; mov bx, 0xf6; rt_297b; mov si, cx; mov di, v261e=112; ADD; rt_2092; mov dx, bx; mov bx, v0118; mov cx, 0xffff; rt_298a
+0502c mov bx, v23d8; rt_33ea; mov di, v2622=107; mov si, v214e; ADD; rt_2092; mov dx, bx; mov bx, v0121; mov cx, 6; mov ax, 0xffff; rt_33fe
+05055 mov di, v2402=16; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2402=16; CMP; ja @5077; jmp @4ff0
+05078 mov si, v23d0=1; FORINIT; jmp @509d
+05084 mov si, v214a; INT; rt_2829
+05092 mov di, v23d0=1; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v2626=14; CMP; jbe @5083
+050b2 mov bx, 1; mov dx, v1b87; rt_27ed
+050be mov bx, 3; mov dx, v1b46; rt_27ed
+050ca mov bx, 5; mov dx, v1b05; rt_27ed
+050d6 mov bx, 7; mov dx, v1ac4; rt_27ed
+050e2 mov bx, 8; mov dx, 0x45bc; rt_27ed
+050ee mov bx, 9; mov dx, v1ab2; rt_27ed
+050fa mov bx, 6; mov dx, 0x626c; rt_27ed
+05106 mov bx, 0xd; mov dx, v1bf7; rt_27ed
+05112 mov bx, 0xc; mov dx, v1c09; rt_27ed
+0511e mov bx, 2; mov dx, v1c4d; rt_27ed
+0512a mov bx, 4; mov dx, v1d00; rt_27ed
+05136 mov bx, 0xa; mov dx, v1bc8; rt_27ed
+05142 mov bx, 0xe; mov dx, v1c1b; rt_27ed
+0514e mov bx, 0xb; mov dx, v1c2d; rt_27ed
+0515a jmp @57c2
+0515e mov si, v1792; CMP0; mov bx, 0; je @516c; dec bx; mov di, v23d0=1; mov si, v219e; CMP; mov dx, 0; jne @517d; dec dx; and dx, bx; and dx, dx; jne @5186; jmp @51bc
+05187 mov bx, 1; mov dx, bx; rt_297b; mov bx, v013e; mov dx, 0x60; xor cx, cx; rt_29c3
+0519f xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0x61; mov cx, 3; rt_298a
+051b7 RETURN
+051bd xor bx, bx; mov dx, bx; rt_297b; mov si, v21ca; INT; mov dx, bx; mov si, v2152; INT; mov ax, dx; mov dx, bx; xchg cx, ax; mov bx, v013f; rt_29c3
+051e6 mov di, v23d0=1; mov si, v2152; ADD; rt_2092; mov dx, bx; xor bx, bx; rt_297b; mov bx, v013f; mov dx, 0x61; mov cx, 2; rt_29c3
+0520e mov di, v23d0=1; mov si, v219e; CMP; mov bx, 0; jne @521f; dec bx; mov dx, di; mov di, v262a=75; mov si, v2152; CMP; mov cx, 0; jbe @5232; dec cx; and cx, bx; mov di, dx; mov si, v21ca; CMP; mov bx, 0; jne @5244; dec bx; and bx, cx; and bx, bx; jne @524d; jmp @5279
+0524e mov bx, 0x73; mov dx, 0x3f; LINE?; mov bx, v0a86; xor dx, dx; rt_2abb
+05264 mov bx, 0x9d; mov dx, 0x14; LINE?; mov bx, v0b3e; xor dx, dx; rt_2abb
+0527a mov di, v21e2=0; mov si, v21e6; ASSIGN; mov si, v23d0=1; FORINIT; jmp @53ee
+05291 mov si, v21ea; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; mov di, v21ee; ASSIGN
+052ac mov si, v21ee; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1e5e; mov di, v21b6; CMP; mov dx, 0; jae @52ce; dec dx; mov di, v21ba=0; CMP; mov cx, 0; jb @52dc; dec cx; and cx, dx; mov di, v21be; CMP; mov dx, 0; jae @52ec; dec dx; mov di, v21c2; CMP; mov ax, 0; jbe @52fa; dec ax; and ax, dx; or ax, cx; add bx, v1d86; mov si, bx; mov di, v262e=0.5; CMP; mov dx, 0; jb @5312; dec dx; and dx, ax; and dx, dx; jne @531b; jmp @53b9
+0531c mov si, v21ca; INT; mov dx, bx; mov si, v2152; INT; mov cx, bx; mov si, v21ee; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1cd2; INT; xchg dx, cx; rt_2a09
+0534f mov si, v21ee; INT; shl bx, 1; shl bx, 1; mov dx, bx; add bx, v1d86; mov cx, dx; rt_22ce; mov ax, 'S='; CONCAT; xchg bx, ax; mov bx, 'X'; CONCAT; mov dx, cx; add cx, v1e3a; mov si, cx; mov ax, bx; INT; xchg bx, ax; mov cx, dx; mov dx, 9; imul dx; add cx, v1daa; mov si, cx; mov dx, bx; INT; add bx, ax; shl bx, 1; shl bx, 1; add bx, v0e26; mov cx, dx; rt_22da; xchg cx, ax; CONCAT; rt_325c
+053ba mov di, v23d0=1; mov si, v2152; CMP; jbe @53ca; jmp @53e2
+053cb xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0x61; mov cx, 2; rt_29c3
+053e3 mov di, v23d0=1; mov si, v21ea; ADD; mov di, v21ea; STORE; mov si, di; mov di, v21e2=0; CMP; ja @5405; jmp @5290
+05406 RETURN
+0540c mov di, v21f2; mov si, v24e2=-1; ASSIGN; mov di, v21f6=-89063.1; mov si, v263e=-4; ASSIGN; mov si, v24b2=79; FORINIT; jmp @5441
+0542e GOSUB ->515d
+05436 mov di, v21f6=-89063.1; mov si, v2152; ADD; mov di, v2152; STORE; mov si, v21f6=-89063.1; CMP0; jb @5456; jmp @5465; mov si, di; mov di, v21f2; CMP; jae @542d; jmp @5472; mov di, v21f2; mov si, v2152; CMP; jbe @542d
+05473 RETURN
+05479 mov si, v24e2=-1; FORINIT; jmp @5498
+05485 GOSUB ->515d
+0548d mov di, v2568=4; mov si, v2152; ADD; mov di, v2152; STORE; mov si, di; mov di, v24b2=79; CMP; jbe @5484
+054ad RETURN
+054b3 mov di, v2176; mov si, v2642=0; ASSIGN
+054bf RETURN
+054c5 mov di, v21d6; mov si, v2564=3; FADD?; mov di, v262e=0.5; mov si, v178e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov si, v23d0=1; MUL; rt_0158; cmp word ptr [bx + 0x2182], 0x539a; add word ptr [bp + di - 0x40f7], bx; jbe @551b; STORE
+05500 RETURN
+05506 mov di, v21d6; mov si, v25ee=6; FADD?; mov di, v262e=0.5; mov si, v178e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov si, v23d0=1; MUL; rt_0158; cmp word ptr [bx + 0x2182], 0x539a; add word ptr [bp + di - 0x40f7], bx; jbe @555c; STORE
+05541 RETURN
+05547 mov di, v21d6; mov si, v260a=8; FADD?; mov di, v262e=0.5; mov si, v178e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov si, v23d0=1; MUL; rt_0158; cmp word ptr [bx + 0x2182], 0x539a; add word ptr [bp + di - 0x40f7], bx; jbe @559d; STORE
+05582 RETURN
+05588 mov di, v21d6; mov si, v25d2=10; FADD?; mov di, v262e=0.5; mov si, v178e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov si, v23d0=1; MUL; rt_0158; cmp word ptr [bx + 0x2182], 0x539a; add word ptr [bp + di - 0x40f7], bx; jbe @55de; STORE
+055c3 RETURN
+055c9 mov di, v262e=0.5; mov si, v178e; MULFAC; mov si, v23d0=1; MUL; rt_139d; mov di, v2182; LOADFAC; mov di, v2176; STORE
+055f2 RETURN
+055f8 mov di, v217e; mov si, v2646=-0.005; ASSIGN
+05604 RETURN
+0560a mov di, v217e; mov si, v264a=0.005; ASSIGN
+05616 RETURN
+0561c mov di, v21fa; mov si, v23d0=1; ASSIGN
+05628 RETURN
+0562e mov si, v2192; CMP0; ja @563b; jmp @5647
+0563c mov di, v21fa; mov si, v24e2=-1; ASSIGN
+05648 RETURN
+0564f mov di, v264e=45; mov si, v2192; CMP; mov bx, 0; jbe @5660; dec bx; mov di, v23d0=1; mov si, v219e; CMP; mov dx, 0; jne @5671; dec dx; or dx, bx; and dx, dx; jne @567a; jmp @5680
+0567b RETURN
+05681 mov di, v2652=20; mov si, v2192; CMP; ja @5691; jmp @56c2
+05692 mov di, v219e; mov si, v23d0=1; ASSIGN
+0569e GOSUB ->5478
+056a6 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v09c4; mov dx, 0xb2; SOUND
+056bd RETURN
+056c3 mov di, v2152; mov si, v24b2=79; ASSIGN
+056cf mov di, v219e; mov si, v23d0=1; ASSIGN
+056db GOSUB ->515d
+056e3 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v09c4; mov dx, 0xb2; SOUND
+056fa RETURN
+05701 mov di, v264e=45; mov si, v2192; CMP; mov bx, 0; jbe @5712; dec bx; mov di, v24e2=-1; mov si, v219e; CMP; mov dx, 0; jne @5723; dec dx; or dx, bx; and dx, dx; jne @572c; jmp @5732
+0572d RETURN
+05733 mov di, v2652=20; mov si, v2192; CMP; ja @5743; jmp @5774
+05744 mov di, v219e; mov si, v24e2=-1; ASSIGN
+05750 GOSUB ->540b
+05758 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v09c4; mov dx, 0xb2; SOUND
+0576f RETURN
+05775 mov si, v2192; rt_141d; add bh, byte ptr [bp + 0x24b2]; MUL; mov di, v2152; STORE
+0578f mov di, v219e; mov si, v24e2=-1; ASSIGN
+0579b GOSUB ->515d
+057a3 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v09c4; mov dx, 0xb2; SOUND
+057ba RETURN
+057c3 INKEY$; mov dx, v21fe; STRSET
+057d1 mov si, v23d0=1; FORINIT; jmp @57f6
+057dd INKEY$; mov dx, v2202=0; STRSET
+057eb mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2652=20; CMP; jbe @57dc
+0580b mov bx, v2656; mov ax, v21fe; STRCMP; jne @581b; jmp @5b67
+0581c mov bx, 'D'; mov ax, v21fe; STRCMP; mov dx, 0; jne @582d; dec dx; mov di, v24ce=2; mov si, v2182; CMP; mov bx, 0; je @583e; dec bx; and bx, dx; mov si, v2186; CMP0; mov dx, 0; jbe @584e; dec dx; and dx, bx; and dx, dx; jne @5857; jmp @58a1
+05858 mov di, v2182; mov si, v24ce=2; ASSIGN
+05864 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v0384; mov dx, 0xb2; SOUND
+0587b mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0cb2; xor dx, dx; rt_2abb
+05891 mov si, v2176; rt_141d; add word ptr [bp + di - 0x6502], cx; std; adc bl, byte ptr [bp + di - 0x33f7]; mov bx, 'E'; mov ax, v21fe; STRCMP; mov dx, 0; jne @58b3; dec dx; mov di, v23d0=1; mov si, v2182; CMP; mov bx, 0; je @58c4; dec bx; and bx, dx; mov si, v218a; CMP0; mov dx, 0; jbe @58d4; dec dx; and dx, bx; and dx, dx; jne @58dd; jmp @592a
+058de mov di, v2182; mov si, v23d0=1; ASSIGN
+058ea mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v0384; mov dx, 0xb2; SOUND
+05901 mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0d2e; mov dx, 1; rt_2abb
+05918 mov di, v262e=0.5; mov si, v2176; MULFAC; mov di, si; STORE
+0592b mov bx, 'F'; mov ax, v21fe; STRCMP; je @593b; jmp @59b1
+0593c mov bx, v09c4; mov dx, v09e2; SOUND
+05948 mov bx, v0118; mov dx, 0xb8; LINE?; mov bx, v10d6; xor dx, dx; rt_2abb
+0595e mov di, v21ae; mov si, v2506=0; ASSIGN
+0596a mov di, v21b2; mov si, v23d0=1; ASSIGN
+05976 mov di, v21b6; mov si, v24f2; ASSIGN
+05982 mov di, v21ba=0; mov si, v24f6; ASSIGN
+0598e mov di, v21be; mov si, v24fa; ASSIGN
+0599a mov di, v21c2; mov si, v24fe; ASSIGN
+059a6 mov di, v21da; mov si, v266c=10000; ASSIGN
+059b2 mov bx, 'P'; mov ax, v21fe; STRCMP; je @59c2; jmp @5a38
+059c3 mov bx, v09c4; mov dx, v09e2; SOUND
+059cf mov bx, v0117; mov dx, 0xb8; LINE?; mov bx, v111e; xor dx, dx; rt_2abb
+059e5 mov di, v21ae; mov si, v2676; ASSIGN
+059f1 mov di, v21b2; mov si, v24e2=-1; ASSIGN
+059fd mov di, v21b6; mov si, v267a; ASSIGN
+05a09 mov di, v21ba=0; mov si, v2676; ASSIGN
+05a15 mov di, v21be; mov si, v21ba=0; ASSIGN
+05a21 mov di, v21c2; mov si, v24f2; ASSIGN
+05a2d mov di, v21da; mov si, v266c=10000; ASSIGN
+05a39 mov bx, 'A'; mov ax, v21fe; STRCMP; je @5a49; jmp @5abf
+05a4a mov bx, v09c4; mov dx, v09e2; SOUND
+05a56 mov bx, v0118; mov dx, 0xb8; LINE?; mov bx, v1106; xor dx, dx; rt_2abb
+05a6c mov di, v21ae; mov si, v2684; ASSIGN
+05a78 mov di, v21b2; mov si, v23d0=1; ASSIGN
+05a84 mov di, v21b6; mov si, v2688; ASSIGN
+05a90 mov di, v21ba=0; mov si, v268c; ASSIGN
+05a9c mov di, v21be; mov si, v21ba=0; ASSIGN
+05aa8 mov di, v21c2; mov si, v267a; ASSIGN
+05ab4 mov di, v21da; mov si, v266c=10000; ASSIGN
+05ac0 mov bx, 'S'; mov ax, v21fe; STRCMP; je @5ad0; jmp @5b46
+05ad1 mov bx, v09c4; mov dx, v09e2; SOUND
+05add mov bx, v0117; mov dx, 0xb8; LINE?; mov bx, v10ee; xor dx, dx; rt_2abb
+05af3 mov di, v21ae; mov si, v2696; ASSIGN
+05aff mov di, v21b2; mov si, v24e2=-1; ASSIGN
+05b0b mov di, v21b6; mov si, v24fe; ASSIGN
+05b17 mov di, v21ba=0; mov si, v2696; ASSIGN
+05b23 mov di, v21be; mov si, v21ba=0; ASSIGN
+05b2f mov di, v21c2; mov si, v2688; ASSIGN
+05b3b mov di, v21da; mov si, v266c=10000; ASSIGN
+05b47 mov bx, 'T'; mov ax, v21fe; STRCMP; je @5b57; jmp @5b5f
+05b58 GOSUB ->7eec
+05b60 GOSUB ->d0c0
+05b68 mov di, v2206; mov si, v26a0=0; ASSIGN
+05b74 mov si, v23d0=1; FORINIT; jmp @5bab
+05b80 mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v177a; mov di, v2206; ADD; STORE
+05ba0 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @5b7f
+05bc0 mov si, v2206; CMP0; ja @5bcd; jmp @5bf8
+05bce mov bx, 0xc2; mov dx, 0xb5; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+05be4 mov di, v25ea=5; mov si, v2206; CMP; ja @5bf4; jmp @5bf8
+05bf5 jmp @b5cc
+05bf9 mov di, v24ce=2; mov si, v2182; CMP; mov bx, 0; jne @5c0a; dec bx; mov di, v26a4=1424; mov si, v21a2; CMP; mov dx, 0; jae @5c1b; dec dx; and dx, bx; and dx, dx; jne @5c24; jmp @5c5f
+05c25 mov di, v24ce=2; mov si, v21a2; ADD; mov di, si; STORE
+05c38 mov di, v25ce; mov si, v21a2; MULFAC; rt_2092; mov dx, 0xae; sub dx, bx; mov bx, v012c=0; LINE?; mov bx, v108a; xor dx, dx; rt_2abb
+05c60 mov di, v25ce; mov si, v21a2; MULFAC; rt_2092; mov dx, 0xae; sub dx, bx; mov bx, v012c=0; LINE?; mov bx, v108a; xor dx, dx; rt_2abb
+05c88 mov di, v24ce=2; mov si, v2182; CMP; mov bx, 0; jne @5c99; dec bx; mov di, v2652=20; mov si, v2192; CMP; mov dx, 0; jbe @5caa; dec dx; mov di, v23d0=1; mov si, v2186; CMP; mov cx, 0; jae @5cbb; dec cx; or cx, dx; and cx, bx; and cx, cx; jne @5cc6; jmp @5d0c
+05cc7 mov di, v2176; mov si, v2506=0; ASSIGN
+05cd3 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v0384; mov dx, 0xb2; SOUND
+05cea mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0daa; mov dx, 1; rt_2abb
+05d01 mov di, v2182; mov si, v24ee=0; ASSIGN
+05d0d mov di, v23d0=1; mov si, v2182; CMP; mov bx, 0; jne @5d1e; dec bx; mov si, v218a; CMP; mov dx, 0; jae @5d2c; dec dx; and dx, bx; and dx, dx; jne @5d35; jmp @5d87
+05d36 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v0384; mov dx, 0xb2; SOUND
+05d4d mov bx, 0x3f; mov dx, 0xb7; LINE?; mov bx, v0daa; mov dx, 1; rt_2abb
+05d64 mov di, v218a; mov si, v24ee=0; ASSIGN
+05d70 mov di, v2176; mov si, v24ee=0; ASSIGN
+05d7c mov di, v2182; mov si, v24ee=0; ASSIGN
+05d88 mov bx, v011b; mov dx, 0x65; LINE?; mov bx, v0bb6; xor dx, dx; rt_2abb
+05d9e mov di, v26a8=9022; mov si, v2186; CMP; ja @5dae; jmp @5db2
+05daf jmp @5e0b
+05db3 mov di, v23d0=1; mov si, v220a; CMP; je @5dc3; jmp @5dd2
+05dc4 mov di, v220a; mov si, v2506=0; ASSIGN; jmp @5e0b
+05dd3 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v0dac; mov dx, 0xb2; SOUND
+05dea mov bx, v011b; mov dx, 0x65; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+05e00 mov di, v220a; mov si, v23d0=1; ASSIGN
+05e0c mov bx, v011b; mov dx, 0x75; LINE?; mov bx, v0bb6; xor dx, dx; rt_2abb
+05e22 mov di, v256c=100; mov si, v218a; CMP; ja @5e32; jmp @5e36
+05e33 jmp @5e8f
+05e37 mov di, v23d0=1; mov si, v220e; CMP; je @5e47; jmp @5e56
+05e48 mov di, v220e; mov si, v2506=0; ASSIGN; jmp @5e8f
+05e57 mov di, v2564=3; mov si, v09e2; MULFAC; mov bx, v0bb8; mov dx, 0xb2; SOUND
+05e6e mov bx, v011b; mov dx, 0x75; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+05e84 mov di, v220e; mov si, v23d0=1; ASSIGN
+05e90 mov bx, 0x10; rt_1257; mov bx, 0x20; rt_1271
+05ea1 mov bx, '####'; rt_3984; mov bx, v218a; rt_3640
+05eb2 mov di, v2176; mov si, v2196; CMP; je @5ec2; jmp @5ec6
+05ec3 jmp @5fd3
+05ec7 mov bx, 0x67; mov dx, 0x87; rt_297b; mov si, v216a; INT; mov dx, bx; mov si, v2166; INT; xor cx, cx; rt_2981
+05eec mov bx, 0x4c; mov dx, 0x85; LINE?; mov bx, v0a36; xor dx, dx; rt_2abb
+05f02 mov di, v2176; mov si, v2196; CMP; jb @5f12; jmp @5f28
+05f13 mov di, v26ac=0.25; mov si, v2196; ADD; mov di, si; STORE; jmp @5f3b
+05f29 mov di, v24e2=-1; mov si, v2196; ADD; mov di, si; STORE
+05f3c mov di, v2570; mov si, v2196; MULFAC; mov bx, 0xb2; rt_37df; mov di, v2574=26; LOADFAC; mov di, v24c2=103; SUB; mov di, v2166; STORE
+05f68 mov di, v2570; mov si, v2196; MULFAC; mov bx, 0xb2; rt_37c4; mov di, v2578=22; LOADFAC; mov si, v257c=135; MUL; mov di, v216a; STORE
+05f94 mov bx, 0x67; mov dx, 0x87; rt_297b; mov si, v216a; INT; mov dx, bx; mov si, v2166; INT; mov cx, 3; rt_2981
+05fba mov bx, v23d8; rt_33ea; mov bx, 0x67; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; rt_33fe
+05fd4 mov di, v26b0=21; mov si, v2192; CMP; mov bx, 0; jae @5fe5; dec bx; mov di, v24e2=-1; mov si, v219e; CMP; mov dx, 0; jne @5ff6; dec dx; and dx, bx; mov si, v21fa; CMP0; mov bx, 0; je @6006; dec bx; and bx, dx; and bx, bx; jne @600f; jmp @6031
+06010 mov si, v2192; rt_141d; add bh, byte ptr [bp + 0x24b2]; MUL; mov di, v2152; STORE
+0602a GOSUB ->515d
+06032 mov di, v25da=46; mov si, v2192; CMP; mov bx, 0; jne @6043; dec bx; mov di, v23d0=1; mov si, v219e; CMP; mov dx, 0; jne @6054; dec dx; and dx, bx; mov si, v21fa; CMP; mov bx, 0; jne @6064; dec bx; and bx, dx; and bx, bx; jne @606d; jmp @6075
+0606e GOSUB ->540b
+06076 mov di, v25da=46; mov si, v2192; CMP; mov bx, 0; jne @6087; dec bx; mov di, v23d0=1; mov si, v219e; CMP; mov dx, 0; jne @6098; dec dx; and dx, bx; mov di, v24e2=-1; mov si, v21fa; CMP; mov bx, 0; jne @60ab; dec bx; and bx, dx; and bx, bx; jne @60b4; jmp @60bc
+060b5 GOSUB ->5478
+060bd mov di, v26b4=397; mov si, v2192; CMP; mov bx, 0; jbe @60ce; dec bx; mov si, v21fa; CMP0; mov dx, 0; jne @60dc; dec dx; or dx, bx; and dx, dx; jne @60e5; jmp @60e9
+060e6 jmp @61fe
+060ea mov bx, 0x24; mov dx, 0x87; rt_297b; mov si, v2162; INT; mov dx, bx; mov si, v215e; INT; xor cx, cx; rt_2981
+0610f mov bx, 0xa; mov dx, 0x85; LINE?; mov bx, v09e6; xor dx, dx; rt_2abb
+06125 mov bx, 0xe; mov dx, 0x85; LINE?; mov bx, v09e6; xor dx, dx; rt_2abb
+0613b mov bx, 0x37; mov dx, 0x85; LINE?; mov bx, v09f6; xor dx, dx; rt_2abb
+06151 mov bx, 0x3b; mov dx, 0x85; LINE?; mov bx, v09e6; xor dx, dx; rt_2abb
+06167 mov di, v2580; mov si, v2192; MULFAC; mov bx, 0xb2; rt_37df; mov di, v2574=26; LOADFAC; mov di, v24ba=36; SUB; mov di, v215e; STORE
+06193 mov di, v2580; mov si, v2192; MULFAC; mov bx, 0xb2; rt_37c4; mov di, v2578=22; LOADFAC; mov si, v257c=135; MUL; mov di, v2162; STORE
+061bf mov bx, 0x24; mov dx, 0x87; rt_297b; mov si, v2162; INT; mov dx, bx; mov si, v215e; INT; mov cx, 3; rt_2981
+061e5 mov bx, v23d8; rt_33ea; mov bx, 0x24; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; rt_33fe
+061ff mov di, v24ce=2; mov si, v2182; CMP; je @620f; jmp @623e
+06210 mov bx, 0xe; rt_1257; mov bx, 0x20; rt_1271
+06221 mov bx, '####'; rt_3984; mov di, v25c4=90; mov si, v2186; rt_01de; rt_2092; rt_364a
+0623f mov di, v24ce=2; mov si, v2182; CMP; mov bx, 0; jne @6250; dec bx; mov di, v24d6=1000; mov si, v218a; CMP; mov dx, 0; jae @6261; dec dx; and dx, bx; and dx, dx; jne @626a; jmp @6283
+0626b mov bx, v011b; mov dx, 0x85; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb; jmp @6299
+06284 mov bx, v011b; mov dx, 0x85; LINE?; mov bx, v0bb6; xor dx, dx; rt_2abb
+0629a mov si, v217a; CMP0; je @62a7; jmp @62ab
+062a8 jmp @6412
+062ac mov di, v23d0=1; mov si, v2212; ADD; mov di, si; STORE
+062bf mov di, v217a; mov si, v219a; ADD; mov di, si; STORE
+062d2 mov di, v26b8; mov si, v219a; CMP; ja @62e2; jmp @62f1
+062e3 mov di, v219a; mov si, v26bc=0; ASSIGN; jmp @630b
+062f2 mov si, v219a; CMP0; jb @62ff; jmp @630b
+06300 mov di, v219a; mov si, v26b8; ASSIGN
+0630c mov di, v2564=3; mov si, v2212; CMP; jae @631c; jmp @6412
+0631d mov di, v2212; mov si, v24ee=0; ASSIGN
+06329 mov bx, 0xaa; mov dx, 0x87; rt_297b; mov si, v2172; INT; mov dx, bx; mov si, v216e; INT; xor cx, cx; rt_2981
+0634e mov bx, 0x90; mov dx, 0x85; LINE?; mov bx, v0a56; xor dx, dx; rt_2abb
+06364 mov bx, 0x96; mov dx, 0x85; LINE?; mov bx, v09e6; xor dx, dx; rt_2abb
+0637a mov bx, 0xbf; mov dx, 0x85; LINE?; mov bx, v0a76; xor dx, dx; rt_2abb
+06390 mov bx, v219a; rt_37c4; mov di, v2574=26; LOADFAC; mov di, v24c6=170; SUB; mov di, v216e; STORE
+063b1 mov bx, v219a; rt_37df; mov di, v2578=22; LOADFAC; mov si, v257c=135; MUL; mov di, v2172; STORE
+063d2 mov bx, 0xaa; mov dx, 0x87; rt_297b; mov si, v2172; INT; mov dx, bx; mov si, v216e; INT; mov cx, 3; rt_2981
+063f8 mov bx, v23d8; rt_33ea; mov bx, 0xaa; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; rt_33fe
+06413 mov di, v117a; mov si, v1176; ADD; mov di, v117e; SUB; mov di, v1182; SUB; rt_13e6; ja @6438; jmp @6440
+06439 GOSUB ->815e
+06441 mov di, v2206; mov si, v26c0=0; ASSIGN
+0644d mov si, v23d0=1; FORINIT; jmp @6494
+06459 mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v177a; CMP0; ja @6475; jmp @6488
+06476 mov di, v214e; mov si, v2206; ADD; mov di, si; STORE
+06489 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @6458
+064a9 mov si, v2206; CMP0; mov bx, 0; jbe @64b7; dec bx; mov di, v23d0=1; mov si, v21ce; CMP; mov dx, 0; je @64c8; dec dx; and dx, bx; and dx, dx; jne @64d1; jmp @64e7
+064d2 mov bx, 0xc2; mov dx, 0xb5; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+064e8 rt_23d6; mov dx, 2; RIGHT$; rt_1b05; rt_2021; mov di, v2216; STORE
+06508 mov si, v2216; mov dx, si; INT; xchg bx, ax; mov bx, dx; mov cx, 2; cdq; idiv cx; or dx, dx; mov cx, 0; jne @6523; dec cx; mov di, v2626=14; mov si, v2206; CMP; mov dx, 0; jbe @6534; dec dx; and dx, cx; mov si, bx; mov di, v221a; CMP; mov cx, 0; je @6546; dec cx; and cx, dx; and cx, cx; jne @654f; jmp @65c6
+06550 mov si, v26c4=300; FORINIT; jmp @6589
+0655c mov di, v26c8=0.05; mov si, v09e2; MULFAC; mov si, v221e; rt_132b; sbb word ptr [bp + si + 0x2047], 0x99b; mov dx, v23a6; SOUND
+0657e mov di, v24ce=2; mov si, v221e; ADD; mov di, v221e; STORE; mov si, di; mov di, v26cc=470; CMP; jbe @655b
+0659e mov bx, 0x25; mov dx, v26d0=0; SOUND
+065aa mov di, v221a; mov si, v2216; ASSIGN
+065b6 mov di, v2652=20; mov si, v2206; CMP; jbe @65c6; jmp @b5cc
+065c7 mov si, v2192; CMP0; mov bx, 0; jne @65d5; dec bx; mov di, v24e2=-1; mov si, v21fa; CMP; mov dx, 0; jne @65e6; dec dx; and dx, bx; and dx, dx; jne @65ef; jmp @65fb
+065f0 mov di, v21fa; mov si, v2642=0; ASSIGN
+065fc mov di, v21fa; mov si, v2192; ADD; mov di, si; STORE
+0660f mov di, v2652=20; mov si, v2192; CMP; mov bx, 0; jbe @6620; dec bx; mov di, v24ce=2; mov si, v2196; CMP; mov dx, 0; jae @6631; dec dx; and dx, dx; jge @6637; neg dx; and dx, bx; CMP0; mov bx, 0; je @6644; dec bx; and bx, dx; and bx, bx; jne @664d; jmp @6659
+0664e mov di, v21fa; mov si, v23d0=1; ASSIGN
+0665a mov si, v2156; INT; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; CSNG; mov di, v2222; STORE
+06679 mov si, v215a; INT; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; CSNG; mov di, v2226; STORE
+06698 mov di, v26b0=21; mov si, v2222; CMP; mov bx, 0; jae @66a9; dec bx; mov dx, di; mov di, v26d4=4979; CMP; mov cx, 0; jbe @66b9; dec cx; or cx, bx; mov bx, di; mov di, dx; mov si, v2226; CMP; mov ax, 0; jae @66cd; dec ax; or ax, cx; mov di, bx; CMP; mov dx, 0; jbe @66dc; dec dx; or dx, ax; and dx, dx; jne @66e5; jmp @66ed
+066e6 GOSUB ->c6c7
+066ee mov di, v217e; mov si, v2196; MULFAC; mov di, v217a; STORE
+06702 mov bx, '5'; mov ax, v21fe; STRCMP; je @6712; jmp @672a
+06713 mov di, v217e; mov si, v26de=0; ASSIGN
+0671f mov di, v21fa; mov si, v26de=0; ASSIGN
+0672b mov bx, v219a; rt_37c4; mov di, v2196; LOADFAC; mov di, v2156; SUB; STORE
+06749 mov bx, v219a; rt_37df; mov di, v2196; LOADFAC; mov di, v215a; SUB; STORE
+06767 mov di, v23d0=1; mov si, v2156; CMP; jb @6777; jmp @6783
+06778 mov di, v2156; mov si, v23d0=1; ASSIGN
+06784 mov di, v23d0=1; mov si, v215a; CMP; jb @6794; jmp @67a0
+06795 mov di, v215a; mov si, v23d0=1; ASSIGN
+067a1 mov di, v26e2=24999; mov si, v2156; CMP; ja @67b1; jmp @67bd
+067b2 mov di, v2156; mov si, v26e2=24999; ASSIGN
+067be mov di, v26e6=19999; mov si, v215a; CMP; ja @67ce; jmp @67da
+067cf mov di, v215a; mov si, v26e6=19999; ASSIGN
+067db mov di, v1cfa; mov si, v2156; FADD?; mov di, v222a; rt_01d3; mov di, v24ce=2; rt_1ea0; mov bx, di; mov di, v1d1e; mov si, v215a; rt_132b; sbb word ptr [bp + si + 0x11], 0x99b; mov di, v222e; rt_01d3; mov di, bx; rt_1ea0; rt_0020; cmp word ptr [bx + 0x2192], 0x1b9a; add byte ptr [bp + di - 0x74f7], bl; idiv word ptr [bx + 0x26ea]; rt_132b; sbb byte ptr [bp + si + 0x1eab], 0x9b; or word ptr [bx + 0x23d0], di; SUB; CMP; xor byte ptr [bp + 3], 0xe9; cdq; add ah, cl; mov di, v2176; mov si, v2506=0; ASSIGN
+06856 mov di, v21fa; mov si, v2506=0; ASSIGN
+06862 mov si, v2196; CMP0; ja @686f; jmp @68b2
+06870 mov bx, v1e1a; rt_37c4; mov di, v25ee=6; LOADFAC; mov si, v2156; MUL; mov di, si; STORE
+06890 mov bx, v1e1a; rt_37df; mov di, v25ee=6; LOADFAC; mov si, v215a; MUL; mov di, si; STORE; jmp @68e2
+068b3 mov bx, v1e1a; rt_37c4; mov si, v2156; MUL; mov di, si; STORE
+068cb mov bx, v1e1a; rt_37df; mov si, v215a; MUL; mov di, si; STORE
+068e3 mov di, v1eca; mov si, v24ee=0; ASSIGN
+068ef mov di, v21e6; mov si, v24ee=0; ASSIGN
+068fc mov si, v23d0=1; FORINIT; jmp @6f90
+06908 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1cf6; mov di, v2156; FADD?; mov di, v2236; STORE
+0692b mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1d1a; mov di, v215a; FADD?; mov di, v223a; STORE
+0694e mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1df2; mov bx, di; mov di, v2236; mov si, di; MULFAC; mov di, v223a; mov si, di; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; rt_0020; or word ptr [bp + di - 0x442d], 0xb2; rt_1e27; mov di, dx; STORE
+06994 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v26ee=4000; CMP; ja @69b3; jmp @69b7
+069b4 jmp @6c8f
+069b8 mov si, v2232; mov dx, si; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v26f2=1350; CMP; mov bx, 0; jbe @69da; dec bx; mov si, dx; mov di, v23d0=1; CMP; mov cx, 0; jbe @69ea; dec cx; and cx, bx; and cx, cx; je @69f3; jmp @6ea6
+069f4 mov di, v23d0=1; mov si, v21e6; ADD; mov di, si; STORE
+06a07 mov si, v21e6; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e82; mov si, v2232; ASSIGN
+06a22 mov si, v2236; CMP0; je @6a2f; jmp @6a5e
+06a30 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e16; mov si, v223a; rt_13ac; mov bx, di; mov di, v26f6; LOADFAC; mov di, bx; STORE; jmp @6a8f
+06a5f mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e16; mov bx, di; mov di, v2236; mov si, v223a; rt_01de; mov dx, bx; mov bx, 0xb2; rt_2f2e; mov di, dx; STORE
+06a90 mov si, v2236; CMP0; jb @6a9d; jmp @6ac1
+06a9e mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e16; mov si, di; mov di, v268c; ADD; mov di, si; STORE
+06ac2 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e16; CMP0; jb @6ade; jmp @6b06
+06adf mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e16; mov si, di; mov di, v26fa; ADD; mov di, si; STORE
+06b03 jmp @6ac2
+06b07 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1e5e; add bx, v1e16; mov si, bx; mov dx, di; mov di, v219a; FADD?; mov di, dx; STORE
+06b33 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e5e; CMP0; jb @6b4f; jmp @6b77
+06b50 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e5e; mov si, di; mov di, v26fa; ADD; mov di, si; STORE
+06b74 jmp @6b33
+06b78 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e5e; mov di, v21ae; FADD?; mov di, v223e; STORE
+06b9b mov si, v223e; CMP0; jb @6ba8; jmp @6bbf
+06ba9 mov di, v26fa; mov si, v223e; ADD; mov di, si; STORE
+06bbc jmp @6b9b
+06bc0 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1e3a; mov dx, bx; add bx, v1e16; mov si, bx; add dx, v1ea6; mov cx, di; mov di, dx; FADD?; mov di, v26fe; LOADFAC; rt_2092; CSNG; mov di, cx; STORE
+06c03 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e3a; CMP0; jb @6c1f; jmp @6c47
+06c20 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e3a; mov si, di; mov di, v2402=16; ADD; mov di, si; STORE
+06c44 jmp @6c03
+06c48 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e3a; mov di, v23fa=15; CMP; ja @6c67; jmp @6c8f
+06c68 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1e3a; mov si, di; mov di, v2702=-16; ADD; mov di, si; STORE
+06c8c jmp @6c48
+06c90 mov di, v23d0=1; mov si, v2232; CMP; je @6ca0; jmp @6d35
+06ca1 mov di, v222a; mov si, v1df6; FADD?; mov di, v25c4=90; SUB; mov si, v2706=3000; rt_01db; mov di, v270a=-1.5; SUB; mov di, v1d8a; STORE
+06ccd mov bx, v223e; rt_37df; mov di, v270e; mov si, v1e3e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov bx, 0xb2; rt_37df; rt_140e; mov di, v2712=1.5; LOADFAC; mov di, v262e=0.5; SUB; mov di, v1d8a; LOADFAC; mov di, v21b2; LOADFAC; mov di, v2716=227; SUB; rt_0158; cmp word ptr [bp + 0x271a], 0xe9a; add byte ptr [bp + di - 0x40f7], bl; salc; sbb al, 0x9a; std; adc bl, byte ptr [bp + di - 0x33f7]; jmp @6e6b
+06d36 mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v271e=7; CMP; je @6d55; jmp @6d9c
+06d56 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d86; add bx, v1df2; mov si, bx; mov dx, di; mov di, v2722=-6; ADD; mov di, v2726; rt_1ea0; mov si, v272a=260; rt_01db; mov di, v272e=-2; SUB; mov di, dx; STORE; jmp @6de5
+06d9d mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d86; add bx, v1df2; mov si, bx; mov dx, di; mov di, v2732=-15; ADD; rt_140e; mov bx, 0xb2; rt_1e27; mov si, v2736=145; rt_01db; mov di, v273a; SUB; mov di, dx; STORE
+06de6 mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1cd2; mov dx, bx; mov bx, v223e; rt_37df; mov bx, dx; add dx, v1d86; mov si, dx; add bx, v1e3a; mov si, bx; mov cx, di; mov di, v270e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov bx, 0xb2; rt_37df; rt_140e; mov di, v2712=1.5; LOADFAC; mov di, v262e=0.5; SUB; mov si, dx; rt_015b; mov di, v21b2; LOADFAC; mov di, v2716=227; SUB; rt_0158; cmp word ptr [bp + 0x271a], 0xe9a; add byte ptr [bp + di - 0x74f7], bl; stc; STORE
+06e6c mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1d86; mov di, v273e=250; CMP; ja @6e8b; jmp @6ea6
+06e8c mov si, v2232; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1d86; mov si, v273e=250; ASSIGN
+06ea7 mov si, v2232; mov dx, si; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1eca; mov si, dx; mov cx, di; mov di, v24e2=-1; ADD; mov dx, bx; rt_2092; mov si, bx; shl si, 1; shl si, 1; add si, v1eca; mov bx, dx; add dx, v1cd2; mov di, dx; ADD; mov dx, bx; add bx, v1d86; mov di, bx; SUB; mov bx, dx; add dx, v1e3a; mov di, dx; SUB; add bx, v1df2; mov di, bx; SUB; mov di, v2152; SUB; mov di, cx; STORE
+06f1c mov si, v2232; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v2652=20; CMP; jbe @6f3b; jmp @6f84
+06f3c mov di, v2742=34; mov si, v2192; CMP; jae @6f4c; jmp @b5cc
+06f4d mov di, v2746=61; mov si, v2192; CMP; mov bx, 0; jae @6f5e; dec bx; mov di, v23d0=1; mov si, v219e; CMP; mov dx, 0; jne @6f6f; dec dx; and dx, bx; and dx, dx; jne @6f78; jmp @6f84
+06f79 mov di, v1792; mov si, v23d0=1; ASSIGN
+06f85 mov di, v23d0=1; mov si, v2232; ADD; mov di, v2232; STORE; mov si, di; mov di, v260a=8; CMP; ja @6fa7; jmp @6907
+06fa9 mov di, v274a=350; mov si, v2192; CMP; mov bx, 0; jbe @6fba; dec bx; rt_2afa; mov di, v274e; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov di, v2752=-0.04; SUB; CMP; cmp word ptr [bp + si], 0x173; dec dx; and dx, bx; and dx, dx; jne @6fea; jmp @6fee
+06feb jmp @b5cc
+06fef mov di, v2756=200; mov si, v222a; ADD; mov di, v1df6; CMP; mov bx, 0; jbe @7008; dec bx; mov di, v2242; mov si, v21ca; CMP; mov dx, 0; jne @7019; dec dx; and dx, bx; mov di, v2246; mov si, v224a; CMP; mov bx, 0; jne @702c; dec bx; and bx, dx; mov si, v2196; CMP0; mov dx, 0; jne @703c; dec dx; and dx, bx; and dx, dx; jne @7045; jmp @7107
+07046 mov bx, 0xa; mov dx, bx; rt_297b; mov bx, v0135; mov dx, 0x3c; xor cx, cx; rt_29c3
+0705e mov bx, 3; rt_1257; mov bx, 0xe; rt_1271
+0706f PRINT_BEGIN; mov bx, 'CONTACT MADE'; PRINT_STRNL
+0707d mov si, v23d0=1; FORINIT; jmp @7094
+07089 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v276a=25000; CMP; jbe @7088
+070a9 mov bx, 4; rt_1257; mov bx, 0xc; rt_1271
+070ba PRINT_BEGIN; mov bx, 'MISSION COMPLETED'; PRINT_STRNL
+070c8 mov si, v23d0=1; FORINIT; jmp @70df
+070d4 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v266c=10000; CMP; jbe @70d3
+070f4 mov di, v2246; mov si, v23d0=1; ASSIGN
+07100 GOSUB ->d327
+07108 mov di, v2784=800; mov si, v1dfa; CMP; jb @7118; jmp @71bf
+07119 mov di, v24ce=2; mov si, v2192; CMP; jb @7129; jmp @71bf
+0712a mov di, v1dd6; mov si, v2568=4; ASSIGN
+07136 mov di, v2788=400; mov si, v1dfa; CMP; jb @7146; jmp @71bf
+07147 mov di, v1dd6; mov si, v24ce=2; ASSIGN
+07153 mov di, v278c=150; mov si, v1dfa; CMP; mov bx, 0; jae @7164; dec bx; mov di, v2790=35950; mov si, v2186; CMP; mov dx, 0; jae @7175; dec dx; and dx, bx; mov di, v219a; mov si, v1eae; FADD?; rt_140e; mov di, v2794; rt_132b; sbb word ptr [bp + si + 0x1ac8], 0x99b; mov bx, 0; jbe @719b; dec bx; mov di, v270e; mov si, v23a6; CMP; mov cx, 0; jae @71ac; dec cx; or cx, bx; and cx, dx; and cx, cx; jne @71b7; jmp @71bf
+071b8 GOSUB ->cd8e
+071c0 mov di, v24ce=2; mov si, v2182; CMP; je @71d0; jmp @720c
+071d1 mov di, v26ac=0.25; mov si, v2196; MULFAC; rt_140e; mov si, v2186; MUL; mov di, v25ea=5; mov bx, si; mov si, v178a; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; rt_000b; or word ptr [bp + di - 0x6505], 0x12fd; wait; or cx, bp; add ah, cl; mov di, v23d0=1; mov si, v2182; CMP; mov bx, 0; jne @721e; dec bx; mov di, v2798=11; mov si, v2196; CMP; mov dx, 0; jae @722f; dec dx; and dx, bx; and dx, dx; jne @7238; jmp @7273
+07239 mov di, v2196; mov si, di; MULFAC; mov di, v279c=0.02; LOADFAC; mov si, v218a; MUL; mov di, v262e=0.5; mov bx, si; mov si, v1786; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; rt_000b; or word ptr [bp + di - 0x6505], 0x12fd; wait; or sp, cx; mov di, v24ce=2; mov si, v2182; CMP; mov bx, 0; jne @7285; dec bx; mov di, v24d6=1000; mov si, v218a; CMP; mov dx, 0; jae @7296; dec dx; and dx, bx; and dx, dx; jne @729f; jmp @72c5
+072a0 mov di, v24ce=2; mov si, v218a; ADD; mov di, si; STORE
+072b3 mov di, v27a0=-3; mov si, v2186; ADD; mov di, si; STORE
+072c6 mov di, v2652=20; mov si, v2192; CMP; ja @72d6; jmp @72e9
+072d7 mov di, v27a4=-0.25; mov si, v21a2; ADD; mov di, si; STORE
+072ea mov di, v27a8=110; mov si, v21a2; CMP; jb @72fa; jmp @7349
+072fb mov bx, 4; rt_1257; mov bx, 0xd; rt_1271
+0730c PRINT_BEGIN; mov bx, ' No more oxygen '; PRINT_STRNL
+0731a mov si, v23d0=1; FORINIT; jmp @7331
+07326 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v27c0=19000; CMP; jbe @7325
+07346 jmp @b923
+0734a mov di, v2176; mov si, v2196; CMP; mov bx, 0; jne @735b; dec bx; mov si, v21ce; CMP0; mov dx, 0; jne @7369; dec dx; or dx, bx; and dx, dx; je @7372; jmp @73ac
+07373 mov di, v2176; mov si, v2196; CMP; jb @7383; jmp @7399
+07384 mov di, v26ac=0.25; mov si, v2196; ADD; mov di, si; STORE; jmp @73ac
+0739a mov di, v24e2=-1; mov si, v2196; ADD; mov di, si; STORE
+073ad mov si, v21ce; CMP0; jne @73ba; jmp @7407
+073bb mov di, v217a; mov si, v219a; ADD; mov di, si; STORE
+073ce mov di, v26b8; mov si, v219a; CMP; ja @73de; jmp @73ed
+073df mov di, v219a; mov si, v26bc=0; ASSIGN; jmp @7407
+073ee mov si, v219a; CMP0; jb @73fb; jmp @7407
+073fc mov di, v219a; mov si, v26b8; ASSIGN
+0740b mov di, v2252; mov si, v26bc=0; ASSIGN
+07417 mov si, v21aa; CMP0; ja @7424; jmp @74f7
+07425 mov di, v23d0=1; mov si, v21aa; ADD; mov di, si; STORE
+07438 mov di, v23fa=15; mov si, v2256; MULFAC; mov di, v264e=45; SUB; mov di, v21aa; CMP; jb @7458; jmp @74f7
+07459 mov di, v21aa; mov si, v27c4=0; ASSIGN
+07465 mov si, v2564=3; FORINIT; jmp @74e0
+07471 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cae=0; mov si, di; mov di, v24e2=-1; ADD; mov di, si; STORE
+07495 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d3e; add bx, v1cf6; mov si, bx; ASSIGN
+074b5 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d62; add bx, v1d1a; mov si, bx; ASSIGN
+074d5 mov di, v23d0=1; mov si, v225a; ADD; mov di, v225a; STORE; mov si, di; mov di, v260a=8; CMP; ja @74f7; jmp @7470
+074f8 mov si, v24ce=2; FORINIT; jmp @7d87
+07504 mov si, v225a; mov dx, si; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v27c8=950; CMP; mov bx, 0; jbe @7526; dec bx; mov si, dx; mov di, v24ce=2; CMP; mov cx, 0; jne @7536; dec cx; or cx, bx; and cx, cx; je @753f; jmp @7885
+07540 mov di, v2256; mov si, v219e; ADD; mov di, v24ce=2; SUB; mov di, v27cc; mov si, v21ca; rt_132b; sbb word ptr [bp + si + 0x26], 0x99b; rt_0158; cmp word ptr [bp + 0x2192], 0x2b9a; adc bx, word ptr [bp + di - 0x7df7]; INT; xchg bx, ax; mov cx, 0x14; cdq; idiv cx; inc ax; xchg bx, ax; CSNG; mov di, v27d0; rt_1ea0; mov si, v225a; rt_132b; sbb word ptr [bp + si + 0x2047], -0x65; or word ptr [bp + di - 0x2e0d], cx; out 0xd1, al; out 0x81, al; db c6; sbb ax, 0x479a; and byte ptr [bp + di - 0x6cf7], bl; mov cx, 0x64; cdq; idiv cx; inc ax; xchg bx, ax; CSNG; rt_0158; sbb word ptr [bp + si + 0x1d8], -0x65; or word ptr [bp + si + 0x12bf], ax; daa; rt_1ea0; rt_132b; test byte ptr [bp + si + 0x2afa], bl; wait; or word ptr [bp + si + 0x1acd], bx; wait; or word ptr [si + 0x377], ax; jmp @75ef
+075e4 mov di, v21aa; mov si, v23d0=1; ASSIGN
+075f0 mov si, v21aa; CMP0; jne @75fd; jmp @7885
+075fe mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1ea6; add bx, v1e16; mov di, bx; FADD?; mov di, v225e; STORE
+07626 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1daa; mov di, v25ee=6; CMP; mov dx, 0; jbe @7648; dec dx; add bx, v1dce; mov si, bx; mov di, v27d4=1.75; CMP; mov cx, 0; je @765c; dec cx; and cx, dx; and cx, cx; jne @7665; jmp @7671
+07666 GOSUB ->d1bd
+0766e jmp @777b
+07672 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1dce; CMP0; jne @768e; jmp @772d
+0768f mov si, v225e; rt_140b; mov di, v268c; rt_132b; or word ptr [bp + di - 0x6522], 0x1ac8; wait; or word ptr [bp + si], di; jbe @76ad; dec dx; mov si, bx; CMP0; mov cx, 0; jbe @76ba; dec cx; and cx, dx; mov si, v23a6; CMP; mov dx, 0; jae @76ca; dec dx; mov si, bx; CMP0; mov ax, 0; jae @76d7; dec ax; and ax, dx; or ax, cx; and ax, ax; jne @76e2; jmp @7709
+076e3 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, di; mov di, v27d8=0.028; ADD; mov di, si; STORE; jmp @772d
+0770a mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, di; mov di, v27dc=-0.028; ADD; mov di, si; STORE
+0772e mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1dce; mov di, v27d4=1.75; CMP; jne @774d; jmp @7778
+0774e mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov bx, di; mov di, v271e=7; mov si, v2256; ADD; mov di, bx; STORE
+07775 jmp @7bb2; jmp @7bb2
+0777c mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1dce; CMP0; jne @7798; jmp @7837
+07799 mov si, v225e; rt_140b; mov di, v268c; rt_132b; or word ptr [bp + di - 0x6522], 0x1ac8; wait; or word ptr [bp + si], di; jbe @77b7; dec dx; mov si, bx; CMP0; mov cx, 0; jbe @77c4; dec cx; and cx, dx; mov si, v23a6; CMP; mov dx, 0; jae @77d4; dec dx; mov si, bx; CMP0; mov ax, 0; jae @77e1; dec ax; and ax, dx; or ax, cx; and ax, ax; jne @77ec; jmp @7813
+077ed mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, di; mov di, v27e0=-0.035; ADD; mov di, si; STORE; jmp @7837
+07814 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, di; mov di, v27e4=0.035; ADD; mov di, si; STORE
+07838 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1dce; mov di, v27d4=1.75; CMP; jne @7857; jmp @7882
+07858 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov bx, di; mov di, v25d2=10; mov si, v2256; ADD; mov di, bx; STORE
+0787f jmp @7bb2; jmp @7bb2
+07886 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d3e; add bx, v1cf6; mov di, bx; FADD?; mov di, v2262; STORE
+078ae mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d62; add bx, v1d1a; mov di, bx; FADD?; mov di, v2266; STORE
+078d6 mov si, v2262; rt_140b; mov di, v2652=20; CMP; mov bx, 0; jbe @78ec; dec bx; mov si, v2266; rt_140b; CMP; mov dx, 0; jbe @78ff; dec dx; or dx, bx; mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1cae=0; mov di, v271e=7; CMP; mov bx, 0; jbe @7921; dec bx; or bx, dx; and bx, bx; je @792a; jmp @7bb2
+0792b mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cae=0; mov si, di; mov di, v23d0=1; ADD; mov di, si; STORE
+0794f mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1cae=0; mov di, v271e=7; CMP; mov dx, 0; jbe @7971; dec dx; add bx, v1cf6; mov si, bx; CMP0; mov cx, 0; jbe @7982; dec cx; and cx, dx; and cx, cx; jne @798b; jmp @7a02
+0798c mov di, v24ce=2; mov si, v225a; CMP; mov bx, 0; jne @799d; dec bx; mov dx, bx; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v271e=7; CMP; mov bx, 0; jne @79bc; dec bx; or bx, dx; and bx, bx; jne @79c5; jmp @79e3
+079c6 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cae=0; mov si, v23d0=1; ASSIGN; jmp @7a02
+079e4 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov si, v2506=0; ASSIGN
+079ff jmp @7ac2
+07a03 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov dx, di; add di, v1d3e; mov cx, dx; add cx, v1cae=0; mov si, cx; mov dx, bx; INT; xchg bx, ax; mov bx, dx; mov dx, 9; imul dx; add ax, bx; xchg si, ax; shl si, 1; shl si, 1; add si, v18e2; ASSIGN
+07a3f mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov dx, di; add di, v1d62; mov cx, dx; add cx, v1cae=0; mov si, cx; mov dx, bx; INT; xchg bx, ax; mov bx, dx; mov dx, 9; imul dx; add ax, bx; xchg si, ax; shl si, 1; shl si, 1; add si, v1a26; ASSIGN
+07a7b mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov dx, di; add di, v1dce; mov cx, dx; add cx, v1cae=0; mov si, cx; mov dx, bx; INT; xchg bx, ax; mov bx, dx; mov dx, 9; imul dx; add ax, bx; xchg si, ax; shl si, 1; shl si, 1; add si, v1b6a; mov bx, di; mov di, v2256; ADD; mov di, bx; STORE
+07ac3 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d3e; add bx, v1cf6; mov di, bx; FADD?; mov di, v2262; STORE
+07aeb mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d62; add bx, v1d1a; mov di, bx; FADD?; mov di, v2266; STORE
+07b13 mov si, v2262; CMP0; je @7b20; jmp @7b4f
+07b21 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, v2266; rt_13ac; mov bx, di; mov di, v26f6; LOADFAC; mov di, bx; STORE; jmp @7b80
+07b50 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov bx, di; mov di, v2262; mov si, v2266; rt_01de; mov dx, bx; mov bx, 0xb2; rt_2f2e; mov di, dx; STORE
+07b81 mov si, v2262; CMP0; jb @7b8e; jmp @7bb2
+07b8f mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, di; mov di, v268c; ADD; mov di, si; STORE
+07bb3 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1ea6; CMP0; jb @7bcf; jmp @7bf7
+07bd0 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1ea6; mov si, di; mov di, v26fa; ADD; mov di, si; STORE
+07bf4 jmp @7bb3
+07bf8 mov di, v24ce=2; mov si, v225a; CMP; mov bx, 0; jbe @7c09; dec bx; mov di, v226a; CMP; mov dx, 0; ja @7c17; dec dx; and dx, bx; and dx, dx; jne @7c20; jmp @7c62
+07c21 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1d1a; mov di, v27e8=-900; CMP; jb @7c40; jmp @7c56
+07c41 mov di, v24e2=-1; mov si, v2252; ADD; mov di, si; STORE; jmp @7c62
+07c57 mov di, v2252; mov si, v25d2=10; ASSIGN
+07c63 mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1cf6; mov di, v1cfa; FADD?; mov di, v27ec=-150; mov si, v222a; rt_132b; sbb word ptr [bp + si + 0x26], 0x99b; mov dx, di; rt_01d8; cmp word ptr [bx + 0x24ce], 0xa09a; push ds; wait; or word ptr [bx + di + 0x1ac3], ax; sbb ax, 0xf38b; mov cx, di; mov di, v1d1e; rt_132b; sbb byte ptr [bp + si + 0x11], 0x9b; or word ptr [bp + di - 0x4106], cx; and bl, byte ptr cs:[bp + si + 0x132b]; wait; or word ptr [bp + di + 0x269a], ax; add byte ptr [bp + di - 0x65f7], bl; fadd dword ptr [bx + di]; wait; or word ptr [bp + di - 0x675], ax; rt_1ea0; rt_0020; cmp byte ptr [bx + 0x23d0], 0x9a; enter -0x64e6, 9; jb @7ce6; jmp @7d01
+07ce7 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov si, v2506=0; ASSIGN
+07d02 mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1cf6; mov dx, bx; add bx, v1dce; mov si, bx; add dx, v1ea6; mov bx, dx; rt_37c4; mov bx, di; rt_015b; mov si, bx; rt_0023; mov di, bx; STORE
+07d3f mov si, v225a; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d1a; mov dx, bx; add bx, v1dce; mov si, bx; add dx, v1ea6; mov bx, dx; rt_37df; mov bx, di; rt_015b; mov si, bx; rt_0023; mov di, bx; STORE
+07d7c mov di, v23d0=1; mov si, v225a; ADD; mov di, v225a; STORE; mov si, di; mov di, v260a=8; CMP; ja @7d9e; jmp @7503
+07d9f mov si, v2252; CMP0; mov bx, 0; jae @7dad; dec bx; mov si, v226e; CMP0; mov dx, 0; jne @7dbb; dec dx; and dx, bx; and dx, dx; jne @7dc4; jmp @7e5a
+07dc5 mov bx, 0xa; mov dx, bx; rt_297b; mov bx, v0135; mov dx, 0x3c; xor cx, cx; rt_29c3
+07ddd mov bx, 4; rt_1257; mov bx, 0xa; rt_1271
+07dee PRINT_BEGIN; mov bx, 'YOU HAVE SUCCESSFULLY '; PRINT_STRNL
+07dfc mov bx, 6; rt_1257; mov bx, 9; rt_1271
+07e0d PRINT_BEGIN; mov bx, 'COMPLETED YOUR MISSION'; PRINT_STRNL
+07e1b mov si, v23d0=1; FORINIT; jmp @7e32
+07e27 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v27c0=19000; CMP; jbe @7e26
+07e47 mov di, v226e; mov si, v23d0=1; ASSIGN
+07e53 GOSUB ->d327
+07e5c mov di, v23d0=1; mov si, v21ce; CMP; je @7e6c; jmp @7e72
+07e6d RETURN
+07e73 mov di, v1eea; mov si, v21da; FADD?; rt_140e; mov di, v25ea=5; CMP; jb @7e90; jmp @7e94
+07e91 jmp @7ee4
+07e95 mov di, v21da; mov si, v1eea; ASSIGN
+07ea1 mov di, v26b0=21; mov si, v2192; CMP; mov bx, 0; jae @7eb2; dec bx; mov di, v25da=46; CMP; mov dx, 0; jae @7ec0; dec dx; mov di, v23d0=1; mov si, v219e; CMP; mov cx, 0; jne @7ed1; dec cx; and cx, dx; or cx, bx; and cx, cx; jne @7edc; jmp @7ee4
+07edd GOSUB ->515d
+07ee6 jmp @57c2
+07eed mov si, v21d6; CMP0; je @7efa; jmp @7f5c
+07efb mov bx, v0bb8; mov dx, v09e2; SOUND
+07f07 mov bx, 0xd5; mov dx, 0xa5; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+07f1d mov di, v21d6; mov si, v23d0=1; ASSIGN
+07f29 mov si, v2176; rt_140b; rt_13b2; mov di, v2182; mov bx, si; LOADFAC; mov di, v262e=0.5; LOADFAC; mov si, bx; MUL; mov di, bx; STORE
+07f57 RETURN
+07f5d mov bx, v0bb8; mov dx, v09e2; SOUND
+07f69 mov bx, 0xd5; mov dx, 0xa5; LINE?; mov bx, v0bb6; xor dx, dx; rt_2abb
+07f7f mov di, v21d6; mov si, v2506=0; ASSIGN
+07f8b mov si, v2176; rt_140b; rt_13b2; mov di, v2182; mov bx, si; LOADFAC; mov di, v262e=0.5; LOADFAC; mov di, bx; SUB; STORE
+07fb7 RETURN
+07fbd mov si, v1782; CMP0; mov bx, 0; jbe @7fcb; dec bx; mov si, v21d6; CMP0; mov dx, 0; jne @7fd9; dec dx; or dx, bx; mov si, v21a6; CMP0; mov bx, 0; ja @7fe9; dec bx; or bx, dx; mov di, v2568=4; mov si, v2272; CMP; mov dx, 0; jb @7ffc; dec dx; mov si, v1176; CMP0; mov cx, 0; jbe @800a; dec cx; and cx, dx; or cx, bx; and cx, cx; jne @8015; jmp @801b
+08016 RETURN
+0801c mov di, v2568=4; mov si, v2272; CMP; jae @802c; jmp @803b
+0802d mov di, v2272; mov si, v23d0=1; ASSIGN; jmp @807c
+0803c mov di, v23d0=1; mov si, v2272; ADD; rt_2092; mov si, bx; shl si, 1; shl si, 1; add si, v1172; CMP0; je @8060; jmp @8076
+08061 mov di, v23d0=1; mov si, v2272; ADD; mov di, si; STORE; jmp @807c
+08077 RETURN
+0807d mov bx, v0258; mov dx, v09e2; SOUND
+08089 mov di, v25d2=10; mov si, v2272; MULFAC; mov di, v25d6=244; SUB; rt_2092; mov dx, 0xa8; LINE?; mov bx, v1136; mov dx, 0xffff; rt_2abb
+080b5 mov di, v24e2=-1; mov si, v21a6; ADD; mov di, si; STORE
+080c8 mov bx, 0x16; rt_1257; mov bx, 0x1e; rt_1271
+080d9 mov bx, '##'; rt_3984; mov bx, v21a6; rt_3640
+080ea mov si, v2272; INT; mov di, bx; shl di, 1; shl di, 1; add di, v114a; mov si, v2156; ASSIGN
+08105 mov si, v2272; INT; mov di, bx; shl di, 1; shl di, 1; add di, v115e; mov si, v215a; ASSIGN
+08120 mov si, v2272; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1186; mov si, v219a; ASSIGN
+0813b mov si, v2272; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1172; mov si, v2824=17; ASSIGN
+08156 RETURN
+0815f mov si, v23d0=1; FORINIT; jmp @86be
+0816b mov si, v23d0=1; FORINIT; jmp @8378
+08177 mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1172; CMP0; jne @8193; jmp @836c
+08194 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v114a; mov dx, bx; add bx, v1172; mov si, bx; add dx, v1186; mov bx, dx; rt_37c4; mov bx, di; rt_015b; mov si, bx; rt_0023; mov di, bx; STORE
+081d1 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v115e; mov dx, bx; add bx, v1172; mov si, bx; add dx, v1186; mov bx, dx; rt_37df; mov bx, di; rt_015b; mov si, bx; rt_0023; mov di, bx; STORE
+0820e mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v119a; add bx, v1172; mov dx, di; mov di, bx; mov si, dx; ADD; mov di, dx; STORE
+08239 mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v119a; mov di, v2828=960; CMP; ja @8258; jmp @836c
+08259 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v114a; mov si, v282c=-999; ASSIGN
+08274 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v115e; mov si, v282c=-999; ASSIGN
+0828f mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1172; mov si, v2830=0; ASSIGN
+082aa mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1186; mov si, v2830=0; ASSIGN
+082c5 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v119a; mov si, v2830=0; ASSIGN
+082e0 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v11ae; mov si, v2830=0; ASSIGN
+082fb mov di, v214e; mov si, v2568=4; FADD?; mov di, v21a6; CMP; mov bx, 0; jae @8314; dec bx; mov si, v21ce; CMP0; mov dx, 0; jne @8322; dec dx; and dx, bx; and dx, dx; jne @832b; jmp @836c
+0832c mov si, v09e2; rt_141d; add bh, byte ptr [bp + di + 0x258]; mov dx, 0xb2; SOUND
+08341 mov di, v25d2=10; mov si, v214e; MULFAC; mov di, v25d6=244; SUB; rt_2092; mov dx, 0xa8; LINE?; mov bx, v1136; mov dx, 2; rt_2abb
+0836d mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2568=4; CMP; ja @838f; jmp @8176
+08390 mov si, v21e6; CMP0; je @839d; jmp @83a1
+0839e jmp @86b2
+083a2 mov di, v2276; mov si, v21e6; ASSIGN; mov si, v23d0=1; FORINIT; jmp @869b
+083b9 mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; mov di, v23d0=1; CMP; je @83d8; jmp @83dc
+083d9 jmp @868f
+083dd mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v2834=1200; CMP; jbe @840b; jmp @868f
+0840c mov si, v23d0=1; FORINIT; jmp @8678
+08418 mov si, v214a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1172; CMP0; jne @8434; jmp @866c
+08435 mov si, v214a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v11ae; CMP0; jne @8451; jmp @8455
+08452 jmp @866c
+08456 mov si, v214a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v114a; mov dx, si; mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cf6; mov si, dx; FADD?; mov di, v227a; STORE
+0849b mov si, v214a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v115e; mov dx, si; mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1d1a; mov si, dx; FADD?; mov di, v227e; STORE
+084e0 mov si, v227a; CMP0; je @84ed; jmp @8509
+084ee mov si, v227e; rt_13ac; mov di, v26f6; LOADFAC; mov di, v2282; STORE; jmp @8525
+0850a mov di, v227a; mov si, v227e; rt_01de; mov bx, 0xb2; rt_2f2e; mov di, v2282; STORE
+08526 mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v271e=7; CMP; je @8554; jmp @85e2
+08555 mov di, v24ce=2; mov si, v227a; rt_1eab; mov si, v227e; rt_132b; sbb word ptr [bp + si + 0x1eab], 0x99b; rt_0020; cmp word ptr [bp + di + 0xb2], 0x279a; push ds; wait; or word ptr [bp + 0x21de], di; rt_132b; sbb byte ptr [bp + si + 0x2047], 0x9b; or word ptr [bp + di - 0x2e0d], cx; out 0xd1, al; out 0x81, al; mov byte ptr [bp + si - 0x65e2], 0x47; and byte ptr [bp + di - 0x74f7], bl; sti; shl di, 1; shl di, 1; add di, v1ea6; mov si, v2282; FADD?; mov bx, 0xb2; rt_37c4; mov di, v25ee=6; rt_1ea0; mov di, v2626=14; LOADFAC; mov di, v2838; SUB; CMP; xor byte ptr [bp + si + 3], 0xe9; or al, 0
+085d7 GOSUB ->86dc
+085df jmp @866c
+085e3 mov di, v24ce=2; mov si, v227a; rt_1eab; mov si, v227e; rt_132b; sbb word ptr [bp + si + 0x1eab], 0x99b; rt_0020; cmp word ptr [bp + di + 0xb2], 0x279a; push ds; wait; or word ptr [bp + 0x21de], di; rt_132b; sbb byte ptr [bp + si + 0x2047], 0x9b; or word ptr [bp + di - 0x2e0d], cx; out 0xd1, al; out 0x81, al; mov byte ptr [bp + si - 0x65e2], 0x47; and byte ptr [bp + di - 0x74f7], bl; sti; shl di, 1; shl di, 1; add di, v1ea6; mov si, v2282; FADD?; mov bx, 0xb2; rt_37c4; mov di, v25ee=6; rt_1ea0; mov di, v283c=18; LOADFAC; mov di, v2840; SUB; CMP; xor byte ptr [bp + si + 3], 0xe9; or byte ptr [bx + si], al
+08665 GOSUB ->86dc
+0866d mov di, v23d0=1; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v2568=4; CMP; ja @868f; jmp @8417
+08690 mov di, v23d0=1; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v2276; CMP; ja @86b2; jmp @83b8
+086b3 mov di, v23d0=1; mov si, v2286; ADD; mov di, v2286; STORE; mov si, di; mov di, v2564=3; CMP; ja @86d5; jmp @816a
+086d6 RETURN
+086dd mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov si, v27d4=1.75; ASSIGN
+08707 mov si, v21de; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1e82; mov di, v228a; ASSIGN
+08722 mov si, v214a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v11ae; mov si, v23d0=1; ASSIGN
+0873d mov di, v23d0=1; mov si, v21c6; ADD; mov di, si; STORE
+08750 mov bx, 2; rt_282c
+08759 mov bx, 4; rt_282c
+08762 mov di, v264e=45; mov si, v2192; CMP; mov bx, 0; jbe @8773; dec bx; mov di, v2652=20; CMP; mov dx, 0; jbe @8781; dec dx; mov di, v24e2=-1; mov si, v219e; CMP; mov cx, 0; jne @8792; dec cx; and cx, dx; or cx, bx; mov di, v23d0=1; mov si, v21ce; CMP; mov bx, 0; jne @87a7; dec bx; or bx, cx; and bx, bx; je @87b0; jmp @98e5
+087b1 mov si, v23d0=1; FORINIT; jmp @87d6
+087bd mov si, v228e; INT; rt_282c
+087cb mov di, v23d0=1; mov si, v228e; ADD; mov di, v228e; STORE; mov si, di; mov di, v2626=14; CMP; jbe @87bc
+087eb mov si, v214a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v114a; mov di, v2156; FADD?; mov di, v227a; STORE
+0880e mov si, v214a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v115e; mov di, v215a; FADD?; mov di, v227e; STORE
+08831 mov si, v227a; CMP0; je @883e; jmp @885a
+0883f mov si, v227e; rt_13ac; mov di, v26f6; LOADFAC; mov di, v2282; STORE; jmp @8876
+0885b mov di, v227a; mov si, v227e; rt_01de; mov bx, 0xb2; rt_2f2e; mov di, v2282; STORE
+08877 mov si, v227a; CMP0; jb @8884; jmp @8897
+08885 mov di, v268c; mov si, v2282; ADD; mov di, si; STORE
+08898 mov si, v2282; CMP0; jb @88a5; jmp @88bc
+088a6 mov di, v26fa; mov si, v2282; ADD; mov di, si; STORE
+088b9 jmp @8898
+088bd mov di, v219a; mov si, v2282; FADD?; mov di, v2292; STORE
+088d1 mov si, v2292; CMP0; jb @88de; jmp @88f5
+088df mov di, v26fa; mov si, v2292; ADD; mov di, si; STORE
+088f2 jmp @88d1
+088f6 mov di, v21ae; mov si, v2292; FADD?; mov di, v2296; STORE
+0890a mov si, v2296; CMP0; jb @8917; jmp @892e
+08918 mov di, v26fa; mov si, v2296; ADD; mov di, si; STORE
+0892b jmp @890a
+0892f mov di, v24f2; mov si, v2296; CMP; mov bx, 0; jbe @8940; dec bx; mov di, v24fe; CMP; mov dx, 0; jae @894e; dec dx; and dx, bx; and dx, dx; je @8957; jmp @98e5
+08958 mov bx, v2296; rt_37df; mov si, v228a; rt_132b; sbb word ptr [bp + si + 0x2047], 0x99b; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d86; add bx, v1e3a; mov dx, si; mov si, bx; mov di, v270e; MULFAC; mov bx, 0xb2; rt_37df; rt_140e; mov di, v2712=1.5; LOADFAC; mov di, v262e=0.5; SUB; mov si, dx; rt_015b; mov di, v21b2; LOADFAC; mov di, v2716=227; SUB; rt_0158; cmp word ptr [bp + 0x271a], 0xe9a; add byte ptr [bp + di - 0x40f7], bl; lcall 0x12fd, 0x9a22; wait; or sp, cx; mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v271e=7; CMP; je @89f4; jmp @8a14
+089f5 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1d86; mov si, di; rt_141d; add word ptr [bp + si + 0x12fd], bx; wait; or sp, cx; mov di, v224e; mov si, v2506=0; ASSIGN
+08a21 mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1d86; mov di, v2844; rt_1eab; mov di, v2568=4; SUB; mov di, v221e; STORE
+08a4c mov di, v229e; mov si, v24ce=2; ASSIGN
+08a58 mov di, v22a2; mov si, v2506=0; ASSIGN
+08a64 mov di, v23fa=15; mov si, v221e; rt_01de; mov di, v23d0=1; SUB; mov di, v22a6; STORE
+08a80 mov di, v2848=44; mov si, v221e; rt_01de; mov di, v22aa; STORE
+08a94 mov di, v10a6; mov si, v229a; ASSIGN
+08aa0 mov di, v22aa; mov si, v229a; FADD?; mov di, v10aa; STORE
+08ab4 mov di, v22aa; mov si, v229a; ADD; mov di, v10ae; STORE
+08ac8 mov si, v22aa; rt_141d; add word ptr [bp + 0x229a], di; MUL; mov di, v10b2; STORE
+08ae2 mov si, v22aa; rt_141d; add word ptr [bx + 0x229a], di; SUB; mov di, v10b6; STORE
+08afc mov si, v22aa; rt_141d; add bh, byte ptr [bp + 0x229a]; MUL; mov di, v10ba; STORE
+08b16 mov di, v2564=3; mov si, v22aa; MULFAC; mov di, v229a; SUB; mov di, v10be; STORE
+08b32 mov di, v25ee=6; mov si, v22aa; MULFAC; mov si, v229a; MUL; mov di, v10c2; STORE
+08b4e mov di, v25ea=5; mov si, v22aa; MULFAC; mov di, v229a; SUB; mov di, v10c6; STORE
+08b6a mov di, v284c=9; mov si, v22aa; MULFAC; mov si, v229a; MUL; mov di, v10ca; STORE
+08b86 mov di, v271e=7; mov si, v22aa; MULFAC; mov di, v229a; SUB; mov di, v10ce; STORE
+08ba2 mov di, v25d2=10; mov si, v22aa; MULFAC; mov di, v229a; SUB; mov di, v10d2; STORE
+08bbe mov si, v23d0=1; FORINIT; jmp @8c48
+08bca mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v10a2; mov di, v2850=319; CMP; ja @8be9; jmp @8c04
+08bea mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v10a2; mov si, v2850=319; ASSIGN
+08c05 mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v10a2; CMP0; jb @8c21; jmp @8c3c
+08c22 mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v10a2; mov si, v2854=0; ASSIGN
+08c3d mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260e=12; CMP; ja @8c5f; jmp @8bc9
+08c60 mov di, v22ae; mov si, v2152; ASSIGN
+08c6c mov di, v22b2; mov si, v2152; ASSIGN
+08c78 mov di, v22b6; mov si, v2152; ASSIGN
+08c84 mov di, v22ba; mov si, v2152; ASSIGN
+08c90 mov di, v22be; mov si, v2152; ASSIGN
+08c9c mov di, v22c2; mov si, v2152; ASSIGN
+08ca8 mov di, v23d0=1; mov si, v2152; ADD; mov di, v22c6; STORE
+08cbc mov di, v23d0=1; mov si, v2152; ADD; mov di, v22ca; STORE
+08cd0 mov di, v23d0=1; mov si, v2152; ADD; mov di, v22ce; STORE
+08ce4 mov si, v23d0=1; FORINIT; jmp @926e
+08cf0 mov di, v22d2; mov si, v221e; ASSIGN; mov di, v22d6; mov si, v22a6; ASSIGN; mov si, v224e; FORINIT; jmp @91eb
+08d12 mov si, v23d0=1; FORINIT; jmp @8d29
+08d1e mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v26c4=300; CMP; jbe @8d1d
+08d3e mov di, v22da; mov si, v2152; FADD?; mov di, v22de; STORE
+08d52 mov di, v23d4; mov si, v22da; MULFAC; mov si, v2152; MUL; mov di, v22e2; STORE
+08d6e mov di, v2858; mov si, v22da; MULFAC; mov si, v2152; MUL; mov di, v22e6; STORE
+08d8a mov di, v285c; mov si, v22da; MULFAC; mov si, v2152; MUL; mov di, v22ea; STORE
+08da6 mov di, v2860; mov si, v22da; MULFAC; mov si, v2152; MUL; mov di, v22ee; STORE
+08dc2 mov di, v26c8=0.05; mov si, v22da; MULFAC; mov si, v2152; MUL; mov di, v22f2; STORE
+08dde mov di, v23d0=1; mov si, v2152; ADD; mov di, v22f6; STORE
+08df2 mov di, v2864=0.03; mov si, v22da; MULFAC; mov di, v2152; SUB; mov di, v23d0=1; SUB; mov di, v22fa; STORE
+08e16 mov di, v2868; mov si, v22da; MULFAC; mov di, v2152; SUB; mov di, v23d0=1; SUB; mov di, v22fe; STORE
+08e3a mov si, v22de; INT; mov dx, bx; mov si, v10a6; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22ae; INT; mov cx, bx; mov si, v10ae; INT; xchg dx, cx; rt_29c3
+08e75 mov si, v22e2; INT; mov dx, bx; mov si, v10aa; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22b2; INT; mov cx, bx; mov si, v10a6; INT; xchg dx, cx; rt_29c3
+08eb0 mov si, v22e2; INT; mov dx, bx; mov si, v10ae; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22b2; INT; mov cx, bx; mov si, v10b6; INT; xchg dx, cx; rt_29c3
+08eeb mov si, v22e6; INT; mov dx, bx; mov si, v10b2; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22b6; INT; mov cx, bx; mov si, v10aa; INT; xchg dx, cx; rt_29c3
+08f26 mov si, v22e6; INT; mov dx, bx; mov si, v10b6; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22b6; INT; mov cx, bx; mov si, v10be; INT; xchg dx, cx; rt_29c3
+08f61 mov si, v22ea; INT; mov dx, bx; mov si, v10ba; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22ba; INT; mov cx, bx; mov si, v10b2; INT; xchg dx, cx; rt_29c3
+08f9c mov si, v22ea; INT; mov dx, bx; mov si, v10be; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22ba; INT; mov cx, bx; mov si, v10c6; INT; xchg dx, cx; rt_29c3
+08fd7 mov si, v22ee; INT; mov dx, bx; mov si, v10c2; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22be; INT; mov cx, bx; mov si, v10ba; INT; xchg dx, cx; rt_29c3
+09012 mov si, v22ee; INT; mov dx, bx; mov si, v10c6; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22be; INT; mov cx, bx; mov si, v10ce; INT; xchg dx, cx; rt_29c3
+0904d mov si, v22f2; INT; mov dx, bx; mov si, v10ca; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22c2; INT; mov cx, bx; mov si, v10c2; INT; xchg dx, cx; rt_29c3
+09088 mov si, v22f2; INT; mov dx, bx; mov si, v10ce; INT; rt_297b; mov si, v229e; INT; mov dx, bx; mov si, v22c2; INT; mov cx, bx; mov si, v10d2; INT; xchg dx, cx; rt_29c3
+090c3 mov si, v22f6; INT; mov dx, bx; mov si, v10ca; INT; rt_297b; mov si, v22a2; INT; mov dx, bx; mov si, v22c6; INT; mov cx, bx; mov si, v10d2; INT; xchg dx, cx; rt_29c3
+090fe mov si, v22fa; INT; mov dx, bx; mov si, v10ba; INT; rt_297b; mov si, v22a2; INT; mov dx, bx; mov si, v22ca; INT; mov cx, bx; mov si, v10c6; INT; xchg dx, cx; rt_29c3
+09139 mov si, v22fe; INT; mov dx, bx; mov si, v10aa; INT; rt_297b; mov si, v22a2; INT; mov dx, bx; mov si, v22ce; INT; mov cx, bx; mov si, v10b6; INT; xchg dx, cx; rt_29c3
+09174 mov di, v22ae; mov si, v22de; ASSIGN
+09180 mov di, v22b2; mov si, v22e2; ASSIGN
+0918c mov di, v22b6; mov si, v22e6; ASSIGN
+09198 mov di, v22ba; mov si, v22ea; ASSIGN
+091a4 mov di, v22be; mov si, v22ee; ASSIGN
+091b0 mov di, v22c2; mov si, v22f2; ASSIGN
+091bc mov di, v22c6; mov si, v22f6; ASSIGN
+091c8 mov di, v22ca; mov si, v22fa; ASSIGN
+091d4 mov di, v22ce; mov si, v22fe; ASSIGN
+091e0 mov di, v22d6; mov si, v22da; ADD; mov di, v22da; STORE; mov si, v22d6; CMP0; jb @9200; jmp @9212; mov si, di; mov di, v22d2; CMP; jb @920f; jmp @8d11; jmp @9222; mov di, v22d2; mov si, v22da; CMP; ja @9222; jmp @8d11
+09223 mov di, v224e; mov si, v221e; ASSIGN
+0922f mov di, v221e; mov si, v2506=0; ASSIGN
+0923b mov di, v229e; mov si, v21ca; ASSIGN
+09247 mov di, v22a2; mov si, v24ce=2; ASSIGN
+09253 mov si, v22a6; rt_139a; mov di, si; STORE
+09263 mov di, v23d0=1; mov si, v2302; ADD; mov di, v2302; STORE; mov si, di; mov di, v24ce=2; CMP; ja @9285; jmp @8cef
+09286 mov si, v22aa; rt_141d; add di, word ptr [bx + 0x23d0]; mov bx, si; SUB; mov di, bx; STORE
+092a1 mov di, v2824=17; mov si, v22a6; MULFAC; mov di, si; STORE
+092b5 rt_2afa; mov di, v260e=12; mov si, v2256; rt_132b; sbb word ptr [bp + si + 0x1de], 0x99b; CMP; xor word ptr [bp + si + 3], 0x6e9; add ah, cl; RETURN
+092dd mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1d86; mov di, v2306; ASSIGN
+092f8 mov di, v286c=50; mov si, v2306; CMP; ja @9308; jmp @930c
+09309 jmp @b5cc
+0930d mov si, v2306; rt_141d; add word ptr [bx + 0x2652], di; SUB; mov di, v230a; STORE
+09327 mov di, v2870=60; mov si, v230a; CMP; ja @9337; jmp @9343
+09338 mov di, v230a; mov si, v2870=60; ASSIGN
+09344 mov di, v230e; mov si, v230a; ASSIGN; mov si, v23d0=1; FORINIT; jmp @95b1
+0935b mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v13aa; rt_2afa; rt_1420; add cx, word ptr [bp + di - 0x4021]; lcall 0x99b, 0x1b; mov di, v22aa; LOADFAC; mov di, v229a; SUB; mov di, bx; STORE
+0939a mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v149e; rt_2afa; mov bx, di; mov di, v22a6; LOADFAC; mov si, v2152; MUL; mov di, bx; STORE
+093cb mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1592; rt_2afa; mov bx, di; mov di, v22aa; LOADFAC; mov si, v229a; MUL; mov di, bx; STORE
+093fc mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1686; rt_2afa; mov bx, di; mov di, v22aa; LOADFAC; mov di, v229a; SUB; mov di, bx; STORE
+0942d mov si, v2152; INT; mov dx, bx; mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1592; mov cx, bx; INT; rt_297b; mov bx, cx; add cx, v149e; mov si, cx; mov dx, bx; INT; add dx, v13aa; mov si, dx; mov cx, bx; INT; mov dx, cx; mov cx, 0xffff; rt_2981
+0947e mov si, v2152; INT; mov dx, bx; mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1686; mov cx, bx; INT; rt_297b; mov bx, cx; add cx, v149e; mov si, cx; mov dx, bx; INT; add dx, v13aa; mov si, dx; mov cx, bx; INT; mov dx, cx; mov cx, 0xffff; rt_2981
+094cf mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v11c2; add bx, v13aa; mov si, bx; rt_2afa; mov dx, di; mov di, v2652=20; LOADFAC; mov si, bx; rt_0023; mov di, v2874=-10; SUB; mov di, dx; STORE
+0950f mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v12b6; add bx, v149e; mov si, bx; rt_2afa; mov dx, di; mov di, v25d2=10; LOADFAC; mov si, bx; rt_0023; mov di, v2878=-8; SUB; mov di, dx; STORE
+0954f mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v12b6; mov dx, bx; INT; add dx, v11c2; mov si, dx; mov cx, bx; INT; mov dx, cx; xor cx, cx; rt_2a09
+09581 mov di, v24ce=2; mov si, v2152; ADD; rt_2092; mov dx, bx; xor bx, bx; rt_297b; mov bx, v013f; mov cx, 2; rt_2981
+095a6 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v230e; CMP; ja @95c8; jmp @935a
+095c9 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov si, v2506=0; ASSIGN
+095e4 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1d1a; mov si, v287c=-2000; ASSIGN
+095ff mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cf6; mov si, v287c=-2000; ASSIGN
+0961a mov di, v2312; mov si, v24e2=-1; ASSIGN; mov si, v230a; FORINIT; jmp @96ea
+09631 mov si, v2152; INT; mov dx, bx; mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1592; mov cx, bx; INT; rt_297b; mov si, v21ca; INT; mov dx, cx; add cx, v149e; mov si, cx; mov ax, bx; INT; add dx, v13aa; mov si, dx; mov cx, bx; INT; mov dx, cx; xchg cx, ax; rt_2981
+09688 mov si, v2152; INT; mov dx, bx; mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1686; mov cx, bx; INT; rt_297b; mov si, v21ca; INT; mov dx, cx; add cx, v149e; mov si, cx; mov ax, bx; INT; add dx, v13aa; mov si, dx; mov cx, bx; INT; mov dx, cx; xchg cx, ax; rt_2981
+096df mov di, v2312; mov si, v224e; ADD; mov di, v224e; STORE; mov si, v2312; CMP0; jb @96ff; jmp @9711; mov si, di; mov di, v23d0=1; CMP; jb @970e; jmp @9630; jmp @9721; mov di, v23d0=1; mov si, v224e; CMP; ja @9721; jmp @9630
+09722 mov si, v23d0=1; FORINIT; jmp @98ce
+0972e mov di, v2316; mov si, v24e2=-1; ASSIGN; mov si, v230a; FORINIT; jmp @988b
+09745 mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v12b6; mov di, v2152; CMP; jb @9764; jmp @979e
+09765 mov si, v21ca; INT; mov dx, bx; mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v12b6; mov cx, bx; INT; add cx, v11c2; mov si, cx; mov ax, bx; INT; xchg dx, ax; xchg cx, ax; rt_2a09
+0979f mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v12b6; mov si, di; mov di, v25ee=6; ADD; mov di, si; STORE
+097c3 mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v11c2; mov di, v229a; CMP; jb @97e2; jmp @9809
+097e3 mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v11c2; mov si, di; mov di, v272e=-2; ADD; mov di, si; STORE; jmp @982d
+0980a mov si, v224e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v11c2; mov si, di; mov di, v24ce=2; ADD; mov di, si; STORE
+0982e mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v12b6; mov di, v2152; CMP; jb @984d; jmp @987f
+0984e mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v12b6; mov dx, bx; INT; add dx, v11c2; mov si, dx; mov cx, bx; INT; mov dx, cx; xor cx, cx; rt_2a09
+09880 mov di, v2316; mov si, v224e; ADD; mov di, v224e; STORE; mov si, v2316; CMP0; jb @98a0; jmp @98b2; mov si, di; mov di, v23d0=1; CMP; jb @98af; jmp @9744; jmp @98c2; mov di, v23d0=1; mov si, v224e; CMP; ja @98c2; jmp @9744
+098c3 mov di, v23d0=1; mov si, v231a; ADD; mov di, v231a; STORE; mov si, di; mov di, v2626=14; CMP; ja @98e5; jmp @972d
+098e6 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1d86; mov si, v2506=0; ASSIGN
+09901 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1d1a; mov si, v287c=-2000; ASSIGN
+0991c mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cf6; mov si, v2880=0; ASSIGN
+09937 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1dce; mov si, v2880=0; ASSIGN
+09952 mov si, v228a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cae=0; mov si, v260a=8; ASSIGN
+0996d mov si, v21ce; CMP0; je @997a; jmp @9982
+0997b GOSUB ->515d
+09983 mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0999a mov bx, 2; rt_383b; mov bx, v231e; mov dx, 2; rt_385d; mov bx, v2322; mov dx, 0xf; rt_385d; mov bx, v2326; mov dx, 5; rt_385d; mov bx, v232a; mov dx, 0xa; rt_385d
+099cf mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v2564=3; CMP; je @99ee; jmp @99fb
+099ef mov bx, 2; CLOSE
+099f8 jmp @9c2c
+099fc mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v2568=4; CMP; je @9a1b; jmp @9a41
+09a1c rt_2afa; mov di, v2652=20; LOADFAC; mov bx, 0xb2; rt_1468; mov di, v23d0=1; SUB; mov di, v224e; STORE
+09a42 mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v25ea=5; CMP; je @9a61; jmp @9a85
+09a62 rt_2afa; rt_1420; add di, word ptr [bp + di + 0xb2]; rt_1468; mov di, v2574=26; SUB; mov di, v224e; STORE
+09a86 mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v25ee=6; CMP; je @9aa5; jmp @9ac9
+09aa6 rt_2afa; rt_1420; add di, word ptr [bp + di + 0xb2]; rt_1468; mov di, v24ba=36; SUB; mov di, v224e; STORE
+09aca mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v271e=7; CMP; je @9ae9; jmp @9b0d
+09aea rt_2afa; rt_1420; add al, 0xbb; mov dl, 0; rt_1468; mov di, v25da=46; SUB; mov di, v224e; STORE
+09b0e mov si, v228a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1daa; mov di, v260a=8; CMP; je @9b2d; jmp @9b53
+09b2e rt_2afa; mov di, v25fe=19; LOADFAC; mov bx, 0xb2; rt_1468; mov di, v2892=66; SUB; mov di, v224e; STORE
+09b54 mov di, v221e; mov si, v224e; ASSIGN
+09b60 mov si, v224e; INT; mov dx, bx; mov bx, 2; rt_035d
+09b73 mov bx, v231e; rt_24cd; or bx, bx; jg @9b82; jmp @9bb2
+09b83 mov di, v23d0=1; mov si, v224e; ADD; mov dx, si; rt_2092; xchg bx, ax; mov bx, dx; mov cx, 0x55; cdq; idiv cx; inc dx; mov cx, bx; mov bx, dx; CSNG; mov di, cx; STORE; jmp @9bb5; jmp @9bdb
+09bb6 mov di, v221e; mov si, v224e; CMP; je @9bc6; jmp @9bd7
+09bc7 mov bx, 2; CLOSE
+09bd0 GOSUB ->a804
+09bd8 jmp @9b5f
+09bdc rt_235e; mov dx, v232a; rt_376e
+09bea mov bx, 1; rt_2508; mov dx, v231e; rt_376e
+09bfb mov bx, v2322; mov dx, bx; rt_376e
+09c06 mov bx, v2326; mov dx, bx; rt_376e
+09c11 mov si, v224e; INT; mov dx, bx; mov bx, 2; rt_0367
+09c24 mov bx, 2; CLOSE
+09c2d mov si, v23d0=1; FORINIT; jmp @9c52
+09c39 mov si, v228e; INT; rt_2829
+09c47 mov di, v23d0=1; mov si, v228e; ADD; mov di, v228e; STORE; mov si, di; mov di, v2626=14; CMP; jbe @9c38
+09c67 RETURN
+09c6d mov di, v21ce; mov si, v23d0=1; ASSIGN
+09c79 rt_1db6; jmp @9c83
+09c84 mov si, v24ce=2; FORINIT; jmp @9ca9
+09c90 mov si, v214e; INT; rt_282c
+09c9e mov di, v24ce=2; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @9c8f
+09cbe mov di, v232e; mov si, v2896=211; ASSIGN
+09cca mov di, v2332; mov si, v256c=100; ASSIGN
+09cd6 mov di, v21ce; mov si, v23d0=1; ASSIGN
+09ce2 mov bx, 1; rt_102f; xor bx, bx; rt_1049
+09cf2 xor bx, bx; rt_0df6; mov bx, 1; rt_0e10
+09d02 rt_0d79
+09d08 mov bx, 7; rt_1257; mov bx, 0x1e; rt_1271
+09d19 PRINT_BEGIN; mov bx, 'HEADING'; PRINT_STRNL
+09d27 mov bx, 0xc; rt_1257; mov bx, 0x1e; rt_1271
+09d38 PRINT_BEGIN; mov bx, ' SPEED'; PRINT_STRNL
+09d46 mov bx, 0x11; rt_1257; mov bx, 0x1e; rt_1271
+09d57 PRINT_BEGIN; mov bx, ' DEPTH'; PRINT_STRNL
+09d65 mov bx, 0x15; rt_1257; mov bx, 0x1e; rt_1271
+09d76 PRINT_BEGIN; mov bx, 'TORP'; PRINT_STRNL
+09d84 mov bx, 0x15; rt_1257; mov bx, 0x22; rt_1271
+09d95 PRINT_BEGIN; mov bx, v21a6; rt_3640
+09da3 mov si, v25fa=30; FORINIT; jmp @9e28
+09daf mov si, v214e; mov dx, si; INT; mov cx, dx; mov dx, bx; mov bx, 0xed; rt_297b; mov si, cx; mov di, v25d2=10; ADD; rt_2092; mov dx, bx; mov bx, v0118; mov cx, 1; rt_298a
+09de2 mov di, v272e=-2; mov si, v214e; ADD; mov dx, si; rt_2092; mov cx, dx; mov dx, bx; mov bx, 0xeb; rt_297b; mov si, cx; mov di, v260e=12; ADD; rt_2092; mov dx, bx; mov bx, v011a; mov cx, 1; rt_298a
+09e1d mov di, v28c2=40; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v27a8=110; CMP; ja @9e3f; jmp @9dae
+09e40 mov bx, 0xe0; mov dx, 0x17; rt_297b; mov bx, v0125; mov dx, 0x8c; mov cx, 1; rt_298a
+09e5a mov bx, v010b; mov dx, 0x9c; rt_297b; mov bx, v0123; mov dx, 0xaa; mov cx, 1; rt_298a
+09e74 mov bx, v010d; mov dx, 0x9e; rt_297b; mov bx, v0121; mov dx, 0xa8; mov cx, 1; rt_298a
+09e8e mov bx, v23d8; rt_33ea; mov bx, 0x6f; mov dx, 0x64; mov cx, 0x65; mov ax, 1; rt_33fe
+09ea8 mov bx, v23d8; rt_33ea; mov bx, 0x6f; mov dx, 0x64; mov cx, 0x66; mov ax, 1; rt_33fe
+09ec2 mov bx, v23d8; rt_33ea; mov bx, 0x6f; mov dx, 0x64; mov cx, 0x67; mov ax, 1; rt_33fe
+09edc mov si, v2798=11; FORINIT; jmp @9f74
+09ee8 mov si, v25ee=6; FORINIT; jmp @9f54
+09ef4 xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0xc7; mov cx, 1; rt_298a
+09f0c mov bx, 2; mov dx, bx; rt_297b; mov bx, v013d; mov dx, 0xc5; mov cx, 1; rt_298a
+09f25 mov si, v21de; INT; mov dx, bx; mov si, v214e; INT; mov cx, 0xffff; rt_2a09
+09f40 mov bx, 'S4C3R5F4D5G4L5H4U5E4'; rt_325c
+09f49 mov di, v28de=174; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v25e2=180; CMP; jbe @9ef3
+09f69 mov di, v28e2=292; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v28e6=303; CMP; ja @9f8b; jmp @9ee7
+09f8c mov di, v264e=45; mov si, v2192; CMP; jbe @9f9c; jmp @a171
+09f9d mov bx, 0x6f; mov dx, 0x66; mov cx, 3; rt_2a09
+09fac mov bx, 'S4C3U4'; rt_325c
+09fb5 mov bx, 0x6f; mov dx, 0x64; rt_297b; mov si, v2332; INT; mov dx, bx; mov si, v232e; INT; xor cx, cx; rt_2981
+09fda mov bx, v2336; rt_37c4; mov di, v28f4=99; LOADFAC; mov di, v28f8=111; SUB; mov di, v232e; STORE
+09ffb mov bx, v2336; rt_37df; mov di, v28fc=89; LOADFAC; mov di, v256c=100; SUB; mov di, v2332; STORE
+0a01c mov bx, 0x6f; mov dx, 0x64; rt_297b; mov si, v2332; INT; mov dx, bx; mov si, v232e; INT; mov cx, 2; rt_2981
+0a042 mov si, v23d0=1; FORINIT; jmp @a15a
+0a04e mov si, v214e; INT; shl bx, 1; shl bx, 1; mov dx, bx; add bx, v1e5e; rt_37df; add dx, v1df2; mov di, dx; LOADFAC; mov di, v2900; LOADFAC; mov si, v28f8=111; MUL; mov di, v233a; STORE
+0a089 mov si, v214e; INT; shl bx, 1; shl bx, 1; mov dx, bx; add bx, v1e5e; rt_37c4; add dx, v1df2; mov di, dx; LOADFAC; mov di, v2900; LOADFAC; mov si, v256c=100; MUL; mov di, v233e; STORE
+0a0c4 mov si, v214e; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v26f2=1350; CMP; jb @a0e3; jmp @a14e
+0a0e4 mov si, v233e; INT; mov dx, bx; mov si, v233a; INT; mov cx, 2; rt_2a09
+0a0ff mov di, v23d0=1; mov si, v214e; CMP; je @a10f; jmp @a14e
+0a110 mov bx, v23d8; rt_33ea; mov di, v1df6; mov si, v2834=1200; rt_01de; mov di, v2564=3; SUB; rt_2092; mov dx, bx; mov si, v233e; INT; mov cx, bx; mov si, v233a; INT; xchg dx, cx; mov ax, 2; rt_33fe
+0a14f mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; ja @a171; jmp @a04d
+0a172 mov bx, 5; rt_1257; mov bx, 0x20; rt_1271
+0a183 mov bx, '###'; rt_3984; mov di, v290c; mov si, v219a; MULFAC; mov si, v2910; MUL; rt_2092; xchg bx, ax; mov cx, v0168; cdq; idiv cx; mov bx, dx; rt_364a
+0a1b2 mov bx, 0xa; rt_1257; mov bx, 0x20; rt_1271
+0a1c3 mov bx, '###'; rt_3984; mov bx, v2196; rt_3640
+0a1d4 mov bx, 0xf; rt_1257; mov bx, 0x20; rt_1271
+0a1e5 mov bx, '###'; rt_3984; mov bx, v2192; rt_1468; mov bx, 0xb2; rt_3640
+0a1fe GOSUB ->6412
+0a206 mov di, v27cc; mov si, v2336; ADD; mov di, si; STORE
+0a219 mov di, v26b8; mov si, v2336; CMP; ja @a229; jmp @a235
+0a22a mov di, v2336; mov si, v26bc=0; ASSIGN
+0a236 INKEY$; mov dx, v21fe; STRSET
+0a244 mov bx, v2656; mov ax, v21fe; STRCMP; je @a254; jmp @a258
+0a255 jmp @9f8b
+0a259 mov bx, 'R'; mov ax, v21fe; STRCMP; je @a269; jmp @a290
+0a26a mov bx, 0x6f; mov dx, 0x11; mov cx, 2; mov ax, 1; rt_30d4
+0a27c mov bx, 0x6f; mov dx, 0xbe; xor cx, cx; mov ax, 1; rt_30d4
+0a28d jmp @9f8b
+0a291 mov bx, '5'; mov ax, v21fe; STRCMP; je @a2a1; jmp @a2bd
+0a2a2 mov di, v217e; mov si, v26bc=0; ASSIGN
+0a2ae mov di, v21fa; mov si, v26bc=0; ASSIGN
+0a2ba jmp @9f8b
+0a2be GOSUB ->d0da
+0a2c6 mov bx, v2656; mov ax, v21fe; STRCMP; jne @a2d6; jmp @a2da
+0a2d7 jmp @a2de
+0a2db jmp @9f8b
+0a2df rt_0d79
+0a2e5 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0a2f6 mov di, v21ce; mov si, v26bc=0; ASSIGN
+0a302 jmp @42a8
+0a307 mov bx, 0x25; mov dx, v26bc=0; SOUND
+0a313 mov bx, 2; rt_282c
+0a31c mov bx, 4; rt_282c
+0a325 mov bx, 8; rt_282c
+0a32e rt_0d79
+0a334 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0a345 mov di, v21ce; mov si, v23d0=1; ASSIGN
+0a351 mov di, v2342; mov si, v23d0=1; ASSIGN
+0a35d mov si, v177e; CMP0; ja @a36a; jmp @a382
+0a36b mov bx, 0xaf; mov dx, 0x38; mov cx, 2; rt_2a09
+0a37a mov bx, 'S4C2U7R12D2R2D5L14'; rt_325c
+0a383 mov si, v1782; CMP0; ja @a390; jmp @a3a8
+0a391 mov bx, 7; mov dx, 0x38; mov cx, 2; rt_2a09
+0a3a0 mov bx, 'S4C2E2R40D3R5D10L2D2BH11L20D1R20BD2L20D1R20BD2L20D1R20'; rt_325c
+0a3a9 mov si, v1786; CMP0; ja @a3b6; jmp @a3ce
+0a3b7 mov bx, 0x4f; mov dx, 0x3f; mov cx, 2; rt_2a09
+0a3c6 mov bx, 'S4C2ND5R125D5L12D1L13NU6L25NU6L25NU6L25NU6L12U1L13'; rt_325c
+0a3cf mov si, v178a; CMP0; ja @a3dc; jmp @a3f4
+0a3dd mov bx, 0xd2; mov dx, 0x33; mov cx, 2; rt_2a09
+0a3ec mov bx, 'S4C2R60L2D1R13L1D1R8D2L2D1L8D1L10DL14D1L45H2U4E2'; rt_325c
+0a3f5 mov si, v178e; CMP0; ja @a402; jmp @a41a
+0a403 mov bx, v0105; mov dx, 0x40; mov cx, 2; rt_2a09
+0a412 mov bx, 'S4C2L25U2L6D4R6U2BL6L5U2L2D4U5L7ND6L1G1D4F1R8U1R2U2'; rt_325c
+0a41b mov si, v1796; CMP0; ja @a428; jmp @a440
+0a429 mov bx, 0x64; mov dx, 0x30; mov cx, 2; rt_2a09
+0a438 mov bx, 'S4C2NR53D8R53U8D3R22D3L22'; rt_325c
+0a441 mov bx, v2a24=0.07; rt_33ea; mov si, v2342; INT; xchg bx, ax; mov bx, 0x92; mov dx, 0x3c; mov cx, 0x73; rt_33fe
+0a461 mov bx, v2342; rt_22ce; mov ax, 'C='; CONCAT; xchg bx, ax; mov bx, 'S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1'; CONCAT; rt_325c
+0a480 mov bx, v2342; rt_22ce; mov ax, 'C='; CONCAT; xchg bx, ax; mov bx, 'L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3'; CONCAT; rt_325c
+0a49f mov bx, v2342; rt_22ce; mov ax, 'C='; CONCAT; xchg bx, ax; mov bx, 'BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10'; CONCAT; rt_325c
+0a4be mov bx, 0x1e; mov dx, 0x27; rt_297b; mov si, v2342; INT; mov cx, bx; mov bx, 0x78; mov dx, 0x1f; rt_2981
+0a4df mov si, v28c2=40; FORINIT; jmp @a513
+0a4eb mov si, v2342; INT; mov dx, bx; mov si, v214e; INT; mov cx, dx; mov dx, 0x31; rt_2a09
+0a508 mov di, v260a=8; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2bd6=240; CMP; jbe @a4ea
+0a528 mov bx, 0x10; rt_1257; mov bx, 7; rt_1271
+0a539 PRINT_BEGIN; mov bx, 'CONTROL RM        CONNING TOWER'; PRINT_STRNL
+0a547 mov bx, 0x12; rt_1257; mov bx, 7; rt_1271
+0a558 PRINT_BEGIN; mov bx, 'ENGINE RM         PERISCOPES'; PRINT_STRNL
+0a566 mov bx, 0x14; rt_1257; mov bx, 7; rt_1271
+0a577 PRINT_BEGIN; mov bx, 'BATTERY RM        FUEL TANKS'; PRINT_STRNL
+0a585 mov bx, 0x16; rt_1257; mov bx, 7; rt_1271
+0a596 PRINT_BEGIN; mov bx, 'TORPEDO RM        RADIO RM'; PRINT_STRNL
+0a5a4 xor bx, bx; mov dx, 0x64; rt_297b; mov bx, v013f; mov dx, 0xc7; mov cx, 1; rt_298a
+0a5bd mov bx, 2; mov dx, 0x66; rt_297b; mov bx, v013d; mov dx, 0xc5; mov cx, 1; rt_298a
+0a5d7 mov si, v2c5c=118; FORINIT; jmp @a63d
+0a5e3 mov si, v2652=20; FORINIT; jmp @a61d
+0a5ef mov si, v214e; INT; mov dx, bx; mov si, v214a; INT; LINE?; mov bx, v0bb6; mov dx, 0xffff; rt_2abb
+0a612 mov di, v2c60=130; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v278c=150; CMP; jbe @a5ee
+0a632 mov di, v2402=16; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v25e2=180; CMP; jbe @a5e2
+0a652 mov si, v177e; CMP0; ja @a65f; jmp @a675
+0a660 mov bx, 0x96; mov dx, 0xa6; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a676 mov si, v1782; CMP0; ja @a683; jmp @a699
+0a684 mov bx, 0x14; mov dx, 0xa6; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a69a mov si, v1786; CMP0; ja @a6a7; jmp @a6bd
+0a6a8 mov bx, 0x14; mov dx, 0x96; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a6be mov si, v178a; CMP0; ja @a6cb; jmp @a6e0
+0a6cc mov bx, 0x96; mov dx, bx; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a6e1 mov si, v178e; CMP0; ja @a6ee; jmp @a704
+0a6ef mov bx, 0x14; mov dx, 0x86; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a705 mov si, v1792; CMP0; ja @a712; jmp @a74c
+0a713 mov bx, 0x96; mov dx, 0x86; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a729 mov bx, 0x7c; mov dx, 0x1e; mov cx, 2; mov ax, 1; rt_30d4
+0a73b mov bx, 0x82; mov dx, 0x20; mov cx, 2; mov ax, 1; rt_30d4
+0a74d mov si, v1796; CMP0; ja @a75a; jmp @a770
+0a75b mov bx, 0x14; mov dx, 0x76; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a771 mov si, v179a; CMP0; ja @a77e; jmp @a7b8
+0a77f mov bx, 0x96; mov dx, 0x76; LINE?; mov bx, v0bf2; xor dx, dx; rt_2abb
+0a795 mov bx, 0x7c; mov dx, 0x28; mov cx, 2; mov ax, 1; rt_30d4
+0a7a7 mov bx, 0x7c; mov dx, 0x2b; mov cx, 2; mov ax, 1; rt_30d4
+0a7b9 INKEY$; mov dx, v21fe; STRSET
+0a7c7 mov bx, v2656; mov ax, v21fe; STRCMP; je @a7b8
+0a7d5 GOSUB ->d0c0
+0a7dd rt_0d79
+0a7e3 mov di, v21ce; mov si, v2c64=0; ASSIGN
+0a7ef mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0a800 jmp @42a8
+0a805 xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0x3c; xor cx, cx; rt_29c3
+0a81c mov di, v2346; mov si, v23d0=1; ASSIGN
+0a828 mov bx, 2; rt_1257; mov bx, 7; rt_1271
+0a839 PRINT_BEGIN; mov bx, 'LAST SHIP IN LOG LIST SUNK'; PRINT_STR
+0a847 mov bx, 4; rt_1257; mov bx, 1; rt_1271
+0a858 PRINT_BEGIN; mov bx, 'DO YOU WISH TO REVIEW BEFORE DELETION'; PRINT_STR
+0a866 mov bx, v2656; rt_2c63; add word ptr [bp + si + 0x2fba], bx; wait; or word ptr [bx + di], ax; pop es; mov bx, v234a; STORESNG
+0a87f mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0a896 mov bx, v234a; mov dx, 1; LEFT$; xchg bx, ax; mov bx, 'Y'; STRCMP; je @a8af; jmp @a8d7
+0a8b0 mov bx, 2; CLOSE
+0a8b9 GOSUB ->aa0e
+0a8c1 mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0a8d8 mov bx, 6; rt_1257; mov bx, 0xf; rt_1271
+0a8e9 PRINT_BEGIN; mov bx, 'LOG CLEARED'; PRINT_STRNL
+0a8f7 mov si, v23d0=1; FORINIT; jmp @a965
+0a903 mov si, v234e; INT; mov dx, bx; mov bx, 2; rt_035d
+0a916 xor bx, bx; rt_2508; mov dx, v231e; rt_376e
+0a926 mov bx, v2322; mov dx, bx; rt_376e
+0a931 mov bx, v2326; mov dx, bx; rt_376e
+0a93c mov bx, v232a; mov dx, bx; rt_376e
+0a947 mov si, v234e; INT; mov dx, bx; mov bx, 2; rt_0367
+0a95a mov di, v23d0=1; mov si, v234e; ADD; mov di, v234e; STORE; mov si, di; mov di, v28fc=89; CMP; jbe @a902
+0a97a mov di, v23d0=1; mov si, v2346; CMP; jne @a98a; jmp @a9b2
+0a98b mov bx, 2; mov dx, 0x5a; rt_035d
+0a997 xor bx, bx; rt_2508; mov dx, v2322; rt_376e
+0a9a7 mov bx, 2; mov dx, 0x5a; rt_0367
+0a9b3 mov di, v2346; mov si, v2506=0; ASSIGN
+0a9bf mov bx, v234a; mov dx, 1; LEFT$; xchg bx, ax; mov bx, 'Y'; STRCMP; je @a9d8; jmp @a9e1
+0a9d9 rt_1db6; jmp @a9e5
+0a9e2 jmp @a9fe
+0a9e6 mov bx, v2656; mov dx, v234a; STRSET
+0a9f2 mov bx, 2; CLOSE
+0a9fb jmp @42a8
+0a9ff mov bx, 2; CLOSE
+0aa08 RETURN
+0aa0f rt_0d79
+0aa15 mov bx, 9; rt_0df6; mov bx, 1; rt_0e10
+0aa26 mov bx, 0x25; mov dx, v2506=0; SOUND
+0aa32 xor bx, bx; rt_0eda
+0aa3a mov di, v2352; mov si, v2506=0; ASSIGN
+0aa46 mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0aa5d mov bx, 2; rt_383b; mov bx, v231e; mov dx, 2; rt_385d; mov bx, v2322; mov dx, 0xf; rt_385d; mov bx, v2326; mov dx, 5; rt_385d; mov bx, v232a; mov dx, 0xa; rt_385d
+0aa92 mov bx, 0x7d; xor dx, dx; rt_297b; mov bx, 0xa5; mov dx, 0x18; mov cx, 3; rt_29c3
+0aaab mov si, v2506=0; FORINIT; jmp @aae0
+0aab7 mov si, v214e; INT; mov dx, bx; mov bx, 0x7d; rt_297b; mov bx, 0xa5; mov cx, 2; rt_2981
+0aad5 mov di, v24ce=2; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v24ea=24; CMP; jbe @aab6
+0aaf5 mov bx, 0x7d; xor dx, dx; rt_297b; mov bx, 0x90; mov dx, 0xd; mov cx, 1; rt_29c3
+0ab0e mov si, v24ce=2; FORINIT; jmp @abbe
+0ab1a mov si, v2cc6=127; FORINIT; jmp @ab9b
+0ab26 mov si, v2cca=126; FORINIT; jmp @ab60
+0ab32 mov di, v24ce=2; mov si, v224e; ADD; rt_2092; mov dx, bx; mov si, v2342; INT; mov cx, 3; rt_2a09
+0ab55 mov di, v24ce=2; mov si, v2342; ADD; mov di, v2342; STORE; mov si, di; mov di, v2cce=142; CMP; jbe @ab31
+0ab75 mov si, v224e; INT; mov dx, bx; mov si, v221e; INT; mov cx, 3; rt_2a09
+0ab90 mov di, v24ce=2; mov si, v221e; ADD; mov di, v221e; STORE; mov si, di; mov di, v2cd2=141; CMP; ja @abb2; jmp @ab25
+0abb3 mov di, v2568=4; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v25d2=10; CMP; ja @abd5; jmp @ab19
+0abd6 mov bx, 5; rt_1257; mov bx, 0xc; rt_1271
+0abe7 PRINT_BEGIN; mov bx, "CAPTAIN'S LOG"; PRINT_STRNL
+0abf5 mov di, v2356; mov si, v2506=0; ASSIGN
+0ac01 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0ac0f PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0ac1d PRINT_BEGIN; mov bx, 'SHIP          TONNAGE       DATE SUNK'; PRINT_STRNL
+0ac2b PRINT_BEGIN; mov bx, '_____________________________________'; PRINT_STRNL
+0ac39 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0ac47 mov si, v23d0=1; FORINIT; jmp @ad01
+0ac53 mov si, v224e; INT; mov dx, bx; mov bx, 2; rt_035d
+0ac66 mov bx, v231e; rt_24cd; or bx, bx; jg @ac75; jmp @acf5
+0ac76 PRINT_BEGIN; mov bx, v2322; mov dx, 0xf; LEFT$; PRINT_STR
+0ac8c mov bx, '######'; rt_3984; mov bx, v2326; rt_24cd; rt_3636
+0aca2 PRINT_BEGIN; mov bx, '      '; PRINT_STR; mov bx, v232a; mov dx, 6; LEFT$; PRINT_STR; mov bx, '1943'; PRINT_STRNL
+0acc8 mov bx, v2326; rt_24cd; CSNG; mov di, v2352; SUB; STORE
+0ace3 mov di, v23d0=1; mov si, v2356; ADD; mov di, si; STORE
+0acf6 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v28fc=89; CMP; ja @ad18; jmp @ac52
+0ad19 mov bx, 2; mov dx, 0x5a; rt_035d
+0ad25 mov bx, v2322; rt_24cd; CSNG; mov di, v235a; STORE
+0ad3b mov bx, 2; CLOSE
+0ad44 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0ad52 mov bx, '\\             \\######'; rt_3984; mov bx, 'SHIPS SUNK      '; PRINT_STR; mov bx, v2356; rt_3640
+0ad6b mov bx, '\\             \\######'; rt_3984; mov bx, 'TOTAL TONNAGE   '; PRINT_STR; mov bx, v2352; rt_3640
+0ad84 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0ad92 PRINT_BEGIN; mov bx, 'MISSIONS'; PRINT_STRNL
+0ada0 mov bx, '\\             \\######'; rt_3984; mov bx, 'COMPLETED       '; PRINT_STR; mov bx, v235a; rt_3640
+0adb9 mov di, v23d0=1; mov si, v2346; CMP; je @adc9; jmp @ade5
+0adca PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0add8 PRINT_BEGIN; mov bx, '      (Press any key to continue)'; PRINT_STR
+0ade6 mov di, v23d0=1; mov si, v2346; CMP; je @adf6; jmp @ae3b
+0adf7 INKEY$; mov dx, v21fe; STRSET
+0ae05 mov bx, v2656; mov ax, v21fe; STRCMP; je @ade5
+0ae13 rt_0d79
+0ae19 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0ae2a mov di, v21ce; mov si, v2506=0; ASSIGN
+0ae36 RETURN
+0ae3c INKEY$; mov dx, v21fe; STRSET
+0ae4a mov bx, v2656; mov ax, v21fe; STRCMP; je @ae3b
+0ae58 GOSUB ->d0c0
+0ae60 rt_0d79
+0ae66 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0ae77 mov di, v21ce; mov si, v2506=0; ASSIGN
+0ae83 jmp @42a8
+0ae88 rt_0d79
+0ae8e mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0ae9f mov si, v23d0=1; FORINIT; jmp @aec4
+0aeab mov si, v214e; INT; rt_282c
+0aeb9 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2626=14; CMP; jbe @aeaa
+0aed9 mov bx, 2; rt_1257; mov bx, 0xf; rt_1271
+0aeea PRINT_BEGIN; mov bx, 'GAME CONTROL'; PRINT_STRNL
+0aef8 mov bx, 6; rt_1257; mov bx, 1; rt_1271
+0af09 PRINT_BEGIN; mov bx, '     [1] DIFFICULTY LEVEL'; PRINT_STR; mov bx, 0x22; rt_2928; mov bx, v2256; rt_3640
+0af27 PRINT_BEGIN; mov bx, '     [2] SOUND'; PRINT_STR; mov bx, 0x22; rt_2928; mov bx, v09e2; rt_3640
+0af45 PRINT_BEGIN; mov bx, '     [3] TIME OF DAY'; PRINT_STR; mov bx, 0x22; rt_2928; mov bx, v21ca; rt_3640
+0af63 PRINT_BEGIN; mov bx, "     [4] RESET CAPTAIN'S LOG"; PRINT_STRNL
+0af71 mov bx, 0x17; rt_1257; mov bx, 8; rt_1271
+0af82 PRINT_BEGIN; mov bx, '(Press RETURN to continue)'; PRINT_STR
+0af90 mov bx, 0xd; rt_1257; mov bx, 6; rt_1271
+0afa1 mov bx, 'NUMBER OF ITEM TO CHANGE'; rt_2c63; add byte ptr [bp + si + 0x2fba], bl; wait; or word ptr [bx + di], ax; add ax, 0x4ebb; and bl, byte ptr [bp + si + 0x3081]; wait; or sp, cx; mov bx, 0xd; rt_1257; mov bx, 0x20; rt_1271
+0afcb PRINT_BEGIN; mov bx, ' '; PRINT_STRNL
+0afd9 mov di, v23d0=1; mov si, v224e; CMP; mov bx, 0; jae @afea; dec bx; mov di, v2568=4; CMP; mov dx, 0; jbe @aff8; dec dx; or dx, bx; and dx, dx; jne @b001; jmp @b028
+0b002 rt_0d79
+0b008 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0b019 mov di, v21ce; mov si, v2506=0; ASSIGN
+0b025 jmp @42a8
+0b029 mov si, v224e; INT; rt_1df6; add al, 0x3f; jbe @afe1; jbe @b013; jbe @b045; ja @b00c; mov bx, 0x10; rt_1257; mov bx, 6; rt_1271
+0b051 mov bx, 'NEW DIFFICULTY LEVEL'; rt_2c63; add byte ptr [bp + si + 0x2fba], bl; wait; or word ptr [bx + di], ax; add ax, 0x56bb; and bl, byte ptr [bp + si + 0x3081]; wait; or sp, cx; mov di, v284c=9; mov si, v2256; CMP; ja @b07a; jmp @b089
+0b07b mov di, v2256; mov si, v284c=9; ASSIGN; jmp @b0a3
+0b08a mov si, v2256; CMP0; jb @b097; jmp @b0a3
+0b098 mov di, v2256; mov si, v2eb0=0; ASSIGN
+0b0a4 jmp @aef7
+0b0a8 mov di, v23d0=1; mov si, v09e2; ADD; mov dx, si; rt_2092; xchg bx, ax; mov bx, dx; mov cx, 2; cdq; idiv cx; mov cx, bx; mov bx, dx; CSNG; mov di, cx; STORE
+0b0d4 jmp @aef7
+0b0d8 mov di, v23d0=1; mov si, v21ca; ADD; mov dx, si; rt_2092; xchg bx, ax; mov bx, dx; mov cx, 2; cdq; idiv cx; mov cx, bx; mov bx, dx; CSNG; mov di, cx; STORE
+0b104 jmp @aef7
+0b108 mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0b11f mov bx, 2; rt_383b; mov bx, v231e; mov dx, 2; rt_385d; mov bx, v2322; mov dx, 0xf; rt_385d; mov bx, v2326; mov dx, 5; rt_385d; mov bx, v232a; mov dx, 0xa; rt_385d
+0b154 GOSUB ->a8f6
+0b15c mov bx, 2; CLOSE
+0b165 jmp @aef7
+0b16a nop
+0b16c mov bx, 0x7769; rt_2569
+0b175 mov bx, 2; rt_282c
+0b17e mov bx, 4; rt_282c
+0b187 mov bx, 8; rt_282c
+0b190 mov di, v21ce; mov si, v23d0=1; ASSIGN
+0b19c mov bx, 1; rt_102f; xor bx, bx; rt_1049
+0b1ac mov bx, 0x12; rt_0df6; mov bx, 1; rt_0e10
+0b1bd rt_0d79
+0b1c3 mov bx, 3; mov dx, 1; rt_297b; mov bx, v013d; mov dx, 0xc4; mov cx, 1; rt_29c3
+0b1dd mov si, v23d0=1; FORINIT; jmp @b261
+0b1e9 mov bx, v214e; rt_2593; mov bx, v21de; rt_2593; mov bx, v235e; rt_2593; mov bx, v2362; rt_2593
+0b20a mov bx, v2362; rt_33ea; mov si, v235e; INT; mov dx, bx; mov si, v21de; INT; mov cx, bx; mov si, v214e; INT; xchg dx, cx; mov ax, 2; rt_33fe
+0b239 mov si, v21de; INT; mov dx, bx; mov si, v214e; INT; xor cx, cx; mov ax, 2; rt_30d4
+0b256 mov di, v23d0=1; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v260e=12; CMP; ja @b278; jmp @b1e8
+0b279 mov si, v23d0=1; FORINIT; jmp @b2ae
+0b285 mov si, v214e; INT; mov dx, bx; mov bx, 3; rt_297b; mov bx, v013d; mov cx, 3; rt_2981
+0b2a3 mov di, v2eb4=49; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2eb8=199; CMP; jbe @b284
+0b2c3 mov si, v24ce=2; FORINIT; jmp @b2f6
+0b2cf mov si, v21de; INT; mov dx, 1; rt_297b; mov dx, 0xc5; mov cx, 3; rt_2981
+0b2eb mov di, v2ebc=63; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v2850=319; CMP; jbe @b2ce
+0b30b xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0xc7; mov cx, 3; rt_298a
+0b323 mov bx, 1; mov dx, bx; rt_297b; mov bx, v013d; xor cx, cx; rt_2981
+0b338 mov bx, 2; mov dx, bx; rt_297b; mov bx, v013d; mov cx, 3; rt_2981
+0b34e mov di, v2ec0; mov si, v215a; MULFAC; mov si, v2ec4=196; MUL; rt_2092; mov di, v2ec8; mov si, v2156; MULFAC; mov dx, bx; rt_2092; xor cx, cx; rt_2a09
+0b380 mov bx, '5'; mov ax, v21fe; STRCMP; je @b390; jmp @b3a8
+0b391 mov di, v217e; mov si, v2ecc=0; ASSIGN
+0b39d mov di, v21fa; mov si, v2ecc=0; ASSIGN
+0b3a9 mov di, v24ce=2; mov si, v2256; CMP; jbe @b3b9; jmp @b460
+0b3ba mov di, v2ec0; mov si, v1d22; MULFAC; mov si, v2ec4=196; MUL; rt_2092; mov di, v2ec8; mov si, v1cfe; MULFAC; mov dx, bx; rt_2092; xor cx, cx; rt_2a09
+0b3ec mov si, v2564=3; FORINIT; jmp @b44c
+0b3f8 mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d1a; mov di, v2ec0; MULFAC; mov si, v2ec4=196; MUL; mov dx, bx; rt_2092; add dx, v1cf6; mov si, dx; mov di, v2ec8; MULFAC; mov dx, bx; rt_2092; mov cx, 2; rt_2a09
+0b441 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @b3f7
+0b461 mov si, v23d0=1; FORINIT; jmp @b478
+0b46d mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v256c=100; CMP; jbe @b46c
+0b48d GOSUB ->6412
+0b495 INKEY$; mov dx, v21fe; STRSET
+0b4a3 mov bx, v2656; mov ax, v21fe; STRCMP; mov dx, 0; jne @b4b4; dec dx; mov bx, '5'; STRCMP; mov cx, 0; jne @b4c2; dec cx; or cx, dx; and cx, cx; je @b4cb; jmp @b34d
+0b4cc GOSUB ->d0c0
+0b4d4 mov bx, 'Z'; mov ax, v21fe; STRCMP; je @b4e4; jmp @b589
+0b4e5 mov si, v21aa; CMP0; je @b4f2; jmp @b579
+0b4f3 mov bx, 1; rt_1257; rt_1271
+0b501 mov bx, 'PASSWORD?'; rt_2c63; add bl, byte ptr [bp + si + 0x2fba]; wait; or word ptr [bx + di], ax; pop es; mov bx, v2366; STORESNG
+0b51a mov bx, 'PAED'; mov ax, v2366; STRCMP; je @b52a; jmp @b566
+0b52b mov bx, 1; rt_1257; rt_1271
+0b539 mov bx, 'ENTER NEW SUB COORDINATES (X,Y):'; rt_2c63; add bl, byte ptr [bp + si + 0x2fba]; wait; or word ptr [bp + si], ax; add ax, 0xbb05; push si; and word ptr [bp + si + 0x3081], bx; wait; or word ptr [bp + di + 0x215a], di; STORESNG
+0b55b GOSUB ->c6c7
+0b563 jmp @b169
+0b567 mov bx, v2656; mov dx, v21fe; STRSET
+0b573 jmp @b169; jmp @b589
+0b57a mov bx, v2656; mov dx, v21fe; STRSET
+0b586 jmp @b169
+0b58a mov bx, 2; rt_2829
+0b593 mov bx, 4; rt_2829
+0b59c mov bx, 8; rt_2829
+0b5a5 rt_0d79
+0b5ab mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0b5bc mov di, v21ce; mov si, v2506=0; ASSIGN
+0b5c8 jmp @42a8
+0b5cd mov bx, 0x25; mov dx, v2506=0; SOUND
+0b5d9 mov di, v284c=9; mov si, v09e2; MULFAC; mov bx, v0320; mov dx, 0xb2; SOUND
+0b5f0 mov di, v23d0=1; mov si, v21ce; CMP; je @b600; jmp @b6ef
+0b601 mov di, v236a; mov si, v27a0=-3; ASSIGN; mov si, v2eb8=199; FORINIT; jmp @b6b4
+0b618 mov si, v224e; mov dx, si; INT; mov cx, dx; mov dx, bx; xor bx, bx; rt_297b; mov si, cx; mov di, v263e=-4; ADD; rt_2092; mov dx, bx; mov bx, v013f; mov cx, 2; rt_29c3
+0b64a mov si, v2f10=1400; FORINIT; jmp @b688
+0b656 mov di, v26c8=0.05; mov si, v09e2; MULFAC; mov bx, v221e; rt_132b; sbb word ptr [bp + si + 0x1e27], 0x99b; rt_2092; mov dx, v23a6; SOUND
+0b67d mov di, v26c4=300; mov si, v221e; ADD; mov di, v221e; STORE; mov si, di; mov di, v2f14=32000; CMP; jbe @b655
+0b69d mov bx, 0x25; mov dx, v26d0=0; SOUND
+0b6a9 mov di, v236a; mov si, v224e; ADD; mov di, v224e; STORE; mov si, v236a; CMP0; jb @b6c9; jmp @b6db; mov si, di; mov di, v2564=3; CMP; jb @b6d8; jmp @b617; jmp @b6eb; mov di, v2564=3; mov si, v224e; CMP; ja @b6eb; jmp @b617
+0b6ec jmp @b923
+0b6f0 mov bx, v0125; xor dx, dx; mov cx, 3; rt_2a09
+0b6fe mov bx, 'S4C3G30D20L50G40D7BL13H7U20H20L32H40L20H32'; rt_325c
+0b707 mov bx, 0x20; mov dx, 0x8c; mov cx, 3; rt_2a09
+0b716 mov bx, 'S4C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7'; rt_325c
+0b71f mov di, v236e; mov si, v24e2=-1; ASSIGN; mov si, v2eb8=199; FORINIT; jmp @b8f2
+0b736 mov di, v24c6=170; mov si, v224e; CMP; je @b746; jmp @b75e
+0b747 mov bx, 0x6b; mov dx, 0x82; mov cx, 3; rt_2a09
+0b756 mov bx, 'S4A2C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7'; rt_325c
+0b75f mov si, v224e; INT; xchg bx, ax; mov cx, 4; cdq; idiv cx; or dx, dx; je @b775; jmp @b7d4
+0b776 mov si, v2f10=1400; FORINIT; jmp @b7b4
+0b782 mov di, v26c8=0.05; mov si, v09e2; MULFAC; mov bx, v221e; rt_132b; sbb word ptr [bp + si + 0x1e27], 0x99b; rt_2092; mov dx, v23a6; SOUND
+0b7a9 mov di, v26c4=300; mov si, v221e; ADD; mov di, v221e; STORE; mov si, di; mov di, v2f14=32000; CMP; jbe @b781
+0b7c9 mov bx, 0x25; mov dx, v26d0=0; SOUND
+0b7d5 mov di, v2ff0=188; mov si, v224e; CMP; je @b7e5; jmp @b7fd
+0b7e6 mov bx, 0xa7; mov dx, 0x8b; mov cx, 3; rt_2a09
+0b7f5 mov bx, 'S4A0C3NR7H12U10H5BR40G13D9G8D10NF11L10NG6BR10BF10BU4BE9NF5H10NL3E12R10BL24H13U7BD32NR3L13NG8NH11'; rt_325c
+0b7fe mov si, v224e; INT; mov dx, bx; xor bx, bx; rt_297b; mov bx, v013f; mov cx, 2; rt_2981
+0b81b mov di, v3058=190; mov si, v224e; CMP; je @b82b; jmp @b842
+0b82c mov bx, 0x8c; xor dx, dx; mov cx, 3; rt_2a09
+0b83a mov bx, 'S4C3D5L30G23D32G34D3'; rt_325c
+0b843 mov di, v3074=178; mov si, v224e; CMP; je @b853; jmp @b86b
+0b854 mov bx, v013f; mov dx, 0x5a; mov cx, 3; rt_2a09
+0b863 mov bx, 'S4C3L20H23U23H34'; rt_325c
+0b86c mov di, v2736=145; mov si, v224e; CMP; je @b87c; jmp @b894
+0b87d mov bx, 0x57; mov dx, 0x23; mov cx, 3; rt_2a09
+0b88c mov bx, 'S4A0C3G12L33NG23H12'; rt_325c
+0b895 mov di, v30a4=155; mov si, v224e; CMP; je @b8a5; jmp @b8bd
+0b8a6 mov bx, 0x57; mov dx, 0x23; mov cx, 3; rt_2a09
+0b8b5 mov bx, 'S4A0C3R35NE8R4NF23R12'; rt_325c
+0b8be mov di, v30c2=140; mov si, v224e; CMP; je @b8ce; jmp @b8e6
+0b8cf mov bx, 0x57; mov dx, 0x23; mov cx, 3; rt_2a09
+0b8de mov bx, 'S4A0C3G12D15NG9'; rt_325c
+0b8e7 mov di, v236e; mov si, v224e; ADD; mov di, v224e; STORE; mov si, v236e; CMP0; jb @b907; jmp @b916; mov si, di; CMP0; jb @b913; jmp @b735; jmp @b923; mov si, v224e; CMP0; ja @b923; jmp @b735
+0b924 mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0b93b mov bx, 2; rt_383b; mov bx, v231e; mov dx, 2; rt_385d; mov bx, v2322; mov dx, 0xf; rt_385d; mov bx, v2326; mov dx, 5; rt_385d; mov bx, v232a; mov dx, 0xa; rt_385d
+0b970 GOSUB ->a8f6
+0b978 mov bx, 2; CLOSE
+0b981 mov bx, 5; rt_1257; mov bx, 1; rt_1271
+0b992 rt_0d79
+0b998 mov si, v23d0=1; FORINIT; jmp @b9bd
+0b9a4 INKEY$; mov dx, v21fe; STRSET
+0b9b2 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2652=20; CMP; jbe @b9a3
+0b9d2 mov bx, 4; rt_1257; mov bx, 2; rt_1271
+0b9e3 PRINT_BEGIN; mov bx, 'DO YOU WANT DO PLAY AGAIN? (Y/N)'; PRINT_STRNL
+0b9f1 INKEY$; mov dx, v21fe; STRSET
+0b9ff mov bx, v2656; mov ax, v21fe; STRCMP; je @ba0f; jmp @ba13
+0ba10 jmp @b9f0
+0ba14 mov bx, 'Y'; mov ax, v21fe; STRCMP; je @ba24; jmp @ba2e
+0ba25 rt_17ce
+0ba2b jmp @3ac3
+0ba2f mov bx, 2; rt_1049
+0ba38 rt_19da
+0ba3e mov bx, 0x25; mov dx, v2506=0; SOUND
+0ba4a mov si, v177e; CMP0; ja @ba57; jmp @bae3
+0ba58 xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0x41; xor cx, cx; rt_29c3
+0ba6f mov bx, 4; rt_1257; mov bx, 0xe; rt_1271
+0ba80 PRINT_BEGIN; mov bx, 'RADIO ROOM'; PRINT_STRNL
+0ba8e PRINT_BEGIN; mov bx, '        REPORTS HEAVY DAMAGE'; PRINT_STRNL
+0ba9c PRINT_BEGIN; mov bx, v2656; rt_3627; mov bx, '     NO MESSAGES MAY BE RECEIVED'; PRINT_STRNL
+0bab2 mov si, v23d0=1; FORINIT; jmp @bac9
+0babe mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v266c=10000; CMP; jbe @babd
+0bade RETURN
+0bae4 rt_0d79
+0baea mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0bafb mov bx, 1; CLOSE
+0bb04 mov di, v226e; mov si, v2506=0; ASSIGN
+0bb10 rt_2afa; mov di, v2652=20; LOADFAC; mov bx, 0xb2; rt_1468; mov di, v23d0=1; SUB; mov bx, 0xb2; rt_2b8d; mov dx, v234a; STRSET
+0bb3e mov bx, v234a; mov dx, bx; LEN; dec bx; xchg bx, dx; mov cx, bx; RIGHT$; mov dx, cx; STRSET
+0bb5a xor bx, bx; rt_03a7; mov dx, bx; mov bx, v234a; mov ax, 'ORDXX'; CONCAT; mov ax, dx; mov dx, bx; xchg cx, ax; mov bx, 1; OPEN
+0bb7c rt_0d79
+0bb82 xor bx, bx; rt_102f; mov bx, 1; rt_1049
+0bb92 xor bx, bx; rt_0df6; mov bx, 7; rt_0df6; mov bx, 1; rt_0e10
+0bbaa mov bx, 0x18; rt_1257; mov bx, 1; rt_1271
+0bbbb PRINT_BEGIN; mov bx, '                                        '; PRINT_STRNL
+0bbc9 mov bx, 1; rt_0306; not bx; and bx, bx; jne @bbda; jmp @bbee
+0bbdb mov bx, 1; INPUT#; mov bx, v2372; rt_2535; jmp @bbf2
+0bbef jmp @beac
+0bbf3 mov bx, v2372; mov dx, 1; LEFT$; xchg bx, ax; mov bx, '@'; STRCMP; je @bc0c; jmp @bc94
+0bc0d mov bx, v2372; mov dx, bx; LEN; dec bx; xchg bx, dx; mov cx, bx; RIGHT$; mov dx, bx; mov bx, 0xc; rt_227d; xchg dx, ax; CONCAT; xchg bx, ax; mov bx, 'DTG '; CONCAT; mov dx, bx; rt_235e; mov ax, dx; mov dx, 2; LEFT$; CONCAT; xchg bx, ax; mov bx, '/'; CONCAT; mov ax, bx; rt_23d6; LEFT$; CONCAT; mov ax, bx; rt_23d6; mov word ptr [bp - 2], cx; mov cx, dx; mov dx, 4; rt_224e; CONCAT; xchg bx, ax; mov bx, ' ZULU'; CONCAT; mov dx, word ptr [bp - 2]; STRSET
+0bc95 mov bx, v2372; LEN; or bx, bx; je @bca4; jmp @bcc4
+0bca5 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0bcb3 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0bcc1 jmp @bbc8
+0bcc5 mov bx, v2372; mov dx, 1; LEFT$; ASC; add bx, -0x40; CSNG; mov di, v224e; STORE
+0bce6 mov di, v260a=8; mov si, v2256; CMP; jb @bcf6; jmp @bd0f
+0bcf7 PRINT_BEGIN; mov bx, v2372; mov dx, 1; LEFT$; PRINT_STR; jmp @bd3b
+0bd10 mov si, v23d0=1; FORINIT; jmp @bd27
+0bd1c mov di, v23d0=1; mov si, v2376; ADD; mov di, v2376; STORE; mov si, di; mov di, v31a4=340; CMP; jbe @bd1b
+0bd3c mov bx, v2372; LEN; cmp bx, 1; jg @bd4c; jmp @bd6b
+0bd4d mov bx, v2372; mov dx, bx; LEN; dec bx; xchg bx, dx; mov cx, bx; RIGHT$; mov dx, cx; STRSET; jmp @bd77
+0bd6c mov bx, v2656; mov dx, v2372; STRSET
+0bd78 INKEY$; mov dx, v21fe; STRSET
+0bd86 mov bx, v2656; mov ax, v21fe; STRCMP; jne @bd96; jmp @bda6
+0bd97 mov bx, 0x25; mov dx, v2506=0; SOUND
+0bda3 jmp @bead
+0bda7 mov bx, v2372; LEN; or bx, bx; jne @bdb6; jmp @bbc8
+0bdb7 mov di, v2722=-6; mov si, v224e; CMP; mov bx, 0; jae @bdc8; dec bx; mov di, v31a8=-17; CMP; mov dx, 0; jbe @bdd6; dec dx; and dx, bx; mov di, v23d0=1; mov si, v09e2; CMP; mov bx, 0; jne @bde9; dec bx; and bx, dx; and bx, bx; jne @bdf2; jmp @be08
+0bdf3 mov di, v31ac=43; mov si, v224e; ADD; mov di, si; STORE; jmp @be41
+0be09 mov di, v23d0=1; mov si, v224e; CMP; mov bx, 0; jae @be1a; dec bx; mov di, v2574=26; CMP; mov dx, 0; jbe @be28; dec dx; or dx, bx; mov si, v09e2; CMP0; mov bx, 0; jne @be38; dec bx; or bx, dx; and bx, bx; je @be41; jmp @bcc4
+0be42 mov si, v224e; INT; ON-GOSUB[36:c1cd,c1db,c1f9,c20f,c225,c233,c251,c267,c28d,c2a3,c2c1,c2d7,c2f5,c30b,c319,c337,c34d,c36b,c381,c39f,c3ad,c3c3,c3e1,c3f7,c40d,c42b,c449,c477,c49d,c4c3,c4e9,c50f,c53d,c563,c589,c5af]
+0be99 mov bx, v2372; LEN; or bx, bx; jne @bea8; jmp @beac
+0bea9 jmp @bcc4
+0beae mov bx, 1; CLOSE
+0beb7 xor bx, bx; rt_03a7; mov dx, bx; mov bx, v234a; mov ax, 'COURXX'; CONCAT; mov ax, dx; mov dx, bx; xchg cx, ax; mov bx, 1; OPEN
+0bed9 mov si, v24ce=2; FORINIT; jmp @bf15
+0bee5 mov bx, 1; INPUT#; INPUTCONV[1:5]; mov si, v214e; INT; shl bx, 1; shl bx, 1; add bx, v1daa; STORESNG
+0bf0a mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @bee4
+0bf2a mov si, v24ce=2; FORINIT; jmp @bf86
+0bf36 mov bx, 1; INPUT#; INPUTCONV[1:5]; mov si, v214e; INT; shl bx, 1; shl bx, 1; add bx, v1cf6; STORESNG
+0bf5b mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d3e; add bx, v1cf6; mov si, bx; ASSIGN
+0bf7b mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @bf35
+0bf9b mov si, v24ce=2; FORINIT; jmp @c012
+0bfa7 mov bx, 1; INPUT#; INPUTCONV[1:5]; mov si, v214e; INT; shl bx, 1; shl bx, 1; add bx, v1d1a; STORESNG
+0bfcc mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; mov bx, di; add di, v1d62; add bx, v1d1a; mov si, bx; ASSIGN
+0bfec mov si, v214e; INT; mov di, bx; shl di, 1; shl di, 1; add di, v1cae=0; mov si, v2506=0; ASSIGN
+0c007 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; jbe @bfa6
+0c027 mov si, v23d0=1; FORINIT; jmp @c0de
+0c033 mov si, v23d0=1; FORINIT; jmp @c0bb
+0c03f mov si, v24ce=2; FORINIT; jmp @c09b
+0c04b mov bx, 1; INPUT#; INPUTCONV[1:5]; mov si, v21de; INT; xchg bx, ax; mov bx, 9; imul bx; mov dx, bx; mov si, v214e; INT; add ax, bx; mov bx, dx; imul dx; mov si, v214a; INT; add bx, ax; shl bx, 1; shl bx, 1; add bx, v179e=-1.11421e+06; STORESNG
+0c090 mov di, v23d0=1; mov si, v214a; ADD; mov di, v214a; STORE; mov si, di; mov di, v260a=8; CMP; jbe @c04a
+0c0b0 mov di, v23d0=1; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v2564=3; CMP; ja @c0d2; jmp @c03e
+0c0d3 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v271e=7; CMP; ja @c0f5; jmp @c032
+0c0f6 mov bx, 1; INPUT#; INPUTCONV[3:5,5,5]; mov bx, v2246; STORESNG; mov bx, v2242; STORESNG; mov bx, v226a; STORESNG
+0c120 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0c12e PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0c13c PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0c14a PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0c158 PRINT_BEGIN; mov bx, v2656; PRINT_STRNL
+0c166 mov bx, 0x17; rt_1257; mov bx, 7; rt_1271
+0c177 PRINT_BEGIN; mov bx, '(Press any key to continue)'; PRINT_STR
+0c185 INKEY$; mov dx, v21fe; STRSET
+0c193 mov bx, v2656; mov ax, v21fe; STRCMP; je @c184
+0c1a1 rt_0d79
+0c1a7 mov bx, 1; rt_102f; xor bx, bx; rt_1049
+0c1b7 mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0c1c8 RETURN
+0c1ce GOSUB ->c5f3
+0c1d6 RETURN
+0c1dc GOSUB ->c602
+0c1e4 GOSUB ->c5d5
+0c1ec GOSUB ->c5d5
+0c1f4 RETURN
+0c1fa GOSUB ->c602
+0c202 GOSUB ->c602
+0c20a RETURN
+0c210 GOSUB ->c602
+0c218 GOSUB ->c5d5
+0c220 RETURN
+0c226 GOSUB ->c5d5
+0c22e RETURN
+0c234 GOSUB ->c5d5
+0c23c GOSUB ->c5d5
+0c244 GOSUB ->c602
+0c24c RETURN
+0c252 GOSUB ->c5e4
+0c25a GOSUB ->c602
+0c262 RETURN
+0c268 GOSUB ->c5d5
+0c270 GOSUB ->c5d5
+0c278 GOSUB ->c5d5
+0c280 GOSUB ->c5d5
+0c288 RETURN
+0c28e GOSUB ->c5d5
+0c296 GOSUB ->c5d5
+0c29e RETURN
+0c2a4 GOSUB ->c5f3
+0c2ac GOSUB ->c5e4
+0c2b4 GOSUB ->c5e4
+0c2bc RETURN
+0c2c2 GOSUB ->c602
+0c2ca GOSUB ->c5e4
+0c2d2 RETURN
+0c2d8 GOSUB ->c5f3
+0c2e0 GOSUB ->c5d5
+0c2e8 GOSUB ->c5d5
+0c2f0 RETURN
+0c2f6 GOSUB ->c5e4
+0c2fe GOSUB ->c5e4
+0c306 RETURN
+0c30c GOSUB ->c602
+0c314 RETURN
+0c31a GOSUB ->c5e4
+0c322 GOSUB ->c5e4
+0c32a GOSUB ->c5e4
+0c332 RETURN
+0c338 GOSUB ->c5f3
+0c340 GOSUB ->c602
+0c348 RETURN
+0c34e GOSUB ->c5e4
+0c356 GOSUB ->c602
+0c35e GOSUB ->c5e4
+0c366 RETURN
+0c36c GOSUB ->c5f3
+0c374 GOSUB ->c5d5
+0c37c RETURN
+0c382 GOSUB ->c5d5
+0c38a GOSUB ->c5d5
+0c392 GOSUB ->c5d5
+0c39a RETURN
+0c3a0 GOSUB ->c5e4
+0c3a8 RETURN
+0c3ae GOSUB ->c5d5
+0c3b6 GOSUB ->c5f3
+0c3be RETURN
+0c3c4 GOSUB ->c5d5
+0c3cc GOSUB ->c5d5
+0c3d4 GOSUB ->c5f3
+0c3dc RETURN
+0c3e2 GOSUB ->c5f3
+0c3ea GOSUB ->c5e4
+0c3f2 RETURN
+0c3f8 GOSUB ->c602
+0c400 GOSUB ->c5f3
+0c408 RETURN
+0c40e GOSUB ->c602
+0c416 GOSUB ->c5e4
+0c41e GOSUB ->c5e4
+0c426 RETURN
+0c42c GOSUB ->c5e4
+0c434 GOSUB ->c602
+0c43c GOSUB ->c5d5
+0c444 RETURN
+0c44a GOSUB ->c5e4
+0c452 GOSUB ->c5e4
+0c45a GOSUB ->c5e4
+0c462 GOSUB ->c5e4
+0c46a GOSUB ->c5e4
+0c472 RETURN
+0c478 GOSUB ->c5f3
+0c480 GOSUB ->c5e4
+0c488 GOSUB ->c5e4
+0c490 GOSUB ->c5e4
+0c498 RETURN
+0c49e GOSUB ->c5d5
+0c4a6 GOSUB ->c5f3
+0c4ae GOSUB ->c5e4
+0c4b6 GOSUB ->c5e4
+0c4be RETURN
+0c4c4 GOSUB ->c5d5
+0c4cc GOSUB ->c5d5
+0c4d4 GOSUB ->c5f3
+0c4dc GOSUB ->c5e4
+0c4e4 RETURN
+0c4ea GOSUB ->c5d5
+0c4f2 GOSUB ->c5d5
+0c4fa GOSUB ->c5d5
+0c502 GOSUB ->c5f3
+0c50a RETURN
+0c510 GOSUB ->c5d5
+0c518 GOSUB ->c5d5
+0c520 GOSUB ->c5d5
+0c528 GOSUB ->c5d5
+0c530 GOSUB ->c5d5
+0c538 RETURN
+0c53e GOSUB ->c602
+0c546 GOSUB ->c5d5
+0c54e GOSUB ->c5d5
+0c556 GOSUB ->c5d5
+0c55e RETURN
+0c564 GOSUB ->c5e4
+0c56c GOSUB ->c602
+0c574 GOSUB ->c5d5
+0c57c GOSUB ->c5d5
+0c584 RETURN
+0c58a GOSUB ->c5e4
+0c592 GOSUB ->c5e4
+0c59a GOSUB ->c602
+0c5a2 GOSUB ->c5d5
+0c5aa RETURN
+0c5b0 GOSUB ->c5e4
+0c5b8 GOSUB ->c5e4
+0c5c0 GOSUB ->c5e4
+0c5c8 GOSUB ->c602
+0c5d0 RETURN
+0c5d6 mov bx, 'B32P62'; PLAY
+0c5df RETURN
+0c5e5 mov bx, 'B10P62'; PLAY
+0c5ee RETURN
+0c5f4 mov bx, 'B32P62B10P62'; PLAY
+0c5fd RETURN
+0c603 mov bx, 'B10P62B32P62'; PLAY
+0c60c RETURN
+0c613 xor bx, bx; rt_03a7; mov cx, bx; mov bx, 3; mov dx, 'MXP'; OPEN
+0c628 mov si, v23d0=1; FORINIT; jmp @c6a0
+0c634 mov si, v23d0=1; FORINIT; jmp @c680
+0c640 mov bx, 3; INPUT#; INPUTCONV[1:5]; mov si, v21de; INT; xchg bx, ax; mov bx, 0x15; imul bx; mov si, v214e; INT; add bx, ax; shl bx, 1; shl bx, 1; add bx, v1eee; STORESNG
+0c675 mov di, v23d0=1; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v25ee=6; CMP; jbe @c63f
+0c695 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v2652=20; CMP; ja @c6b7; jmp @c633
+0c6b8 mov bx, 3; CLOSE
+0c6c1 RETURN
+0c6c8 mov di, v3216; mov si, v2156; MULFAC; mov bx, 0xb2; rt_1468; mov di, v23d0=1; SUB; mov di, v237a; STORE
+0c6ec mov di, v3216; mov si, v215a; MULFAC; mov bx, 0xb2; rt_1468; mov di, v25ea=5; LOADFAC; mov di, v237e; STORE
+0c710 mov di, v237e; mov si, v237a; ADD; mov di, v224a; STORE
+0c724 mov si, v224a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1f42; mov di, v1cfa; ASSIGN
+0c73f mov si, v224a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1f96; mov di, v1d1e; ASSIGN
+0c75a mov si, v224a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1fea; mov di, v222a; ASSIGN
+0c775 mov si, v224a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v203e; mov di, v222e; ASSIGN
+0c790 mov si, v224a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v2092; mov di, v2382; ASSIGN
+0c7ab mov si, v224a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v20e6; mov di, v2386; ASSIGN
+0c7c6 mov di, v1dae; mov si, v23d0=1; ASSIGN
+0c7d2 RETURN
+0c7d9 rt_0d79
+0c7df mov bx, 0x11; rt_0df6; xor bx, bx; rt_0e10
+0c7ef xor bx, bx; mov dx, bx; rt_297b; mov bx, v013f; mov dx, 0xc7; mov cx, 3; rt_298a
+0c807 mov bx, 2; rt_282c
+0c810 mov bx, 4; rt_282c
+0c819 mov bx, 8; rt_282c
+0c822 mov di, v21ce; mov si, v23d0=1; ASSIGN
+0c82e mov si, v321a=64; FORINIT; jmp @c87c
+0c83a mov si, v224e; INT; xor dx, dx; rt_297b; mov dx, 5; mov cx, 3; rt_2981
+0c855 mov si, v224e; INT; mov dx, 0xc2; rt_297b; mov dx, 0xc7; mov cx, 3; rt_2981
+0c871 mov di, v321a=64; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v2850=319; CMP; jbe @c839
+0c891 mov si, v28c2=40; FORINIT; jmp @c8e3
+0c89d mov si, v224e; INT; mov dx, bx; xor bx, bx; rt_297b; mov bx, 5; mov cx, 3; rt_2981
+0c8ba mov si, v224e; INT; mov dx, bx; mov bx, v013a; rt_297b; mov bx, v013f; mov cx, 3; rt_2981
+0c8d8 mov di, v28c2=40; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v2eb8=199; CMP; jbe @c89c
+0c8f8 mov si, v1cfa; CMP0; jae @c905; jmp @cd0c
+0c906 mov si, v1cfa; INT; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; CSNG; mov di, v321e; LOADFAC; mov di, v238a; STORE
+0c92d mov si, v1d1e; INT; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; CSNG; mov di, v3222; LOADFAC; mov di, v238e; STORE
+0c954 mov di, v25ea=5; mov si, v224a; CMP; je @c964; jmp @c98f
+0c965 mov di, v238e; mov si, v2eb8=199; FADD?; rt_2092; mov dx, bx; mov si, v238a; INT; xor cx, cx; rt_2a09
+0c987 mov bx, 'S4C3BF4BD7E2L2U2R3E3H2G2HE5FG2F2E6FG9R9D2L10G3H'; rt_325c
+0c990 mov di, v238e; mov si, v2eb8=199; FADD?; rt_2092; mov dx, bx; mov si, v238a; INT; xor cx, cx; rt_2a09
+0c9b2 mov bx, v2386; rt_22ce; mov ax, 'S='; CONCAT; xchg bx, ax; mov bx, 'X'; CONCAT; mov dx, bx; mov si, v2382; INT; shl bx, 1; shl bx, 1; add bx, v213a; mov cx, dx; rt_22da; xchg cx, ax; CONCAT; rt_325c
+0c9f0 mov di, v238e; mov si, v2eb8=199; FADD?; rt_2092; mov dx, bx; mov si, v238a; INT; mov cx, 1; mov ax, 3; rt_30d4
+0ca16 mov si, v23d0=1; FORINIT; jmp @ca9b
+0ca22 mov di, v325a; mov si, v224e; MULFAC; mov bx, 0xb2; rt_132b; sbb word ptr [bp + si + 0x37df], 0x99b; mov di, v222e; LOADFAC; mov di, v325e=0.04; LOADFAC; mov di, v238e; rt_0006; mov di, v2eb8=199; SUB; rt_2092; mov dx, bx; mov bx, v23a6; rt_37c4; mov di, v222a; LOADFAC; mov di, v3262; LOADFAC; mov di, v238a; SUB; rt_2092; mov cx, 2; rt_2a09
+0ca90 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v28c2=40; CMP; ja @cab2; jmp @ca21
+0cab3 mov di, v3222; mov si, v2226; MULFAC; mov si, v2eb8=199; MUL; rt_2092; mov di, v321e; mov si, v2222; MULFAC; mov dx, bx; rt_2092; mov cx, 1; rt_2a09
+0cae6 mov bx, '5'; mov ax, v21fe; STRCMP; je @caf6; jmp @cb0e
+0caf7 mov di, v217e; mov si, v3266=0; ASSIGN
+0cb03 mov di, v21fa; mov si, v3266=0; ASSIGN
+0cb0f mov di, v25ea=5; mov si, v2256; CMP; ja @cb1f; jmp @cb23
+0cb20 jmp @cce7
+0cb24 mov si, v1cfe; INT; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; CSNG; mov di, v321e; LOADFAC; mov di, v2392; STORE
+0cb4b mov si, v1d22; INT; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; CSNG; mov di, v3222; LOADFAC; mov di, v2396; STORE
+0cb72 mov di, v3216; mov si, v1cfe; MULFAC; mov bx, 0xb2; rt_1468; mov si, v1d22; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov bx, 0xb2; rt_1468; mov di, v25ea=5; LOADFAC; rt_0020; cmp word ptr [bx + 0x23d0], 0x1b9a; add byte ptr [bp + di - 0x40f7], bl; dec dx; and bl, byte ptr [bp + si + 0x1ac8]; wait; or word ptr [si + 3], si; jmp @cbe1
+0cbbf mov di, v2396; mov si, v2eb8=199; FADD?; rt_2092; mov dx, bx; mov si, v2392; INT; mov cx, 1; rt_2a09
+0cbe2 mov si, v2564=3; FORINIT; jmp @ccd0
+0cbee mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1cf6; mov di, v3216; MULFAC; mov dx, bx; mov bx, 0xb2; rt_1468; add dx, v1d1a; mov si, dx; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov bx, 0xb2; rt_1468; mov di, v25ea=5; LOADFAC; rt_0020; cmp word ptr [bx + 0x23d0], 0x1b9a; add byte ptr [bp + di - 0x40f7], bl; dec dx; and bl, byte ptr [bp + si + 0x1ac8]; wait; or word ptr [si + 3], si; jmp @ccc4
+0cc51 mov si, v224e; INT; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1d1a; mov dx, bx; INT; xchg bx, ax; mov bx, dx; mov cx, v1388; cdq; idiv cx; mov ax, bx; mov bx, dx; CSNG; mov di, v3222; LOADFAC; mov si, v2eb8=199; MUL; rt_2092; add ax, v1cf6; xchg si, ax; mov dx, bx; INT; xchg bx, ax; mov bx, dx; cdq; idiv cx; mov cx, bx; mov bx, dx; CSNG; mov di, v321e; LOADFAC; rt_2092; mov dx, cx; mov cx, 2; rt_2a09
+0ccc5 mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v260a=8; CMP; ja @cce7; jmp @cbed
+0cce8 mov di, v239a; mov si, v224a; ASSIGN
+0ccf4 GOSUB ->6412
+0ccfc mov di, v224a; mov si, v239a; CMP; je @cd0c; jmp @c7d8
+0cd0d INKEY$; mov dx, v21fe; STRSET
+0cd1b mov bx, v2656; mov ax, v21fe; STRCMP; mov dx, 0; jne @cd2c; dec dx; mov bx, '5'; STRCMP; mov cx, 0; jne @cd3a; dec cx; or cx, dx; and cx, cx; je @cd43; jmp @cab2
+0cd44 GOSUB ->d0c0
+0cd4c mov bx, 2; rt_2829
+0cd55 mov bx, 4; rt_2829
+0cd5e mov bx, 8; rt_2829
+0cd67 rt_0d79
+0cd6d mov bx, 8; rt_0df6; mov bx, 1; rt_0e10
+0cd7e mov di, v21ce; mov si, v3266=0; ASSIGN
+0cd8a jmp @142a8
+0cd8f mov di, v284c=9; mov si, v09e2; MULFAC; mov bx, v04b0; mov dx, 0xb2; SOUND
+0cda6 mov di, v284c=9; mov si, v09e2; MULFAC; mov bx, v04b0; mov dx, 0xb2; SOUND
+0cdbd mov di, v25c4=90; mov si, v2186; rt_01de; mov di, v231a; STORE
+0cdd1 mov di, v2788=400; mov si, v231a; CMP; jb @cde1; jmp @ce5b
+0cde2 mov di, v326a; mov si, v231a; ADD; mov di, si; STORE
+0cdf5 mov si, v231a; INT; xchg bx, ax; mov cx, 0xa; cdq; idiv cx; or dx, dx; je @ce0b; jmp @ce22
+0ce0c mov di, v326e; mov si, v09e2; MULFAC; mov bx, v05dc; mov dx, 0xb2; SOUND
+0ce23 mov si, v21ce; CMP0; je @ce30; jmp @ce57
+0ce31 mov bx, 0xe; rt_1257; mov bx, 0x20; rt_1271
+0ce42 mov bx, '####'; rt_3984; mov si, v231a; INT; rt_364a
+0ce58 jmp @cdd1
+0ce5c mov di, v25c4=90; mov si, v231a; MULFAC; mov di, v2186; STORE
+0ce70 mov bx, v05dc; mov dx, v27c4=0; SOUND
+0ce7c mov di, v24ea=24; mov si, v21a6; CMP; jb @ce8c; jmp @ceff
+0ce8d mov di, v23d0=1; mov si, v21a6; ADD; mov di, si; STORE
+0cea0 mov si, v23d0=1; FORINIT; jmp @ceb7
+0ceac mov di, v23d0=1; mov si, v224e; ADD; mov di, v224e; STORE; mov si, di; mov di, v3272=600; CMP; jbe @ceab
+0cecc mov si, v21ce; CMP0; je @ced9; jmp @cefb
+0ceda mov bx, 0x16; rt_1257; mov bx, 0x1e; rt_1271
+0ceeb mov bx, '##'; rt_3984; mov bx, v21a6; rt_3640
+0cefc jmp @ce7c
+0cf00 mov si, v23d0=1; FORINIT; jmp @cf32
+0cf0c mov si, v231a; INT; mov di, bx; shl di, 1; shl di, 1; add di, v177a; mov si, v2506=0; ASSIGN
+0cf27 mov di, v23d0=1; mov si, v231a; ADD; mov di, v231a; STORE; mov si, di; mov di, v260a=8; CMP; jbe @cf0b
+0cf47 mov di, v2206; mov si, v2506=0; ASSIGN
+0cf53 mov si, v21ce; CMP0; je @cf60; jmp @cf76
+0cf61 mov bx, 0xc2; mov dx, 0xb5; LINE?; mov bx, v0bb6; xor dx, dx; rt_2abb
+0cf77 mov di, v25ee=6; mov si, v2256; ADD; mov di, v1dd6; STORE
+0cf8b RETURN
+0cf92 mov bx, 'C0BR1'; mov dx, v213a; STRSET
+0cf9e mov bx, 'C3BR9BU1U3HUHU2E2UERF2RFE2U4H2LHLHL4GL4HL6G4D2G5LG2D6FD4GDGDGD2FDF4R3FR3FR4E2R6ER2E4U3ER3E2U2EHUHL4GLGL2HUEH2L3U2'; mov dx, v213e; STRSET
+0cfaa mov bx, 'C3BR26R4U2H4LU2H4U4E2U4H3UL2H4U2EU3H2L7G3D2GDGD2G2L4G3LG3D5GD3GDGDG4L2G3D4F4D9GD2GD4GD3GD3F5R3FR6ER5ER5E5U4E3UERERERE7UE4UEUEUEU3'; mov dx, v2142; STRSET
+0cfb6 mov bx, 'C3BR16BU2U2HUHL2HL2GL2H2U2H2LHUE2U3HLHL5GLG2LG2D3GD2G3LGD4F2RFD2FD2FD2G3D2FDF2R5ER2FR3ERE2R2ERE3U2EU3ER2EU2EU4'; mov dx, v2146; STRSET
+0cfc2 mov si, v23d0=1; FORINIT; jmp @d0a3
+0cfce mov di, v24ce=2; mov si, v214e; CMP; jne @cfde; jmp @d097
+0cfdf mov bx, v214e; rt_2b8d; mov dx, v234a; STRSET
+0cff0 mov bx, v234a; mov dx, bx; LEN; dec bx; xchg bx, dx; mov cx, bx; RIGHT$; mov dx, cx; STRSET
+0d00c xor bx, bx; rt_03a7; mov dx, bx; mov bx, v234a; mov ax, 'OBX'; CONCAT; mov ax, dx; mov dx, bx; xchg cx, ax; mov bx, 1; OPEN
+0d02e mov si, v2506=0; FORINIT; jmp @d07a
+0d03a mov bx, 1; INPUT#; INPUTCONV[1:7]; mov si, v21de; INT; xchg bx, ax; mov bx, 9; imul bx; mov si, v214e; INT; add bx, ax; shl bx, 1; shl bx, 1; add bx, v0e26; STORESNG
+0d06f mov di, v23d0=1; mov si, v21de; ADD; mov di, v21de; STORE; mov si, di; mov di, v23fa=15; CMP; jbe @d039
+0d08f mov bx, 1; CLOSE
+0d098 mov di, v23d0=1; mov si, v214e; ADD; mov di, v214e; STORE; mov si, di; mov di, v260a=8; CMP; ja @d0ba; jmp @cfcd
+0d0bb RETURN
+0d0c1 mov bx, 'R'; mov ax, v21fe; STRCMP; je @d0d1; jmp @d0da
+0d0d2 rt_1db6; jmp @a306
+0d0db mov bx, '5'; mov ax, v21fe; STRCMP; je @d0eb; jmp @d107
+0d0ec mov di, v217e; mov si, v2506=0; ASSIGN
+0d0f8 mov di, v21fa; mov si, v2506=0; ASSIGN
+0d104 jmp @d1b7
+0d108 mov bx, 'C'; mov ax, v21fe; STRCMP; je @d118; jmp @d121
+0d119 rt_1db6; jmp @b169
+0d122 mov bx, 'L'; mov ax, v21fe; STRCMP; je @d132; jmp @d13b
+0d133 rt_1db6; jmp @aa0e
+0d13c mov bx, 'M'; mov ax, v21fe; STRCMP; je @d14c; jmp @d163
+0d14d GOSUB ->ba3d
+0d155 rt_0d79
+0d15b rt_1db6; jmp @142a8
+0d164 mov bx, 'Q'; mov ax, v21fe; STRCMP; je @d174; jmp @d17d
+0d175 rt_1db6; jmp @c7d8
+0d17e mov bx, v21fe; ASC; cmp bx, 0x1b; je @d18e; jmp @d19d
+0d18f mov bx, 2; rt_1049
+0d198 rt_19da
+0d19e mov bx, v21fe; ASC; cmp bx, 9; je @d1ae; jmp @d1b7
+0d1af rt_1db6; jmp @ae87
+0d1b8 RETURN
+0d1be mov si, v225a; INT; mov si, bx; shl si, 1; shl si, 1; add si, v1df2; mov di, v2712=1.5; mov bx, si; mov si, v2192; MULFAC; mov si, v2bd6=240; MUL; mov si, bx; CMP; mov dx, 0; jae @d1f2; dec dx; rt_2afa; mov di, v2864=0.03; mov si, v2256; rt_132b; sbb word ptr [bp + si + 0x15e], 0x99b; mov di, v326a; SUB; CMP; cmp word ptr [bp + di], 0x173; dec bx; and bx, dx; and bx, bx; jne @d225; jmp @d29a
+0d226 rt_2afa; rt_1420; add di, word ptr [bp + di + 0xb2]; rt_1468; mov di, v23d0=1; SUB; rt_2092; mov si, bx; shl si, 1; shl si, 1; add si, v177a; mov bx, di; mov di, si; mov si, bx; ASSIGN
+0d25c mov si, v09e2; rt_141d; add word ptr [bp + di + 0x50], di; mov dx, 0xb2; SOUND
+0d271 mov si, v09e2; rt_141d; add di, word ptr [bp + di + 0x64]; mov dx, 0xb2; SOUND
+0d286 mov si, v09e2; rt_141d; add bh, byte ptr [bp + di + 0x50]; mov dx, 0xb2; SOUND
+0d29b mov si, v09e2; CMP0; je @d2a8; jmp @d2ae
+0d2a9 RETURN
+0d2af rt_23d6; mov dx, 2; RIGHT$; rt_1b05; rt_2021; mov di, v239e; STORE
+0d2cf mov si, v239e; mov dx, si; INT; xchg bx, ax; mov bx, dx; mov cx, 3; cdq; idiv cx; or dx, dx; mov cx, 0; je @d2ea; dec cx; mov si, bx; mov di, v23a2; CMP; mov dx, 0; jne @d2fa; dec dx; or dx, cx; and dx, dx; je @d303; jmp @d321
+0d304 mov di, v23a2; mov si, v239e; ASSIGN
+0d310 mov bx, 'MBT40O4L64B-'; PLAY
+0d319 mov bx, 'MBT100L9B'; PLAY
+0d322 RETURN
+0d328 mov bx, 'R'; rt_036c; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; OPEN
+0d33f mov bx, 2; rt_383b; mov bx, v231e; mov dx, 2; rt_385d; mov bx, v2322; mov dx, 0xf; rt_385d; mov bx, v2326; mov dx, 5; rt_385d; mov bx, v232a; mov dx, 0xa; rt_385d
+0d374 mov bx, 2; mov dx, 0x5a; rt_035d
+0d380 mov bx, v2322; mov dx, bx; rt_24cd; inc bx; rt_2508; rt_376e
+0d396 mov bx, 2; mov dx, 0x5a; rt_0367
+0d3a2 mov bx, 2; CLOSE
+0d3ab RETURN

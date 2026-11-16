@@ -1,0 +1,190 @@
+{
+  "_about": "Narration pages of DEMO.EXE in program order (see analysis/export_demo_script.py for what is exact).",
+  "exit_key": "F1 (the demo polls INKEY$ against the F1 key string ds:0x25e4)",
+  "sound_toggle_key": "F2 (printed by the demo's title page)",
+  "nominal_iterations_per_second": 2500,
+  "pages": [
+    {
+      "page": 1,
+      "file_offset": "0x02d25",
+      "lines": ["GATO DEMONSTRATION", "PRESS FUNCTION KEY 1 (F1) TO EXIT", " FUNCTION KEY 2 (F2) TO TURN OFF SOUND"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 2,
+      "file_offset": "0x040ad",
+      "lines": ["THIS IS YOUR MAIN SCREEN", "YOU ARE NOW IN THE THE CONTROL ROOM", "YOU MAY CONTROL ALL OPERATIONS", "OF THE SUBMARINE FROM HERE"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 3,
+      "file_offset": "0x04195",
+      "lines": ["NOW LET'S LOOK AT SOME NAVIGATION", "HERE IS THE MAIN CHART (KEY 'C')"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 4,
+      "file_offset": "0x04244",
+      "lines": ["NOW WE ARE BACK IN THE CONTROL ROOM", "LET'S SEE WHAT THE ENEMY LOOKS LIKE"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 5,
+      "file_offset": "0x0431a",
+      "lines": ["  FREIGHTER", " OIL TANKER", "  TRANSPORT", " PATROL CRAFT", "  DESTROYER"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 6,
+      "file_offset": "0x04488",
+      "lines": ["TO SHOOT A SHIP YOU WOULD PRESS 'T'", "TO OPEN THE TORPEDO DOORS AND", "THEN F8 TO FIRE"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 7,
+      "file_offset": "0x04551",
+      "lines": ["REMEMBER PATROL CRAFT AND DESTROYERS", "WILL SHOOT AND DROP DEPTH CHARGES", "SO BE CAREFUL"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 8,
+      "file_offset": "0x0467e",
+      "lines": ["YOU HAVE TO PAY CLOSE ATTENTION TO", "THE DAMAGE REPORT BECAUSE IF AN", "AREA IS DAMAGED IT CAN'T BE USED"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 9,
+      "file_offset": "0x04ec2",
+      "lines": ["NOT MUCH IS HAPPENING HERE", "LETS READ THE CAPTAIN'S LOG (KEY 'L')"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 10,
+      "file_offset": "0x05253",
+      "lines": ["CONTROL RM        CONNING TOWER", "ENGINE RM         PERISCOPES"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 11,
+      "file_offset": "0x05553",
+      "lines": [
+        "THIS IS THE DAMAGE REPORT (KEY 'R')", "THE AFFECTED AREA IS HIGHLIGHTED", "AND RENDERED USELESS - REFER TO THE",
+        "MANUAL FOR REPAIRS BY THE SUBTENDER"
+      ],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 12,
+      "file_offset": "0x056a9",
+      "lines": ["LAST SHIP IN LOG LIST SUNK", "DO YOU WISH TO REVIEW BEFORE DELETION"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {"page": 13, "file_offset": "0x05759", "lines": ["LOG CLEARED"], "delay_loop_limit": null, "seconds_estimate": null},
+    {
+      "page": 14,
+      "file_offset": "0x05a57",
+      "lines": ["CAPTAIN'S LOG", "SHIP          TONNAGE       DATE SUNK"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 15,
+      "file_offset": "0x05c0b",
+      "lines": ["SHIPS SUNK", "TOTAL TONNAGE", "MISSIONS", "COMPLETED"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 16,
+      "file_offset": "0x05cf1",
+      "lines": ["THE FIRST GROUP OF SHIPS ARE", "FREIGHTERS THEN OIL TANKERS,", "TRANSPORTS,PATROL BOATS", " AND  DESTROYERS"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 17,
+      "file_offset": "0x05ddc",
+      "lines": ["ALL OF THE NAMES AND TONNAGES OF", "SHIPS SUNK WERE ACTUALLY SUNK OR", "DESTROYED DURING WORLD WAR II"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 18,
+      "file_offset": "0x05ea8",
+      "lines": ["ALSO ALL OF THE DESTROYERS USED IN", "THIS PROGRAM WERE SUNK BY GATO", "CLASS SUBMARINES"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 19,
+      "file_offset": "0x0602c",
+      "lines": [
+        "GAME CONTROL", "     [1] DIFFICULTY LEVEL", "     [2] SOUND", "     [3] TIME OF DAY", "     [4] RESET CAPTAIN'S LOG",
+        "(Press RETURN to continue)"
+      ],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 20,
+      "file_offset": "0x06562",
+      "lines": [
+        "THIS IS THE CHART OF YOUR PATROL AREA", "YOU ARE THE GREEN DOT IN QUADRANT 5", "YOUR SUB-TENDER IS IN QUADRANT 7",
+        "ENEMY SHIPS ARE RED DOTS"
+      ],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 21,
+      "file_offset": "0x06647",
+      "lines": [
+        "THIS IS THE CHART OF YOUR PATROL AREA", "WE CAN GET A CLOSER LOOK AT THE", "QUADRANT WE ARE IN BY CHECKING",
+        "THE LOCAL QUADRANT MAP (KEY 'Q')"
+      ],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 22,
+      "file_offset": "0x06caa",
+      "lines": ["DO YOU WANT DO PLAY AGAIN? (Y/N)"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 23,
+      "file_offset": "0x06d47",
+      "lines": ["RADIO ROOM", "        REPORTS HEAVY DAMAGE", "     NO MESSAGES MAY BE RECEIVED"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 24,
+      "file_offset": "0x07ae2",
+      "lines": ["THIS IS THE MAP FOR QUADRANT 5", "THE DOTTED RED LINE REPRESENTS THE", "SHOALS SURROUNDING THE ISLAND"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {
+      "page": 25,
+      "file_offset": "0x07bab",
+      "lines": ["IF YOU ARE ON THE SURFACE THEN YOU", "WILL STOP WHEN YOU HIT THE RED LINES", "THE DEEPER YOU ARE THE SOONER YOU HIT"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null
+    },
+    {"page": 26, "file_offset": "0x07c74", "lines": ["LET'S TAKE A LOOK AT RADAR (F6)"], "delay_loop_limit": 5.0, "seconds_estimate": 0.0}
+  ]
+}

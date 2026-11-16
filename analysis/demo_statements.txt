@@ -1,0 +1,1282 @@
+0261a lcall 0xca9, 0; push bp; mov bp, sp; sub sp, 2; lcall 0x5cb, 0x2209; lcall 0x5cb, 0x235f
+02634 xor bx, bx; lcall 0x5cb, 0x17c0
+0263c mov bx, v0410; mov dx, bx; mov ds, word ptr [0x98]; mov bl, byte ptr [bx]; xor bh, bh; push es; pop ds; and bx, 0xcf; or bx, 0x10; mov cx, bx; mov bx, dx; xchg cx, ax; mov ds, word ptr [0x98]; mov byte ptr [bx], al; push es; pop ds
+02660 mov bx, 1; lcall 0x5cb, 0x1033; xor bx, bx; lcall 0x5cb, 0x1033; lcall 0x5cb, 0x1033; lcall 0x5cb, 0x104d
+0267a xor bx, bx; lcall 0x5cb, 0x104d
+02682 mov bx, 0x28; lcall 0x5cb, 0x3932
+0268b lcall 0x5cb, 0x1269; lcall 0x5cb, 0x1269; mov bx, 1; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+026ae lcall 0x5cb, 0x212c; mov dx, 2; lcall 0x5cb, 0x1f96; lcall 0x5cb, 0x1ab3; lcall 0x5cb, 0x2e03; lcall 0x5cb, 0x3848
+026cb mov di, v09c2; mov si, v2290=1; lcall 0x5cb, 0x1304
+026d7 mov bx, 1; lcall 0x5cb, 0x1033; xor bx, bx; lcall 0x5cb, 0x104d
+026e7 mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+026f8 xor bx, bx; lcall 0x5cb, 0xede
+02703 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @2735
+0270f mov si, v212a; lcall 0x5cb, 0x2deb; mov di, bx; shl di, 1; shl di, 1; add di, v1dd2=0; mov si, v2294=2000; lcall 0x5cb, 0x1304
+0272a mov di, v2290=1; mov si, v212a; lcall 0x5cb, 0x3c0; mov di, v212a; lcall 0x5cb, 0x1301; mov si, di; mov di, v2298=8; lcall 0x5cb, 0x1d71; jbe @270e
+0274a lcall 0x5cb, 0xd7d
+02750 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+0275e lcall 0x5cb, 0x397e; mov bx, 0x10; lcall 0x5cb, 0x1edc; lcall 0x5cb, 0x3587
+02771 mov bx, 7; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 0xd; mov dx, 0x10; lcall 0x5cb, 0x2938; mov bx, v106a; mov dx, 0x18; lcall 0x5cb, 0x293e
+02792 lcall 0x5cb, 0xd7d
+02798 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+027a6 lcall 0x5cb, 0x397e; mov bx, 0x18; lcall 0x5cb, 0x1edc; lcall 0x5cb, 0x3587
+027b9 mov bx, 8; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 0xf; mov dx, bx; lcall 0x5cb, 0x2938; mov bx, v10b6; mov dx, 0x18; lcall 0x5cb, 0x293e
+027d9 lcall 0x5cb, 0xd7d
+027df mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+027ed lcall 0x5cb, 0x397e; mov bx, 0x1a; lcall 0x5cb, 0x1edc; lcall 0x5cb, 0x3587
+02800 mov bx, 7; mov dx, 8; lcall 0x5cb, 0x2932; mov bx, 0xe; mov dx, 0x10; lcall 0x5cb, 0x2938; mov bx, v10ce; mov dx, 0x18; lcall 0x5cb, 0x293e
+02822 lcall 0x5cb, 0xd7d
+02828 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+02836 lcall 0x5cb, 0x397e; mov bx, 0x19; lcall 0x5cb, 0x1edc; lcall 0x5cb, 0x3587
+02849 mov bx, 8; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 0xe; mov dx, 0xf; lcall 0x5cb, 0x2938; mov bx, v10e6; mov dx, 0x18; lcall 0x5cb, 0x293e
+0286a lcall 0x5cb, 0xd7d
+02870 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+0287e lcall 0x5cb, 0x397e; mov bx, 0x1b; lcall 0x5cb, 0x1edc; lcall 0x5cb, 0x3587
+02891 mov bx, 7; mov dx, 8; lcall 0x5cb, 0x2932; mov bx, 0xe; mov dx, 0xf; lcall 0x5cb, 0x2938; mov bx, v10fe; mov dx, 0x18; lcall 0x5cb, 0x293e
+028b3 lcall 0x5cb, 0xd7d
+028b9 lcall 0x5cb, 0xd7d
+028bf mov bx, v229c; lcall 0x5cb, 0x3322; mov bx, 0xa0; mov dx, 0x64; mov cx, 4; mov ax, 2; lcall 0x5cb, 0x3336
+028d9 mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0xa0; mov dx, 0x64; mov cx, 6; mov ax, 0xffff; lcall 0x5cb, 0x3336
+028f3 mov bx, 0xa0; mov dx, 0x64; mov cx, 2; mov ax, cx; lcall 0x5cb, 0x300c
+02904 mov bx, 0x9a; mov dx, 0x5e; lcall 0x5cb, 0x2932; mov bx, 0xa6; mov dx, 0x6a; lcall 0x5cb, 0x2938; mov bx, v0bd2; mov dx, 0x38; lcall 0x5cb, 0x293e
+02926 lcall 0x5cb, 0xd7d
+0292c mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0xa0; mov dx, 0x64; mov cx, 6; mov ax, 0xffff; lcall 0x5cb, 0x3336
+02946 mov bx, 0x9a; mov dx, 0x5e; lcall 0x5cb, 0x2932; mov bx, 0xa6; mov dx, 0x6a; lcall 0x5cb, 0x2938; mov bx, v0b96; mov dx, 0x3c; lcall 0x5cb, 0x293e
+02968 mov bx, 2; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, 8; mov dx, bx; mov cx, 2; lcall 0x5cb, 0x28ad
+02980 mov bx, 2; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 8; mov dx, bx; lcall 0x5cb, 0x2938; mov bx, v1116; mov dx, 0x14; lcall 0x5cb, 0x293e
+029a0 lcall 0x5cb, 0xd7d
+029a6 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+029b4 lcall 0x5cb, 0x397e; mov bx, 'DIESEL'; lcall 0x5cb, 0x3587
+029c2 mov bx, 7; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 0x37; mov dx, 0xf; lcall 0x5cb, 0x2938; mov bx, v0c92; mov dx, 0x7c; lcall 0x5cb, 0x293e
+029e3 lcall 0x5cb, 0xd7d
+029e9 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+029f7 lcall 0x5cb, 0x397e; mov bx, '  OFF '; lcall 0x5cb, 0x3587
+02a05 mov bx, 0xa; mov dx, 7; lcall 0x5cb, 0x2932; mov bx, 0x3a; mov dx, 0xf; lcall 0x5cb, 0x2938; mov bx, v0d8a; mov dx, 0x7c; lcall 0x5cb, 0x293e
+02a27 lcall 0x5cb, 0xd7d
+02a2d mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+02a3b lcall 0x5cb, 0x397e; mov bx, ' ELEC'; lcall 0x5cb, 0x3587
+02a49 mov bx, 7; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 0x37; mov dx, 0xf; lcall 0x5cb, 0x2938; mov bx, v0d0e; mov dx, 0x7c; lcall 0x5cb, 0x293e
+02a6a lcall 0x5cb, 0xd7d
+02a70 lcall 0x5cb, 0xd7d
+02a76 mov bx, 1; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, 0x5b; mov dx, 5; mov cx, 1; lcall 0x5cb, 0x28ad
+02a8f mov bx, 1; mov dx, 3; lcall 0x5cb, 0x2865; mov bx, 0x5b; xor cx, cx; lcall 0x5cb, 0x286b
+02aa5 mov si, v22c2=15; lcall 0x5cb, 0x131b; jmp @2ad7
+02ab1 mov si, v212e; lcall 0x5cb, 0x2deb; mov dx, 1; lcall 0x5cb, 0x2865; mov dx, 5; xor cx, cx; lcall 0x5cb, 0x286b
+02acc mov di, v22c2=15; mov si, v212e; lcall 0x5cb, 0x3c0; mov di, v212e; lcall 0x5cb, 0x1301; mov si, di; mov di, v22c6=76; lcall 0x5cb, 0x1d71; jbe @2ab0
+02aec mov bx, 1; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 0x5b; mov dx, 5; lcall 0x5cb, 0x2938; mov bx, v0a66; mov dx, 0xb8; lcall 0x5cb, 0x293e
+02b0d lcall 0x5cb, 0xd7d
+02b13 mov bx, 1; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, 5; mov dx, 0x3a; mov cx, 1; lcall 0x5cb, 0x28ad
+02b2c mov bx, 3; xor dx, dx; lcall 0x5cb, 0x2865; mov dx, 0x3a; xor cx, cx; lcall 0x5cb, 0x286b
+02b41 mov si, v22ca=16; lcall 0x5cb, 0x131b; jmp @2b75
+02b4d mov si, v2132; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, 1; lcall 0x5cb, 0x2865; mov bx, 5; xor cx, cx; lcall 0x5cb, 0x286b
+02b6a mov di, v22c2=15; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v22ce=58; lcall 0x5cb, 0x1d71; jbe @2b4c
+02b8a mov bx, 1; mov dx, bx; lcall 0x5cb, 0x2932; mov bx, 5; mov dx, 0x3a; lcall 0x5cb, 0x2938; mov bx, v0b1e; mov dx, 0x78; lcall 0x5cb, 0x293e
+02bab lcall 0x5cb, 0xd7d
+02bb1 mov bx, 'C1R1E1U2H1L1G1D2F1BR4R2L1U4G1BR4E1R1F1G3R3BR2BU1F1R1E1H1E1H1L1G1BR7D3U4G2D1R3BF1BR1R2E1H1L1H1U1R3BR4G2D1F1R1E1H1BE2BR1R3D1G2D1BR5R1E1H1E1H1L1G1F1G1F1BR5E2U1H1L1G1F1'; lcall 0x5cb, 0x3194
+02bba mov bx, 0x9f; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xa3; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v09c6; mov dx, 0x10; lcall 0x5cb, 0x293e
+02bdc mov bx, 0xa4; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xa7; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v09d6; mov dx, 0x10; lcall 0x5cb, 0x293e
+02bfe mov bx, 0xa8; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xab; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v09e6; mov dx, 0x10; lcall 0x5cb, 0x293e
+02c20 mov bx, 0xac; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xb0; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v09f6; mov dx, 0x10; lcall 0x5cb, 0x293e
+02c42 mov bx, 0xb1; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xb5; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v0a06; mov dx, 0x10; lcall 0x5cb, 0x293e
+02c64 mov bx, 0xb6; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xba; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v0a16; mov dx, 0x10; lcall 0x5cb, 0x293e
+02c86 mov bx, 0xbb; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xbf; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v0a26; mov dx, 0x10; lcall 0x5cb, 0x293e
+02ca8 mov bx, 0xc0; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xc4; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v0a36; mov dx, 0x10; lcall 0x5cb, 0x293e
+02cca mov bx, 0xc5; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xc9; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v0a46; mov dx, 0x10; lcall 0x5cb, 0x293e
+02cec mov bx, 0xca; mov dx, 0x60; lcall 0x5cb, 0x2932; mov bx, 0xce; mov dx, 0x64; lcall 0x5cb, 0x2938; mov bx, v0a56; mov dx, 0x10; lcall 0x5cb, 0x293e
+02d0e lcall 0x5cb, 0xd7d
+02d14 mov bx, 7; lcall 0x5cb, 0x125b; mov bx, 0xc; lcall 0x5cb, 0x1275
+02d25 lcall 0x5cb, 0x397e; mov bx, 'GATO DEMONSTRATION'; lcall 0x5cb, 0x3587
+02d33 mov bx, 0xa; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+02d44 lcall 0x5cb, 0x397e; mov bx, 'PRESS FUNCTION KEY 1 (F1) TO EXIT'; lcall 0x5cb, 0x3587
+02d52 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 2; lcall 0x5cb, 0x1275
+02d63 lcall 0x5cb, 0x397e; mov bx, ' FUNCTION KEY 2 (F2) TO TURN OFF SOUND'; lcall 0x5cb, 0x3587
+02d71 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @2d96
+02d7d mov si, v212e; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x257f
+02d8b mov di, v2290=1; mov si, v212e; lcall 0x5cb, 0x3c0; mov di, v212e; lcall 0x5cb, 0x1301; mov si, di; mov di, v23e0=2; lcall 0x5cb, 0x1d71; jbe @2d7c
+02dab mov bx, 1; mov dx, 0x5c90; lcall 0x5cb, 0x2543
+02db7 mov bx, 2; mov dx, 0x5ca2; lcall 0x5cb, 0x2543
+02dc3 lcall 0x5cb, 0x1da3; pop di; pop bx
+02dcb lcall 0x5cb, 0x1da3; add al, 0x47
+02dd3 mov di, v2136; mov si, v23e4=0; lcall 0x5cb, 0x1304
+02ddf lcall 0x5cb, 0x1da3; in ax, 0x4f
+02de9 mov di, v213a; mov si, v23e8=79; lcall 0x5cb, 0x1304
+02df5 mov di, v213e; mov si, v23ec=21000; lcall 0x5cb, 0x1304
+02e01 mov di, v2142; mov si, v23f0=4100; lcall 0x5cb, 0x1304
+02e0d mov di, v2146; mov si, v23f4=36; lcall 0x5cb, 0x1304
+02e19 mov di, v214a; mov si, v23f8=114; lcall 0x5cb, 0x1304
+02e25 mov di, v214e; mov si, v23fc=103; lcall 0x5cb, 0x1304
+02e31 mov di, v2152; mov si, v23f8=114; lcall 0x5cb, 0x1304
+02e3d mov di, v2156; mov si, v2400=170; lcall 0x5cb, 0x1304
+02e49 mov di, v215a; mov si, v23f8=114; lcall 0x5cb, 0x1304
+02e55 lcall 0x5cb, 0x1da3; lcall 0xbfcc, 0xcc50; pop si; and word ptr [bp + 0x2404], di; lcall 0x5cb, 0x1304
+02e6a mov di, v2162; mov si, v2404=0; lcall 0x5cb, 0x1304
+02e76 mov di, v2166; mov si, v2404=0; lcall 0x5cb, 0x1304
+02e82 mov di, v216a; mov si, v23e0=2; lcall 0x5cb, 0x1304
+02e8e mov di, v216e; mov si, v2408=36040; lcall 0x5cb, 0x1304
+02e9a mov di, v2172; mov si, v240c=1000; lcall 0x5cb, 0x1304
+02ea6 mov di, v2176; mov si, v2410=0; lcall 0x5cb, 0x1304
+02eb2 mov di, v217a; mov si, v2410=0; lcall 0x5cb, 0x1304
+02ebe mov di, v217e; mov si, v2410=0; lcall 0x5cb, 0x1304
+02eca mov di, v2182; mov si, v2414; lcall 0x5cb, 0x1304
+02ed6 mov di, v2186; mov si, v2418=-1; lcall 0x5cb, 0x1304
+02ee2 mov di, v218a; mov si, v241c=1426; lcall 0x5cb, 0x1304
+02eee mov di, v218e; mov si, v2420=24; lcall 0x5cb, 0x1304
+02efa mov di, v2192; mov si, v2424=0; lcall 0x5cb, 0x1304
+02f07 mov di, v2196; mov si, v2424=0; lcall 0x5cb, 0x1304
+02f13 mov di, v219a; mov si, v2290=1; lcall 0x5cb, 0x1304
+02f1f mov di, v219e; mov si, v2428; lcall 0x5cb, 0x1304
+02f2b mov di, v21a2; mov si, v242c; lcall 0x5cb, 0x1304
+02f37 mov di, v21a6; mov si, v2430; lcall 0x5cb, 0x1304
+02f43 mov di, v21aa; mov si, v2434; lcall 0x5cb, 0x1304
+02f4f mov di, v21ae; mov si, v2438=0; lcall 0x5cb, 0x1304
+02f5b mov di, v21b2; mov si, v2290=1; lcall 0x5cb, 0x1304
+02f67 mov di, v21b6; mov si, v23e4=0; lcall 0x5cb, 0x1304
+02f73 mov bx, 0x18; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+02f84 lcall 0x5cb, 0x397e; mov bx, 'POWER           DAMAGE     SCOPE '; lcall 0x5cb, 0x3573
+02f92 mov bx, 0x16; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+02fa3 lcall 0x5cb, 0x397e; mov bx, 'DEPTH   SPEED   HEADING      '; lcall 0x5cb, 0x3587
+02fb1 mov bx, 0x14; lcall 0x5cb, 0x125b; mov bx, 0x1c; lcall 0x5cb, 0x1275
+02fc2 lcall 0x5cb, 0x397e; mov bx, 'TORPEDOES   _'; lcall 0x5cb, 0x3587
+02fd0 mov bx, v2196; lcall 0x5cb, 0x146c; mov di, v2290=1; lcall 0x5cb, 0x1d66; jb @2fe5; jmp @2ffb
+02fe6 mov bx, v0118; mov dx, 0xb8; lcall 0x5cb, 0x299c; mov bx, v10b6; xor dx, dx; lcall 0x5cb, 0x29a5
+02ffc mov di, v2290=1; mov si, v21ba; lcall 0x5cb, 0x1d71; je @300c; jmp @3022
+0300d mov bx, 0xd5; mov dx, 0xa5; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+03023 mov di, v2496; mov si, v217e; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x3717; mov di, v249a=26; lcall 0x5cb, 0x4ed; mov di, v23fc=103; lcall 0x5cb, 0x3b5; mov di, v214e; lcall 0x5cb, 0x1301
+0304f mov di, v2496; mov si, v217e; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x36fc; mov di, v249e=22; lcall 0x5cb, 0x4ed; mov si, v24a2=135; lcall 0x5cb, 0x3a8; mov di, v2152; lcall 0x5cb, 0x1301
+0307b mov di, v24a6; mov si, v217a; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x3717; mov di, v249a=26; lcall 0x5cb, 0x4ed; mov di, v23f4=36; lcall 0x5cb, 0x3b5; mov di, v2146; lcall 0x5cb, 0x1301
+030a7 mov di, v24a6; mov si, v217a; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x36fc; mov di, v249e=22; lcall 0x5cb, 0x4ed; mov si, v24a2=135; lcall 0x5cb, 0x3a8; mov di, v214a; lcall 0x5cb, 0x1301
+030d3 mov bx, v2182; lcall 0x5cb, 0x36fc; mov di, v249a=26; lcall 0x5cb, 0x4ed; mov di, v2400=170; lcall 0x5cb, 0x3b5; mov di, v2156; lcall 0x5cb, 0x1301
+030f4 mov bx, v2182; lcall 0x5cb, 0x3717; mov di, v249e=22; lcall 0x5cb, 0x4ed; mov si, v24a2=135; lcall 0x5cb, 0x3a8; mov di, v215a; lcall 0x5cb, 0x1301
+03115 mov bx, 0x67; mov dx, 0x87; lcall 0x5cb, 0x2865; mov si, v2152; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v214e; lcall 0x5cb, 0x2deb; mov cx, 3; lcall 0x5cb, 0x286b
+0313b mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0x67; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03155 mov bx, 0x24; mov dx, 0x87; lcall 0x5cb, 0x2865; mov si, v214a; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v2146; lcall 0x5cb, 0x2deb; mov cx, 3; lcall 0x5cb, 0x286b
+0317b mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0x24; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03195 mov bx, 0xaa; mov dx, 0x87; lcall 0x5cb, 0x2865; mov si, v215a; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v2156; lcall 0x5cb, 0x2deb; mov cx, 3; lcall 0x5cb, 0x286b
+031bb mov di, v2290=1; mov si, v216a; lcall 0x5cb, 0x1d71; je @31cb; jmp @31e5
+031cc mov bx, 0x3f; mov dx, 0xb7; lcall 0x5cb, 0x299c; mov bx, v0d0e; mov dx, 1; lcall 0x5cb, 0x29a5; jmp @3226
+031e6 mov di, v23e0=2; mov si, v216a; lcall 0x5cb, 0x1d71; je @31f6; jmp @320f
+031f7 mov bx, 0x3f; mov dx, 0xb7; lcall 0x5cb, 0x299c; mov bx, v0c92; xor dx, dx; lcall 0x5cb, 0x29a5; jmp @3226
+03210 mov bx, 0x3f; mov dx, 0xb7; lcall 0x5cb, 0x299c; mov bx, v0d8a; mov dx, 1; lcall 0x5cb, 0x29a5
+03227 mov bx, 0xe; lcall 0x5cb, 0x125b; mov bx, 0x1b; lcall 0x5cb, 0x1275
+03238 lcall 0x5cb, 0x397e; mov bx, 'FUEL        O'; lcall 0x5cb, 0x3587
+03246 mov bx, 0x10; lcall 0x5cb, 0x125b; mov bx, 0x1b; lcall 0x5cb, 0x1275
+03257 lcall 0x5cb, 0x397e; mov bx, 'BATT     '; lcall 0x5cb, 0x3573; mov bx, 4; lcall 0x5cb, 0x27f1; mov bx, '_'; lcall 0x5cb, 0x3587
+03275 mov bx, 0x12; lcall 0x5cb, 0x125b; mov bx, 0x1b; lcall 0x5cb, 0x1275
+03286 lcall 0x5cb, 0x397e; mov bx, 'CHARGING     _'; lcall 0x5cb, 0x3587
+03294 mov bx, 0xe; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+032a5 mov bx, '####'; lcall 0x5cb, 0x3948; mov di, v24ea=90; mov si, v216e; lcall 0x5cb, 0x578; lcall 0x5cb, 0x2e36; lcall 0x5cb, 0x3582
+032c3 mov bx, 0x10; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+032d4 mov bx, '####'; lcall 0x5cb, 0x3948; mov bx, v2172; lcall 0x5cb, 0x3578
+032e5 mov bx, 0x16; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+032f6 mov bx, '##'; lcall 0x5cb, 0x3948; mov bx, v218e; lcall 0x5cb, 0x3578
+03307 mov bx, 0x23; mov dx, 0x6c; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0331e mov bx, 0x66; mov dx, 0x6c; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03335 mov bx, 0xa9; mov dx, 0x6c; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0334c mov bx, v0138=0; mov dx, 0x6b; lcall 0x5cb, 0x299c; mov bx, v09e6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03363 mov bx, v0139; mov dx, 0x71; lcall 0x5cb, 0x299c; mov bx, v09d6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0337a mov bx, 5; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09f6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03391 mov bx, 0xa; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+033a8 mov bx, 0xe; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+033bf mov bx, 0x37; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09d6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+033d6 mov bx, 0x3b; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+033ed mov bx, 0x40; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03404 mov bx, 0x49; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09d6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0341b mov bx, 0x4c; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v0a16; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03432 mov bx, 0x81; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v0a16; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03449 mov bx, 0x8c; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09e6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03460 mov bx, 0x90; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v0a36; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03477 mov bx, 0x96; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0348e mov bx, 0xbf; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v0a56; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+034a5 mov bx, 0xc5; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+034bc mov bx, v0139; mov dx, 0xad; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+034d3 mov bx, 0x1e; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09e6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+034ea mov bx, 0x23; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03501 mov bx, 0x28; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03518 mov bx, 0x64; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09d6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0352f mov bx, 0x68; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03546 mov bx, 0xa4; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09d6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0355d mov bx, 0xa7; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v0a46; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03574 mov bx, 0xad; mov dx, 0x9e; lcall 0x5cb, 0x299c; mov bx, v09c6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0358b mov di, v24f4; mov si, v218a; lcall 0x5cb, 0x4f8; lcall 0x5cb, 0x2e36; mov dx, 0xae; sub dx, bx; mov bx, v012c; lcall 0x5cb, 0x299c; mov bx, v106a; xor dx, dx; lcall 0x5cb, 0x29a5
+035b3 mov bx, v0100; mov dx, 0xa9; lcall 0x5cb, 0x299c; mov bx, v09d6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+035ca mov bx, v010a; mov dx, 0xa9; lcall 0x5cb, 0x299c; mov bx, v09e6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+035e1 mov bx, v0113; mov dx, 0xa9; lcall 0x5cb, 0x299c; mov bx, v09f6; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+035f8 mov bx, v011c; mov dx, 0xa9; lcall 0x5cb, 0x299c; mov bx, v0a06; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0360f mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @3693
+0361b mov si, v2132; mov dx, si; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v1152; lcall 0x5cb, 0x13d8; mov bx, 0; jne @363a; dec bx; mov di, dx; mov si, v24f8=4; lcall 0x5cb, 0x3ab; mov di, v218e; lcall 0x5cb, 0x1d66; mov dx, 0; jae @3652; dec dx; and dx, bx; and dx, dx; jne @365b; jmp @3687
+0365c mov di, v24fc=10; mov si, v2132; lcall 0x5cb, 0x4f8; mov di, v2500=244; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; mov dx, 0xa8; lcall 0x5cb, 0x299c; mov bx, v1116; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+03688 mov di, v2290=1; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v24f8=4; lcall 0x5cb, 0x1d71; ja @36aa; jmp @361a
+036ab mov si, v217a; lcall 0x5cb, 0x1421; add bh, byte ptr [bp + 0x23e8]; lcall 0x5cb, 0x3a8; mov di, v213a; lcall 0x5cb, 0x1301
+036c5 mov di, v2504=46; mov si, v217a; lcall 0x5cb, 0x1d71; mov bx, 0; jae @36d6; dec bx; mov di, v2290=1; mov si, v2186; lcall 0x5cb, 0x1d71; mov dx, 0; jne @36e7; dec dx; and dx, bx; and dx, dx; jne @36f0; jmp @36ff
+036f1 mov di, v213a; mov si, v23e8=79; lcall 0x5cb, 0x1304; jmp @3719
+03700 mov si, v213a; lcall 0x5cb, 0x13d8; jb @370d; jmp @3719
+0370e mov di, v213a; mov si, v2418=-1; lcall 0x5cb, 0x1304
+0371a xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov si, v21b2; lcall 0x5cb, 0x2deb; mov cx, bx; mov bx, v013f; mov dx, 0x50; lcall 0x5cb, 0x28ad
+03739 mov di, v2290=1; mov si, v213a; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; xor bx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0x61; mov cx, 2; lcall 0x5cb, 0x28ad
+03761 mov bx, 2; mov dx, 0x66; lcall 0x5cb, 0x2865; mov bx, 0xcd; mov dx, 0xb2; mov cx, 0xffff; lcall 0x5cb, 0x2874
+0377b mov bx, 0xd1; mov dx, 0x96; lcall 0x5cb, 0x2865; mov bx, v0127; mov dx, 0xb2; mov cx, 0xffff; lcall 0x5cb, 0x2874
+03795 mov si, v23f4=36; lcall 0x5cb, 0x131b; jmp @37ea
+037a1 mov bx, v22a0; lcall 0x5cb, 0x3322; mov si, v2132; lcall 0x5cb, 0x2deb; mov dx, 0x87; mov cx, 4; mov ax, 0xffff; lcall 0x5cb, 0x3336
+037c0 mov bx, v22a0; lcall 0x5cb, 0x3322; mov si, v2132; lcall 0x5cb, 0x2deb; mov dx, 0x87; mov cx, 0x20; mov ax, 0xffff; lcall 0x5cb, 0x3336
+037df mov di, v2508=67; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v250c=180; lcall 0x5cb, 0x1d71; jbe @37a0
+037ff mov si, v23f4=36; lcall 0x5cb, 0x131b; jmp @3995
+0380b mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @3972
+03817 mov di, v2510; mov si, v21be; lcall 0x5cb, 0x4f8; mov di, v212e; lcall 0x5cb, 0x1301
+0382b mov di, v23f4=36; mov si, v2132; lcall 0x5cb, 0x1d71; mov bx, 0; jne @383c; dec bx; mov di, v2514=5; mov si, v21be; lcall 0x5cb, 0x1d71; mov dx, 0; jne @384d; dec dx; mov di, v24f8=4; lcall 0x5cb, 0x1d71; mov cx, 0; jne @385b; dec cx; or cx, dx; mov di, v24fc=10; lcall 0x5cb, 0x1d71; mov dx, 0; jne @386b; dec dx; or dx, cx; mov di, v2518=6; lcall 0x5cb, 0x1d71; mov cx, 0; jne @387b; dec cx; or cx, dx; mov di, v22c2=15; lcall 0x5cb, 0x1d71; mov dx, 0; jne @388b; dec dx; or dx, cx; and dx, bx; and dx, dx; jne @3896; jmp @389a
+03897 jmp @3966
+0389b mov di, v2514=5; mov si, v21be; lcall 0x5cb, 0x1d71; mov bx, 0; jne @38ac; dec bx; mov di, v24fc=10; lcall 0x5cb, 0x1d71; mov dx, 0; jne @38ba; dec dx; or dx, bx; mov di, v22c2=15; lcall 0x5cb, 0x1d71; mov bx, 0; jne @38ca; dec bx; or bx, dx; and bx, bx; jne @38d3; jmp @38d7
+038d4 jmp @3966
+038d8 mov bx, v212e; lcall 0x5cb, 0x3717; mov di, v249a=26; lcall 0x5cb, 0x4ed; mov di, v24a2=135; lcall 0x5cb, 0x3b5; mov dx, bx; lcall 0x5cb, 0x2e36; mov cx, bx; mov bx, dx; lcall 0x5cb, 0x36fc; mov ax, di; mov di, v251c=27; lcall 0x5cb, 0x4ed; mov di, v2132; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; mov word ptr [bp - 2], dx; mov dx, cx; lcall 0x5cb, 0x2865; mov bx, word ptr [bp - 2]; lcall 0x5cb, 0x3717; mov dx, di; mov di, v2520=29; lcall 0x5cb, 0x4ed; xchg di, ax; lcall 0x5cb, 0x3b5; mov cx, bx; lcall 0x5cb, 0x2e36; mov ax, bx; mov bx, cx; lcall 0x5cb, 0x36fc; mov di, v2524=30; lcall 0x5cb, 0x4ed; mov di, dx; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; xchg dx, ax; mov cx, 1; lcall 0x5cb, 0x286b
+03967 mov di, v2290=1; mov si, v21be; lcall 0x5cb, 0x3c0; mov di, v21be; lcall 0x5cb, 0x1301; mov si, di; mov di, v2528=19; lcall 0x5cb, 0x1d71; ja @3989; jmp @3816
+0398a mov di, v2508=67; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v252c=113; lcall 0x5cb, 0x1d71; ja @39ac; jmp @380a
+039ad mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @3aa4
+039b9 mov di, v2530; mov si, v21be; lcall 0x5cb, 0x4f8; mov di, v212e; lcall 0x5cb, 0x1301
+039cd mov di, v24f8=4; mov si, v21be; lcall 0x5cb, 0x1d71; mov bx, 0; jne @39de; dec bx; mov di, v2298=8; lcall 0x5cb, 0x1d71; mov dx, 0; jne @39ec; dec dx; or dx, bx; mov di, v2534=12; lcall 0x5cb, 0x1d71; mov bx, 0; jne @39fc; dec bx; or bx, dx; and bx, bx; jne @3a05; jmp @3a09
+03a06 jmp @3a98
+03a0a mov bx, v212e; lcall 0x5cb, 0x3717; mov di, v249a=26; lcall 0x5cb, 0x4ed; mov di, v24a2=135; lcall 0x5cb, 0x3b5; mov dx, bx; lcall 0x5cb, 0x2e36; mov cx, bx; mov bx, dx; lcall 0x5cb, 0x36fc; mov ax, di; mov di, v251c=27; lcall 0x5cb, 0x4ed; mov di, v2400=170; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; mov word ptr [bp - 2], dx; mov dx, cx; lcall 0x5cb, 0x2865; mov bx, word ptr [bp - 2]; lcall 0x5cb, 0x3717; mov dx, di; mov di, v2520=29; lcall 0x5cb, 0x4ed; xchg di, ax; lcall 0x5cb, 0x3b5; mov cx, bx; lcall 0x5cb, 0x2e36; mov ax, bx; mov bx, cx; lcall 0x5cb, 0x36fc; mov di, v2524=30; lcall 0x5cb, 0x4ed; mov di, dx; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; xchg dx, ax; mov cx, 1; lcall 0x5cb, 0x286b
+03a99 mov di, v2290=1; mov si, v21be; lcall 0x5cb, 0x3c0; mov di, v21be; lcall 0x5cb, 0x1301; mov si, di; mov di, v22c2=15; lcall 0x5cb, 0x1d71; ja @3abb; jmp @39b8
+03abc xor bx, bx; mov dx, 0x64; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0xc4; mov cx, 0xffff; lcall 0x5cb, 0x2874
+03ad5 mov bx, v012b; mov dx, 0x70; lcall 0x5cb, 0x2865; mov bx, v0135; mov dx, 0xb2; mov cx, 0xffff; lcall 0x5cb, 0x2874
+03aef mov bx, 0xe5; mov dx, 0xa6; lcall 0x5cb, 0x2865; mov bx, 0xf9; mov dx, 0xb0; mov cx, 0xffff; lcall 0x5cb, 0x2874
+03b09 mov bx, 0xfc; mov dx, 0xa6; lcall 0x5cb, 0x2865; mov bx, v0124; mov dx, 0xb0; mov cx, 3; lcall 0x5cb, 0x2874
+03b23 mov bx, 0x3d; mov dx, 0xb5; lcall 0x5cb, 0x2865; mov bx, 0x71; mov dx, 0xc1; mov cx, 0xffff; lcall 0x5cb, 0x2874
+03b3d mov si, v2538=262; lcall 0x5cb, 0x131b; jmp @3b70
+03b49 mov si, v212e; lcall 0x5cb, 0x2deb; mov dx, 0xa6; lcall 0x5cb, 0x2865; mov dx, 0xb0; mov cx, 0xffff; lcall 0x5cb, 0x286b
+03b65 mov di, v24fc=10; mov si, v212e; lcall 0x5cb, 0x3c0; mov di, v212e; lcall 0x5cb, 0x1301; mov si, di; mov di, v253c=282; lcall 0x5cb, 0x1d71; jbe @3b48
+03b85 mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0xc8; mov dx, 0xbb; mov cx, 6; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03b9f mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, v011b; mov dx, 0xbb; mov cx, 8; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03bb9 mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0xdb; mov dx, 0xab; mov cx, 6; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03bd3 mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, v0121; mov dx, 0x8b; mov cx, 6; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03bed mov si, v23e4=0; lcall 0x5cb, 0x131b; jmp @3c68
+03bf9 mov di, v2540=102; mov si, v2132; lcall 0x5cb, 0x3c0; mov dx, si; lcall 0x5cb, 0x2e36; mov cx, dx; mov dx, bx; mov bx, 0xf6; lcall 0x5cb, 0x2865; mov si, cx; mov di, v2544=112; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; mov bx, v0118; mov cx, 0xffff; lcall 0x5cb, 0x2874
+03c34 mov bx, v22a0; lcall 0x5cb, 0x3322; mov di, v2548=107; mov si, v2132; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; mov bx, v0121; mov cx, 6; mov ax, 0xffff; lcall 0x5cb, 0x3336
+03c5d mov di, v22ca=16; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v22ca=16; lcall 0x5cb, 0x1d71; ja @3c7f; jmp @3bf8
+03c80 jmp @3cdd
+03c85 xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov si, v21b2; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v213a; lcall 0x5cb, 0x2deb; mov ax, dx; mov dx, bx; xchg cx, ax; mov bx, v013f; lcall 0x5cb, 0x28ad
+03cae mov di, v2290=1; mov si, v213a; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; xor bx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0x61; mov cx, 2; lcall 0x5cb, 0x28ad
+03cd6 lcall 0x5cb, 0x1dcc
+03cde mov di, v23e0=2; mov si, v216a; lcall 0x5cb, 0x1d71; mov bx, 0; jne @3cef; dec bx; mov di, v254c=1424; mov si, v218a; lcall 0x5cb, 0x1d71; mov dx, 0; jae @3d00; dec dx; and dx, bx; and dx, dx; jne @3d09; jmp @3d44
+03d0a mov di, v23e0=2; mov si, v218a; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+03d1d mov di, v24f4; mov si, v218a; lcall 0x5cb, 0x4f8; lcall 0x5cb, 0x2e36; mov dx, 0xae; sub dx, bx; mov bx, v012c; lcall 0x5cb, 0x299c; mov bx, v106a; xor dx, dx; lcall 0x5cb, 0x29a5
+03d45 mov di, v24f4; mov si, v218a; lcall 0x5cb, 0x4f8; lcall 0x5cb, 0x2e36; mov dx, 0xae; sub dx, bx; mov bx, v012c; lcall 0x5cb, 0x299c; mov bx, v106a; xor dx, dx; lcall 0x5cb, 0x29a5
+03d6d mov di, v23e0=2; mov si, v216a; lcall 0x5cb, 0x1d71; mov bx, 0; jne @3d7e; dec bx; mov di, v2550=20; mov si, v217a; lcall 0x5cb, 0x1d71; mov dx, 0; jbe @3d8f; dec dx; mov di, v2290=1; mov si, v216e; lcall 0x5cb, 0x1d71; mov cx, 0; jae @3da0; dec cx; or cx, dx; and cx, bx; and cx, cx; jne @3dab; jmp @3df1
+03dac mov di, v215e; mov si, v23e4=0; lcall 0x5cb, 0x1304
+03db8 mov di, v2554=3; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v0384; mov dx, 0xb2; lcall 0x5cb, 0xc29
+03dcf mov bx, 0x3f; mov dx, 0xb7; lcall 0x5cb, 0x299c; mov bx, v0d8a; mov dx, 1; lcall 0x5cb, 0x29a5
+03de6 mov di, v216a; mov si, v2424=0; lcall 0x5cb, 0x1304
+03df2 mov di, v2290=1; mov si, v216a; lcall 0x5cb, 0x1d71; mov bx, 0; jne @3e03; dec bx; mov si, v2172; lcall 0x5cb, 0x1d71; mov dx, 0; jae @3e11; dec dx; and dx, bx; and dx, dx; jne @3e1a; jmp @3e6c
+03e1b mov di, v2554=3; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v0384; mov dx, 0xb2; lcall 0x5cb, 0xc29
+03e32 mov bx, 0x3f; mov dx, 0xb7; lcall 0x5cb, 0x299c; mov bx, v0d8a; mov dx, 1; lcall 0x5cb, 0x29a5
+03e49 mov di, v2172; mov si, v2424=0; lcall 0x5cb, 0x1304
+03e55 mov di, v215e; mov si, v2424=0; lcall 0x5cb, 0x1304
+03e61 mov di, v216a; mov si, v2424=0; lcall 0x5cb, 0x1304
+03e6d mov bx, v011b; mov dx, 0x65; lcall 0x5cb, 0x299c; mov bx, v0b96; xor dx, dx; lcall 0x5cb, 0x29a5
+03e83 mov di, v2558=9022; mov si, v216e; lcall 0x5cb, 0x1d71; ja @3e93; jmp @3e97
+03e94 jmp @3ef0
+03e98 mov di, v2290=1; mov si, v21c2; lcall 0x5cb, 0x1d71; je @3ea8; jmp @3eb7
+03ea9 mov di, v21c2; mov si, v23e4=0; lcall 0x5cb, 0x1304; jmp @3ef0
+03eb8 mov di, v2554=3; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v0dac; mov dx, 0xb2; lcall 0x5cb, 0xc29
+03ecf mov bx, v011b; mov dx, 0x65; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+03ee5 mov di, v21c2; mov si, v2290=1; lcall 0x5cb, 0x1304
+03ef1 mov bx, v011b; mov dx, 0x75; lcall 0x5cb, 0x299c; mov bx, v0b96; xor dx, dx; lcall 0x5cb, 0x29a5
+03f07 mov di, v255c=100; mov si, v2172; lcall 0x5cb, 0x1d71; ja @3f17; jmp @3f1b
+03f18 jmp @3f74
+03f1c mov di, v2290=1; mov si, v21c6; lcall 0x5cb, 0x1d71; je @3f2c; jmp @3f3b
+03f2d mov di, v21c6; mov si, v23e4=0; lcall 0x5cb, 0x1304; jmp @3f74
+03f3c mov di, v2554=3; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v0bb8; mov dx, 0xb2; lcall 0x5cb, 0xc29
+03f53 mov bx, v011b; mov dx, 0x75; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+03f69 mov di, v21c6; mov si, v2290=1; lcall 0x5cb, 0x1304
+03f75 mov bx, 0x10; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+03f86 mov bx, '####'; lcall 0x5cb, 0x3948; mov bx, v2172; lcall 0x5cb, 0x3578
+03f97 mov di, v23e0=2; mov si, v216a; lcall 0x5cb, 0x1d71; je @3fa7; jmp @3fd6
+03fa8 mov bx, 0xe; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+03fb9 mov bx, '####'; lcall 0x5cb, 0x3948; mov di, v24ea=90; mov si, v216e; lcall 0x5cb, 0x578; lcall 0x5cb, 0x2e36; lcall 0x5cb, 0x3582
+03fd7 mov di, v23e0=2; mov si, v216a; lcall 0x5cb, 0x1d71; mov bx, 0; jne @3fe8; dec bx; mov di, v240c=1000; mov si, v2172; lcall 0x5cb, 0x1d71; mov dx, 0; jae @3ff9; dec dx; and dx, bx; and dx, dx; jne @4002; jmp @401b
+04003 mov bx, v011b; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5; jmp @4031
+0401c mov bx, v011b; mov dx, 0x85; lcall 0x5cb, 0x299c; mov bx, v0b96; xor dx, dx; lcall 0x5cb, 0x29a5
+04034 mov si, v213e; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v21ca; lcall 0x5cb, 0x1301
+04053 mov si, v2142; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v21ce; lcall 0x5cb, 0x1301
+04073 mov di, v2290=1; mov si, v2136; lcall 0x5cb, 0x1d71; jne @4083; jmp @421d
+04084 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+0409c mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 9; lcall 0x5cb, 0x1275
+040ad lcall 0x5cb, 0x397e; mov bx, 'THIS IS YOUR MAIN SCREEN'; lcall 0x5cb, 0x3587
+040bb mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+040cc lcall 0x5cb, 0x397e; mov bx, 'YOU ARE NOW IN THE THE CONTROL ROOM'; lcall 0x5cb, 0x3587
+040da mov bx, 5; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+040e8 lcall 0x5cb, 0x397e; mov bx, 'YOU MAY CONTROL ALL OPERATIONS'; lcall 0x5cb, 0x3587
+040f6 mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+04107 lcall 0x5cb, 0x397e; mov bx, 'OF THE SUBMARINE FROM HERE'; lcall 0x5cb, 0x3587
+04115 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4157
+04121 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+0412f mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @413f; jmp @414b
+04140 mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+0414c mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @4120
+0416c mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+04184 mov bx, 3; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+04195 lcall 0x5cb, 0x397e; mov bx, "NOW LET'S LOOK AT SOME NAVIGATION"; lcall 0x5cb, 0x3587
+041a3 mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+041b4 lcall 0x5cb, 0x397e; mov bx, "HERE IS THE MAIN CHART (KEY 'C')"; lcall 0x5cb, 0x3587
+041c2 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4204
+041ce lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+041dc mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @41ec; jmp @41f8
+041ed mov di, v21d6; mov si, v2636=8000; lcall 0x5cb, 0x1304
+041f9 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2636=8000; lcall 0x5cb, 0x1d71; jbe @41cd
+04219 jmp @62ab
+0421e mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x28; xor cx, cx; lcall 0x5cb, 0x28ad
+04236 mov bx, 3; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+04244 lcall 0x5cb, 0x397e; mov bx, 'NOW WE ARE BACK IN THE CONTROL ROOM'; lcall 0x5cb, 0x3587
+04252 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+04263 lcall 0x5cb, 0x397e; mov bx, "LET'S SEE WHAT THE ENEMY LOOKS LIKE"; lcall 0x5cb, 0x3587
+04271 mov si, v24f8=4; lcall 0x5cb, 0x131b; jmp @444a
+0427d mov di, v268a=7; mov si, v21d6; lcall 0x5cb, 0x1d71; jne @428d; jmp @42b1
+0428e mov si, v21d6; lcall 0x5cb, 0x2deb; shl bx, 1; shl bx, 1; add bx, v0e96; mov ax, 'S4'; lcall 0x5cb, 0x11f6; mov dx, v21da; lcall 0x5cb, 0x11c0; jmp @42d2
+042b2 mov si, v21d6; lcall 0x5cb, 0x2deb; shl bx, 1; shl bx, 1; add bx, v0e96; mov ax, 'S2'; lcall 0x5cb, 0x11f6; mov dx, v21da; lcall 0x5cb, 0x11c0
+042d3 mov bx, 0xa0; mov dx, 0x4f; mov cx, 1; lcall 0x5cb, 0x28f3
+042e2 mov bx, v21da; lcall 0x5cb, 0x2030; mov ax, 'X'; lcall 0x5cb, 0x11f6; lcall 0x5cb, 0x3194
+042f8 mov di, v24f8=4; mov si, v21d6; lcall 0x5cb, 0x1d71; je @4308; jmp @4327
+04309 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+0431a lcall 0x5cb, 0x397e; mov bx, '  FREIGHTER  '; lcall 0x5cb, 0x3587
+04328 mov di, v2514=5; mov si, v21d6; lcall 0x5cb, 0x1d71; je @4338; jmp @4357
+04339 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+0434a lcall 0x5cb, 0x397e; mov bx, ' OIL TANKER  '; lcall 0x5cb, 0x3587
+04358 mov di, v2518=6; mov si, v21d6; lcall 0x5cb, 0x1d71; je @4368; jmp @4387
+04369 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+0437a lcall 0x5cb, 0x397e; mov bx, '  TRANSPORT  '; lcall 0x5cb, 0x3587
+04388 mov di, v268a=7; mov si, v21d6; lcall 0x5cb, 0x1d71; je @4398; jmp @43b7
+04399 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+043aa lcall 0x5cb, 0x397e; mov bx, ' PATROL CRAFT'; lcall 0x5cb, 0x3587
+043b8 mov di, v2298=8; mov si, v21d6; lcall 0x5cb, 0x1d71; je @43c8; jmp @43e7
+043c9 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+043da lcall 0x5cb, 0x397e; mov bx, '  DESTROYER  '; lcall 0x5cb, 0x3587
+043e8 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @43ff
+043f4 mov di, v2290=1; mov si, v21de; lcall 0x5cb, 0x3c0; mov di, v21de; lcall 0x5cb, 0x1301; mov si, di; mov di, v26fa=6000; lcall 0x5cb, 0x1d71; jbe @43f3
+04414 mov di, v2298=8; mov si, v21d6; lcall 0x5cb, 0x1d71; jne @4424; jmp @443e
+04425 mov bx, 0x1e; mov dx, 0x2d; lcall 0x5cb, 0x2865; mov bx, 0xf0; mov dx, 0x4f; mov cx, 1; lcall 0x5cb, 0x28ad
+0443f mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2298=8; lcall 0x5cb, 0x1d71; ja @4461; jmp @427c
+04462 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x28; xor cx, cx; lcall 0x5cb, 0x28ad
+0447a mov bx, 3; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+04488 lcall 0x5cb, 0x397e; mov bx, "TO SHOOT A SHIP YOU WOULD PRESS 'T' "; lcall 0x5cb, 0x3587
+04496 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+044a7 lcall 0x5cb, 0x397e; mov bx, 'TO OPEN THE TORPEDO DOORS AND    '; lcall 0x5cb, 0x3587
+044b5 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 0xb; lcall 0x5cb, 0x1275
+044c6 lcall 0x5cb, 0x397e; mov bx, 'THEN F8 TO FIRE'; lcall 0x5cb, 0x3587
+044d4 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4516
+044e0 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+044ee mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @44fe; jmp @450a
+044ff mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+0450b mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @44df
+0452b mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x28; xor cx, cx; lcall 0x5cb, 0x28ad
+04543 mov bx, 3; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+04551 lcall 0x5cb, 0x397e; mov bx, 'REMEMBER PATROL CRAFT AND DESTROYERS'; lcall 0x5cb, 0x3587
+0455f mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+04570 lcall 0x5cb, 0x397e; mov bx, 'WILL SHOOT AND DROP DEPTH CHARGES'; lcall 0x5cb, 0x3587
+0457e mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 0xd; lcall 0x5cb, 0x1275
+0458f lcall 0x5cb, 0x397e; mov bx, 'SO BE CAREFUL'; lcall 0x5cb, 0x3587
+0459d mov di, v1762=-1.11421e+06; mov si, v2290=1; lcall 0x5cb, 0x1304
+045a9 mov si, v09c2; lcall 0x5cb, 0x1421; add word ptr [bp + di + 0x50], di; mov dx, 0xb2; lcall 0x5cb, 0xc29
+045be mov si, v09c2; lcall 0x5cb, 0x1421; add di, word ptr [bp + di + 0x64]; mov dx, 0xb2; lcall 0x5cb, 0xc29
+045d3 mov si, v09c2; lcall 0x5cb, 0x1421; add bh, byte ptr [bp + di + 0x50]; mov dx, 0xb2; lcall 0x5cb, 0xc29
+045e8 mov bx, 0xc2; mov dx, 0xb5; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+045fe mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4640
+0460a lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+04618 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @4628; jmp @4634
+04629 mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+04635 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @4609
+04655 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x28; xor cx, cx; lcall 0x5cb, 0x28ad
+0466d mov bx, 3; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+0467e lcall 0x5cb, 0x397e; mov bx, 'YOU HAVE TO PAY CLOSE ATTENTION TO'; lcall 0x5cb, 0x3587
+0468c mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+0469d lcall 0x5cb, 0x397e; mov bx, 'THE DAMAGE REPORT BECAUSE IF AN'; lcall 0x5cb, 0x3587
+046ab mov bx, 5; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+046b9 lcall 0x5cb, 0x397e; mov bx, "AREA IS DAMAGED IT CAN'T BE USED"; lcall 0x5cb, 0x3587
+046c7 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4709
+046d3 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+046e1 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @46f1; jmp @46fd
+046f2 mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+046fe mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @46d2
+0471e jmp @5020
+04722 mov si, v21ba; lcall 0x5cb, 0x13d8; je @472f; jmp @4791
+04730 mov bx, v0bb8; mov dx, v09c2; lcall 0x5cb, 0xc29
+0473c mov bx, 0xd5; mov dx, 0xa5; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+04752 mov di, v21ba; mov si, v2290=1; lcall 0x5cb, 0x1304
+0475e mov si, v215e; lcall 0x5cb, 0x140f; lcall 0x5cb, 0x13b6; mov di, v216a; mov bx, si; lcall 0x5cb, 0x4ed; mov di, v282e=0.5; lcall 0x5cb, 0x4ed; mov si, bx; lcall 0x5cb, 0x3a8; mov di, bx; lcall 0x5cb, 0x1301
+0478c lcall 0x5cb, 0x1dcc
+04792 mov bx, v0bb8; mov dx, v09c2; lcall 0x5cb, 0xc29
+0479e mov bx, 0xd5; mov dx, 0xa5; lcall 0x5cb, 0x299c; mov bx, v0b96; xor dx, dx; lcall 0x5cb, 0x29a5
+047b4 mov di, v21ba; mov si, v23e4=0; lcall 0x5cb, 0x1304
+047c0 mov si, v215e; lcall 0x5cb, 0x140f; lcall 0x5cb, 0x13b6; mov di, v216a; mov bx, si; lcall 0x5cb, 0x4ed; mov di, v282e=0.5; lcall 0x5cb, 0x4ed; mov di, bx; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x1301
+047ec lcall 0x5cb, 0x1dcc
+047f2 mov si, v1762=-1.11421e+06; lcall 0x5cb, 0x13d8; mov bx, 0; jbe @4800; dec bx; mov si, v21ba; lcall 0x5cb, 0x13d8; mov dx, 0; jne @480e; dec dx; or dx, bx; mov si, v218e; lcall 0x5cb, 0x13d8; mov bx, 0; ja @481e; dec bx; or bx, dx; mov di, v24f8=4; mov si, v21e2; lcall 0x5cb, 0x1d71; mov dx, 0; jb @4831; dec dx; mov si, v1156; lcall 0x5cb, 0x13d8; mov cx, 0; jbe @483f; dec cx; and cx, dx; or cx, bx; and cx, cx; jne @484a; jmp @4850
+0484b lcall 0x5cb, 0x1dcc
+04851 mov di, v24f8=4; mov si, v21e2; lcall 0x5cb, 0x1d71; jae @4861; jmp @4870
+04862 mov di, v21e2; mov si, v2290=1; lcall 0x5cb, 0x1304; jmp @48b1
+04871 mov di, v2290=1; mov si, v21e2; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov si, bx; shl si, 1; shl si, 1; add si, v1152; lcall 0x5cb, 0x13d8; je @4895; jmp @48ab
+04896 mov di, v2290=1; mov si, v21e2; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301; jmp @48b1
+048ac lcall 0x5cb, 0x1dcc
+048b2 mov bx, v0258; mov dx, v09c2; lcall 0x5cb, 0xc29
+048be mov di, v24fc=10; mov si, v21e2; lcall 0x5cb, 0x4f8; mov di, v2500=244; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; mov dx, 0xa8; lcall 0x5cb, 0x299c; mov bx, v1116; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+048ea mov di, v2418=-1; mov si, v218e; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+048fd mov bx, 0x16; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+0490e mov bx, '##'; lcall 0x5cb, 0x3948; mov bx, v218e; lcall 0x5cb, 0x3578
+0491f mov si, v21e2; lcall 0x5cb, 0x2deb; mov di, bx; shl di, 1; shl di, 1; add di, v112a; mov si, v213e; lcall 0x5cb, 0x1304
+0493a mov si, v21e2; lcall 0x5cb, 0x2deb; mov di, bx; shl di, 1; shl di, 1; add di, v113e; mov si, v2142; lcall 0x5cb, 0x1304
+04955 mov si, v21e2; lcall 0x5cb, 0x2deb; mov di, bx; shl di, 1; shl di, 1; add di, v1166; mov si, v2182; lcall 0x5cb, 0x1304
+04970 mov si, v21e2; lcall 0x5cb, 0x2deb; mov di, bx; shl di, 1; shl di, 1; add di, v1152; mov si, v2832=17; lcall 0x5cb, 0x1304
+0498b lcall 0x5cb, 0x1dcc
+04996 mov si, v23e0=2; lcall 0x5cb, 0x131b; jmp @49bb
+049a2 mov si, v2132; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x2582
+049b0 mov di, v23e0=2; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2298=8; lcall 0x5cb, 0x1d71; jbe @49a1
+049d0 mov di, v21e6; mov si, v2836=211; lcall 0x5cb, 0x1304
+049dc mov di, v21ea; mov si, v255c=100; lcall 0x5cb, 0x1304
+049e8 mov di, v21b6; mov si, v2290=1; lcall 0x5cb, 0x1304
+049f4 mov bx, 1; lcall 0x5cb, 0x1033; xor bx, bx; lcall 0x5cb, 0x104d
+04a04 xor bx, bx; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+04a14 lcall 0x5cb, 0xd7d
+04a1a mov bx, 7; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+04a2b lcall 0x5cb, 0x397e; mov bx, 'HEADING'; lcall 0x5cb, 0x3587
+04a39 mov bx, 0xc; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+04a4a lcall 0x5cb, 0x397e; mov bx, ' SPEED'; lcall 0x5cb, 0x3587
+04a58 mov bx, 0x11; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+04a69 lcall 0x5cb, 0x397e; mov bx, ' DEPTH'; lcall 0x5cb, 0x3587
+04a77 mov bx, 0x15; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+04a88 lcall 0x5cb, 0x397e; mov bx, 'TORP'; lcall 0x5cb, 0x3587
+04a96 mov bx, 0x15; lcall 0x5cb, 0x125b; mov bx, 0x22; lcall 0x5cb, 0x1275
+04aa7 lcall 0x5cb, 0x397e; mov bx, v218e; lcall 0x5cb, 0x3578
+04ab5 mov si, v2524=30; lcall 0x5cb, 0x131b; jmp @4b3a
+04ac1 mov si, v2132; mov dx, si; lcall 0x5cb, 0x2deb; mov cx, dx; mov dx, bx; mov bx, 0xed; lcall 0x5cb, 0x2865; mov si, cx; mov di, v24fc=10; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; mov bx, v0118; mov cx, 1; lcall 0x5cb, 0x2874
+04af4 mov di, v2862=-2; mov si, v2132; lcall 0x5cb, 0x3c0; mov dx, si; lcall 0x5cb, 0x2e36; mov cx, dx; mov dx, bx; mov bx, 0xeb; lcall 0x5cb, 0x2865; mov si, cx; mov di, v2534=12; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; mov bx, v011a; mov cx, 1; lcall 0x5cb, 0x2874
+04b2f mov di, v2866=40; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v286a=110; lcall 0x5cb, 0x1d71; ja @4b51; jmp @4ac0
+04b52 mov bx, 0xe0; mov dx, 0x17; lcall 0x5cb, 0x2865; mov bx, v0125; mov dx, 0x8c; mov cx, 1; lcall 0x5cb, 0x2874
+04b6c mov bx, v010b; mov dx, 0x9c; lcall 0x5cb, 0x2865; mov bx, v0123; mov dx, 0xaa; mov cx, 1; lcall 0x5cb, 0x2874
+04b86 mov bx, v010d; mov dx, 0x9e; lcall 0x5cb, 0x2865; mov bx, v0121; mov dx, 0xa8; mov cx, 1; lcall 0x5cb, 0x2874
+04ba0 mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0x6f; mov dx, 0x64; mov cx, 0x65; mov ax, 1; lcall 0x5cb, 0x3336
+04bba mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0x6f; mov dx, 0x64; mov cx, 0x66; mov ax, 1; lcall 0x5cb, 0x3336
+04bd4 mov bx, v22a0; lcall 0x5cb, 0x3322; mov bx, 0x6f; mov dx, 0x64; mov cx, 0x67; mov ax, 1; lcall 0x5cb, 0x3336
+04bee mov si, v286e=11; lcall 0x5cb, 0x131b; jmp @4c86
+04bfa mov si, v2518=6; lcall 0x5cb, 0x131b; jmp @4c66
+04c06 xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0xc7; mov cx, 1; lcall 0x5cb, 0x2874
+04c1e mov bx, 2; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013d; mov dx, 0xc5; mov cx, 1; lcall 0x5cb, 0x2874
+04c37 mov si, v21be; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v2132; lcall 0x5cb, 0x2deb; mov cx, 0xffff; lcall 0x5cb, 0x28f3
+04c52 mov bx, 'S4C3R5F4D5G4L5H4U5E4'; lcall 0x5cb, 0x3194
+04c5b mov di, v288a=174; mov si, v21be; lcall 0x5cb, 0x3c0; mov di, v21be; lcall 0x5cb, 0x1301; mov si, di; mov di, v250c=180; lcall 0x5cb, 0x1d71; jbe @4c05
+04c7b mov di, v288e=292; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2892=303; lcall 0x5cb, 0x1d71; ja @4c9d; jmp @4bf9
+04c9e mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4cc3
+04caa lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+04cb8 mov di, v2290=1; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v24fc=10; lcall 0x5cb, 0x1d71; jbe @4ca9
+04cd8 mov di, v2896=45; mov si, v217a; lcall 0x5cb, 0x1d71; jbe @4ce8; jmp @4d8d
+04ce9 mov bx, 0x6f; mov dx, 0x66; mov cx, 3; lcall 0x5cb, 0x28f3
+04cf8 mov bx, 'S4C3U4'; lcall 0x5cb, 0x3194
+04d01 mov bx, 0x6f; mov dx, 0x64; lcall 0x5cb, 0x2865; mov si, v21ea; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v21e6; lcall 0x5cb, 0x2deb; xor cx, cx; lcall 0x5cb, 0x286b
+04d26 mov bx, v21ee; lcall 0x5cb, 0x36fc; mov di, v28a4=99; lcall 0x5cb, 0x4ed; mov di, v28a8=111; lcall 0x5cb, 0x3b5; mov di, v21e6; lcall 0x5cb, 0x1301
+04d47 mov bx, v21ee; lcall 0x5cb, 0x3717; mov di, v28ac=89; lcall 0x5cb, 0x4ed; mov di, v255c=100; lcall 0x5cb, 0x3b5; mov di, v21ea; lcall 0x5cb, 0x1301
+04d68 mov bx, 0x6f; mov dx, 0x64; lcall 0x5cb, 0x2865; mov si, v21ea; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v21e6; lcall 0x5cb, 0x2deb; mov cx, 2; lcall 0x5cb, 0x286b
+04d8e mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+04d9f mov bx, '###'; lcall 0x5cb, 0x3948; mov di, v28b8; mov si, v2182; lcall 0x5cb, 0x4f8; mov si, v28bc; lcall 0x5cb, 0x3a8; lcall 0x5cb, 0x2e36; xchg bx, ax; mov cx, v0168; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x3582
+04dce mov bx, 0xa; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+04ddf mov bx, '###'; lcall 0x5cb, 0x3948; mov bx, v217e; lcall 0x5cb, 0x3578
+04df0 mov bx, 0xf; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+04e01 mov bx, '###'; lcall 0x5cb, 0x3948; mov bx, v217a; lcall 0x5cb, 0x146c; mov bx, 0xb2; lcall 0x5cb, 0x3578
+04e1a lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+04e28 mov di, v2290=1; mov si, v21f2; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+04e3b mov di, v28c0; mov si, v21ee; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+04e4e mov di, v28c4; mov si, v21ee; lcall 0x5cb, 0x1d71; ja @4e5e; jmp @4e6a
+04e5f mov di, v21ee; mov si, v28c8=0; lcall 0x5cb, 0x1304
+04e6b mov di, v249e=22; mov si, v21f2; lcall 0x5cb, 0x1d71; mov bx, 0; jbe @4e7c; dec bx; mov dx, bx; mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; mov cx, 0; je @4e8f; dec cx; or cx, dx; and cx, cx; jne @4e98; jmp @4ef1
+04e99 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x23; xor cx, cx; lcall 0x5cb, 0x28ad
+04eb1 mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+04ec2 lcall 0x5cb, 0x397e; mov bx, 'NOT MUCH IS HAPPENING HERE'; lcall 0x5cb, 0x3587
+04ed0 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+04ee1 lcall 0x5cb, 0x397e; mov bx, "LETS READ THE CAPTAIN'S LOG (KEY 'L')"; lcall 0x5cb, 0x3587; jmp @4ef4; jmp @4cd7
+04ef5 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @4f37
+04f01 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+04f0f mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @4f1f; jmp @4f2b
+04f20 mov di, v21d6; mov si, v2636=8000; lcall 0x5cb, 0x1304
+04f2c mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2636=8000; lcall 0x5cb, 0x1d71; jbe @4f00
+04f4c jmp @587e
+04f50 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+04f5e mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; je @4f6e; jmp @4f72
+04f6f jmp @4cd7
+04f73 mov bx, 'R'; mov ax, v21d2; lcall 0x5cb, 0x1230; je @4f83; jmp @4faa
+04f84 mov bx, 0x6f; mov dx, 0x11; mov cx, 2; mov ax, 1; lcall 0x5cb, 0x300c
+04f96 mov bx, 0x6f; mov dx, 0xbe; xor cx, cx; mov ax, 1; lcall 0x5cb, 0x300c
+04fa7 jmp @4cd7
+04fab mov bx, '5'; mov ax, v21d2; lcall 0x5cb, 0x1230; je @4fbb; jmp @4fd7
+04fbc mov di, v2166; mov si, v2410=0; lcall 0x5cb, 0x1304
+04fc8 mov di, v21f6; mov si, v2410=0; lcall 0x5cb, 0x1304
+04fd4 jmp @4cd7
+04fd8 lcall 0x5cb, 0x1da3; db 8f; pop sp
+04fe0 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @4ff0; jmp @4ff4
+04ff1 jmp @4ff8
+04ff5 jmp @4cd7
+04ff9 lcall 0x5cb, 0xd7d
+04fff mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05010 mov di, v21b6; mov si, v2410=0; lcall 0x5cb, 0x1304
+0501c jmp @2f66
+05021 mov bx, 0x25; mov dx, v2410=0; lcall 0x5cb, 0xc29
+0502d mov bx, 2; lcall 0x5cb, 0x2582
+05036 mov bx, 4; lcall 0x5cb, 0x2582
+0503f mov bx, 8; lcall 0x5cb, 0x2582
+05048 lcall 0x5cb, 0xd7d
+0504e mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+0505f mov di, v21b6; mov si, v2290=1; lcall 0x5cb, 0x1304
+0506b mov di, v21fa; mov si, v2290=1; lcall 0x5cb, 0x1304
+05077 mov si, v175e; lcall 0x5cb, 0x13d8; ja @5084; jmp @509c
+05085 mov bx, 0xaf; mov dx, 0x38; mov cx, 2; lcall 0x5cb, 0x28f3
+05094 mov bx, 'S4C2U7R12D2R2D5L14'; lcall 0x5cb, 0x3194
+0509d mov si, v1762=-1.11421e+06; lcall 0x5cb, 0x13d8; ja @50aa; jmp @50c2
+050ab mov bx, 7; mov dx, 0x38; mov cx, 2; lcall 0x5cb, 0x28f3
+050ba mov bx, 'S4C2E2R40D3R5D10L2D2BH11L20D1R20BD2L20D1R20BD2L20D1R20'; lcall 0x5cb, 0x3194
+050c3 mov si, v1766; lcall 0x5cb, 0x13d8; ja @50d0; jmp @50e8
+050d1 mov bx, 0x4f; mov dx, 0x3f; mov cx, 2; lcall 0x5cb, 0x28f3
+050e0 mov bx, 'S4C2ND5R125D5L12D1L13NU6L25NU6L25NU6L25NU6L12U1L13'; lcall 0x5cb, 0x3194
+050e9 mov si, v176a; lcall 0x5cb, 0x13d8; ja @50f6; jmp @510e
+050f7 mov bx, 0xd2; mov dx, 0x33; mov cx, 2; lcall 0x5cb, 0x28f3
+05106 mov bx, 'S4C2R60L2D1R13L1D1R8D2L2D1L8D1L10DL14D1L45H2U4E2'; lcall 0x5cb, 0x3194
+0510f mov si, v176e; lcall 0x5cb, 0x13d8; ja @511c; jmp @5134
+0511d mov bx, v0105; mov dx, 0x40; mov cx, 2; lcall 0x5cb, 0x28f3
+0512c mov bx, 'S4C2L25U2L6D4R6U2BL6L5U2L2D4U5L7ND6L1G1D4F1R8U1R2U2'; lcall 0x5cb, 0x3194
+05135 mov si, v1776; lcall 0x5cb, 0x13d8; ja @5142; jmp @515a
+05143 mov bx, 0x64; mov dx, 0x30; mov cx, 2; lcall 0x5cb, 0x28f3
+05152 mov bx, 'S4C2NR53D8R53U8D3R22D3L22'; lcall 0x5cb, 0x3194
+0515b mov bx, v2a30=0.07; lcall 0x5cb, 0x3322; mov si, v21fa; lcall 0x5cb, 0x2deb; xchg bx, ax; mov bx, 0x92; mov dx, 0x3c; mov cx, 0x73; lcall 0x5cb, 0x3336
+0517b mov bx, v21fa; lcall 0x5cb, 0x2024; mov ax, 'C='; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, 'S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1'; lcall 0x5cb, 0x11f6; lcall 0x5cb, 0x3194
+0519a mov bx, v21fa; lcall 0x5cb, 0x2024; mov ax, 'C='; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, 'L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3'; lcall 0x5cb, 0x11f6; lcall 0x5cb, 0x3194
+051b9 mov bx, v21fa; lcall 0x5cb, 0x2024; mov ax, 'C='; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, 'BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10'; lcall 0x5cb, 0x11f6; lcall 0x5cb, 0x3194
+051d8 mov bx, 0x1e; mov dx, 0x27; lcall 0x5cb, 0x2865; mov si, v21fa; lcall 0x5cb, 0x2deb; mov cx, bx; mov bx, 0x78; mov dx, 0x1f; lcall 0x5cb, 0x286b
+051f9 mov si, v2866=40; lcall 0x5cb, 0x131b; jmp @522d
+05205 mov si, v21fa; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v2132; lcall 0x5cb, 0x2deb; mov cx, dx; mov dx, 0x31; lcall 0x5cb, 0x28f3
+05222 mov di, v2298=8; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2be2=240; lcall 0x5cb, 0x1d71; jbe @5204
+05242 mov bx, 0x10; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+05253 lcall 0x5cb, 0x397e; mov bx, 'CONTROL RM        CONNING TOWER'; lcall 0x5cb, 0x3587
+05261 mov bx, 0x12; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+05272 lcall 0x5cb, 0x397e; mov bx, 'ENGINE RM         PERISCOPES'; lcall 0x5cb, 0x3587
+05280 mov bx, 0x14; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+05291 lcall 0x5cb, 0x397e; mov bx, 'BATTERY RM        FUEL TANKS'; lcall 0x5cb, 0x3587
+0529f mov bx, 0x16; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+052b0 lcall 0x5cb, 0x397e; mov bx, 'TORPEDO RM        RADIO RM'; lcall 0x5cb, 0x3587
+052be xor bx, bx; mov dx, 0x64; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0xc7; mov cx, 1; lcall 0x5cb, 0x2874
+052d7 mov bx, 2; mov dx, 0x66; lcall 0x5cb, 0x2865; mov bx, v013d; mov dx, 0xc5; mov cx, 1; lcall 0x5cb, 0x2874
+052f1 mov si, v2c68=118; lcall 0x5cb, 0x131b; jmp @5357
+052fd mov si, v2550=20; lcall 0x5cb, 0x131b; jmp @5337
+05309 mov si, v2132; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v212e; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x299c; mov bx, v0b96; mov dx, 0xffff; lcall 0x5cb, 0x29a5
+0532c mov di, v2c6c=130; mov si, v212e; lcall 0x5cb, 0x3c0; mov di, v212e; lcall 0x5cb, 0x1301; mov si, di; mov di, v2c70=150; lcall 0x5cb, 0x1d71; jbe @5308
+0534c mov di, v22ca=16; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v250c=180; lcall 0x5cb, 0x1d71; jbe @52fc
+0536c mov si, v175e; lcall 0x5cb, 0x13d8; ja @5379; jmp @538f
+0537a mov bx, 0x96; mov dx, 0xa6; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+05390 mov si, v1762=-1.11421e+06; lcall 0x5cb, 0x13d8; ja @539d; jmp @53b3
+0539e mov bx, 0x14; mov dx, 0xa6; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+053b4 mov si, v1766; lcall 0x5cb, 0x13d8; ja @53c1; jmp @53d7
+053c2 mov bx, 0x14; mov dx, 0x96; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+053d8 mov si, v176a; lcall 0x5cb, 0x13d8; ja @53e5; jmp @53fa
+053e6 mov bx, 0x96; mov dx, bx; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+053fb mov si, v176e; lcall 0x5cb, 0x13d8; ja @5408; jmp @541e
+05409 mov bx, 0x14; mov dx, 0x86; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+0541f mov si, v1772; lcall 0x5cb, 0x13d8; ja @542c; jmp @5466
+0542d mov bx, 0x96; mov dx, 0x86; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+05443 mov bx, 0x7c; mov dx, 0x1e; mov cx, 2; mov ax, 1; lcall 0x5cb, 0x300c
+05455 mov bx, 0x82; mov dx, 0x20; mov cx, 2; mov ax, 1; lcall 0x5cb, 0x300c
+05467 mov si, v1776; lcall 0x5cb, 0x13d8; ja @5474; jmp @548a
+05475 mov bx, 0x14; mov dx, 0x76; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+0548b mov si, v177a; lcall 0x5cb, 0x13d8; ja @5498; jmp @54d2
+05499 mov bx, 0x96; mov dx, 0x76; lcall 0x5cb, 0x299c; mov bx, v0bd2; xor dx, dx; lcall 0x5cb, 0x29a5
+054af mov bx, 0x7c; mov dx, 0x28; mov cx, 2; mov ax, 1; lcall 0x5cb, 0x300c
+054c1 mov bx, 0x7c; mov dx, 0x2b; mov cx, 2; mov ax, 1; lcall 0x5cb, 0x300c
+054d3 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @5515
+054df lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+054ed mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @54fd; jmp @5509
+054fe mov di, v21d6; mov si, v2c74=9000; lcall 0x5cb, 0x1304
+0550a mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2c74=9000; lcall 0x5cb, 0x1d71; jbe @54de
+0552a mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x28; xor cx, cx; lcall 0x5cb, 0x28ad
+05542 mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+05553 lcall 0x5cb, 0x397e; mov bx, "THIS IS THE DAMAGE REPORT (KEY 'R')"; lcall 0x5cb, 0x3587
+05561 mov bx, 3; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+0556f lcall 0x5cb, 0x397e; mov bx, 'THE AFFECTED AREA IS HIGHLIGHTED'; lcall 0x5cb, 0x3587
+0557d mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+0558e lcall 0x5cb, 0x397e; mov bx, 'AND RENDERED USELESS - REFER TO THE'; lcall 0x5cb, 0x3587
+0559c mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+055ad lcall 0x5cb, 0x397e; mov bx, 'MANUAL FOR REPAIRS BY THE SUBTENDER'; lcall 0x5cb, 0x3587
+055bb mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @55fd
+055c7 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+055d5 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @55e5; jmp @55f1
+055e6 mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+055f2 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @55c6
+05612 mov di, v1762=-1.11421e+06; mov si, v2d14=0; lcall 0x5cb, 0x1304
+0561e mov di, v2136; mov si, v2d14=0; lcall 0x5cb, 0x1304
+0562a lcall 0x5cb, 0xd7d
+05630 mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05641 jmp @2dca
+05645 lcall 0x5cb, 0x1da3; mov ds, word ptr [si - 0x34]; lcall 0x5cb, 0xd7d
+05653 mov di, v21b6; mov si, v2d14=0; lcall 0x5cb, 0x1304
+0565f mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05670 jmp @2f66
+05675 xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0x3c; xor cx, cx; lcall 0x5cb, 0x28ad
+0568c mov di, v21fe; mov si, v2290=1; lcall 0x5cb, 0x1304
+05698 mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+056a9 lcall 0x5cb, 0x397e; mov bx, 'LAST SHIP IN LOG LIST SUNK'; lcall 0x5cb, 0x3573
+056b7 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 1; lcall 0x5cb, 0x1275
+056c8 lcall 0x5cb, 0x397e; mov bx, 'DO YOU WISH TO REVIEW BEFORE DELETION'; lcall 0x5cb, 0x3573
+056d6 mov bx, v25e4; lcall 0x5cb, 0x2ac1; add word ptr [bp + si + 0x2ef2], bx; retf; add ax, v0701; mov bx, v2202; lcall 0x5cb, 0x2fb9
+056ef mov bx, 'R'; lcall 0x5cb, 0x118; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; lcall 0x5cb, 0x162
+05706 mov bx, v2202; mov dx, 1; lcall 0x5cb, 0x1f8d; xchg bx, ax; mov bx, 'Y'; lcall 0x5cb, 0x1230; je @571f; jmp @5747
+05720 mov bx, 2; lcall 0x5cb, 0xcd
+05729 lcall 0x5cb, 0x1da3; jle @5762
+05731 mov bx, 'R'; lcall 0x5cb, 0x118; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; lcall 0x5cb, 0x162
+05748 mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+05759 lcall 0x5cb, 0x397e; mov bx, 'LOG CLEARED'; lcall 0x5cb, 0x3587
+05767 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @57d5
+05773 mov si, v2206; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, 2; lcall 0x5cb, 0x109
+05786 xor bx, bx; lcall 0x5cb, 0x225e; mov dx, v220a; lcall 0x5cb, 0x36a6
+05796 mov bx, v220e; mov dx, bx; lcall 0x5cb, 0x36a6
+057a1 mov bx, v2212; mov dx, bx; lcall 0x5cb, 0x36a6
+057ac mov bx, v2216; mov dx, bx; lcall 0x5cb, 0x36a6
+057b7 mov si, v2206; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, 2; lcall 0x5cb, 0x113
+057ca mov di, v2290=1; mov si, v2206; lcall 0x5cb, 0x3c0; mov di, v2206; lcall 0x5cb, 0x1301; mov si, di; mov di, v28ac=89; lcall 0x5cb, 0x1d71; jbe @5772
+057ea mov di, v2290=1; mov si, v21fe; lcall 0x5cb, 0x1d71; jne @57fa; jmp @5822
+057fb mov bx, 2; mov dx, 0x5a; lcall 0x5cb, 0x109
+05807 xor bx, bx; lcall 0x5cb, 0x225e; mov dx, v220e; lcall 0x5cb, 0x36a6
+05817 mov bx, 2; mov dx, 0x5a; lcall 0x5cb, 0x113
+05823 mov di, v21fe; mov si, v23e4=0; lcall 0x5cb, 0x1304
+0582f mov bx, v2202; mov dx, 1; lcall 0x5cb, 0x1f8d; xchg bx, ax; mov bx, 'Y'; lcall 0x5cb, 0x1230; je @5848; jmp @5851
+05849 lcall 0x5cb, 0x1dba; jmp @5855
+05852 jmp @586e
+05856 mov bx, v25e4; mov dx, v2202; lcall 0x5cb, 0x11c0
+05862 mov bx, 2; lcall 0x5cb, 0xcd
+0586b jmp @2f66
+0586f mov bx, 2; lcall 0x5cb, 0xcd
+05878 lcall 0x5cb, 0x1dcc
+0587f lcall 0x5cb, 0xd7d
+05885 mov bx, 9; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05896 mov bx, 0x25; mov dx, v23e4=0; lcall 0x5cb, 0xc29
+058a2 xor bx, bx; lcall 0x5cb, 0xede
+058aa mov di, v221a; mov si, v23e4=0; lcall 0x5cb, 0x1304
+058b6 mov bx, 'R'; lcall 0x5cb, 0x118; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; lcall 0x5cb, 0x162
+058cd mov bx, 2; lcall 0x5cb, 0x3773; mov bx, v220a; mov dx, 2; lcall 0x5cb, 0x3795; mov bx, v220e; mov dx, 0xf; lcall 0x5cb, 0x3795; mov bx, v2212; mov dx, 5; lcall 0x5cb, 0x3795; mov bx, v2216; mov dx, 0xa; lcall 0x5cb, 0x3795
+05902 mov bx, 0x7d; xor dx, dx; lcall 0x5cb, 0x2865; mov bx, 0xa5; mov dx, 0x18; mov cx, 3; lcall 0x5cb, 0x28ad
+0591b mov si, v23e4=0; lcall 0x5cb, 0x131b; jmp @5950
+05927 mov si, v2132; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, 0x7d; lcall 0x5cb, 0x2865; mov bx, 0xa5; mov cx, 2; lcall 0x5cb, 0x286b
+05945 mov di, v23e0=2; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2420=24; lcall 0x5cb, 0x1d71; jbe @5926
+05965 mov bx, 0x7d; xor dx, dx; lcall 0x5cb, 0x2865; mov bx, 0x90; mov dx, 0xd; mov cx, 1; lcall 0x5cb, 0x28ad
+0597e mov si, v23e0=2; lcall 0x5cb, 0x131b; jmp @5a2e
+0598a mov si, v2d7e=127; lcall 0x5cb, 0x131b; jmp @5a0b
+05996 mov si, v2d82=126; lcall 0x5cb, 0x131b; jmp @59d0
+059a2 mov di, v23e0=2; mov si, v221e; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; mov si, v21fa; lcall 0x5cb, 0x2deb; mov cx, 3; lcall 0x5cb, 0x28f3
+059c5 mov di, v23e0=2; mov si, v21fa; lcall 0x5cb, 0x3c0; mov di, v21fa; lcall 0x5cb, 0x1301; mov si, di; mov di, v2d86=142; lcall 0x5cb, 0x1d71; jbe @59a1
+059e5 mov si, v221e; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v2222; lcall 0x5cb, 0x2deb; mov cx, 3; lcall 0x5cb, 0x28f3
+05a00 mov di, v23e0=2; mov si, v2222; lcall 0x5cb, 0x3c0; mov di, v2222; lcall 0x5cb, 0x1301; mov si, di; mov di, v2d8a=141; lcall 0x5cb, 0x1d71; ja @5a22; jmp @5995
+05a23 mov di, v24f8=4; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v24fc=10; lcall 0x5cb, 0x1d71; ja @5a45; jmp @5989
+05a46 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 0xc; lcall 0x5cb, 0x1275
+05a57 lcall 0x5cb, 0x397e; mov bx, "CAPTAIN'S LOG"; lcall 0x5cb, 0x3587
+05a65 mov di, v2226; mov si, v23e4=0; lcall 0x5cb, 0x1304
+05a71 lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+05a7f lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+05a8d lcall 0x5cb, 0x397e; mov bx, 'SHIP          TONNAGE       DATE SUNK'; lcall 0x5cb, 0x3587
+05a9b lcall 0x5cb, 0x397e; mov bx, '_____________________________________'; lcall 0x5cb, 0x3587
+05aa9 lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+05ab7 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @5bba
+05ac3 mov si, v221e; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, 2; lcall 0x5cb, 0x109
+05ad6 mov di, v2df4=9; mov si, v221e; lcall 0x5cb, 0x1d71; mov bx, 0; jne @5ae7; dec bx; mov di, v2520=29; lcall 0x5cb, 0x1d71; mov dx, 0; jne @5af5; dec dx; or dx, bx; mov di, v2df8=39; lcall 0x5cb, 0x1d71; mov bx, 0; jne @5b05; dec bx; or bx, dx; mov di, v2dfc=49; lcall 0x5cb, 0x1d71; mov dx, 0; jne @5b15; dec dx; or dx, bx; mov di, v2e00=70; lcall 0x5cb, 0x1d71; mov bx, 0; jne @5b25; dec bx; or bx, dx; and bx, bx; jne @5b2e; jmp @5bae
+05b2f lcall 0x5cb, 0x397e; mov bx, v220e; mov dx, 0xf; lcall 0x5cb, 0x1f8d; lcall 0x5cb, 0x3573
+05b45 mov bx, '######'; lcall 0x5cb, 0x3948; mov bx, v2212; lcall 0x5cb, 0x2223; lcall 0x5cb, 0x356e
+05b5b lcall 0x5cb, 0x397e; mov bx, '      '; lcall 0x5cb, 0x3573; mov bx, v2216; mov dx, 6; lcall 0x5cb, 0x1f8d; lcall 0x5cb, 0x3573; mov bx, '1943'; lcall 0x5cb, 0x3587
+05b81 mov bx, v2212; lcall 0x5cb, 0x2223; lcall 0x5cb, 0x2da3; mov di, v221a; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x1301
+05b9c mov di, v2290=1; mov si, v2226; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+05baf mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v28ac=89; lcall 0x5cb, 0x1d71; ja @5bd1; jmp @5ac2
+05bd2 mov bx, 2; mov dx, 0x5a; lcall 0x5cb, 0x109
+05bde mov bx, v220e; lcall 0x5cb, 0x2223; lcall 0x5cb, 0x2da3; mov di, v222a; lcall 0x5cb, 0x1301
+05bf4 mov bx, 2; lcall 0x5cb, 0xcd
+05bfd lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+05c0b mov bx, '\\             \\######'; lcall 0x5cb, 0x3948; mov bx, 'SHIPS SUNK      '; lcall 0x5cb, 0x3573; mov bx, v2226; lcall 0x5cb, 0x3578
+05c24 mov bx, '\\             \\######'; lcall 0x5cb, 0x3948; mov bx, 'TOTAL TONNAGE   '; lcall 0x5cb, 0x3573; mov bx, v221a; lcall 0x5cb, 0x3578
+05c3d lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+05c4b lcall 0x5cb, 0x397e; mov bx, 'MISSIONS'; lcall 0x5cb, 0x3587
+05c59 mov bx, '\\             \\######'; lcall 0x5cb, 0x3948; mov bx, 'COMPLETED       '; lcall 0x5cb, 0x3573; mov bx, 2; lcall 0x5cb, 0x3582
+05c72 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @5cb4
+05c7e lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+05c8c mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @5c9c; jmp @5ca8
+05c9d mov di, v21d6; mov si, v2e82=4000; lcall 0x5cb, 0x1304
+05ca9 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2e82=4000; lcall 0x5cb, 0x1d71; jbe @5c7d
+05cc9 xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+05ce0 mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+05cf1 lcall 0x5cb, 0x397e; mov bx, 'THE FIRST GROUP OF SHIPS ARE'; lcall 0x5cb, 0x3587
+05cff mov bx, 3; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+05d10 lcall 0x5cb, 0x397e; mov bx, 'FREIGHTERS THEN OIL TANKERS,'; lcall 0x5cb, 0x3587
+05d1e mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 8; lcall 0x5cb, 0x1275
+05d2f lcall 0x5cb, 0x397e; mov bx, 'TRANSPORTS,PATROL BOATS'; lcall 0x5cb, 0x3587
+05d3d mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 0xa; lcall 0x5cb, 0x1275
+05d4e lcall 0x5cb, 0x397e; mov bx, ' AND  DESTROYERS'; lcall 0x5cb, 0x3587
+05d5c mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @5d9e
+05d68 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+05d76 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @5d86; jmp @5d92
+05d87 mov di, v21d6; mov si, v2e82=4000; lcall 0x5cb, 0x1304
+05d93 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2e82=4000; lcall 0x5cb, 0x1d71; jbe @5d67
+05db3 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+05dcb mov bx, 3; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+05ddc lcall 0x5cb, 0x397e; mov bx, 'ALL OF THE NAMES AND TONNAGES OF'; lcall 0x5cb, 0x3587
+05dea mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+05dfb lcall 0x5cb, 0x397e; mov bx, 'SHIPS SUNK WERE ACTUALLY SUNK OR'; lcall 0x5cb, 0x3587
+05e09 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+05e1a lcall 0x5cb, 0x397e; mov bx, 'DESTROYED DURING WORLD WAR II'; lcall 0x5cb, 0x3587
+05e28 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @5e6a
+05e34 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+05e42 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @5e52; jmp @5e5e
+05e53 mov di, v21d6; mov si, v2636=8000; lcall 0x5cb, 0x1304
+05e5f mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2636=8000; lcall 0x5cb, 0x1d71; jbe @5e33
+05e7f mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+05e97 mov bx, 3; lcall 0x5cb, 0x125b; mov bx, 4; lcall 0x5cb, 0x1275
+05ea8 lcall 0x5cb, 0x397e; mov bx, 'ALSO ALL OF THE DESTROYERS USED IN'; lcall 0x5cb, 0x3587
+05eb6 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+05ec7 lcall 0x5cb, 0x397e; mov bx, 'THIS PROGRAM WERE SUNK BY GATO'; lcall 0x5cb, 0x3587
+05ed5 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 0xc; lcall 0x5cb, 0x1275
+05ee6 lcall 0x5cb, 0x397e; mov bx, 'CLASS SUBMARINES'; lcall 0x5cb, 0x3587
+05ef4 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @5f36
+05f00 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+05f0e mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @5f1e; jmp @5f2a
+05f1f mov di, v21d6; mov si, v2636=8000; lcall 0x5cb, 0x1304
+05f2b mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v2636=8000; lcall 0x5cb, 0x1d71; jbe @5eff
+05f4b lcall 0x5cb, 0xd7d
+05f51 mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05f62 mov di, v21b6; mov si, v2410=0; lcall 0x5cb, 0x1304
+05f6e mov di, v2136; mov si, v2290=1; lcall 0x5cb, 0x1304
+05f7a jmp @2f66
+05f7e lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+05f8c mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; je @5f7d
+05f9a lcall 0x5cb, 0x1da3; mov ds, word ptr [si - 0x34]; lcall 0x5cb, 0xd7d
+05fa8 mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05fb9 mov di, v21b6; mov si, v23e4=0; lcall 0x5cb, 0x1304
+05fc5 jmp @2f66
+05fca lcall 0x5cb, 0xd7d
+05fd0 mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+05fe1 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @6006
+05fed mov si, v2132; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x2582
+05ffb mov di, v2290=1; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2fbc=14; lcall 0x5cb, 0x1d71; jbe @5fec
+0601b mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 0xf; lcall 0x5cb, 0x1275
+0602c lcall 0x5cb, 0x397e; mov bx, 'GAME CONTROL'; lcall 0x5cb, 0x3587
+0603a mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 1; lcall 0x5cb, 0x1275
+0604b lcall 0x5cb, 0x397e; mov bx, '     [1] DIFFICULTY LEVEL'; lcall 0x5cb, 0x3573; mov bx, 0x22; lcall 0x5cb, 0x2813; mov bx, v222e; lcall 0x5cb, 0x3578
+06069 lcall 0x5cb, 0x397e; mov bx, '     [2] SOUND'; lcall 0x5cb, 0x3573; mov bx, 0x22; lcall 0x5cb, 0x2813; mov bx, v09c2; lcall 0x5cb, 0x3578
+06087 lcall 0x5cb, 0x397e; mov bx, '     [3] TIME OF DAY'; lcall 0x5cb, 0x3573; mov bx, 0x22; lcall 0x5cb, 0x2813; mov bx, v21b2; lcall 0x5cb, 0x3578
+060a5 lcall 0x5cb, 0x397e; mov bx, "     [4] RESET CAPTAIN'S LOG"; lcall 0x5cb, 0x3587
+060b3 mov bx, 0x17; lcall 0x5cb, 0x125b; mov bx, 8; lcall 0x5cb, 0x1275
+060c4 lcall 0x5cb, 0x397e; mov bx, '(Press RETURN to continue)'; lcall 0x5cb, 0x3573
+060d2 mov bx, 0xd; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+060e3 mov bx, 'NUMBER OF ITEM TO CHANGE'; lcall 0x5cb, 0x2ac1; add byte ptr [bp + si + 0x2ef2], bl; retf; add ax, v0501; mov bx, v221e; lcall 0x5cb, 0x2fb9
+060fc mov bx, 0xd; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+0610d lcall 0x5cb, 0x397e; mov bx, ' '; lcall 0x5cb, 0x3587
+0611b mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x1d71; mov bx, 0; jae @612c; dec bx; mov di, v24f8=4; lcall 0x5cb, 0x1d71; mov dx, 0; jbe @613a; dec dx; or dx, bx; and dx, dx; jne @6143; jmp @616a
+06144 lcall 0x5cb, 0xd7d
+0614a mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+0615b mov di, v21b6; mov si, v23e4=0; lcall 0x5cb, 0x1304
+06167 jmp @2f66
+0616b mov si, v221e; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x1dfa; add al, 0x81; cmp bp, cx; cmp bx, word ptr [bx + di]; cmp al, 0x49; cmp al, 0xcc; mov bx, 0x10; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+06193 mov bx, 'NEW DIFFICULTY LEVEL'; lcall 0x5cb, 0x2ac1; add byte ptr [bp + si + 0x2ef2], bl; retf; add ax, v0501; mov bx, v222e; lcall 0x5cb, 0x2fb9
+061ac mov di, v2df4=9; mov si, v222e; lcall 0x5cb, 0x1d71; ja @61bc; jmp @61cb
+061bd mov di, v222e; mov si, v2df4=9; lcall 0x5cb, 0x1304; jmp @61e5
+061cc mov si, v222e; lcall 0x5cb, 0x13d8; jb @61d9; jmp @61e5
+061da mov di, v222e; mov si, v3090=0; lcall 0x5cb, 0x1304
+061e6 jmp @6039
+061ea mov di, v2290=1; mov si, v09c2; lcall 0x5cb, 0x3c0; mov dx, si; lcall 0x5cb, 0x2e36; xchg bx, ax; mov bx, dx; mov cx, 2; cdq; idiv cx; mov cx, bx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, cx; lcall 0x5cb, 0x1301
+06216 jmp @6039
+0621a mov di, v2290=1; mov si, v21b2; lcall 0x5cb, 0x3c0; mov dx, si; lcall 0x5cb, 0x2e36; xchg bx, ax; mov bx, dx; mov cx, 2; cdq; idiv cx; mov cx, bx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, cx; lcall 0x5cb, 0x1301
+06246 jmp @6039
+0624a mov bx, 'R'; lcall 0x5cb, 0x118; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; lcall 0x5cb, 0x162
+06261 mov bx, 2; lcall 0x5cb, 0x3773; mov bx, v220a; mov dx, 2; lcall 0x5cb, 0x3795; mov bx, v220e; mov dx, 0xf; lcall 0x5cb, 0x3795; mov bx, v2212; mov dx, 5; lcall 0x5cb, 0x3795; mov bx, v2216; mov dx, 0xa; lcall 0x5cb, 0x3795
+06296 lcall 0x5cb, 0x1da3; xor esp, ecx; mov bx, 2; lcall 0x5cb, 0xcd
+062a7 jmp @6039
+062ac nop
+062ae mov bx, v3cab; lcall 0x5cb, 0x22bf
+062b7 mov bx, 2; lcall 0x5cb, 0x2582
+062c0 mov bx, 4; lcall 0x5cb, 0x2582
+062c9 mov bx, 8; lcall 0x5cb, 0x2582
+062d2 mov di, v21b6; mov si, v2290=1; lcall 0x5cb, 0x1304
+062de mov bx, 1; lcall 0x5cb, 0x1033; xor bx, bx; lcall 0x5cb, 0x104d
+062ee mov bx, 0x12; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+062ff lcall 0x5cb, 0xd7d
+06305 mov bx, 3; mov dx, 1; lcall 0x5cb, 0x2865; mov bx, v013d; mov dx, 0xc4; mov cx, 1; lcall 0x5cb, 0x28ad
+0631f mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @63a3
+0632b mov bx, v2132; lcall 0x5cb, 0x22e9; mov bx, v21be; lcall 0x5cb, 0x22e9; mov bx, v2232; lcall 0x5cb, 0x22e9; mov bx, v2236; lcall 0x5cb, 0x22e9
+0634c mov bx, v2236; lcall 0x5cb, 0x3322; mov si, v2232; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v21be; lcall 0x5cb, 0x2deb; mov cx, bx; mov si, v2132; lcall 0x5cb, 0x2deb; xchg dx, cx; mov ax, 2; lcall 0x5cb, 0x3336
+0637b mov si, v21be; lcall 0x5cb, 0x2deb; mov dx, bx; mov si, v2132; lcall 0x5cb, 0x2deb; xor cx, cx; mov ax, 2; lcall 0x5cb, 0x300c
+06398 mov di, v2290=1; mov si, v212e; lcall 0x5cb, 0x3c0; mov di, v212e; lcall 0x5cb, 0x1301; mov si, di; mov di, v2534=12; lcall 0x5cb, 0x1d71; ja @63ba; jmp @632a
+063bb mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @63f0
+063c7 mov si, v2132; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, 3; lcall 0x5cb, 0x2865; mov bx, v013d; mov cx, 3; lcall 0x5cb, 0x286b
+063e5 mov di, v2dfc=49; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v3094=199; lcall 0x5cb, 0x1d71; jbe @63c6
+06405 mov si, v23e0=2; lcall 0x5cb, 0x131b; jmp @6438
+06411 mov si, v21be; lcall 0x5cb, 0x2deb; mov dx, 1; lcall 0x5cb, 0x2865; mov dx, 0xc5; mov cx, 3; lcall 0x5cb, 0x286b
+0642d mov di, v3098=63; mov si, v21be; lcall 0x5cb, 0x3c0; mov di, v21be; lcall 0x5cb, 0x1301; mov si, di; mov di, v309c=319; lcall 0x5cb, 0x1d71; jbe @6410
+0644d xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0xc7; mov cx, 3; lcall 0x5cb, 0x2874
+06465 mov bx, 1; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013d; xor cx, cx; lcall 0x5cb, 0x286b
+0647a mov bx, 2; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013d; mov cx, 3; lcall 0x5cb, 0x286b
+06490 mov di, v30a0; mov si, v2142; lcall 0x5cb, 0x4f8; mov si, v30a4=196; lcall 0x5cb, 0x3a8; lcall 0x5cb, 0x2e36; mov di, v30a8; mov si, v213e; lcall 0x5cb, 0x4f8; mov dx, bx; lcall 0x5cb, 0x2e36; xor cx, cx; lcall 0x5cb, 0x28f3
+064c2 mov bx, '5'; mov ax, v21d2; lcall 0x5cb, 0x1230; je @64d2; jmp @64ea
+064d3 mov di, v2166; mov si, v30ac=0; lcall 0x5cb, 0x1304
+064df mov di, v21f6; mov si, v30ac=0; lcall 0x5cb, 0x1304
+064eb mov di, v23e0=2; mov si, v222e; lcall 0x5cb, 0x1d71; jbe @64fb; jmp @6761
+064fc mov di, v30a0; mov si, v1d02; lcall 0x5cb, 0x4f8; mov si, v30a4=196; lcall 0x5cb, 0x3a8; lcall 0x5cb, 0x2e36; mov di, v30a8; mov si, v1cde=0; lcall 0x5cb, 0x4f8; mov dx, bx; lcall 0x5cb, 0x2e36; xor cx, cx; lcall 0x5cb, 0x28f3
+0652e mov bx, 0x5e; mov dx, 0x7c; xor cx, cx; lcall 0x5cb, 0x28f3
+0653c mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+06554 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+06562 lcall 0x5cb, 0x397e; mov bx, 'THIS IS THE CHART OF YOUR PATROL AREA'; lcall 0x5cb, 0x3587
+06570 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 3; lcall 0x5cb, 0x1275
+06581 lcall 0x5cb, 0x397e; mov bx, 'YOU ARE THE GREEN DOT IN QUADRANT 5'; lcall 0x5cb, 0x3587
+0658f mov bx, 5; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+0659d lcall 0x5cb, 0x397e; mov bx, 'YOUR SUB-TENDER IS IN QUADRANT 7'; lcall 0x5cb, 0x3587
+065ab mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 7; lcall 0x5cb, 0x1275
+065bc lcall 0x5cb, 0x397e; mov bx, 'ENEMY SHIPS ARE RED DOTS '; lcall 0x5cb, 0x3587
+065ca mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @660c
+065d6 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+065e4 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @65f4; jmp @6600
+065f5 mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+06601 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @65d5
+06621 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x32; xor cx, cx; lcall 0x5cb, 0x28ad
+06639 mov bx, 2; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+06647 lcall 0x5cb, 0x397e; mov bx, 'THIS IS THE CHART OF YOUR PATROL AREA'; lcall 0x5cb, 0x3587
+06655 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+06666 lcall 0x5cb, 0x397e; mov bx, 'WE CAN GET A CLOSER LOOK AT THE'; lcall 0x5cb, 0x3587
+06674 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+06685 lcall 0x5cb, 0x397e; mov bx, 'QUADRANT WE ARE IN BY CHECKING'; lcall 0x5cb, 0x3587
+06693 mov bx, 6; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+066a4 lcall 0x5cb, 0x397e; mov bx, "THE LOCAL QUADRANT MAP (KEY 'Q')"; lcall 0x5cb, 0x3587
+066b2 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @66f4
+066be lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+066cc mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @66dc; jmp @66e8
+066dd mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+066e9 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @66bd
+06709 mov di, v223a; mov si, v2514=5; lcall 0x5cb, 0x1304
+06715 jmp @77ab
+06719 mov si, v221e; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1cfa; mov di, v30a0; lcall 0x5cb, 0x4f8; mov si, v30a4=196; lcall 0x5cb, 0x3a8; mov dx, bx; lcall 0x5cb, 0x2e36; add dx, v1cd6; mov si, dx; mov di, v30a8; lcall 0x5cb, 0x4f8; mov dx, bx; lcall 0x5cb, 0x2e36; mov cx, 2; lcall 0x5cb, 0x28f3
+06762 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @6779
+0676e mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v255c=100; lcall 0x5cb, 0x1d71; jbe @676d
+0678e lcall 0x5cb, 0x1da3; xor bl, byte ptr [bp + si]
+06796 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+067a4 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; mov dx, 0; jne @67b5; dec dx; mov bx, '5'; lcall 0x5cb, 0x1230; mov cx, 0; jne @67c3; dec cx; or cx, dx; and cx, cx; je @67cc; jmp @648f
+067cd lcall 0x5cb, 0x1da3; mov ds, word ptr [si - 0x34]; mov bx, 'Z'; mov ax, v21d2; lcall 0x5cb, 0x1230; je @67e5; jmp @688a
+067e6 mov si, v2192; lcall 0x5cb, 0x13d8; je @67f3; jmp @687a
+067f4 mov bx, 1; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+06802 mov bx, 'PASSWORD?'; lcall 0x5cb, 0x2ac1; add bl, byte ptr [bp + si + 0x2ef2]; retf; add ax, v0701; mov bx, v223e; lcall 0x5cb, 0x2fb9
+0681b mov bx, 'PAED'; mov ax, v223e; lcall 0x5cb, 0x1230; je @682b; jmp @6867
+0682c mov bx, 1; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+0683a mov bx, 'ENTER NEW SUB COORDINATES (X,Y):'; lcall 0x5cb, 0x2ac1; add bl, byte ptr [bp + si + 0x2ef2]; retf; add ax, v0502; add ax, v3ebb; and word ptr [bp + si + 0x2fb9], bx; retf; add ax, 0x42bb; and word ptr [bp + si + 0x2fb9], bx; retf; add ax, 0x9acc; mov word ptr [0xcb1d], ax; add ax, 0x509a
+06864 jmp @62ab
+06868 mov bx, v25e4; mov dx, v21d2; lcall 0x5cb, 0x11c0
+06874 jmp @62ab; jmp @688a
+0687b mov bx, v25e4; mov dx, v21d2; lcall 0x5cb, 0x11c0
+06887 jmp @62ab
+0688b mov bx, 2; lcall 0x5cb, 0x257f
+06894 mov bx, 4; lcall 0x5cb, 0x257f
+0689d mov bx, 8; lcall 0x5cb, 0x257f
+068a6 lcall 0x5cb, 0xd7d
+068ac mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+068bd mov di, v21b6; mov si, v23e4=0; lcall 0x5cb, 0x1304
+068c9 jmp @2f66
+068ce mov bx, 0x25; mov dx, v23e4=0; lcall 0x5cb, 0xc29
+068da mov di, v2df4=9; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v0320; mov dx, 0xb2; lcall 0x5cb, 0xc29
+068f1 mov di, v2290=1; mov si, v21b6; lcall 0x5cb, 0x1d71; je @6901; jmp @69f0
+06902 mov di, v2242; mov si, v31ee=-3; lcall 0x5cb, 0x1304; mov si, v3094=199; lcall 0x5cb, 0x131b; jmp @69b5
+06919 mov si, v221e; mov dx, si; lcall 0x5cb, 0x2deb; mov cx, dx; mov dx, bx; xor bx, bx; lcall 0x5cb, 0x2865; mov si, cx; mov di, v31f2=-4; lcall 0x5cb, 0x3c0; lcall 0x5cb, 0x2e36; mov dx, bx; mov bx, v013f; mov cx, 2; lcall 0x5cb, 0x28ad
+0694b mov si, v31f6=1400; lcall 0x5cb, 0x131b; jmp @6989
+06957 mov di, v31fa=0.05; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v2222; lcall 0x5cb, 0x132f; sbb word ptr [bp + si + 0x1e2b], 0x5cb; lcall 0x5cb, 0x2e36; mov dx, v2286; lcall 0x5cb, 0xc29
+0697e mov di, v31fe=300; mov si, v2222; lcall 0x5cb, 0x3c0; mov di, v2222; lcall 0x5cb, 0x1301; mov si, di; mov di, v3202=32000; lcall 0x5cb, 0x1d71; jbe @6956
+0699e mov bx, 0x25; mov dx, v3206=0; lcall 0x5cb, 0xc29
+069aa mov di, v2242; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, v2242; lcall 0x5cb, 0x13d8; jb @69ca; jmp @69dc; mov si, di; mov di, v2554=3; lcall 0x5cb, 0x1d71; jb @69d9; jmp @6918; jmp @69ec; mov di, v2554=3; mov si, v221e; lcall 0x5cb, 0x1d71; ja @69ec; jmp @6918
+069ed jmp @6c24
+069f1 mov bx, v0125; xor dx, dx; mov cx, 3; lcall 0x5cb, 0x28f3
+069ff mov bx, 'S4C3G30D20L50G40D7BL13H7U20H20L32H40L20H32'; lcall 0x5cb, 0x3194
+06a08 mov bx, 0x20; mov dx, 0x8c; mov cx, 3; lcall 0x5cb, 0x28f3
+06a17 mov bx, 'S4C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7'; lcall 0x5cb, 0x3194
+06a20 mov di, v2246; mov si, v2418=-1; lcall 0x5cb, 0x1304; mov si, v3094=199; lcall 0x5cb, 0x131b; jmp @6bf3
+06a37 mov di, v2400=170; mov si, v221e; lcall 0x5cb, 0x1d71; je @6a47; jmp @6a5f
+06a48 mov bx, 0x6b; mov dx, 0x82; mov cx, 3; lcall 0x5cb, 0x28f3
+06a57 mov bx, 'S4A2C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7'; lcall 0x5cb, 0x3194
+06a60 mov si, v221e; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, 4; cdq; idiv cx; or dx, dx; je @6a76; jmp @6ad5
+06a77 mov si, v31f6=1400; lcall 0x5cb, 0x131b; jmp @6ab5
+06a83 mov di, v31fa=0.05; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v2222; lcall 0x5cb, 0x132f; sbb word ptr [bp + si + 0x1e2b], 0x5cb; lcall 0x5cb, 0x2e36; mov dx, v2286; lcall 0x5cb, 0xc29
+06aaa mov di, v31fe=300; mov si, v2222; lcall 0x5cb, 0x3c0; mov di, v2222; lcall 0x5cb, 0x1301; mov si, di; mov di, v3202=32000; lcall 0x5cb, 0x1d71; jbe @6a82
+06aca mov bx, 0x25; mov dx, v3206=0; lcall 0x5cb, 0xc29
+06ad6 mov di, v32e2=188; mov si, v221e; lcall 0x5cb, 0x1d71; je @6ae6; jmp @6afe
+06ae7 mov bx, 0xa7; mov dx, 0x8b; mov cx, 3; lcall 0x5cb, 0x28f3
+06af6 mov bx, 'S4A0C3NR7H12U10H5BR40G13D9G8D10NF11L10NG6BR10BF10BU4BE9NF5H10NL3E12R10BL24H13U7BD32NR3L13NG8NH11'; lcall 0x5cb, 0x3194
+06aff mov si, v221e; lcall 0x5cb, 0x2deb; mov dx, bx; xor bx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov cx, 2; lcall 0x5cb, 0x286b
+06b1c mov di, v334a=190; mov si, v221e; lcall 0x5cb, 0x1d71; je @6b2c; jmp @6b43
+06b2d mov bx, 0x8c; xor dx, dx; mov cx, 3; lcall 0x5cb, 0x28f3
+06b3b mov bx, 'S4C3D5L30G23D32G34D3'; lcall 0x5cb, 0x3194
+06b44 mov di, v3366=178; mov si, v221e; lcall 0x5cb, 0x1d71; je @6b54; jmp @6b6c
+06b55 mov bx, v013f; mov dx, 0x5a; mov cx, 3; lcall 0x5cb, 0x28f3
+06b64 mov bx, 'S4C3L20H23U23H34'; lcall 0x5cb, 0x3194
+06b6d mov di, v337e=145; mov si, v221e; lcall 0x5cb, 0x1d71; je @6b7d; jmp @6b95
+06b7e mov bx, 0x57; mov dx, 0x23; mov cx, 3; lcall 0x5cb, 0x28f3
+06b8d mov bx, 'S4A0C3G12L33NG23H12'; lcall 0x5cb, 0x3194
+06b96 mov di, v339a=155; mov si, v221e; lcall 0x5cb, 0x1d71; je @6ba6; jmp @6bbe
+06ba7 mov bx, 0x57; mov dx, 0x23; mov cx, 3; lcall 0x5cb, 0x28f3
+06bb6 mov bx, 'S4A0C3R35NE8R4NF23R12'; lcall 0x5cb, 0x3194
+06bbf mov di, v33b8=140; mov si, v221e; lcall 0x5cb, 0x1d71; je @6bcf; jmp @6be7
+06bd0 mov bx, 0x57; mov dx, 0x23; mov cx, 3; lcall 0x5cb, 0x28f3
+06bdf mov bx, 'S4A0C3G12D15NG9'; lcall 0x5cb, 0x3194
+06be8 mov di, v2246; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, v2246; lcall 0x5cb, 0x13d8; jb @6c08; jmp @6c17; mov si, di; lcall 0x5cb, 0x13d8; jb @6c14; jmp @6a36; jmp @6c24; mov si, v221e; lcall 0x5cb, 0x13d8; ja @6c24; jmp @6a36
+06c25 mov bx, 'R'; lcall 0x5cb, 0x118; mov bx, 2; mov dx, 'LOG1'; mov cx, 0x20; lcall 0x5cb, 0x162
+06c3c mov bx, 2; lcall 0x5cb, 0x3773; mov bx, v220a; mov dx, 2; lcall 0x5cb, 0x3795; mov bx, v220e; mov dx, 0xf; lcall 0x5cb, 0x3795; mov bx, v2212; mov dx, 5; lcall 0x5cb, 0x3795; mov bx, v2216; mov dx, 0xa; lcall 0x5cb, 0x3795
+06c71 lcall 0x5cb, 0x1da3; xor esp, ecx; mov bx, 2; lcall 0x5cb, 0xcd
+06c82 mov bx, 5; lcall 0x5cb, 0x125b; mov bx, 1; lcall 0x5cb, 0x1275
+06c93 lcall 0x5cb, 0xd7d
+06c99 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 2; lcall 0x5cb, 0x1275
+06caa lcall 0x5cb, 0x397e; mov bx, 'DO YOU WANT DO PLAY AGAIN? (Y/N)'; lcall 0x5cb, 0x3587
+06cb8 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+06cc6 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; je @6cd6; jmp @6cda
+06cd7 jmp @6cb7
+06cdb mov bx, 'Y'; mov ax, v21d2; lcall 0x5cb, 0x1230; je @6ceb; jmp @6cf5
+06cec lcall 0x5cb, 0x17d2
+06cf2 jmp @26ad
+06cf6 mov bx, 2; lcall 0x5cb, 0x104d
+06cff lcall 0x5cb, 0x19de
+06d05 mov bx, 0x25; mov dx, v33f4=0; lcall 0x5cb, 0xc29
+06d11 mov si, v175e; lcall 0x5cb, 0x13d8; ja @6d1e; jmp @6daa
+06d1f xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0x41; xor cx, cx; lcall 0x5cb, 0x28ad
+06d36 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 0xe; lcall 0x5cb, 0x1275
+06d47 lcall 0x5cb, 0x397e; mov bx, 'RADIO ROOM'; lcall 0x5cb, 0x3587
+06d55 lcall 0x5cb, 0x397e; mov bx, '        REPORTS HEAVY DAMAGE'; lcall 0x5cb, 0x3587
+06d63 lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x355f; mov bx, '     NO MESSAGES MAY BE RECEIVED'; lcall 0x5cb, 0x3587
+06d79 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @6d90
+06d85 mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @6d84
+06da5 lcall 0x5cb, 0x1dcc
+06dab lcall 0x5cb, 0xd7d
+06db1 mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+06dc2 mov bx, 1; lcall 0x5cb, 0xcd
+06dcb mov di, v224a; mov si, v23e4=0; lcall 0x5cb, 0x1304
+06dd7 xor bx, bx; lcall 0x5cb, 0x153; mov cx, bx; mov bx, 1; mov dx, 'DEMORD'; lcall 0x5cb, 0x162
+06dec lcall 0x5cb, 0xd7d
+06df2 xor bx, bx; lcall 0x5cb, 0x1033; mov bx, 1; lcall 0x5cb, 0x104d
+06e02 xor bx, bx; lcall 0x5cb, 0xdfa; mov bx, 7; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+06e1a mov bx, 0x18; lcall 0x5cb, 0x125b; mov bx, 1; lcall 0x5cb, 0x1275
+06e2b lcall 0x5cb, 0x397e; mov bx, '                                        '; lcall 0x5cb, 0x3587
+06e39 mov bx, 1; lcall 0x5cb, 0xb2; not bx; and bx, bx; jne @6e4a; jmp @6e5e
+06e4b mov bx, 1; lcall 0x5cb, 0x2b0d; mov bx, v224e; lcall 0x5cb, 0x228b; jmp @6e62
+06e5f jmp @711c
+06e63 mov bx, v224e; mov dx, 1; lcall 0x5cb, 0x1f8d; xchg bx, ax; mov bx, '@'; lcall 0x5cb, 0x1230; je @6e7c; jmp @6f04
+06e7d mov bx, v224e; mov dx, bx; lcall 0x5cb, 0x1ea4; dec bx; xchg bx, dx; mov cx, bx; lcall 0x5cb, 0x1f96; mov dx, bx; mov bx, 0xc; lcall 0x5cb, 0x1fd3; xchg dx, ax; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, 'DTG '; lcall 0x5cb, 0x11f6; mov dx, bx; lcall 0x5cb, 0x20b4; mov ax, dx; mov dx, 2; lcall 0x5cb, 0x1f8d; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, '/'; lcall 0x5cb, 0x11f6; mov ax, bx; lcall 0x5cb, 0x212c; lcall 0x5cb, 0x1f8d; lcall 0x5cb, 0x11f6; mov ax, bx; lcall 0x5cb, 0x212c; mov word ptr [bp - 2], cx; mov cx, dx; mov dx, 4; lcall 0x5cb, 0x1fa4; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, ' ZULU'; lcall 0x5cb, 0x11f6; mov dx, word ptr [bp - 2]; lcall 0x5cb, 0x11c0
+06f05 mov bx, v224e; lcall 0x5cb, 0x1ea4; or bx, bx; je @6f14; jmp @6f34
+06f15 lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+06f23 lcall 0x5cb, 0x397e; mov bx, v25e4; lcall 0x5cb, 0x3587
+06f31 jmp @6e38
+06f35 mov bx, v224e; mov dx, 1; lcall 0x5cb, 0x1f8d; lcall 0x5cb, 0x1eab; add bx, -0x40; lcall 0x5cb, 0x2da3; mov di, v221e; lcall 0x5cb, 0x1301
+06f56 mov di, v2298=8; mov si, v222e; lcall 0x5cb, 0x1d71; jb @6f66; jmp @6f7f
+06f67 lcall 0x5cb, 0x397e; mov bx, v224e; mov dx, 1; lcall 0x5cb, 0x1f8d; lcall 0x5cb, 0x3573; jmp @6fab
+06f80 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @6f97
+06f8c mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v349e=340; lcall 0x5cb, 0x1d71; jbe @6f8b
+06fac mov bx, v224e; lcall 0x5cb, 0x1ea4; cmp bx, 1; jg @6fbc; jmp @6fdb
+06fbd mov bx, v224e; mov dx, bx; lcall 0x5cb, 0x1ea4; dec bx; xchg bx, dx; mov cx, bx; lcall 0x5cb, 0x1f96; mov dx, cx; lcall 0x5cb, 0x11c0; jmp @6fe7
+06fdc mov bx, v25e4; mov dx, v224e; lcall 0x5cb, 0x11c0
+06fe8 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+06ff6 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @7006; jmp @7016
+07007 mov bx, 0x25; mov dx, v23e4=0; lcall 0x5cb, 0xc29
+07013 jmp @7173
+07017 mov bx, v224e; lcall 0x5cb, 0x1ea4; or bx, bx; jne @7026; jmp @6e38
+07027 mov di, v34a2=-6; mov si, v221e; lcall 0x5cb, 0x1d71; mov bx, 0; jae @7038; dec bx; mov di, v34a6=-17; lcall 0x5cb, 0x1d71; mov dx, 0; jbe @7046; dec dx; and dx, bx; mov di, v2290=1; mov si, v09c2; lcall 0x5cb, 0x1d71; mov bx, 0; jne @7059; dec bx; and bx, dx; and bx, bx; jne @7062; jmp @7078
+07063 mov di, v34aa=43; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301; jmp @70b1
+07079 mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x1d71; mov bx, 0; jae @708a; dec bx; mov di, v249a=26; lcall 0x5cb, 0x1d71; mov dx, 0; jbe @7098; dec dx; or dx, bx; mov si, v09c2; lcall 0x5cb, 0x13d8; mov bx, 0; jne @70a8; dec bx; or bx, dx; and bx, bx; je @70b1; jmp @6f34
+070b2 mov si, v221e; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x1df3; and al, 0xa0; dec bx; scasb al, byte ptr es:[di]; dec bx
+070c5 dec bx; loop @7113; clc; dec bx; push es; dec sp; and al, 0x4c; cmp cl, byte ptr [si + 0x60]; dec sp; jbe @7120; xchg sp, ax; dec sp; stosb byte ptr es:[di], al; dec sp; enter -0x21b4, 0x4c; in al, dx; dec sp; or cl, byte ptr [di + 0x20]; dec bp; dec bp; push sp; dec bp; jb @7135; or byte ptr [di - 0x6a], 0x4d; mov ah, 0x4d; retf 0xe04d; dec bp; dec byte ptr [di + 0x1c]; dec si; dec dx; dec si; jo @7148; xchg si, ax; dec si; mov sp, 0xe24e; dec si; adc byte ptr [bx + 0x36], cl; dec di; pop sp; dec di; or byte ptr [bx - 0x34], 0xbb; dec si; and bl, byte ptr [bp + si + 0x1ea4]; retf; add ax, 0xdb0b; jne @7118; jmp @711c
+07119 jmp @6f34
+0711d mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @715f
+07129 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+07137 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @7147; jmp @7153
+07148 mov di, v21d6; mov si, v34ae=5000; lcall 0x5cb, 0x1304
+07154 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v34ae=5000; lcall 0x5cb, 0x1d71; jbe @7128
+07174 lcall 0x5cb, 0xd7d
+0717a mov bx, 1; lcall 0x5cb, 0x1033; xor bx, bx; lcall 0x5cb, 0x104d
+0718a mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+0719b lcall 0x5cb, 0x1dcc
+071a1 lcall 0x5cb, 0x1da3; db c6; dec di
+071a9 lcall 0x5cb, 0x1dcc
+071af lcall 0x5cb, 0x1da3; aad 0x4f
+071b7 lcall 0x5cb, 0x1da3; test al, 0x4f
+071bf lcall 0x5cb, 0x1da3; test al, 0x4f
+071c7 lcall 0x5cb, 0x1dcc
+071cd lcall 0x5cb, 0x1da3; aad 0x4f
+071d5 lcall 0x5cb, 0x1da3; aad 0x4f
+071dd lcall 0x5cb, 0x1dcc
+071e3 lcall 0x5cb, 0x1da3; aad 0x4f
+071eb lcall 0x5cb, 0x1da3; test al, 0x4f
+071f3 lcall 0x5cb, 0x1dcc
+071f9 lcall 0x5cb, 0x1da3; test al, 0x4f
+07201 lcall 0x5cb, 0x1dcc
+07207 lcall 0x5cb, 0x1da3; test al, 0x4f
+0720f lcall 0x5cb, 0x1da3; test al, 0x4f
+07217 lcall 0x5cb, 0x1da3; aad 0x4f
+0721f lcall 0x5cb, 0x1dcc
+07225 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0722d lcall 0x5cb, 0x1da3; aad 0x4f
+07235 lcall 0x5cb, 0x1dcc
+0723b lcall 0x5cb, 0x1da3; test al, 0x4f
+07243 lcall 0x5cb, 0x1da3; test al, 0x4f
+0724b lcall 0x5cb, 0x1da3; test al, 0x4f
+07253 lcall 0x5cb, 0x1da3; test al, 0x4f
+0725b lcall 0x5cb, 0x1dcc
+07261 lcall 0x5cb, 0x1da3; test al, 0x4f
+07269 lcall 0x5cb, 0x1da3; test al, 0x4f
+07271 lcall 0x5cb, 0x1dcc
+07277 lcall 0x5cb, 0x1da3; db c6; dec di
+0727f lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07287 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0728f lcall 0x5cb, 0x1dcc
+07295 lcall 0x5cb, 0x1da3; aad 0x4f
+0729d lcall 0x5cb, 0x1da3; mov bh, 0x4f
+072a5 lcall 0x5cb, 0x1dcc
+072ab lcall 0x5cb, 0x1da3; db c6; dec di
+072b3 lcall 0x5cb, 0x1da3; test al, 0x4f
+072bb lcall 0x5cb, 0x1da3; test al, 0x4f
+072c3 lcall 0x5cb, 0x1dcc
+072c9 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+072d1 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+072d9 lcall 0x5cb, 0x1dcc
+072df lcall 0x5cb, 0x1da3; aad 0x4f
+072e7 lcall 0x5cb, 0x1dcc
+072ed lcall 0x5cb, 0x1da3; mov bh, 0x4f
+072f5 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+072fd lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07305 lcall 0x5cb, 0x1dcc
+0730b lcall 0x5cb, 0x1da3; db c6; dec di
+07313 lcall 0x5cb, 0x1da3; aad 0x4f
+0731b lcall 0x5cb, 0x1dcc
+07321 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07329 lcall 0x5cb, 0x1da3; aad 0x4f
+07331 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07339 lcall 0x5cb, 0x1dcc
+0733f lcall 0x5cb, 0x1da3; db c6; dec di
+07347 lcall 0x5cb, 0x1da3; test al, 0x4f
+0734f lcall 0x5cb, 0x1dcc
+07355 lcall 0x5cb, 0x1da3; test al, 0x4f
+0735d lcall 0x5cb, 0x1da3; test al, 0x4f
+07365 lcall 0x5cb, 0x1da3; test al, 0x4f
+0736d lcall 0x5cb, 0x1dcc
+07373 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0737b lcall 0x5cb, 0x1dcc
+07381 lcall 0x5cb, 0x1da3; test al, 0x4f
+07389 lcall 0x5cb, 0x1da3; db c6; dec di
+07391 lcall 0x5cb, 0x1dcc
+07397 lcall 0x5cb, 0x1da3; test al, 0x4f
+0739f lcall 0x5cb, 0x1da3; test al, 0x4f
+073a7 lcall 0x5cb, 0x1da3; db c6; dec di
+073af lcall 0x5cb, 0x1dcc
+073b5 lcall 0x5cb, 0x1da3; db c6; dec di
+073bd lcall 0x5cb, 0x1da3; mov bh, 0x4f
+073c5 lcall 0x5cb, 0x1dcc
+073cb lcall 0x5cb, 0x1da3; aad 0x4f
+073d3 lcall 0x5cb, 0x1da3; db c6; dec di
+073db lcall 0x5cb, 0x1dcc
+073e1 lcall 0x5cb, 0x1da3; aad 0x4f
+073e9 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+073f1 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+073f9 lcall 0x5cb, 0x1dcc
+073ff lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07407 lcall 0x5cb, 0x1da3; aad 0x4f
+0740f lcall 0x5cb, 0x1da3; test al, 0x4f
+07417 lcall 0x5cb, 0x1dcc
+0741d lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07425 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0742d lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07435 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0743d lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07445 lcall 0x5cb, 0x1dcc
+0744b lcall 0x5cb, 0x1da3; db c6; dec di
+07453 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0745b lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07463 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0746b lcall 0x5cb, 0x1dcc
+07471 lcall 0x5cb, 0x1da3; test al, 0x4f
+07479 lcall 0x5cb, 0x1da3; db c6; dec di
+07481 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07489 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07491 lcall 0x5cb, 0x1dcc
+07497 lcall 0x5cb, 0x1da3; test al, 0x4f
+0749f lcall 0x5cb, 0x1da3; test al, 0x4f
+074a7 lcall 0x5cb, 0x1da3; db c6; dec di
+074af lcall 0x5cb, 0x1da3; mov bh, 0x4f
+074b7 lcall 0x5cb, 0x1dcc
+074bd lcall 0x5cb, 0x1da3; test al, 0x4f
+074c5 lcall 0x5cb, 0x1da3; test al, 0x4f
+074cd lcall 0x5cb, 0x1da3; test al, 0x4f
+074d5 lcall 0x5cb, 0x1da3; db c6; dec di
+074dd lcall 0x5cb, 0x1dcc
+074e3 lcall 0x5cb, 0x1da3; test al, 0x4f
+074eb lcall 0x5cb, 0x1da3; test al, 0x4f
+074f3 lcall 0x5cb, 0x1da3; test al, 0x4f
+074fb lcall 0x5cb, 0x1da3; test al, 0x4f
+07503 lcall 0x5cb, 0x1da3; test al, 0x4f
+0750b lcall 0x5cb, 0x1dcc
+07511 lcall 0x5cb, 0x1da3; aad 0x4f
+07519 lcall 0x5cb, 0x1da3; test al, 0x4f
+07521 lcall 0x5cb, 0x1da3; test al, 0x4f
+07529 lcall 0x5cb, 0x1da3; test al, 0x4f
+07531 lcall 0x5cb, 0x1dcc
+07537 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0753f lcall 0x5cb, 0x1da3; aad 0x4f
+07547 lcall 0x5cb, 0x1da3; test al, 0x4f
+0754f lcall 0x5cb, 0x1da3; test al, 0x4f
+07557 lcall 0x5cb, 0x1dcc
+0755d lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07565 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0756d lcall 0x5cb, 0x1da3; aad 0x4f
+07575 lcall 0x5cb, 0x1da3; test al, 0x4f
+0757d lcall 0x5cb, 0x1dcc
+07583 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0758b lcall 0x5cb, 0x1da3; mov bh, 0x4f
+07593 lcall 0x5cb, 0x1da3; mov bh, 0x4f
+0759b lcall 0x5cb, 0x1da3; aad 0x4f
+075a3 lcall 0x5cb, 0x1dcc
+075a9 mov bx, 'B32P62'; lcall 0x5cb, 0x2bd2
+075b2 lcall 0x5cb, 0x1dcc
+075b8 mov bx, 'B10P62'; lcall 0x5cb, 0x2bd2
+075c1 lcall 0x5cb, 0x1dcc
+075c7 mov bx, 'B32P62B10P62'; lcall 0x5cb, 0x2bd2
+075d0 lcall 0x5cb, 0x1dcc
+075d6 mov bx, 'B10P62B32P62'; lcall 0x5cb, 0x2bd2
+075df lcall 0x5cb, 0x1dcc
+075e6 xor bx, bx; lcall 0x5cb, 0x153; mov cx, bx; mov bx, 3; mov dx, 'MXP'; lcall 0x5cb, 0x162
+075fb mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @7673
+07607 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @7653
+07613 mov bx, 3; lcall 0x5cb, 0x2b0d; lcall 0x5cb, 0x2ef2; add word ptr [di], ax; mov si, v21be; lcall 0x5cb, 0x2deb; xchg bx, ax; mov bx, 0x15; imul bx; mov si, v2132; lcall 0x5cb, 0x2deb; add bx, ax; shl bx, 1; shl bx, 1; add bx, v1ece; lcall 0x5cb, 0x2fb9
+07648 mov di, v2290=1; mov si, v21be; lcall 0x5cb, 0x3c0; mov di, v21be; lcall 0x5cb, 0x1301; mov si, di; mov di, v2518=6; lcall 0x5cb, 0x1d71; jbe @7612
+07668 mov di, v2290=1; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2550=20; lcall 0x5cb, 0x1d71; ja @768a; jmp @7606
+0768b mov bx, 3; lcall 0x5cb, 0xcd
+07694 lcall 0x5cb, 0x1dcc
+0769b mov di, v34ee; mov si, v213e; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x146c; mov di, v2290=1; lcall 0x5cb, 0x3b5; mov di, v2252; lcall 0x5cb, 0x1301
+076bf mov di, v34ee; mov si, v2142; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x146c; mov di, v2514=5; lcall 0x5cb, 0x4ed; mov di, v2256; lcall 0x5cb, 0x1301
+076e3 mov di, v2256; mov si, v2252; lcall 0x5cb, 0x3c0; mov di, v223a; lcall 0x5cb, 0x1301
+076f7 mov si, v223a; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v1f22; mov di, v1cda=0; lcall 0x5cb, 0x1304
+07712 mov si, v223a; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v1f76; mov di, v1cfe; lcall 0x5cb, 0x1304
+0772d mov si, v223a; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v1fca; mov di, v225a; lcall 0x5cb, 0x1304
+07748 mov si, v223a; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v201e; mov di, v225e; lcall 0x5cb, 0x1304
+07763 mov si, v223a; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v2072; mov di, v2262; lcall 0x5cb, 0x1304
+0777e mov si, v223a; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; add si, v20c6; mov di, v2266; lcall 0x5cb, 0x1304
+07799 mov di, v1d8e; mov si, v2290=1; lcall 0x5cb, 0x1304
+077a5 lcall 0x5cb, 0x1dcc
+077ac lcall 0x5cb, 0xd7d
+077b2 mov bx, 0x11; lcall 0x5cb, 0xdfa; xor bx, bx; lcall 0x5cb, 0xe14
+077c2 xor bx, bx; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013f; mov dx, 0xc7; mov cx, 3; lcall 0x5cb, 0x2874
+077da mov bx, 2; lcall 0x5cb, 0x2582
+077e3 mov bx, 4; lcall 0x5cb, 0x2582
+077ec mov bx, 8; lcall 0x5cb, 0x2582
+077f5 mov di, v21b6; mov si, v2290=1; lcall 0x5cb, 0x1304
+07801 mov si, v34f2=64; lcall 0x5cb, 0x131b; jmp @784f
+0780d mov si, v221e; lcall 0x5cb, 0x2deb; xor dx, dx; lcall 0x5cb, 0x2865; mov dx, 5; mov cx, 3; lcall 0x5cb, 0x286b
+07828 mov si, v221e; lcall 0x5cb, 0x2deb; mov dx, 0xc2; lcall 0x5cb, 0x2865; mov dx, 0xc7; mov cx, 3; lcall 0x5cb, 0x286b
+07844 mov di, v34f2=64; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v309c=319; lcall 0x5cb, 0x1d71; jbe @780c
+07864 mov si, v2866=40; lcall 0x5cb, 0x131b; jmp @78b6
+07870 mov si, v221e; lcall 0x5cb, 0x2deb; mov dx, bx; xor bx, bx; lcall 0x5cb, 0x2865; mov bx, 5; mov cx, 3; lcall 0x5cb, 0x286b
+0788d mov si, v221e; lcall 0x5cb, 0x2deb; mov dx, bx; mov bx, v013a; lcall 0x5cb, 0x2865; mov bx, v013f; mov cx, 3; lcall 0x5cb, 0x286b
+078ab mov di, v2866=40; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v3094=199; lcall 0x5cb, 0x1d71; jbe @786f
+078cb mov si, v1cda=0; lcall 0x5cb, 0x13d8; jae @78d8; jmp @7eda
+078d9 mov si, v1cda=0; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v34f6; lcall 0x5cb, 0x4ed; mov di, v226a; lcall 0x5cb, 0x1301
+07900 mov si, v1cfe; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v34fa; lcall 0x5cb, 0x4ed; mov di, v226e; lcall 0x5cb, 0x1301
+07927 mov di, v2514=5; mov si, v223a; lcall 0x5cb, 0x1d71; je @7937; jmp @7962
+07938 mov di, v226e; mov si, v3094=199; lcall 0x5cb, 0x3ab; lcall 0x5cb, 0x2e36; mov dx, bx; mov si, v226a; lcall 0x5cb, 0x2deb; xor cx, cx; lcall 0x5cb, 0x28f3
+0795a mov bx, 'S4C3BF4BD7E2L2U2R3E3H2G2HE5FG2F2E6FG9R9D2L10G3H'; lcall 0x5cb, 0x3194
+07963 mov di, v226e; mov si, v3094=199; lcall 0x5cb, 0x3ab; lcall 0x5cb, 0x2e36; mov dx, bx; mov si, v226a; lcall 0x5cb, 0x2deb; xor cx, cx; lcall 0x5cb, 0x28f3
+07985 mov bx, v2266; lcall 0x5cb, 0x2024; mov ax, 'S='; lcall 0x5cb, 0x11f6; xchg bx, ax; mov bx, 'X'; lcall 0x5cb, 0x11f6; mov dx, bx; mov si, v2262; lcall 0x5cb, 0x2deb; shl bx, 1; shl bx, 1; add bx, v211a; mov cx, dx; lcall 0x5cb, 0x2030; xchg cx, ax; lcall 0x5cb, 0x11f6; lcall 0x5cb, 0x3194
+079c3 mov di, v226e; mov si, v3094=199; lcall 0x5cb, 0x3ab; lcall 0x5cb, 0x2e36; mov dx, bx; mov si, v226a; lcall 0x5cb, 0x2deb; mov cx, 1; mov ax, 3; lcall 0x5cb, 0x300c
+079e9 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @7a6e
+079f5 mov di, v3538; mov si, v221e; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x132f; sbb word ptr [bp + si + 0x3717], 0x5cb; mov di, v225e; lcall 0x5cb, 0x4ed; mov di, v353c=0.04; lcall 0x5cb, 0x4ed; mov di, v226e; lcall 0x5cb, 0x3a0; mov di, v3094=199; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; mov dx, bx; mov bx, v2286; lcall 0x5cb, 0x36fc; mov di, v225a; lcall 0x5cb, 0x4ed; mov di, v3540; lcall 0x5cb, 0x4ed; mov di, v226a; lcall 0x5cb, 0x3b5; lcall 0x5cb, 0x2e36; mov cx, 2; lcall 0x5cb, 0x28f3
+07a63 mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v2866=40; lcall 0x5cb, 0x1d71; ja @7a85; jmp @79f4
+07a86 mov di, v34fa; mov si, v21ce; lcall 0x5cb, 0x4f8; mov si, v3094=199; lcall 0x5cb, 0x3a8; lcall 0x5cb, 0x2e36; mov di, v34f6; mov si, v21ca; lcall 0x5cb, 0x4f8; mov dx, bx; lcall 0x5cb, 0x2e36; mov cx, 1; lcall 0x5cb, 0x28f3
+07ab9 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x23; xor cx, cx; lcall 0x5cb, 0x28ad
+07ad1 mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+07ae2 lcall 0x5cb, 0x397e; mov bx, 'THIS IS THE MAP FOR QUADRANT 5'; lcall 0x5cb, 0x3587
+07af0 mov bx, 3; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+07afe lcall 0x5cb, 0x397e; mov bx, 'THE DOTTED RED LINE REPRESENTS THE'; lcall 0x5cb, 0x3587
+07b0c mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 5; lcall 0x5cb, 0x1275
+07b1d lcall 0x5cb, 0x397e; mov bx, 'SHOALS SURROUNDING THE ISLAND'; lcall 0x5cb, 0x3587
+07b2b mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @7b6d
+07b37 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+07b45 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @7b55; jmp @7b61
+07b56 mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+07b62 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @7b36
+07b82 mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013c; mov dx, 0x23; xor cx, cx; lcall 0x5cb, 0x28ad
+07b9a mov bx, 2; lcall 0x5cb, 0x125b; mov bx, 4; lcall 0x5cb, 0x1275
+07bab lcall 0x5cb, 0x397e; mov bx, 'IF YOU ARE ON THE SURFACE THEN YOU'; lcall 0x5cb, 0x3587
+07bb9 mov bx, 3; lcall 0x5cb, 0x125b; lcall 0x5cb, 0x1275
+07bc7 lcall 0x5cb, 0x397e; mov bx, 'WILL STOP WHEN YOU HIT THE RED LINES'; lcall 0x5cb, 0x3587
+07bd5 mov bx, 4; lcall 0x5cb, 0x125b; mov bx, 2; lcall 0x5cb, 0x1275
+07be6 lcall 0x5cb, 0x397e; mov bx, 'THE DEEPER YOU ARE THE SOONER YOU HIT'; lcall 0x5cb, 0x3587
+07bf4 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @7c36
+07c00 lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+07c0e mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @7c1e; jmp @7c2a
+07c1f mov di, v21d6; mov si, v25e8=10000; lcall 0x5cb, 0x1304
+07c2b mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v25e8=10000; lcall 0x5cb, 0x1d71; jbe @7bff
+07c4b mov bx, 5; mov dx, bx; lcall 0x5cb, 0x2865; mov bx, v013a; mov dx, 0x23; xor cx, cx; lcall 0x5cb, 0x28ad
+07c63 mov bx, 3; lcall 0x5cb, 0x125b; mov bx, 6; lcall 0x5cb, 0x1275
+07c74 lcall 0x5cb, 0x397e; mov bx, "LET'S TAKE A LOOK AT RADAR (F6)"; lcall 0x5cb, 0x3587
+07c82 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @7cc4
+07c8e lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+07c9c mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; jne @7cac; jmp @7cb8
+07cad mov di, v21d6; mov si, v364a=7000; lcall 0x5cb, 0x1304
+07cb9 mov di, v2290=1; mov si, v21d6; lcall 0x5cb, 0x3c0; mov di, v21d6; lcall 0x5cb, 0x1301; mov si, di; mov di, v364a=7000; lcall 0x5cb, 0x1d71; jbe @7c8d
+07cd9 jmp @4993
+07cdd mov di, v2514=5; mov si, v222e; lcall 0x5cb, 0x1d71; ja @7ced; jmp @7cf1
+07cee jmp @7eb5
+07cf2 mov si, v1cde=0; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v34f6; lcall 0x5cb, 0x4ed; mov di, v2272; lcall 0x5cb, 0x1301
+07d19 mov si, v1d02; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, v1388; cdq; idiv cx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v34fa; lcall 0x5cb, 0x4ed; mov di, v2276; lcall 0x5cb, 0x1301
+07d40 mov di, v34ee; mov si, v1cde=0; lcall 0x5cb, 0x4f8; mov bx, 0xb2; lcall 0x5cb, 0x146c; mov si, v1d02; lcall 0x5cb, 0x132f; sbb word ptr [bp + si + 0x4f8], 0x5cb; mov bx, 0xb2; lcall 0x5cb, 0x146c; mov di, v2514=5; lcall 0x5cb, 0x4ed; lcall 0x5cb, 0x3ba; cmp word ptr [bx + 0x2290], 0xb59a; add cx, bx; add ax, v3abf; and bl, byte ptr [bp + si + 0x1d66]; retf; add ax, v0374; jmp @7daf
+07d8d mov di, v2276; mov si, v3094=199; lcall 0x5cb, 0x3ab; lcall 0x5cb, 0x2e36; mov dx, bx; mov si, v2272; lcall 0x5cb, 0x2deb; mov cx, 1; lcall 0x5cb, 0x28f3
+07db0 mov si, v2554=3; lcall 0x5cb, 0x131b; jmp @7e9e
+07dbc mov si, v221e; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1cd6; mov di, v34ee; lcall 0x5cb, 0x4f8; mov dx, bx; mov bx, 0xb2; lcall 0x5cb, 0x146c; add dx, v1cfa; mov si, dx; lcall 0x5cb, 0x132f; sbb word ptr [bp + si + 0x4f8], 0x5cb; mov bx, 0xb2; lcall 0x5cb, 0x146c; mov di, v2514=5; lcall 0x5cb, 0x4ed; lcall 0x5cb, 0x3ba; cmp word ptr [bx + 0x2290], 0xb59a; add cx, bx; add ax, v3abf; and bl, byte ptr [bp + si + 0x1d66]; retf; add ax, v0374; jmp @7e92
+07e1f mov si, v221e; lcall 0x5cb, 0x2deb; mov si, bx; shl si, 1; shl si, 1; mov bx, si; add si, v1cfa; mov dx, bx; lcall 0x5cb, 0x2deb; xchg bx, ax; mov bx, dx; mov cx, v1388; cdq; idiv cx; mov ax, bx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v34fa; lcall 0x5cb, 0x4ed; mov si, v3094=199; lcall 0x5cb, 0x3a8; lcall 0x5cb, 0x2e36; add ax, v1cd6; xchg si, ax; mov dx, bx; lcall 0x5cb, 0x2deb; xchg bx, ax; mov bx, dx; cdq; idiv cx; mov cx, bx; mov bx, dx; lcall 0x5cb, 0x2da3; mov di, v34f6; lcall 0x5cb, 0x4ed; lcall 0x5cb, 0x2e36; mov dx, cx; mov cx, 2; lcall 0x5cb, 0x28f3
+07e93 mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v2298=8; lcall 0x5cb, 0x1d71; ja @7eb5; jmp @7dbb
+07eb6 mov di, v227a; mov si, v223a; lcall 0x5cb, 0x1304
+07ec2 lcall 0x5cb, 0x1da3; xor bl, byte ptr [bp + si]
+07eca mov di, v223a; mov si, v227a; lcall 0x5cb, 0x1d71; je @7eda; jmp @77ab
+07edb lcall 0x5cb, 0x1ebf; mov dx, v21d2; lcall 0x5cb, 0x11c0
+07ee9 mov bx, v25e4; mov ax, v21d2; lcall 0x5cb, 0x1230; mov dx, 0; jne @7efa; dec dx; mov bx, '5'; lcall 0x5cb, 0x1230; mov cx, 0; jne @7f08; dec cx; or cx, dx; and cx, cx; je @7f11; jmp @7a85
+07f12 lcall 0x5cb, 0x1da3; mov ds, word ptr [si - 0x34]; mov bx, 2; lcall 0x5cb, 0x257f
+07f23 mov bx, 4; lcall 0x5cb, 0x257f
+07f2c mov bx, 8; lcall 0x5cb, 0x257f
+07f35 lcall 0x5cb, 0xd7d
+07f3b mov bx, 8; lcall 0x5cb, 0xdfa; mov bx, 1; lcall 0x5cb, 0xe14
+07f4c mov di, v21b6; mov si, v364e=0; lcall 0x5cb, 0x1304
+07f58 jmp @2f66
+07f5d mov di, v2df4=9; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v04b0; mov dx, 0xb2; lcall 0x5cb, 0xc29
+07f74 mov di, v2df4=9; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v04b0; mov dx, 0xb2; lcall 0x5cb, 0xc29
+07f8b mov di, v24ea=90; mov si, v216e; lcall 0x5cb, 0x578; mov di, v227e; lcall 0x5cb, 0x1301
+07f9f mov di, v3652=400; mov si, v227e; lcall 0x5cb, 0x1d71; jb @7faf; jmp @8029
+07fb0 mov di, v3656; mov si, v227e; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+07fc3 mov si, v227e; lcall 0x5cb, 0x2deb; xchg bx, ax; mov cx, 0xa; cdq; idiv cx; or dx, dx; je @7fd9; jmp @7ff0
+07fda mov di, v365a; mov si, v09c2; lcall 0x5cb, 0x4f8; mov bx, v05dc; mov dx, 0xb2; lcall 0x5cb, 0xc29
+07ff1 mov si, v21b6; lcall 0x5cb, 0x13d8; je @7ffe; jmp @8025
+07fff mov bx, 0xe; lcall 0x5cb, 0x125b; mov bx, 0x20; lcall 0x5cb, 0x1275
+08010 mov bx, '####'; lcall 0x5cb, 0x3948; mov si, v227e; lcall 0x5cb, 0x2deb; lcall 0x5cb, 0x3582
+08026 jmp @7f9f
+0802a mov di, v24ea=90; mov si, v227e; lcall 0x5cb, 0x4f8; mov di, v216e; lcall 0x5cb, 0x1301
+0803e mov bx, v05dc; mov dx, v365e=0; lcall 0x5cb, 0xc29
+0804a mov di, v2420=24; mov si, v218e; lcall 0x5cb, 0x1d71; jb @805a; jmp @80cd
+0805b mov di, v2290=1; mov si, v218e; lcall 0x5cb, 0x3c0; mov di, si; lcall 0x5cb, 0x1301
+0806e mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @8085
+0807a mov di, v2290=1; mov si, v221e; lcall 0x5cb, 0x3c0; mov di, v221e; lcall 0x5cb, 0x1301; mov si, di; mov di, v3662=600; lcall 0x5cb, 0x1d71; jbe @8079
+0809a mov si, v21b6; lcall 0x5cb, 0x13d8; je @80a7; jmp @80c9
+080a8 mov bx, 0x16; lcall 0x5cb, 0x125b; mov bx, 0x1e; lcall 0x5cb, 0x1275
+080b9 mov bx, '##'; lcall 0x5cb, 0x3948; mov bx, v218e; lcall 0x5cb, 0x3578
+080ca jmp @804a
+080ce mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @8100
+080da mov si, v227e; lcall 0x5cb, 0x2deb; mov di, bx; shl di, 1; shl di, 1; add di, v175a; mov si, v23e4=0; lcall 0x5cb, 0x1304
+080f5 mov di, v2290=1; mov si, v227e; lcall 0x5cb, 0x3c0; mov di, v227e; lcall 0x5cb, 0x1301; mov si, di; mov di, v2298=8; lcall 0x5cb, 0x1d71; jbe @80d9
+08115 mov di, v2282; mov si, v23e4=0; lcall 0x5cb, 0x1304
+08121 mov si, v21b6; lcall 0x5cb, 0x13d8; je @812e; jmp @8144
+0812f mov bx, 0xc2; mov dx, 0xb5; lcall 0x5cb, 0x299c; mov bx, v0b96; xor dx, dx; lcall 0x5cb, 0x29a5
+08145 mov di, v2518=6; mov si, v222e; lcall 0x5cb, 0x3c0; mov di, v1db6=0; lcall 0x5cb, 0x1301
+08159 lcall 0x5cb, 0x1dcc
+08160 mov bx, 'C0BR1'; mov dx, v211a; lcall 0x5cb, 0x11c0
+0816c mov bx, 'C3BR9BU1U3HUHU2E2UERF2RFE2U4H2LHLHL4GL4HL6G4D2G5LG2D6FD4GDGDGD2FDF4R3FR3FR4E2R6ER2E4U3ER3E2U2EHUHL4GLGL2HUEH2L3U2'; mov dx, v211e; lcall 0x5cb, 0x11c0
+08178 mov bx, 'C3BR26R4U2H4LU2H4U4E2U4H3UL2H4U2EU3H2L7G3D2GDGD2G2L4G3LG3D5GD3GDGDG4L2G3D4F4D9GD2GD4GD3GD3F5R3FR6ER5ER5E5U4E3UERERERE7UE4UEUEUEU3'; mov dx, v2122; lcall 0x5cb, 0x11c0
+08184 mov bx, 'C3BR16BU2U2HUHL2HL2GL2H2U2H2LHUE2U3HLHL5GLG2LG2D3GD2G3LGD4F2RFD2FD2FD2G3D2FDF2R5ER2FR3ERE2R2ERE3U2EU3ER2EU2EU4'; mov dx, v2126; lcall 0x5cb, 0x11c0
+08190 mov si, v2290=1; lcall 0x5cb, 0x131b; jmp @8271
+0819c mov di, v23e0=2; mov si, v2132; lcall 0x5cb, 0x1d71; jne @81ac; jmp @8265
+081ad mov bx, v2132; lcall 0x5cb, 0x29eb; mov dx, v2202; lcall 0x5cb, 0x11c0
+081be mov bx, v2202; mov dx, bx; lcall 0x5cb, 0x1ea4; dec bx; xchg bx, dx; mov cx, bx; lcall 0x5cb, 0x1f96; mov dx, cx; lcall 0x5cb, 0x11c0
+081da xor bx, bx; lcall 0x5cb, 0x153; mov dx, bx; mov bx, v2202; mov ax, 'OBX'; lcall 0x5cb, 0x11f6; mov ax, dx; mov dx, bx; xchg cx, ax; mov bx, 1; lcall 0x5cb, 0x162
+081fc mov si, v23e4=0; lcall 0x5cb, 0x131b; jmp @8248
+08208 mov bx, 1; lcall 0x5cb, 0x2b0d; lcall 0x5cb, 0x2ef2; add word ptr [bx], ax; mov si, v21be; lcall 0x5cb, 0x2deb; xchg bx, ax; mov bx, 9; imul bx; mov si, v2132; lcall 0x5cb, 0x2deb; add bx, ax; shl bx, 1; shl bx, 1; add bx, v0e06; lcall 0x5cb, 0x2fb9
+0823d mov di, v2290=1; mov si, v21be; lcall 0x5cb, 0x3c0; mov di, v21be; lcall 0x5cb, 0x1301; mov si, di; mov di, v22c2=15; lcall 0x5cb, 0x1d71; jbe @8207
+0825d mov bx, 1; lcall 0x5cb, 0xcd
+08266 mov di, v2290=1; mov si, v2132; lcall 0x5cb, 0x3c0; mov di, v2132; lcall 0x5cb, 0x1301; mov si, di; mov di, v2298=8; lcall 0x5cb, 0x1d71; ja @8288; jmp @819b
+08289 lcall 0x5cb, 0x1dcc
+08291 lcall 0x5cb, 0x1dba; jmp @8299
+0829a mov bx, 'GATO'; lcall 0x5cb, 0x2662
+082a3 mov di, v09c2; mov si, v23e4=0; lcall 0x5cb, 0x1304
+082af lcall 0x5cb, 0x1dcc

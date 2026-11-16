@@ -1,0 +1,1784 @@
+03a1a  ? lcall 0x103d, 0 : ? push bp : ? mov bp, sp : ? sub sp, 2 : rt_24b3(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_2609(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03a31  rt_17bc(bx=64, dx=0, cx=0, si=0, di=0, fac=?)
+03a3a  ? mov ds, word ptr [0x98] : ? mov byte ptr [bx], al : ? push es : ? pop ds
+03a4a  rt_17bc(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03a52  ? mov ds, word ptr [0x98] : ? mov bl, byte ptr [bx] : ? xor bh, bh : ? push es : ? pop ds : ? and bx, 0xcf : ? or bx, 0x10 : ? mov ds, word ptr [0x98] : ? mov byte ptr [bx], al : ? push es : ? pop ds
+03a76  rt_102f(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_102f(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_102f(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_1049(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03a90  rt_1049(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03a98  rt_396e(bx=40, dx=0, cx=0, si=0, di=0, fac=?)
+03aa1  rt_1265(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_1265(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_1257(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1257(bx=6, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+03ac4  rt_23d6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_1b05(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_205f(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_2b81(bx=0, dx=2, cx=0, si=0, di=0, fac=?)
+03ae1  v09e2 = v23d0=1
+03aed  rt_102f(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1049(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03afd  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+03b0e  rt_0eda(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03b19  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03b1f  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03b2d  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_2186(bx=16, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=16, dx=0, cx=0, si=0, di=0, fac=?)
+03b40  rt_2a48(bx=7, dx=7, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=13, dx=16, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v108a, dx=24, cx=0, si=0, di=0, fac=?)
+03b61  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03b67  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03b75  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_2186(bx=24, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=24, dx=0, cx=0, si=0, di=0, fac=?)
+03b88  rt_2a48(bx=8, dx=8, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=15, dx=15, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v10d6, dx=24, cx=0, si=0, di=0, fac=?)
+03ba8  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03bae  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03bbc  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_2186(bx=26, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=26, dx=0, cx=0, si=0, di=0, fac=?)
+03bcf  rt_2a48(bx=7, dx=8, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=14, dx=16, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v10ee, dx=24, cx=0, si=0, di=0, fac=?)
+03bf1  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03bf7  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03c05  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_2186(bx=25, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=25, dx=0, cx=0, si=0, di=0, fac=?)
+03c18  rt_2a48(bx=8, dx=8, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=14, dx=15, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v1106, dx=24, cx=0, si=0, di=0, fac=?)
+03c39  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03c3f  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03c4d  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_2186(bx=27, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=27, dx=0, cx=0, si=0, di=0, fac=?)
+03c60  rt_2a48(bx=7, dx=8, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=14, dx=15, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v111e, dx=24, cx=0, si=0, di=0, fac=?)
+03c82  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03c88  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03c8e  rt_33ea(bx=v23d4=0.8, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=160, dx=100, cx=4, si=0, di=0, fac=?)
+03ca8  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=160, dx=100, cx=6, si=0, di=0, fac=?)
+03cc2  rt_30d4(bx=160, dx=100, cx=2, si=0, di=0, fac=?)
+03cd3  rt_2a48(bx=154, dx=94, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=166, dx=106, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0bf2, dx=56, cx=0, si=0, di=0, fac=?)
+03cf5  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03cfb  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=160, dx=100, cx=6, si=0, di=0, fac=?)
+03d15  rt_2a48(bx=154, dx=94, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=166, dx=106, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0bb6, dx=60, cx=0, si=0, di=0, fac=?)
+03d37  rt_297b(bx=2, dx=2, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=8, dx=8, cx=2, si=0, di=0, fac=?)
+03d4f  rt_2a48(bx=2, dx=2, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=8, dx=8, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v1136, dx=20, cx=0, si=0, di=0, fac=?)
+03d6f  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03d75  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03d83  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='DIESEL', dx=0, cx=0, si=0, di=0, fac=?)
+03d91  rt_2a48(bx=7, dx=7, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=55, dx=15, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0cb2, dx=124, cx=0, si=0, di=0, fac=?)
+03db2  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03db8  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03dc6  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='  OFF ', dx=0, cx=0, si=0, di=0, fac=?)
+03dd4  rt_2a48(bx=10, dx=7, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=58, dx=15, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0daa, dx=124, cx=0, si=0, di=0, fac=?)
+03df6  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03dfc  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+03e0a  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=' ELEC', dx=0, cx=0, si=0, di=0, fac=?)
+03e18  rt_2a48(bx=7, dx=7, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=55, dx=15, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0d2e, dx=124, cx=0, si=0, di=0, fac=?)
+03e39  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03e3f  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03e45  rt_297b(bx=1, dx=1, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=91, dx=5, cx=1, si=0, di=0, fac=?)
+03e5e  rt_297b(bx=1, dx=3, cx=0, si=0, di=0, fac=?) : rt_2981(bx=91, dx=3, cx=0, si=0, di=0, fac=?)
+03e74  GOTO @3ea6
+03e80  rt_297b(bx=CINT(v214a), dx=1, cx=0, si=v214a, di=0, fac=?) : rt_2981(bx=CINT(v214a), dx=5, cx=0, si=v214a, di=0, fac=?)
+03e9b  v214a = (v23fa=15 + v214a) : IF v214a <= v23fe=76 THEN @3e7f
+03ebb  rt_2a48(bx=1, dx=1, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=91, dx=5, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a86, dx=184, cx=0, si=0, di=0, fac=?)
+03edc  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03ee2  rt_297b(bx=1, dx=1, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=5, dx=58, cx=1, si=0, di=0, fac=?)
+03efb  rt_297b(bx=3, dx=0, cx=0, si=0, di=0, fac=?) : rt_2981(bx=3, dx=58, cx=0, si=0, di=0, fac=?)
+03f10  GOTO @3f44
+03f1c  rt_297b(bx=1, dx=CINT(v214e), cx=0, si=v214e, di=0, fac=?) : rt_2981(bx=5, dx=CINT(v214e), cx=0, si=v214e, di=0, fac=?)
+03f39  v214e = (v23fa=15 + v214e) : IF v214e <= v2406=58 THEN @3f1b
+03f59  rt_2a48(bx=1, dx=1, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=5, dx=58, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0b3e, dx=120, cx=0, si=0, di=0, fac=?)
+03f7a  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+03f80  rt_325c(bx='C1R1E1U2H1L1G1D2F1BR4R2L1U4G1BR4E1R1F1G3R3BR2BU1F1R1E1H1E1H1L1G1BR7D3U4G2D1R3BF1BR1R2E1H1L1H1U1R3BR4G2D1F1R1E1H1BE2BR1R3D1G2D1BR5R1E1H1E1H1L1G1F1G1F1BR5E2U1H1L1G1F1', dx=0, cx=0, si=0, di=0, fac=?)
+03f89  rt_2a48(bx=159, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=163, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v09e6, dx=16, cx=0, si=0, di=0, fac=?)
+03fab  rt_2a48(bx=164, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=167, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v09f6, dx=16, cx=0, si=0, di=0, fac=?)
+03fcd  rt_2a48(bx=168, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=171, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a06, dx=16, cx=0, si=0, di=0, fac=?)
+03fef  rt_2a48(bx=172, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=176, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a16, dx=16, cx=0, si=0, di=0, fac=?)
+04011  rt_2a48(bx=177, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=181, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a26, dx=16, cx=0, si=0, di=0, fac=?)
+04033  rt_2a48(bx=182, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=186, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a36, dx=16, cx=0, si=0, di=0, fac=?)
+04055  rt_2a48(bx=187, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=191, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a46, dx=16, cx=0, si=0, di=0, fac=?)
+04077  rt_2a48(bx=192, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=196, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a56, dx=16, cx=0, si=0, di=0, fac=?)
+04099  rt_2a48(bx=197, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=201, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a66, dx=16, cx=0, si=0, di=0, fac=?)
+040bb  rt_2a48(bx=202, dx=96, cx=0, si=0, di=0, fac=?) : rt_2a4e(bx=206, dx=100, cx=0, si=0, di=0, fac=?) : rt_2a54(bx=v0a76, dx=16, cx=0, si=0, di=0, fac=?)
+040dd  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+040e3  GOSUB cf91
+040eb  GOSUB ba3d
+040f3  GOSUB c612
+040fd  v2152 = v24b2=79
+04109  v2156 = (v24b6=5000 + FIX((RND * v24b6=5000)))
+0412c  v215a = (v24b6=5000 + FIX((RND * v24b6=5000)))
+0414f  v215e = v24ba=36
+0415b  v2162 = v24be=114
+04167  v2166 = v24c2=103
+04173  v216a = v24be=114
+0417f  v216e = v24c6=170
+0418b  v2172 = v24be=114
+04197  GOSUB c6c7
+041a0  v2176 = v24ca=0
+041ac  v217a = v24ca=0
+041b8  v217e = v24ca=0
+041c4  v2182 = v24ce=2
+041d0  v2186 = v24d2=36040
+041dc  v218a = v24d6=1000
+041e8  v218e = v24da=0
+041f4  v2192 = v24da=0
+04200  v2196 = v24da=0
+0420c  v219a = v24de=1.507
+04218  v219e = v24e2=-1
+04224  v21a2 = v24e6=1426
+04230  v21a6 = v24ea=24
+0423c  v21aa = v24ee=0
+04249  v21ae = v24ee=0
+04255  v21b2 = v23d0=1
+04261  v21b6 = v24f2=0.7854
+0426d  v21ba=0 = v24f6=-0.1
+04279  v21be = v24fa=6.3
+04285  v21c2 = v24fe=5.4978
+04291  v21c6 = v2502=0
+0429d  v21ca = v23d0=1
+042a9  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+042ba  v21ce = v2506=0
+042c6  rt_1257(bx=24, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=3, dx=0, cx=0, si=0, di=0, fac=?)
+042d7  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='POWER           DAMAGE     SCOPE ', dx=0, cx=0, si=0, di=0, fac=?)
+042e5  rt_1257(bx=22, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=3, dx=0, cx=0, si=0, di=0, fac=?)
+042f6  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='DEPTH   SPEED   HEADING      ', dx=0, cx=0, si=0, di=0, fac=?)
+04304  rt_1257(bx=20, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=28, dx=0, cx=0, si=0, di=0, fac=?)
+04315  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='TORPEDOES   _', dx=0, cx=0, si=0, di=0, fac=?)
+04323  rt_21a6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : v21d2 = ?
+04331  IF FIX(v21ae) < v23d0=1 THEN @4346 : GOTO @435c
+04347  LINE?(bx=v0118, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v10d6, dx=0, cx=0, si=0, di=0, fac=?)
+0435d  IF FIX(v21ae) = v23d0=1 THEN @4372 : GOTO @4388
+04373  LINE?(bx=v0117, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v111e, dx=0, cx=0, si=0, di=0, fac=?)
+04389  IF FIX(v21ae) = v2564=3 THEN @439e : GOTO @43b4
+0439f  LINE?(bx=v0118, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v1106, dx=0, cx=0, si=0, di=0, fac=?)
+043b5  IF FIX(v21ae) = v2568=4 THEN @43ca : GOTO @43e0
+043cb  LINE?(bx=v0117, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v10ee, dx=0, cx=0, si=0, di=0, fac=?)
+043e1  IF v21d6 = v23d0=1 THEN @43f1 : GOTO @4407
+043f2  LINE?(bx=213, dx=165, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+04408  v21da = (v256c=100 + v21da)
+0441b  v2166 = (v24c2=103 + (SIN((v2196 * v2570=0.31)) * v2574=26))
+04447  v216a = (v257c=135 - (COS((v2196 * v2570=0.31)) * v2578=22))
+04473  v215e = (v24ba=36 + (SIN((v2192 * v2580=0.0157)) * v2574=26))
+0449f  v2162 = (v257c=135 - (COS((v2192 * v2580=0.0157)) * v2578=22))
+044cb  v216e = (v24c6=170 + (COS(v219a) * v2574=26))
+044ec  v2172 = (v257c=135 - (SIN(v219a) * v2578=22))
+0450d  rt_297b(bx=103, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v2166), dx=CINT(v216a), cx=3, si=v2166, di=0, fac=?)
+04533  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=103, dx=135, cx=4, si=0, di=0, fac=?)
+0454d  rt_297b(bx=36, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v215e), dx=CINT(v2162), cx=3, si=v215e, di=0, fac=?)
+04573  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=36, dx=135, cx=4, si=0, di=0, fac=?)
+0458d  rt_297b(bx=170, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v216e), dx=CINT(v2172), cx=3, si=v216e, di=0, fac=?)
+045b3  IF v2182 = v23d0=1 THEN @45c3 : GOTO @45dd
+045c4  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0d2e, dx=1, cx=0, si=0, di=0, fac=?) : GOTO @461e
+045de  IF v2182 = v24ce=2 THEN @45ee : GOTO @4607
+045ef  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0cb2, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @461e
+04608  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0daa, dx=1, cx=0, si=0, di=0, fac=?)
+0461f  rt_1257(bx=14, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=27, dx=0, cx=0, si=0, di=0, fac=?)
+04630  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='FUEL        O', dx=0, cx=0, si=0, di=0, fac=?)
+0463e  rt_1257(bx=16, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=27, dx=0, cx=0, si=0, di=0, fac=?)
+0464f  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='BATT     ', dx=0, cx=0, si=0, di=0, fac=?) : rt_2906(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='_', dx=0, cx=0, si=0, di=0, fac=?)
+0466d  rt_1257(bx=18, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=27, dx=0, cx=0, si=0, di=0, fac=?)
+0467e  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='CHARGING     _', dx=0, cx=0, si=0, di=0, fac=?)
+0468c  rt_1257(bx=14, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+0469d  rt_3984(bx='####', dx=0, cx=0, si=0, di=0, fac=?) : rt_364a(bx=CINT((v2186 / v25c4=90)), dx=0, cx=0, si=v2186, di=v25c4=90, fac=(v2186 / v25c4=90))
+046bb  rt_1257(bx=16, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+046cc  rt_3984(bx='####', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v218a, dx=0, cx=0, si=0, di=0, fac=?)
+046dd  rt_1257(bx=22, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+046ee  rt_3984(bx='##', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v21a6, dx=0, cx=0, si=0, di=0, fac=?)
+046ff  LINE?(bx=35, dx=108, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+04716  LINE?(bx=102, dx=108, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+0472d  LINE?(bx=169, dx=108, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+04744  LINE?(bx=v0138, dx=107, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a06, dx=-1, cx=0, si=0, di=0, fac=?)
+0475b  LINE?(bx=v0139, dx=113, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=-1, cx=0, si=0, di=0, fac=?)
+04772  LINE?(bx=5, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a16, dx=-1, cx=0, si=0, di=0, fac=?)
+04789  LINE?(bx=10, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+047a0  LINE?(bx=14, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+047b7  LINE?(bx=55, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=-1, cx=0, si=0, di=0, fac=?)
+047ce  LINE?(bx=59, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+047e5  LINE?(bx=64, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+047fc  LINE?(bx=73, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=-1, cx=0, si=0, di=0, fac=?)
+04813  LINE?(bx=76, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a36, dx=-1, cx=0, si=0, di=0, fac=?)
+0482a  LINE?(bx=129, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a36, dx=-1, cx=0, si=0, di=0, fac=?)
+04841  LINE?(bx=140, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a06, dx=-1, cx=0, si=0, di=0, fac=?)
+04858  LINE?(bx=144, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a56, dx=-1, cx=0, si=0, di=0, fac=?)
+0486f  LINE?(bx=150, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+04886  LINE?(bx=191, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a76, dx=-1, cx=0, si=0, di=0, fac=?)
+0489d  LINE?(bx=197, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+048b4  LINE?(bx=v0139, dx=173, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+048cb  LINE?(bx=30, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a06, dx=-1, cx=0, si=0, di=0, fac=?)
+048e2  LINE?(bx=35, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+048f9  LINE?(bx=40, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+04910  LINE?(bx=100, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=-1, cx=0, si=0, di=0, fac=?)
+04927  LINE?(bx=104, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+0493e  LINE?(bx=164, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=-1, cx=0, si=0, di=0, fac=?)
+04955  LINE?(bx=167, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a66, dx=-1, cx=0, si=0, di=0, fac=?)
+0496c  LINE?(bx=173, dx=158, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=-1, cx=0, si=0, di=0, fac=?)
+04983  LINE?(bx=v012c=0, dx=(174 - CINT((v21a2 * v25ce=0.043))), cx=0, si=v21a2, di=v25ce=0.043, fac=(v21a2 * v25ce=0.043)) : rt_2abb(bx=v108a, dx=0, cx=0, si=v21a2, di=v25ce=0.043, fac=(v21a2 * v25ce=0.043))
+049ab  LINE?(bx=v0100, dx=169, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=-1, cx=0, si=0, di=0, fac=?)
+049c2  LINE?(bx=v010a, dx=169, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a06, dx=-1, cx=0, si=0, di=0, fac=?)
+049d9  LINE?(bx=v0113, dx=169, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a16, dx=-1, cx=0, si=0, di=0, fac=?)
+049f0  LINE?(bx=v011c, dx=169, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a26, dx=-1, cx=0, si=0, di=0, fac=?)
+04a07  GOTO @4a8b
+04a13  IF (((v2568=4 - v214e) < v21a6) AND (A1172[CINT(v214e)] = 0)) THEN @4a53 : GOTO @4a7f
+04a54  LINE?(bx=CINT((v25d6=244 + (v214e * v25d2=10))), dx=168, cx=0, si=v214e, di=v25d6=244, fac=(v25d6=244 + (v214e * v25d2=10))) : rt_2abb(bx=v1136, dx=-1, cx=0, si=v214e, di=v25d6=244, fac=(v25d6=244 + (v214e * v25d2=10)))
+04a80  v214e = (v23d0=1 + v214e) : IF v214e > v2568=4 THEN @4aa2 : GOTO @4a12
+04aa3  v2152 = (v24b2=79 - (v2192 * 2^2))
+04abd  IF ((v219e = v23d0=1) AND (v2192 < v25da=46)) THEN @4ae8 : GOTO @4af7
+04ae9  v2152 = v24b2=79 : GOTO @4b11
+04af8  IF v2152 < 0 THEN @4b05 : GOTO @4b11
+04b06  v2152 = v24e2=-1
+04b12  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013f, dx=80, cx=CINT(v21ca), si=v21ca, di=0, fac=?)
+04b31  rt_297b(bx=0, dx=CINT((v23d0=1 + v2152)), cx=0, si=v2152, di=v23d0=1, fac=(v23d0=1 + v2152)) : rt_29c3(bx=v013f, dx=97, cx=2, si=v2152, di=v23d0=1, fac=(v23d0=1 + v2152))
+04b59  rt_297b(bx=2, dx=102, cx=0, si=0, di=0, fac=?) : rt_298a(bx=205, dx=FAC, cx=-1, si=0, di=0, fac=?)
+04b73  rt_297b(bx=209, dx=150, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v0127, dx=FAC, cx=-1, si=0, di=0, fac=?)
+04b8d  GOTO @4be2
+04b99  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=CINT(v214e), dx=135, cx=4, si=v214e, di=0, fac=?)
+04bb8  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=CINT(v214e), dx=135, cx=32, si=v214e, di=0, fac=?)
+04bd7  v214e = (v25de=67 + v214e) : IF v214e <= v25e2=180 THEN @4b98
+04bf7  GOTO @4d8d
+04c03  GOTO @4d6a
+04c0f  v214a = (v21de * v25e6=0.31416)
+04c23  IF (((v21de = v23fa=15) OR ((v21de = v25ee=6) OR ((v21de = v25d2=10) OR ((v21de = v2568=4) OR (v21de = v25ea=5))))) AND (v214e = v24ba=36)) THEN @4c8e : GOTO @4c92
+04c8f  GOTO @4d5e
+04c93  IF ((v21de = v23fa=15) OR ((v21de = v25d2=10) OR (v21de = v25ea=5))) THEN @4ccb : GOTO @4ccf
+04ccc  GOTO @4d5e
+04cd0  ? mov word ptr [bp - 2], dx : rt_297b(bx=CINT((v214e + (COS(v214a) * v25f2=27))), dx=CINT((v257c=135 + (SIN(v214a) * v2574=26))), cx=CINT((v257c=135 + (SIN(v214a) * v2574=26))), si=0, di=v214e, fac=(v214e + (COS(v214a) * v25f2=27))) : rt_2981(bx=CINT((v214e + (COS(<('unk', '[word ptr [bp - 2]]')>) * v25fa=30))), dx=CINT((v257c=135 + (SIN(<('unk', '[word ptr [bp - 2]]')>) * v25f6=29))), cx=1, si=0, di=v214e, fac=(v214e + (COS(<('unk', '[word ptr [bp - 2]]')>) * v25fa=30)))
+04d5f  v21de = (v23d0=1 + v21de) : IF v21de > v25fe=19 THEN @4d81 : GOTO @4c0e
+04d82  v214e = (v25de=67 + v214e) : IF v214e > v2602=113 THEN @4da4 : GOTO @4c02
+04da5  GOTO @4e9c
+04db1  v214a = (v21de * v2606=0.3927)
+04dc5  IF ((v21de = v260e=12) OR ((v21de = v260a=8) OR (v21de = v2568=4))) THEN @4dfd : GOTO @4e01
+04dfe  GOTO @4e90
+04e02  ? mov word ptr [bp - 2], dx : rt_297b(bx=CINT((v24c6=170 + (COS(v214a) * v25f2=27))), dx=CINT((v257c=135 + (SIN(v214a) * v2574=26))), cx=CINT((v257c=135 + (SIN(v214a) * v2574=26))), si=0, di=v24c6=170, fac=(v24c6=170 + (COS(v214a) * v25f2=27))) : rt_2981(bx=CINT((v24c6=170 + (COS(<('unk', '[word ptr [bp - 2]]')>) * v25fa=30))), dx=CINT((v257c=135 + (SIN(<('unk', '[word ptr [bp - 2]]')>) * v25f6=29))), cx=1, si=0, di=v24c6=170, fac=(v24c6=170 + (COS(<('unk', '[word ptr [bp - 2]]')>) * v25fa=30)))
+04e91  v21de = (v23d0=1 + v21de) : IF v21de > v23fa=15 THEN @4eb3 : GOTO @4db0
+04eb4  rt_297b(bx=0, dx=100, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013f, dx=196, cx=-1, si=0, di=0, fac=?)
+04ecd  rt_297b(bx=v012b, dx=112, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v0135, dx=FAC, cx=-1, si=0, di=0, fac=?)
+04ee7  rt_297b(bx=229, dx=166, cx=0, si=0, di=0, fac=?) : rt_298a(bx=249, dx=176, cx=-1, si=0, di=0, fac=?)
+04f01  rt_297b(bx=252, dx=166, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v0124, dx=176, cx=3, si=0, di=0, fac=?)
+04f1b  rt_297b(bx=61, dx=181, cx=0, si=0, di=0, fac=?) : rt_298a(bx=113, dx=193, cx=-1, si=0, di=0, fac=?)
+04f35  GOTO @4f68
+04f41  rt_297b(bx=CINT(v214a), dx=166, cx=0, si=v214a, di=0, fac=?) : rt_2981(bx=CINT(v214a), dx=176, cx=-1, si=v214a, di=0, fac=?)
+04f5d  v214a = (v25d2=10 + v214a) : IF v214a <= v2616=282 THEN @4f40
+04f7d  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=200, dx=187, cx=6, si=0, di=0, fac=?)
+04f97  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=v011b, dx=187, cx=8, si=0, di=0, fac=?)
+04fb1  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=219, dx=171, cx=6, si=0, di=0, fac=?)
+04fcb  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=v0121, dx=139, cx=6, si=0, di=0, fac=?)
+04fe5  GOTO @5060
+04ff1  rt_297b(bx=246, dx=CINT((v261a=102 + v214e)), cx=v214e, si=v214e, di=v261a=102, fac=(v261a=102 + v214e)) : rt_298a(bx=v0118, dx=CINT((v261e=112 + v214e)), cx=-1, si=v214e, di=v261e=112, fac=(v261e=112 + v214e))
+0502c  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=v0121, dx=CINT((v2622=107 + v214e)), cx=6, si=v214e, di=v2622=107, fac=(v2622=107 + v214e))
+05055  v214e = (v2402=16 + v214e) : IF v214e > v2402=16 THEN @5077 : GOTO @4ff0
+05078  GOTO @509d
+05084  rt_2829(bx=CINT(v214a), dx=0, cx=0, si=v214a, di=0, fac=?)
+05092  v214a = (v23d0=1 + v214a) : IF v214a <= v2626=14 THEN @5083
+050b2  rt_27ed(bx=1, dx=v1b87, cx=0, si=0, di=0, fac=?)
+050be  rt_27ed(bx=3, dx=v1b46, cx=0, si=0, di=0, fac=?)
+050ca  rt_27ed(bx=5, dx=v1b05, cx=0, si=0, di=0, fac=?)
+050d6  rt_27ed(bx=7, dx=v1ac4, cx=0, si=0, di=0, fac=?)
+050e2  rt_27ed(bx=8, dx=17852, cx=0, si=0, di=0, fac=?)
+050ee  rt_27ed(bx=9, dx=v1ab2, cx=0, si=0, di=0, fac=?)
+050fa  rt_27ed(bx=6, dx=25196, cx=0, si=0, di=0, fac=?)
+05106  rt_27ed(bx=13, dx=v1bf7, cx=0, si=0, di=0, fac=?)
+05112  rt_27ed(bx=12, dx=v1c09, cx=0, si=0, di=0, fac=?)
+0511e  rt_27ed(bx=2, dx=v1c4d, cx=0, si=0, di=0, fac=?)
+0512a  rt_27ed(bx=4, dx=v1d00, cx=0, si=0, di=0, fac=?)
+05136  rt_27ed(bx=10, dx=v1bc8, cx=0, si=0, di=0, fac=?)
+05142  rt_27ed(bx=14, dx=v1c1b, cx=0, si=0, di=0, fac=?)
+0514e  rt_27ed(bx=11, dx=v1c2d, cx=0, si=0, di=0, fac=?)
+0515a  GOTO @57c2
+0515e  IF ((v219e = v23d0=1) AND (v1792 <> 0)) THEN @5186 : GOTO @51bc
+05187  rt_297b(bx=1, dx=1, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013e, dx=96, cx=0, si=0, di=0, fac=?)
+0519f  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013f, dx=97, cx=3, si=0, di=0, fac=?)
+051b7  RETURN
+051bd  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013f, dx=CINT(v2152), cx=CINT(v21ca), si=v2152, di=0, fac=?)
+051e6  rt_297b(bx=0, dx=CINT((v23d0=1 + v2152)), cx=0, si=v2152, di=v23d0=1, fac=(v23d0=1 + v2152)) : rt_29c3(bx=v013f, dx=97, cx=2, si=v2152, di=v23d0=1, fac=(v23d0=1 + v2152))
+0520e  IF ((v21ca = v23d0=1) AND ((v2152 > v262a=75) AND (v219e = v23d0=1))) THEN @524d : GOTO @5279
+0524e  LINE?(bx=115, dx=63, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a86, dx=0, cx=0, si=0, di=0, fac=?)
+05264  LINE?(bx=157, dx=20, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0b3e, dx=0, cx=0, si=0, di=0, fac=?)
+0527a  v21e2=0 = v21e6 : GOTO @53ee
+05291  v21ee = A1e82[CINT(v21ea)]
+052ac  IF ((A1d86[CINT(v21ee)] >= v262e=0.5) AND (((A1e5e[CINT(v21ee)] > v21c2) AND (A1e5e[CINT(v21ee)] < v21be)) OR ((A1e5e[CINT(v21ee)] >= v21ba=0) AND (A1e5e[CINT(v21ee)] < v21b6)))) THEN @531b : GOTO @53b9
+0531c  rt_2a09(bx=CINT(A1cd2[CINT(v21ee)]), dx=CINT(v2152), cx=CINT(v21ca), si=A1cd2[CINT(v21ee)], di=0, fac=?)
+0534f  rt_22ce(bx=A1d86[CINT(v21ee)], dx=4*CINT(v21ee), cx=4*CINT(v21ee), si=v21ee, di=0, fac=?) : CONCAT(bx=A1d86[CINT(v21ee)], dx=4*CINT(v21ee), cx=4*CINT(v21ee), si=v21ee, di=0, fac=?) : CONCAT(bx='X', dx=4*CINT(v21ee), cx=4*CINT(v21ee), si=v21ee, di=0, fac=?) : rt_22da(bx=A0e26[(CINT(A1daa[CINT(v21ee)]) + (CINT(A1e3a[CINT(v21ee)]) * 9))], dx='X', cx='X', si=A1daa[CINT(v21ee)], di=0, fac=?) : CONCAT(bx=A0e26[(CINT(A1daa[CINT(v21ee)]) + (CINT(A1e3a[CINT(v21ee)]) * 9))], dx='X', cx=(CINT(A1e3a[CINT(v21ee)]) * 9), si=A1daa[CINT(v21ee)], di=0, fac=?) : rt_325c(bx=A0e26[(CINT(A1daa[CINT(v21ee)]) + (CINT(A1e3a[CINT(v21ee)]) * 9))], dx='X', cx=(CINT(A1e3a[CINT(v21ee)]) * 9), si=A1daa[CINT(v21ee)], di=0, fac=?)
+053ba  IF v2152 <= v23d0=1 THEN @53ca : GOTO @53e2
+053cb  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013f, dx=97, cx=2, si=0, di=0, fac=?)
+053e3  v21ea = (v23d0=1 + v21ea) : IF v21ea > v21e2=0 THEN @5405 : GOTO @5290
+05406  RETURN
+0540c  v21f2 = v24e2=-1 : v21f6=-89063.1 = v263e=-4 : GOTO @5441
+0542e  GOSUB 515d
+05436  v2152 = (v21f6=-89063.1 + v2152) : IF v21f6=-89063.1 < 0 THEN @5456 : GOTO @5465 : IF v2152 >= v21f2 THEN @542d : GOTO @5472 : IF v2152 <= v21f2 THEN @542d
+05473  RETURN
+05479  GOTO @5498
+05485  GOSUB 515d
+0548d  v2152 = (v2568=4 + v2152) : IF v2152 <= v24b2=79 THEN @5484
+054ad  RETURN
+054b3  v2176 = v2642=0
+054bf  RETURN
+054c5  v2176 = (((v2564=3 - v21d6) * (v23d0=1 - (v178e * v262e=0.5))) * v2182)
+05500  RETURN
+05506  v2176 = (((v25ee=6 - v21d6) * (v23d0=1 - (v178e * v262e=0.5))) * v2182)
+05541  RETURN
+05547  v2176 = (((v260a=8 - v21d6) * (v23d0=1 - (v178e * v262e=0.5))) * v2182)
+05582  RETURN
+05588  v2176 = (((v25d2=10 - v21d6) * (v23d0=1 - (v178e * v262e=0.5))) * v2182)
+055c3  RETURN
+055c9  v2176 = ((-(v23d0=1 - (v178e * v262e=0.5))) * v2182)
+055f2  RETURN
+055f8  v217e = v2646=-0.005000001
+05604  RETURN
+0560a  v217e = v264a=0.005000001
+05616  RETURN
+0561c  v21fa = v23d0=1
+05628  RETURN
+0562e  IF v2192 > 0 THEN @563b : GOTO @5647
+0563c  v21fa = v24e2=-1
+05648  RETURN
+0564f  IF ((v219e = v23d0=1) OR (v2192 > v264e=45)) THEN @567a : GOTO @5680
+0567b  RETURN
+05681  IF v2192 > v2652=20 THEN @5691 : GOTO @56c2
+05692  v219e = v23d0=1
+0569e  GOSUB 5478
+056a6  SOUND 2500, (v09e2 * v2564=3)
+056bd  RETURN
+056c3  v2152 = v24b2=79
+056cf  v219e = v23d0=1
+056db  GOSUB 515d
+056e3  SOUND 2500, (v09e2 * v2564=3)
+056fa  RETURN
+05701  IF ((v219e = v24e2=-1) OR (v2192 > v264e=45)) THEN @572c : GOTO @5732
+0572d  RETURN
+05733  IF v2192 > v2652=20 THEN @5743 : GOTO @5774
+05744  v219e = v24e2=-1
+05750  GOSUB 540b
+05758  SOUND 2500, (v09e2 * v2564=3)
+0576f  RETURN
+05775  v2152 = (v24b2=79 - (v2192 * 2^2))
+0578f  v219e = v24e2=-1
+0579b  GOSUB 515d
+057a3  SOUND 2500, (v09e2 * v2564=3)
+057ba  RETURN
+057c3  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+057d1  GOTO @57f6
+057dd  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v2202=0, cx=0, si=0, di=0, fac=?)
+057eb  v214e = (v23d0=1 + v214e) : IF v214e <= v2652=20 THEN @57dc
+0580b  IF v21fe <> v2656 THEN @581b : GOTO @5b67
+0581c  IF ((v2186 > 0) AND ((v2182 <> v24ce=2) AND (v21fe = 'D'))) THEN @5857 : GOTO @58a1
+05858  v2182 = v24ce=2
+05864  SOUND 900, (v09e2 * v2564=3)
+0587b  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0cb2, dx=0, cx=0, si=0, di=0, fac=?)
+05891  v2176 = (v2176 * 2^1)
+058a2  IF ((v218a > 0) AND ((v2182 <> v23d0=1) AND (v21fe = 'E'))) THEN @58dd : GOTO @592a
+058de  v2182 = v23d0=1
+058ea  SOUND 900, (v09e2 * v2564=3)
+05901  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0d2e, dx=1, cx=0, si=0, di=0, fac=?)
+05918  v2176 = (v2176 * v262e=0.5)
+0592b  IF v21fe = 'F' THEN @593b : GOTO @59b1
+0593c  SOUND 2500, v09e2
+05948  LINE?(bx=v0118, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v10d6, dx=0, cx=0, si=0, di=0, fac=?)
+0595e  v21ae = v2506=0
+0596a  v21b2 = v23d0=1
+05976  v21b6 = v24f2=0.7854
+05982  v21ba=0 = v24f6=-0.1
+0598e  v21be = v24fa=6.3
+0599a  v21c2 = v24fe=5.4978
+059a6  v21da = v266c=10000
+059b2  IF v21fe = 'P' THEN @59c2 : GOTO @5a38
+059c3  SOUND 2500, v09e2
+059cf  LINE?(bx=v0117, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v111e, dx=0, cx=0, si=0, di=0, fac=?)
+059e5  v21ae = v2676=1.571
+059f1  v21b2 = v24e2=-1
+059fd  v21b6 = v267a=2.356
+05a09  v21ba=0 = v2676=1.571
+05a15  v21be = v21ba=0
+05a21  v21c2 = v24f2=0.7854
+05a2d  v21da = v266c=10000
+05a39  IF v21fe = 'A' THEN @5a49 : GOTO @5abf
+05a4a  SOUND 2500, v09e2
+05a56  LINE?(bx=v0118, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v1106, dx=0, cx=0, si=0, di=0, fac=?)
+05a6c  v21ae = v2684=3.142
+05a78  v21b2 = v23d0=1
+05a84  v21b6 = v2688=3.927
+05a90  v21ba=0 = v268c=3.1416
+05a9c  v21be = v21ba=0
+05aa8  v21c2 = v267a=2.356
+05ab4  v21da = v266c=10000
+05ac0  IF v21fe = 'S' THEN @5ad0 : GOTO @5b46
+05ad1  SOUND 2500, v09e2
+05add  LINE?(bx=v0117, dx=184, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v10ee, dx=0, cx=0, si=0, di=0, fac=?)
+05af3  v21ae = v2696=4.7124
+05aff  v21b2 = v24e2=-1
+05b0b  v21b6 = v24fe=5.4978
+05b17  v21ba=0 = v2696=4.7124
+05b23  v21be = v21ba=0
+05b2f  v21c2 = v2688=3.927
+05b3b  v21da = v266c=10000
+05b47  IF v21fe = 'T' THEN @5b57 : GOTO @5b5f
+05b58  GOSUB 7eec
+05b60  GOSUB d0c0
+05b68  v2206 = v26a0=0
+05b74  GOTO @5bab
+05b80  v2206 = (v2206 + A177a[CINT(v214e)])
+05ba0  v214e = (v23d0=1 + v214e) : IF v214e <= v260a=8 THEN @5b7f
+05bc0  IF v2206 > 0 THEN @5bcd : GOTO @5bf8
+05bce  LINE?(bx=194, dx=181, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+05be4  IF v2206 > v25ea=5 THEN @5bf4 : GOTO @5bf8
+05bf5  GOTO @b5cc
+05bf9  IF ((v21a2 < v26a4=1424) AND (v2182 = v24ce=2)) THEN @5c24 : GOTO @5c5f
+05c25  v21a2 = (v24ce=2 + v21a2)
+05c38  LINE?(bx=v012c=0, dx=(174 - CINT((v21a2 * v25ce=0.043))), cx=0, si=v21a2, di=v25ce=0.043, fac=(v21a2 * v25ce=0.043)) : rt_2abb(bx=v108a, dx=0, cx=0, si=v21a2, di=v25ce=0.043, fac=(v21a2 * v25ce=0.043))
+05c60  LINE?(bx=v012c=0, dx=(174 - CINT((v21a2 * v25ce=0.043))), cx=0, si=v21a2, di=v25ce=0.043, fac=(v21a2 * v25ce=0.043)) : rt_2abb(bx=v108a, dx=0, cx=0, si=v21a2, di=v25ce=0.043, fac=(v21a2 * v25ce=0.043))
+05c88  IF (((v2186 < v23d0=1) OR (v2192 > v2652=20)) AND (v2182 = v24ce=2)) THEN @5cc6 : GOTO @5d0c
+05cc7  v2176 = v2506=0
+05cd3  SOUND 900, (v09e2 * v2564=3)
+05cea  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0daa, dx=1, cx=0, si=0, di=0, fac=?)
+05d01  v2182 = v24ee=0
+05d0d  IF ((v218a < v23d0=1) AND (v2182 = v23d0=1)) THEN @5d35 : GOTO @5d87
+05d36  SOUND 900, (v09e2 * v2564=3)
+05d4d  LINE?(bx=63, dx=183, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0daa, dx=1, cx=0, si=0, di=0, fac=?)
+05d64  v218a = v24ee=0
+05d70  v2176 = v24ee=0
+05d7c  v2182 = v24ee=0
+05d88  LINE?(bx=v011b, dx=101, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bb6, dx=0, cx=0, si=0, di=0, fac=?)
+05d9e  IF v2186 > v26a8=9022 THEN @5dae : GOTO @5db2
+05daf  GOTO @5e0b
+05db3  IF v220a = v23d0=1 THEN @5dc3 : GOTO @5dd2
+05dc4  v220a = v2506=0 : GOTO @5e0b
+05dd3  SOUND 3500, (v09e2 * v2564=3)
+05dea  LINE?(bx=v011b, dx=101, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+05e00  v220a = v23d0=1
+05e0c  LINE?(bx=v011b, dx=117, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bb6, dx=0, cx=0, si=0, di=0, fac=?)
+05e22  IF v218a > v256c=100 THEN @5e32 : GOTO @5e36
+05e33  GOTO @5e8f
+05e37  IF v220e = v23d0=1 THEN @5e47 : GOTO @5e56
+05e48  v220e = v2506=0 : GOTO @5e8f
+05e57  SOUND 3000, (v09e2 * v2564=3)
+05e6e  LINE?(bx=v011b, dx=117, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+05e84  v220e = v23d0=1
+05e90  rt_1257(bx=16, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+05ea1  rt_3984(bx='####', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v218a, dx=0, cx=0, si=0, di=0, fac=?)
+05eb2  IF v2196 = v2176 THEN @5ec2 : GOTO @5ec6
+05ec3  GOTO @5fd3
+05ec7  rt_297b(bx=103, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v2166), dx=CINT(v216a), cx=0, si=v2166, di=0, fac=?)
+05eec  LINE?(bx=76, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a36, dx=0, cx=0, si=0, di=0, fac=?)
+05f02  IF v2196 < v2176 THEN @5f12 : GOTO @5f28
+05f13  v2196 = (v26ac=0.25 + v2196) : GOTO @5f3b
+05f29  v2196 = (v24e2=-1 + v2196)
+05f3c  v2166 = (v24c2=103 + (SIN((v2196 * v2570=0.31)) * v2574=26))
+05f68  v216a = (v257c=135 - (COS((v2196 * v2570=0.31)) * v2578=22))
+05f94  rt_297b(bx=103, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v2166), dx=CINT(v216a), cx=3, si=v2166, di=0, fac=?)
+05fba  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=103, dx=135, cx=4, si=0, di=0, fac=?)
+05fd4  IF ((v21fa <> 0) AND ((v219e = v24e2=-1) AND (v2192 < v26b0=21))) THEN @600f : GOTO @6031
+06010  v2152 = (v24b2=79 - (v2192 * 2^2))
+0602a  GOSUB 515d
+06032  IF ((v21fa = v23d0=1) AND ((v219e = v23d0=1) AND (v2192 = v25da=46))) THEN @606d : GOTO @6075
+0606e  GOSUB 540b
+06076  IF ((v21fa = v24e2=-1) AND ((v219e = v23d0=1) AND (v2192 = v25da=46))) THEN @60b4 : GOTO @60bc
+060b5  GOSUB 5478
+060bd  IF ((v21fa = 0) OR (v2192 > v26b4=397)) THEN @60e5 : GOTO @60e9
+060e6  GOTO @61fe
+060ea  rt_297b(bx=36, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v215e), dx=CINT(v2162), cx=0, si=v215e, di=0, fac=?)
+0610f  LINE?(bx=10, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=0, cx=0, si=0, di=0, fac=?)
+06125  LINE?(bx=14, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=0, cx=0, si=0, di=0, fac=?)
+0613b  LINE?(bx=55, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09f6, dx=0, cx=0, si=0, di=0, fac=?)
+06151  LINE?(bx=59, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=0, cx=0, si=0, di=0, fac=?)
+06167  v215e = (v24ba=36 + (SIN((v2192 * v2580=0.0157)) * v2574=26))
+06193  v2162 = (v257c=135 - (COS((v2192 * v2580=0.0157)) * v2578=22))
+061bf  rt_297b(bx=36, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v215e), dx=CINT(v2162), cx=3, si=v215e, di=0, fac=?)
+061e5  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=36, dx=135, cx=4, si=0, di=0, fac=?)
+061ff  IF v2182 = v24ce=2 THEN @620f : GOTO @623e
+06210  rt_1257(bx=14, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+06221  rt_3984(bx='####', dx=0, cx=0, si=0, di=0, fac=?) : rt_364a(bx=CINT((v2186 / v25c4=90)), dx=0, cx=0, si=v2186, di=v25c4=90, fac=(v2186 / v25c4=90))
+0623f  IF ((v218a < v24d6=1000) AND (v2182 = v24ce=2)) THEN @626a : GOTO @6283
+0626b  LINE?(bx=v011b, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @6299
+06284  LINE?(bx=v011b, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bb6, dx=0, cx=0, si=0, di=0, fac=?)
+0629a  IF v217a = 0 THEN @62a7 : GOTO @62ab
+062a8  GOTO @6412
+062ac  v2212 = (v23d0=1 + v2212)
+062bf  v219a = (v217a + v219a)
+062d2  IF v219a > v26b8=6.28 THEN @62e2 : GOTO @62f1
+062e3  v219a = v26bc=0 : GOTO @630b
+062f2  IF v219a < 0 THEN @62ff : GOTO @630b
+06300  v219a = v26b8=6.28
+0630c  IF v2212 >= v2564=3 THEN @631c : GOTO @6412
+0631d  v2212 = v24ee=0
+06329  rt_297b(bx=170, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v216e), dx=CINT(v2172), cx=0, si=v216e, di=0, fac=?)
+0634e  LINE?(bx=144, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a56, dx=0, cx=0, si=0, di=0, fac=?)
+06364  LINE?(bx=150, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v09e6, dx=0, cx=0, si=0, di=0, fac=?)
+0637a  LINE?(bx=191, dx=133, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0a76, dx=0, cx=0, si=0, di=0, fac=?)
+06390  v216e = (v24c6=170 + (COS(v219a) * v2574=26))
+063b1  v2172 = (v257c=135 - (SIN(v219a) * v2578=22))
+063d2  rt_297b(bx=170, dx=135, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v216e), dx=CINT(v2172), cx=3, si=v216e, di=0, fac=?)
+063f8  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=170, dx=135, cx=4, si=0, di=0, fac=?)
+06413  CMPz(bx=0, dx=0, cx=0, si=v1176, di=v1182, fac=(v1182 + (v117e + (v117a + v1176)))) : IF ? > ? THEN @6438 : GOTO @6440
+06439  GOSUB 815e
+06441  v2206 = v26c0=0
+0644d  GOTO @6494
+06459  IF A177a[CINT(v214e)] > 0 THEN @6475 : GOTO @6488
+06476  v2206 = (v214e + v2206)
+06489  v214e = (v23d0=1 + v214e) : IF v214e <= v260a=8 THEN @6458
+064a9  IF ((v21ce <> v23d0=1) AND (v2206 > 0)) THEN @64d1 : GOTO @64e7
+064d2  LINE?(bx=194, dx=181, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+064e8  rt_23d6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_1b05(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_2021(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : v2216 = ?
+06508  IF ((v2216 <> v221a) AND ((v2206 > v2626=14) AND ((CINT(v2216) MOD 2) = 0))) THEN @654f : GOTO @65c6
+06550  GOTO @6589
+0655c  SOUND CINT(v221e), v23a6
+0657e  v221e = (v24ce=2 + v221e) : IF v221e <= v26cc=470 THEN @655b
+0659e  SOUND 37, v26d0=0
+065aa  v221a = v2216
+065b6  IF v2206 <= v2652=20 THEN @65c6 : GOTO @b5cc
+065c7  IF ((v21fa = v24e2=-1) AND (v2192 = 0)) THEN @65ef : GOTO @65fb
+065f0  v21fa = v2642=0
+065fc  v2192 = (v21fa + v2192)
+0660f  IF (v2196 < v24ce=2) is FALSE THEN @6637 : ? neg dx : IF ((v2196 <> 0) AND ((v2196 < v24ce=2) AND (v2192 > v2652=20))) THEN @664d : GOTO @6659
+0664e  v21fa = v23d0=1
+0665a  v2222 = (CINT(v2156) MOD 5000)
+06679  v2226 = (CINT(v215a) MOD 5000)
+06698  IF ((v2226 > v26d4=4979) OR ((v2226 < v26b0=21) OR ((v2222 > v26d4=4979) OR (v2222 < v26b0=21)))) THEN @66e5 : GOTO @66ed
+066e6  GOSUB c6c7
+066ee  v217a = (v2196 * v217e)
+06702  IF v21fe = '5' THEN @6712 : GOTO @672a
+06713  v217e = v26de=0
+0671f  v21fa = v26de=0
+0672b  v2156 = (v2156 + (COS(v219a) * v2196))
+06749  v215a = (v215a + (SIN(v219a) * v2196))
+06767  IF v2156 < v23d0=1 THEN @6777 : GOTO @6783
+06778  v2156 = v23d0=1
+06784  IF v215a < v23d0=1 THEN @6794 : GOTO @67a0
+06795  v215a = v23d0=1
+067a1  IF v2156 > v26e2=24999 THEN @67b1 : GOTO @67bd
+067b2  v2156 = v26e2=24999
+067be  IF v215a > v26e6=19999 THEN @67ce : GOTO @67da
+067cf  v215a = v26e6=19999
+067db  IF (v2192 + ((((v2156 - v1cfa) / v222a) ^ v24ce=2) + (((v215a - v1d1e) / v222e) ^ v24ce=2))) <= (v23d0=1 + (v2192 ^ v26ea=1.001)) THEN @6849 : GOTO @68e2
+0684a  v2176 = v2506=0
+06856  v21fa = v2506=0
+06862  IF v2196 > 0 THEN @686f : GOTO @68b2
+06870  v2156 = (v2156 - (COS(v1e1a) * v25ee=6))
+06890  v215a = (v215a - (SIN(v1e1a) * v25ee=6)) : GOTO @68e2
+068b3  v2156 = (v2156 - COS(v1e1a))
+068cb  v215a = (v215a - SIN(v1e1a))
+068e3  v1eca = v24ee=0
+068ef  v21e6 = v24ee=0
+068fc  GOTO @6f90
+06908  v2236 = (A1cf6[CINT(v2232)] - v2156)
+0692b  v223a = (A1d1a[CINT(v2232)] - v215a)
+0694e  A1df2[CINT(v2232)] = SQR(((v2236 * v2236) + (v223a * v223a)))
+06994  IF A1df2[CINT(v2232)] > v26ee=4000 THEN @69b3 : GOTO @69b7
+069b4  GOTO @6c8f
+069b8  IF ((v2232 > v23d0=1) AND (A1df2[CINT(v2232)] > v26f2=1350)) is FALSE THEN @69f3 : GOTO @6ea6
+069f4  v21e6 = (v23d0=1 + v21e6)
+06a07  A1e82[CINT(v21e6)] = v2232
+06a22  IF v2236 = 0 THEN @6a2f : GOTO @6a5e
+06a30  A1e16[CINT(v2232)] = (SGN(v223a) * v26f6=1.5708) : GOTO @6a8f
+06a5f  A1e16[CINT(v2232)] = ATN((v223a / v2236))
+06a90  IF v2236 < 0 THEN @6a9d : GOTO @6ac1
+06a9e  A1e16[CINT(v2232)] = (v268c=3.1416 + A1e16[CINT(v2232)])
+06ac2  IF A1e16[CINT(v2232)] < 0 THEN @6ade : GOTO @6b06
+06adf  A1e16[CINT(v2232)] = (v26fa=6.2832 + A1e16[CINT(v2232)])
+06b03  GOTO @6ac2
+06b07  A1e5e[CINT(v2232)] = (A1e16[CINT(v2232)] - v219a)
+06b33  IF A1e5e[CINT(v2232)] < 0 THEN @6b4f : GOTO @6b77
+06b50  A1e5e[CINT(v2232)] = (v26fa=6.2832 + A1e5e[CINT(v2232)])
+06b74  GOTO @6b33
+06b78  v223e = (A1e5e[CINT(v2232)] - v21ae)
+06b9b  IF v223e < 0 THEN @6ba8 : GOTO @6bbf
+06ba9  v223e = (v26fa=6.2832 + v223e)
+06bbc  GOTO @6b9b
+06bc0  A1e3a[CINT(v2232)] = CINT(((A1e16[CINT(v2232)] - A1ea6[CINT(v2232)]) * v26fe=2.55))
+06c03  IF A1e3a[CINT(v2232)] < 0 THEN @6c1f : GOTO @6c47
+06c20  A1e3a[CINT(v2232)] = (v2402=16 + A1e3a[CINT(v2232)])
+06c44  GOTO @6c03
+06c48  IF A1e3a[CINT(v2232)] > v23fa=15 THEN @6c67 : GOTO @6c8f
+06c68  A1e3a[CINT(v2232)] = (v2702=-16 + A1e3a[CINT(v2232)])
+06c8c  GOTO @6c48
+06c90  IF v2232 = v23d0=1 THEN @6ca0 : GOTO @6d35
+06ca1  v1d8a = (v270a=-1.5 + (v2706=3000 / (v25c4=90 + (v1df6 - v222a))))
+06ccd  v1cd6 = (v271a=160 - (SIN(v223e) * (v2716=227 + (((v262e=0.5 + (ABS(SIN((v1e3e * v270e=0.393))) * v2712=1.5)) * v1d8a) * v21b2))))
+06d32  GOTO @6e6b
+06d36  IF A1daa[CINT(v2232)] = v271e=7 THEN @6d55 : GOTO @6d9c
+06d56  A1d86[CINT(v2232)] = (v272e=-2 + (v272a=260 / ((v2722=-6 + A1df2[CINT(v2232)]) ^ v2726=0.67))) : GOTO @6de5
+06d9d  A1d86[CINT(v2232)] = (v273a=-3.8 + (v2736=145 / SQR(ABS((v2732=-15 + A1df2[CINT(v2232)])))))
+06de6  A1cd2[CINT(v2232)] = (v271a=160 - (SIN(v223e) * (v2716=227 + ((A1d86[CINT(v2232)] * (v262e=0.5 + (ABS(SIN((A1e3a[CINT(v2232)] * v270e=0.393))) * v2712=1.5))) * v21b2))))
+06e6c  IF A1d86[CINT(v2232)] > v273e=250 THEN @6e8b : GOTO @6ea6
+06e8c  A1d86[CINT(v2232)] = v273e=250
+06ea7  A1eca[CINT(v2232)] = (v2152 + (A1df2[CINT(v2232)] + (A1e3a[CINT(v2232)] + (A1d86[CINT(v2232)] + (A1cd2[CINT(v2232)] + A1eca[CINT((v24e2=-1 + v2232))])))))
+06f1c  IF A1df2[CINT(v2232)] <= v2652=20 THEN @6f3b : GOTO @6f84
+06f3c  IF v2192 >= v2742=34 THEN @6f4c : GOTO @b5cc
+06f4d  IF ((v219e = v23d0=1) AND (v2192 < v2746=61)) THEN @6f78 : GOTO @6f84
+06f79  v1792 = v23d0=1
+06f85  v2232 = (v23d0=1 + v2232) : IF v2232 > v260a=8 THEN @6fa7 : GOTO @6907
+06fa9  IF ((RND < (v2752=-0.04 + (v2192 * v274e=0.000112))) AND (v2192 > v274a=350)) THEN @6fea : GOTO @6fee
+06feb  GOTO @b5cc
+06fef  IF ((v2196 = 0) AND ((v224a = v2246) AND ((v21ca = v2242) AND ((v2756=200 + v222a) > v1df6)))) THEN @7045 : GOTO @7107
+07046  rt_297b(bx=10, dx=10, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v0135, dx=60, cx=0, si=0, di=0, fac=?)
+0705e  rt_1257(bx=3, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=14, dx=0, cx=0, si=0, di=0, fac=?)
+0706f  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='CONTACT MADE', dx=0, cx=0, si=0, di=0, fac=?)
+0707d  GOTO @7094
+07089  v224e = (v23d0=1 + v224e) : IF v224e <= v276a=25000 THEN @7088
+070a9  rt_1257(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=12, dx=0, cx=0, si=0, di=0, fac=?)
+070ba  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='MISSION COMPLETED', dx=0, cx=0, si=0, di=0, fac=?)
+070c8  GOTO @70df
+070d4  v224e = (v23d0=1 + v224e) : IF v224e <= v266c=10000 THEN @70d3
+070f4  v2246 = v23d0=1
+07100  GOSUB d327
+07108  IF v1dfa < v2784=800 THEN @7118 : GOTO @71bf
+07119  IF v2192 < v24ce=2 THEN @7129 : GOTO @71bf
+0712a  v1dd6 = v2568=4
+07136  IF v1dfa < v2788=400 THEN @7146 : GOTO @71bf
+07147  v1dd6 = v24ce=2
+07153  IF (((v23a6 < v270e=0.393) OR (ABS((v1eae - v219a)) > v2794=5.887)) AND ((v2186 < v2790=35950) AND (v1dfa < v278c=150))) THEN @71b7 : GOTO @71bf
+071b8  GOSUB cd8e
+071c0  IF v2182 = v24ce=2 THEN @71d0 : GOTO @720c
+071d1  v2186 = ((v2186 - ABS((v2196 * v26ac=0.25))) - (v178a * v25ea=5)) : GOTO @7273
+0720d  IF ((v2196 < v2798=11) AND (v2182 = v23d0=1)) THEN @7238 : GOTO @7273
+07239  v218a = ((v218a - ((v2196 * v2196) * v279c=0.02)) - (v1786 * v262e=0.5))
+07274  IF ((v218a < v24d6=1000) AND (v2182 = v24ce=2)) THEN @729f : GOTO @72c5
+072a0  v218a = (v24ce=2 + v218a)
+072b3  v2186 = (v27a0=-3 + v2186)
+072c6  IF v2192 > v2652=20 THEN @72d6 : GOTO @72e9
+072d7  v21a2 = (v27a4=-0.25 + v21a2)
+072ea  IF v21a2 < v27a8=110 THEN @72fa : GOTO @7349
+072fb  rt_1257(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=13, dx=0, cx=0, si=0, di=0, fac=?)
+0730c  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=' No more oxygen ', dx=0, cx=0, si=0, di=0, fac=?)
+0731a  GOTO @7331
+07326  v214e = (v23d0=1 + v214e) : IF v214e <= v27c0=19000 THEN @7325
+07346  GOTO @b923
+0734a  IF ((v21ce = 0) OR (v2196 = v2176)) is FALSE THEN @7372 : GOTO @73ac
+07373  IF v2196 < v2176 THEN @7383 : GOTO @7399
+07384  v2196 = (v26ac=0.25 + v2196) : GOTO @73ac
+0739a  v2196 = (v24e2=-1 + v2196)
+073ad  IF v21ce <> 0 THEN @73ba : GOTO @7407
+073bb  v219a = (v217a + v219a)
+073ce  IF v219a > v26b8=6.28 THEN @73de : GOTO @73ed
+073df  v219a = v26bc=0 : GOTO @7407
+073ee  IF v219a < 0 THEN @73fb : GOTO @7407
+073fc  v219a = v26b8=6.28
+0740b  v2252 = v26bc=0
+07417  IF v21aa > 0 THEN @7424 : GOTO @74f7
+07425  v21aa = (v23d0=1 + v21aa)
+07438  IF (v264e=45 + (v2256 * v23fa=15)) < v21aa THEN @7458 : GOTO @74f7
+07459  v21aa = v27c4=0
+07465  GOTO @74e0
+07471  A1cae[CINT(v225a)] = (v24e2=-1 + A1cae[CINT(v225a)])
+07495  A1d3e[CINT(v225a)] = A1cf6[CINT(v225a)]
+074b5  A1d62[CINT(v225a)] = A1d1a[CINT(v225a)]
+074d5  v225a = (v23d0=1 + v225a) : IF v225a > v260a=8 THEN @74f7 : GOTO @7470
+074f8  GOTO @7d87
+07504  IF ((v225a = v24ce=2) OR (A1df2[CINT(v225a)] > v27c8=950)) is FALSE THEN @753f : GOTO @7885
+07540  IF ((((v24ce=2 + (v2256 + v219e)) * (v27cc=0.2 + v21ca)) / ((((CINT(v2192) \ 20) + 1) ^ v27d0=1.8) * ((CINT(A1df2[CINT(v225a)]) \ 100) + 1))) ^ v2712=1.5) > RND THEN @75e3 : GOTO @75ef
+075e4  v21aa = v23d0=1
+075f0  IF v21aa <> 0 THEN @75fd : GOTO @7885
+075fe  v225e = (A1ea6[CINT(v225a)] - A1e16[CINT(v225a)])
+07626  IF ((A1dce[CINT(v225a)] <> v27d4=1.75) AND (A1daa[CINT(v225a)] > v25ee=6)) THEN @7665 : GOTO @7671
+07666  GOSUB d1bd
+0766e  GOTO @777b
+07672  IF A1dce[CINT(v225a)] <> 0 THEN @768e : GOTO @772d
+0768f  IF (((v225e < 0) AND (v23a6 < v268c=3.1416)) OR ((v225e > 0) AND (ABS(v225e) > v268c=3.1416))) THEN @76e2 : GOTO @7709
+076e3  A1ea6[CINT(v225a)] = (v27d8=0.028 + A1ea6[CINT(v225a)]) : GOTO @772d
+0770a  A1ea6[CINT(v225a)] = (v27dc=-0.028 + A1ea6[CINT(v225a)])
+0772e  IF A1dce[CINT(v225a)] <> v27d4=1.75 THEN @774d : GOTO @7778
+0774e  A1dce[CINT(v225a)] = (v271e=7 + v2256)
+07775  GOTO @7bb2 : GOTO @7bb2
+0777c  IF A1dce[CINT(v225a)] <> 0 THEN @7798 : GOTO @7837
+07799  IF (((v225e < 0) AND (v23a6 < v268c=3.1416)) OR ((v225e > 0) AND (ABS(v225e) > v268c=3.1416))) THEN @77ec : GOTO @7813
+077ed  A1ea6[CINT(v225a)] = (v27e0=-0.035 + A1ea6[CINT(v225a)]) : GOTO @7837
+07814  A1ea6[CINT(v225a)] = (v27e4=0.035 + A1ea6[CINT(v225a)])
+07838  IF A1dce[CINT(v225a)] <> v27d4=1.75 THEN @7857 : GOTO @7882
+07858  A1dce[CINT(v225a)] = (v25d2=10 + v2256)
+0787f  GOTO @7bb2 : GOTO @7bb2
+07886  v2262 = (A1d3e[CINT(v225a)] - A1cf6[CINT(v225a)])
+078ae  v2266 = (A1d62[CINT(v225a)] - A1d1a[CINT(v225a)])
+078d6  IF ((A1cae[CINT(v225a)] > v271e=7) OR ((ABS(v2266) > v2652=20) OR (ABS(v2262) > v2652=20))) is FALSE THEN @792a : GOTO @7bb2
+0792b  A1cae[CINT(v225a)] = (v23d0=1 + A1cae[CINT(v225a)])
+0794f  IF ((A1cf6[CINT(v225a)] > 0) AND (A1cae[CINT(v225a)] > v271e=7)) THEN @798b : GOTO @7a02
+0798c  IF ((A1daa[CINT(v225a)] = v271e=7) OR (v225a = v24ce=2)) THEN @79c5 : GOTO @79e3
+079c6  A1cae[CINT(v225a)] = v23d0=1 : GOTO @7a02
+079e4  A1dce[CINT(v225a)] = v2506=0
+079ff  GOTO @7ac2
+07a03  A1d3e[CINT(v225a)] = A18e2[((CINT(A1cae[CINT(v225a)]) * 9) + CINT(v225a))]
+07a3f  A1d62[CINT(v225a)] = A1a26[((CINT(A1cae[CINT(v225a)]) * 9) + CINT(v225a))]
+07a7b  A1dce[CINT(v225a)] = (v2256 + A1b6a[((CINT(A1cae[CINT(v225a)]) * 9) + CINT(v225a))])
+07ac3  v2262 = (A1d3e[CINT(v225a)] - A1cf6[CINT(v225a)])
+07aeb  v2266 = (A1d62[CINT(v225a)] - A1d1a[CINT(v225a)])
+07b13  IF v2262 = 0 THEN @7b20 : GOTO @7b4f
+07b21  A1ea6[CINT(v225a)] = (SGN(v2266) * v26f6=1.5708) : GOTO @7b80
+07b50  A1ea6[CINT(v225a)] = ATN((v2266 / v2262))
+07b81  IF v2262 < 0 THEN @7b8e : GOTO @7bb2
+07b8f  A1ea6[CINT(v225a)] = (v268c=3.1416 + A1ea6[CINT(v225a)])
+07bb3  IF A1ea6[CINT(v225a)] < 0 THEN @7bcf : GOTO @7bf7
+07bd0  A1ea6[CINT(v225a)] = (v26fa=6.2832 + A1ea6[CINT(v225a)])
+07bf4  GOTO @7bb3
+07bf8  IF ((v225a <= v226a) AND (v225a > v24ce=2)) THEN @7c20 : GOTO @7c62
+07c21  IF A1d1a[CINT(v225a)] < v27e8=-900 THEN @7c40 : GOTO @7c56
+07c41  v2252 = (v24e2=-1 + v2252) : GOTO @7c62
+07c57  v2252 = v25d2=10
+07c63  IF ((((A1cf6[CINT(v225a)] - v1cfa) / (v27ec=-150 + v222a)) ^ v24ce=2) + (((A1d1a[CINT(v225a)] - v1d1e) / (v27ec=-150 + v222e)) ^ v24ce=2)) < v23d0=1 THEN @7ce6 : GOTO @7d01
+07ce7  A1dce[CINT(v225a)] = v2506=0
+07d02  A1cf6[CINT(v225a)] = ((A1dce[CINT(v225a)] * COS(A1ea6[CINT(v225a)])) + A1cf6[CINT(v225a)])
+07d3f  A1d1a[CINT(v225a)] = ((A1dce[CINT(v225a)] * SIN(A1ea6[CINT(v225a)])) + A1d1a[CINT(v225a)])
+07d7c  v225a = (v23d0=1 + v225a) : IF v225a > v260a=8 THEN @7d9e : GOTO @7503
+07d9f  IF ((v226e = 0) AND (v2252 < 0)) THEN @7dc4 : GOTO @7e5a
+07dc5  rt_297b(bx=10, dx=10, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v0135, dx=60, cx=0, si=0, di=0, fac=?)
+07ddd  rt_1257(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=10, dx=0, cx=0, si=0, di=0, fac=?)
+07dee  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='YOU HAVE SUCCESSFULLY ', dx=0, cx=0, si=0, di=0, fac=?)
+07dfc  rt_1257(bx=6, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=9, dx=0, cx=0, si=0, di=0, fac=?)
+07e0d  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='COMPLETED YOUR MISSION', dx=0, cx=0, si=0, di=0, fac=?)
+07e1b  GOTO @7e32
+07e27  v224e = (v23d0=1 + v224e) : IF v224e <= v27c0=19000 THEN @7e26
+07e47  v226e = v23d0=1
+07e53  GOSUB d327
+07e5c  IF v21ce = v23d0=1 THEN @7e6c : GOTO @7e72
+07e6d  RETURN
+07e73  IF ABS((v21da - v1eea)) < v25ea=5 THEN @7e90 : GOTO @7e94
+07e91  GOTO @7ee4
+07e95  v21da = v1eea
+07ea1  IF (((v219e = v23d0=1) AND (v2192 < v25da=46)) OR (v2192 < v26b0=21)) THEN @7edc : GOTO @7ee4
+07edd  GOSUB 515d
+07ee6  GOTO @57c2
+07eed  IF v21d6 = 0 THEN @7efa : GOTO @7f5c
+07efb  SOUND 3000, v09e2
+07f07  LINE?(bx=213, dx=165, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+07f1d  v21d6 = v23d0=1
+07f29  v2176 = (v2176 - ((SGN(ABS(v2176)) * v2182) * v262e=0.5))
+07f57  RETURN
+07f5d  SOUND 3000, v09e2
+07f69  LINE?(bx=213, dx=165, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bb6, dx=0, cx=0, si=0, di=0, fac=?)
+07f7f  v21d6 = v2506=0
+07f8b  v2176 = (v2176 + ((SGN(ABS(v2176)) * v2182) * v262e=0.5))
+07fb7  RETURN
+07fbd  IF (((v1176 > 0) AND (v2272 >= v2568=4)) OR ((v21a6 <= 0) OR ((v21d6 = 0) OR (v1782 > 0)))) THEN @8015 : GOTO @801b
+08016  RETURN
+0801c  IF v2272 >= v2568=4 THEN @802c : GOTO @803b
+0802d  v2272 = v23d0=1 : GOTO @807c
+0803c  IF A1172[CINT((v23d0=1 + v2272))] = 0 THEN @8060 : GOTO @8076
+08061  v2272 = (v23d0=1 + v2272) : GOTO @807c
+08077  RETURN
+0807d  SOUND 600, v09e2
+08089  LINE?(bx=CINT((v25d6=244 + (v2272 * v25d2=10))), dx=168, cx=0, si=v2272, di=v25d6=244, fac=(v25d6=244 + (v2272 * v25d2=10))) : rt_2abb(bx=v1136, dx=-1, cx=0, si=v2272, di=v25d6=244, fac=(v25d6=244 + (v2272 * v25d2=10)))
+080b5  v21a6 = (v24e2=-1 + v21a6)
+080c8  rt_1257(bx=22, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+080d9  rt_3984(bx='##', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v21a6, dx=0, cx=0, si=0, di=0, fac=?)
+080ea  A114a[CINT(v2272)] = v2156
+08105  A115e[CINT(v2272)] = v215a
+08120  A1186[CINT(v2272)] = v219a
+0813b  A1172[CINT(v2272)] = v2824=17
+08156  RETURN
+0815f  GOTO @86be
+0816b  GOTO @8378
+08177  IF A1172[CINT(v214e)] <> 0 THEN @8193 : GOTO @836c
+08194  A114a[CINT(v214e)] = ((A1172[CINT(v214e)] * COS(A1186[CINT(v214e)])) + A114a[CINT(v214e)])
+081d1  A115e[CINT(v214e)] = ((A1172[CINT(v214e)] * SIN(A1186[CINT(v214e)])) + A115e[CINT(v214e)])
+0820e  A119a[CINT(v214e)] = (A1172[CINT(v214e)] + A119a[CINT(v214e)])
+08239  IF A119a[CINT(v214e)] > v2828=960 THEN @8258 : GOTO @836c
+08259  A114a[CINT(v214e)] = v282c=-999
+08274  A115e[CINT(v214e)] = v282c=-999
+0828f  A1172[CINT(v214e)] = v2830=0
+082aa  A1186[CINT(v214e)] = v2830=0
+082c5  A119a[CINT(v214e)] = v2830=0
+082e0  A11ae[CINT(v214e)] = v2830=0
+082fb  IF ((v21ce = 0) AND ((v2568=4 - v214e) < v21a6)) THEN @832b : GOTO @836c
+0832c  SOUND 600, (v09e2 * 2^2)
+08341  LINE?(bx=CINT((v25d6=244 + (v214e * v25d2=10))), dx=168, cx=0, si=v214e, di=v25d6=244, fac=(v25d6=244 + (v214e * v25d2=10))) : rt_2abb(bx=v1136, dx=2, cx=0, si=v214e, di=v25d6=244, fac=(v25d6=244 + (v214e * v25d2=10)))
+0836d  v214e = (v23d0=1 + v214e) : IF v214e > v2568=4 THEN @838f : GOTO @8176
+08390  IF v21e6 = 0 THEN @839d : GOTO @83a1
+0839e  GOTO @86b2
+083a2  v2276 = v21e6 : GOTO @869b
+083b9  IF A1e82[CINT(v21de)] = v23d0=1 THEN @83d8 : GOTO @83dc
+083d9  GOTO @868f
+083dd  IF A1df2[CINT(A1e82[CINT(v21de)])] <= v2834=1200 THEN @840b : GOTO @868f
+0840c  GOTO @8678
+08418  IF A1172[CINT(v214a)] <> 0 THEN @8434 : GOTO @866c
+08435  IF A11ae[CINT(v214a)] <> 0 THEN @8451 : GOTO @8455
+08452  GOTO @866c
+08456  v227a = (A114a[CINT(v214a)] - A1cf6[CINT(A1e82[CINT(v21de)])])
+0849b  v227e = (A115e[CINT(v214a)] - A1d1a[CINT(A1e82[CINT(v21de)])])
+084e0  IF v227a = 0 THEN @84ed : GOTO @8509
+084ee  v2282 = (SGN(v227e) * v26f6=1.5708) : GOTO @8525
+0850a  v2282 = ATN((v227e / v227a))
+08526  IF A1daa[CINT(A1e82[CINT(v21de)])] = v271e=7 THEN @8554 : GOTO @85e2
+08555  IF SQR(((v227a ^ v24ce=2) + (v227e ^ v24ce=2))) < (v2838=9.240001 + ((COS((v2282 - A1ea6[CINT(A1e82[CINT(v21de)])])) ^ v25ee=6) * v2626=14)) THEN @85d6 : GOTO @85e2
+085d7  GOSUB 86dc
+085df  GOTO @866c
+085e3  IF SQR(((v227a ^ v24ce=2) + (v227e ^ v24ce=2))) < (v2840=9.900001 + ((COS((v2282 - A1ea6[CINT(A1e82[CINT(v21de)])])) ^ v25ee=6) * v283c=18)) THEN @8664 : GOTO @866c
+08665  GOSUB 86dc
+0866d  v214a = (v23d0=1 + v214a) : IF v214a > v2568=4 THEN @868f : GOTO @8417
+08690  v21de = (v23d0=1 + v21de) : IF v21de > v2276 THEN @86b2 : GOTO @83b8
+086b3  v2286 = (v23d0=1 + v2286) : IF v2286 > v2564=3 THEN @86d5 : GOTO @816a
+086d6  RETURN
+086dd  A1dce[CINT(A1e82[CINT(v21de)])] = v27d4=1.75
+08707  v228a = A1e82[CINT(v21de)]
+08722  A11ae[CINT(v214a)] = v23d0=1
+0873d  v21c6 = (v23d0=1 + v21c6)
+08750  rt_282c(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+08759  rt_282c(bx=4, dx=0, cx=0, si=0, di=0, fac=?)
+08762  IF ((v21ce = v23d0=1) OR (((v219e = v24e2=-1) AND (v2192 > v2652=20)) OR (v2192 > v264e=45))) is FALSE THEN @87b0 : GOTO @98e5
+087b1  GOTO @87d6
+087bd  rt_282c(bx=CINT(v228e), dx=0, cx=0, si=v228e, di=0, fac=?)
+087cb  v228e = (v23d0=1 + v228e) : IF v228e <= v2626=14 THEN @87bc
+087eb  v227a = (A114a[CINT(v214a)] - v2156)
+0880e  v227e = (A115e[CINT(v214a)] - v215a)
+08831  IF v227a = 0 THEN @883e : GOTO @885a
+0883f  v2282 = (SGN(v227e) * v26f6=1.5708) : GOTO @8876
+0885b  v2282 = ATN((v227e / v227a))
+08877  IF v227a < 0 THEN @8884 : GOTO @8897
+08885  v2282 = (v268c=3.1416 + v2282)
+08898  IF v2282 < 0 THEN @88a5 : GOTO @88bc
+088a6  v2282 = (v26fa=6.2832 + v2282)
+088b9  GOTO @8898
+088bd  v2292 = (v2282 - v219a)
+088d1  IF v2292 < 0 THEN @88de : GOTO @88f5
+088df  v2292 = (v26fa=6.2832 + v2292)
+088f2  GOTO @88d1
+088f6  v2296 = (v2292 - v21ae)
+0890a  IF v2296 < 0 THEN @8917 : GOTO @892e
+08918  v2296 = (v26fa=6.2832 + v2296)
+0892b  GOTO @890a
+0892f  IF ((v2296 < v24fe=5.4978) AND (v2296 > v24f2=0.7854)) is FALSE THEN @8957 : GOTO @98e5
+08958  v229a = (v271a=160 - (SIN(v2296) * (v2716=227 + ((A1d86[CINT(v228a)] * (v262e=0.5 + (ABS(SIN((A1e3a[CINT(v228a)] * v270e=0.393))) * v2712=1.5))) * v21b2))))
+089d5  IF A1daa[CINT(v228a)] = v271e=7 THEN @89f4 : GOTO @8a14
+089f5  A1d86[CINT(v228a)] = (A1d86[CINT(v228a)] * 2^1)
+08a15  v224e = v2506=0
+08a21  v221e = (v2568=4 + (A1d86[CINT(v228a)] ^ v2844=1.6))
+08a4c  v229e = v24ce=2
+08a58  v22a2 = v2506=0
+08a64  v22a6 = (v23d0=1 + (v221e / v23fa=15))
+08a80  v22aa = (v221e / v2848=44)
+08a94  v10a6 = v229a
+08aa0  v10aa = (v229a - v22aa)
+08ab4  v10ae = (v22aa + v229a)
+08ac8  v10b2 = (v229a - (v22aa * 2^1))
+08ae2  v10b6 = (v229a + (v22aa * 2^1))
+08afc  v10ba = (v229a - (v22aa * 2^2))
+08b16  v10be = (v229a + (v22aa * v2564=3))
+08b32  v10c2 = (v229a - (v22aa * v25ee=6))
+08b4e  v10c6 = (v229a + (v22aa * v25ea=5))
+08b6a  v10ca = (v229a - (v22aa * v284c=9))
+08b86  v10ce = (v229a + (v22aa * v271e=7))
+08ba2  v10d2 = (v229a + (v22aa * v25d2=10))
+08bbe  GOTO @8c48
+08bca  IF A10a2[CINT(v214e)] > v2850=319 THEN @8be9 : GOTO @8c04
+08bea  A10a2[CINT(v214e)] = v2850=319
+08c05  IF A10a2[CINT(v214e)] < 0 THEN @8c21 : GOTO @8c3c
+08c22  A10a2[CINT(v214e)] = v2854=0
+08c3d  v214e = (v23d0=1 + v214e) : IF v214e > v260e=12 THEN @8c5f : GOTO @8bc9
+08c60  v22ae = v2152
+08c6c  v22b2 = v2152
+08c78  v22b6 = v2152
+08c84  v22ba = v2152
+08c90  v22be = v2152
+08c9c  v22c2 = v2152
+08ca8  v22c6 = (v23d0=1 + v2152)
+08cbc  v22ca = (v23d0=1 + v2152)
+08cd0  v22ce = (v23d0=1 + v2152)
+08ce4  GOTO @926e
+08cf0  v22d2 = v221e : v22d6 = v22a6 : GOTO @91eb
+08d12  GOTO @8d29
+08d1e  v224e = (v23d0=1 + v224e) : IF v224e <= v26c4=300 THEN @8d1d
+08d3e  v22de = (v2152 - v22da)
+08d52  v22e2 = (v2152 - (v22da * v23d4=0.8))
+08d6e  v22e6 = (v2152 - (v22da * v2858=0.6))
+08d8a  v22ea = (v2152 - (v22da * v285c=0.3))
+08da6  v22ee = (v2152 - (v22da * v2860=0.15))
+08dc2  v22f2 = (v2152 - (v22da * v26c8=0.05))
+08dde  v22f6 = (v23d0=1 + v2152)
+08df2  v22fa = (v23d0=1 + (v2152 + (v22da * v2864=0.03)))
+08e16  v22fe = (v23d0=1 + (v2152 + (v22da * v2868=0.06)))
+08e3a  rt_297b(bx=CINT(v10a6), dx=CINT(v22de), cx=0, si=v10a6, di=0, fac=?) : rt_29c3(bx=CINT(v10ae), dx=CINT(v22ae), cx=CINT(v229e), si=v10ae, di=0, fac=?)
+08e75  rt_297b(bx=CINT(v10aa), dx=CINT(v22e2), cx=0, si=v10aa, di=0, fac=?) : rt_29c3(bx=CINT(v10a6), dx=CINT(v22b2), cx=CINT(v229e), si=v10a6, di=0, fac=?)
+08eb0  rt_297b(bx=CINT(v10ae), dx=CINT(v22e2), cx=0, si=v10ae, di=0, fac=?) : rt_29c3(bx=CINT(v10b6), dx=CINT(v22b2), cx=CINT(v229e), si=v10b6, di=0, fac=?)
+08eeb  rt_297b(bx=CINT(v10b2), dx=CINT(v22e6), cx=0, si=v10b2, di=0, fac=?) : rt_29c3(bx=CINT(v10aa), dx=CINT(v22b6), cx=CINT(v229e), si=v10aa, di=0, fac=?)
+08f26  rt_297b(bx=CINT(v10b6), dx=CINT(v22e6), cx=0, si=v10b6, di=0, fac=?) : rt_29c3(bx=CINT(v10be), dx=CINT(v22b6), cx=CINT(v229e), si=v10be, di=0, fac=?)
+08f61  rt_297b(bx=CINT(v10ba), dx=CINT(v22ea), cx=0, si=v10ba, di=0, fac=?) : rt_29c3(bx=CINT(v10b2), dx=CINT(v22ba), cx=CINT(v229e), si=v10b2, di=0, fac=?)
+08f9c  rt_297b(bx=CINT(v10be), dx=CINT(v22ea), cx=0, si=v10be, di=0, fac=?) : rt_29c3(bx=CINT(v10c6), dx=CINT(v22ba), cx=CINT(v229e), si=v10c6, di=0, fac=?)
+08fd7  rt_297b(bx=CINT(v10c2), dx=CINT(v22ee), cx=0, si=v10c2, di=0, fac=?) : rt_29c3(bx=CINT(v10ba), dx=CINT(v22be), cx=CINT(v229e), si=v10ba, di=0, fac=?)
+09012  rt_297b(bx=CINT(v10c6), dx=CINT(v22ee), cx=0, si=v10c6, di=0, fac=?) : rt_29c3(bx=CINT(v10ce), dx=CINT(v22be), cx=CINT(v229e), si=v10ce, di=0, fac=?)
+0904d  rt_297b(bx=CINT(v10ca), dx=CINT(v22f2), cx=0, si=v10ca, di=0, fac=?) : rt_29c3(bx=CINT(v10c2), dx=CINT(v22c2), cx=CINT(v229e), si=v10c2, di=0, fac=?)
+09088  rt_297b(bx=CINT(v10ce), dx=CINT(v22f2), cx=0, si=v10ce, di=0, fac=?) : rt_29c3(bx=CINT(v10d2), dx=CINT(v22c2), cx=CINT(v229e), si=v10d2, di=0, fac=?)
+090c3  rt_297b(bx=CINT(v10ca), dx=CINT(v22f6), cx=0, si=v10ca, di=0, fac=?) : rt_29c3(bx=CINT(v10d2), dx=CINT(v22c6), cx=CINT(v22a2), si=v10d2, di=0, fac=?)
+090fe  rt_297b(bx=CINT(v10ba), dx=CINT(v22fa), cx=0, si=v10ba, di=0, fac=?) : rt_29c3(bx=CINT(v10c6), dx=CINT(v22ca), cx=CINT(v22a2), si=v10c6, di=0, fac=?)
+09139  rt_297b(bx=CINT(v10aa), dx=CINT(v22fe), cx=0, si=v10aa, di=0, fac=?) : rt_29c3(bx=CINT(v10b6), dx=CINT(v22ce), cx=CINT(v22a2), si=v10b6, di=0, fac=?)
+09174  v22ae = v22de
+09180  v22b2 = v22e2
+0918c  v22b6 = v22e6
+09198  v22ba = v22ea
+091a4  v22be = v22ee
+091b0  v22c2 = v22f2
+091bc  v22c6 = v22f6
+091c8  v22ca = v22fa
+091d4  v22ce = v22fe
+091e0  v22da = (v22d6 + v22da) : IF v22d6 < 0 THEN @9200 : GOTO @9212 : IF v22da < v22d2 THEN @920f : GOTO @8d11 : GOTO @9222 : IF v22da > v22d2 THEN @9222 : GOTO @8d11
+09223  v224e = v221e
+0922f  v221e = v2506=0
+0923b  v229e = v21ca
+09247  v22a2 = v24ce=2
+09253  v22a6 = (-v22a6)
+09263  v2302 = (v23d0=1 + v2302) : IF v2302 > v24ce=2 THEN @9285 : GOTO @8cef
+09286  v22aa = (v23d0=1 + (v22aa * 2^3))
+092a1  v22a6 = (v22a6 * v2824=17)
+092b5  IF RND < (v2256 / v260e=12) THEN @92d6 : GOTO @92dc
+092d7  RETURN
+092dd  v2306 = A1d86[CINT(v228a)]
+092f8  IF v2306 > v286c=50 THEN @9308 : GOTO @930c
+09309  GOTO @b5cc
+0930d  v230a = (v2652=20 + (v2306 * 2^1))
+09327  IF v230a > v2870=60 THEN @9337 : GOTO @9343
+09338  v230a = v2870=60
+09344  v230e = v230a : GOTO @95b1
+0935b  A13aa[CINT(v224e)] = (v229a + ((v263e=-4 + (RND * 2^3)) * v22aa))
+0939a  A149e[CINT(v224e)] = (v2152 - (RND * v22a6))
+093cb  A1592[CINT(v224e)] = (v229a - (RND * v22aa))
+093fc  A1686[CINT(v224e)] = (v229a + (RND * v22aa))
+0942d  rt_297b(bx=CINT(A1592[CINT(v224e)]), dx=CINT(v2152), cx=4*CINT(v224e), si=A1592[CINT(v224e)], di=0, fac=?) : rt_2981(bx=CINT(A13aa[CINT(v224e)]), dx=CINT(A149e[CINT(v224e)]), cx=-1, si=A13aa[CINT(v224e)], di=0, fac=?)
+0947e  rt_297b(bx=CINT(A1686[CINT(v224e)]), dx=CINT(v2152), cx=4*CINT(v224e), si=A1686[CINT(v224e)], di=0, fac=?) : rt_2981(bx=CINT(A13aa[CINT(v224e)]), dx=CINT(A149e[CINT(v224e)]), cx=-1, si=A13aa[CINT(v224e)], di=0, fac=?)
+094cf  A11c2[CINT(v224e)] = (v2874=-10 + ((RND * v2652=20) + A13aa[CINT(v224e)]))
+0950f  A12b6[CINT(v224e)] = (v2878=-8 + ((RND * v25d2=10) + A149e[CINT(v224e)]))
+0954f  rt_2a09(bx=CINT(A11c2[CINT(v224e)]), dx=CINT(A12b6[CINT(v224e)]), cx=0, si=A11c2[CINT(v224e)], di=0, fac=?)
+09581  rt_297b(bx=0, dx=CINT((v24ce=2 + v2152)), cx=0, si=v2152, di=v24ce=2, fac=(v24ce=2 + v2152)) : rt_2981(bx=v013f, dx=CINT((v24ce=2 + v2152)), cx=2, si=v2152, di=v24ce=2, fac=(v24ce=2 + v2152))
+095a6  v224e = (v23d0=1 + v224e) : IF v224e > v230e THEN @95c8 : GOTO @935a
+095c9  A1dce[CINT(v228a)] = v2506=0
+095e4  A1d1a[CINT(v228a)] = v287c=-2000
+095ff  A1cf6[CINT(v228a)] = v287c=-2000
+0961a  v2312 = v24e2=-1 : GOTO @96ea
+09631  rt_297b(bx=CINT(A1592[CINT(v224e)]), dx=CINT(v2152), cx=4*CINT(v224e), si=A1592[CINT(v224e)], di=0, fac=?) : rt_2981(bx=CINT(A13aa[CINT(v224e)]), dx=CINT(A149e[CINT(v224e)]), cx=CINT(v21ca), si=A13aa[CINT(v224e)], di=0, fac=?)
+09688  rt_297b(bx=CINT(A1686[CINT(v224e)]), dx=CINT(v2152), cx=4*CINT(v224e), si=A1686[CINT(v224e)], di=0, fac=?) : rt_2981(bx=CINT(A13aa[CINT(v224e)]), dx=CINT(A149e[CINT(v224e)]), cx=CINT(v21ca), si=A13aa[CINT(v224e)], di=0, fac=?)
+096df  v224e = (v2312 + v224e) : IF v2312 < 0 THEN @96ff : GOTO @9711 : IF v224e < v23d0=1 THEN @970e : GOTO @9630 : GOTO @9721 : IF v224e > v23d0=1 THEN @9721 : GOTO @9630
+09722  GOTO @98ce
+0972e  v2316 = v24e2=-1 : GOTO @988b
+09745  IF A12b6[CINT(v224e)] < v2152 THEN @9764 : GOTO @979e
+09765  rt_2a09(bx=CINT(A11c2[CINT(v224e)]), dx=CINT(A12b6[CINT(v224e)]), cx=CINT(v21ca), si=A11c2[CINT(v224e)], di=0, fac=?)
+0979f  A12b6[CINT(v224e)] = (v25ee=6 + A12b6[CINT(v224e)])
+097c3  IF A11c2[CINT(v224e)] < v229a THEN @97e2 : GOTO @9809
+097e3  A11c2[CINT(v224e)] = (v272e=-2 + A11c2[CINT(v224e)]) : GOTO @982d
+0980a  A11c2[CINT(v224e)] = (v24ce=2 + A11c2[CINT(v224e)])
+0982e  IF A12b6[CINT(v224e)] < v2152 THEN @984d : GOTO @987f
+0984e  rt_2a09(bx=CINT(A11c2[CINT(v224e)]), dx=CINT(A12b6[CINT(v224e)]), cx=0, si=A11c2[CINT(v224e)], di=0, fac=?)
+09880  v224e = (v2316 + v224e) : IF v2316 < 0 THEN @98a0 : GOTO @98b2 : IF v224e < v23d0=1 THEN @98af : GOTO @9744 : GOTO @98c2 : IF v224e > v23d0=1 THEN @98c2 : GOTO @9744
+098c3  v231a = (v23d0=1 + v231a) : IF v231a > v2626=14 THEN @98e5 : GOTO @972d
+098e6  A1d86[CINT(v228a)] = v2506=0
+09901  A1d1a[CINT(v228a)] = v287c=-2000
+0991c  A1cf6[CINT(v228a)] = v2880=0
+09937  A1dce[CINT(v228a)] = v2880=0
+09952  A1cae[CINT(v228a)] = v260a=8
+0996d  IF v21ce = 0 THEN @997a : GOTO @9982
+0997b  GOSUB 515d
+09983  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0999a  rt_383b(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v231e, dx=2, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2326, dx=5, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v232a, dx=10, cx=0, si=0, di=0, fac=?)
+099cf  IF A1daa[CINT(v228a)] = v2564=3 THEN @99ee : GOTO @99fb
+099ef  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+099f8  GOTO @9c2c
+099fc  IF A1daa[CINT(v228a)] = v2568=4 THEN @9a1b : GOTO @9a41
+09a1c  v224e = (v23d0=1 + FIX((RND * v2652=20)))
+09a42  IF A1daa[CINT(v228a)] = v25ea=5 THEN @9a61 : GOTO @9a85
+09a62  v224e = (v2574=26 + FIX((RND * 2^3)))
+09a86  IF A1daa[CINT(v228a)] = v25ee=6 THEN @9aa5 : GOTO @9ac9
+09aa6  v224e = (v24ba=36 + FIX((RND * 2^3)))
+09aca  IF A1daa[CINT(v228a)] = v271e=7 THEN @9ae9 : GOTO @9b0d
+09aea  v224e = (v25da=46 + FIX((RND * 2^4)))
+09b0e  IF A1daa[CINT(v228a)] = v260a=8 THEN @9b2d : GOTO @9b53
+09b2e  v224e = (v2892=66 + FIX((RND * v25fe=19)))
+09b54  v221e = v224e
+09b60  rt_035d(bx=2, dx=CINT(v224e), cx=0, si=v224e, di=0, fac=?)
+09b73  rt_24cd(bx=v231e, dx=0, cx=0, si=0, di=0, fac=?) : IF 8990 > 0 THEN @9b82 : GOTO @9bb2
+09b83  v224e = ((CINT((v23d0=1 + v224e)) MOD 85) + 1) : GOTO @9bb5 : GOTO @9bdb
+09bb6  IF v224e = v221e THEN @9bc6 : GOTO @9bd7
+09bc7  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+09bd0  GOSUB a804
+09bd8  GOTO @9b5f
+09bdc  rt_235e(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_376e(bx=0, dx=v232a, cx=0, si=0, di=0, fac=?)
+09bea  rt_2508(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_376e(bx=1, dx=v231e, cx=0, si=0, di=0, fac=?)
+09bfb  rt_376e(bx=v2322, dx=v2322, cx=0, si=0, di=0, fac=?)
+09c06  rt_376e(bx=v2326, dx=v2326, cx=0, si=0, di=0, fac=?)
+09c11  rt_0367(bx=2, dx=CINT(v224e), cx=0, si=v224e, di=0, fac=?)
+09c24  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+09c2d  GOTO @9c52
+09c39  rt_2829(bx=CINT(v228e), dx=0, cx=0, si=v228e, di=0, fac=?)
+09c47  v228e = (v23d0=1 + v228e) : IF v228e <= v2626=14 THEN @9c38
+09c67  RETURN
+09c6d  v21ce = v23d0=1
+09c79  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @9c83
+09c84  GOTO @9ca9
+09c90  rt_282c(bx=CINT(v214e), dx=0, cx=0, si=v214e, di=0, fac=?)
+09c9e  v214e = (v24ce=2 + v214e) : IF v214e <= v260a=8 THEN @9c8f
+09cbe  v232e = v2896=211
+09cca  v2332 = v256c=100
+09cd6  v21ce = v23d0=1
+09ce2  rt_102f(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1049(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+09cf2  rt_0df6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+09d02  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+09d08  rt_1257(bx=7, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+09d19  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='HEADING', dx=0, cx=0, si=0, di=0, fac=?)
+09d27  rt_1257(bx=12, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+09d38  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=' SPEED', dx=0, cx=0, si=0, di=0, fac=?)
+09d46  rt_1257(bx=17, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+09d57  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=' DEPTH', dx=0, cx=0, si=0, di=0, fac=?)
+09d65  rt_1257(bx=21, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+09d76  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='TORP', dx=0, cx=0, si=0, di=0, fac=?)
+09d84  rt_1257(bx=21, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=34, dx=0, cx=0, si=0, di=0, fac=?)
+09d95  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v21a6, dx=0, cx=0, si=0, di=0, fac=?)
+09da3  GOTO @9e28
+09daf  rt_297b(bx=237, dx=CINT(v214e), cx=v214e, si=v214e, di=0, fac=?) : rt_298a(bx=v0118, dx=CINT((v25d2=10 + v214e)), cx=1, si=v214e, di=v25d2=10, fac=(v25d2=10 + v214e))
+09de2  rt_297b(bx=235, dx=CINT((v272e=-2 + v214e)), cx=v214e, si=v214e, di=v272e=-2, fac=(v272e=-2 + v214e)) : rt_298a(bx=v011a, dx=CINT((v260e=12 + v214e)), cx=1, si=v214e, di=v260e=12, fac=(v260e=12 + v214e))
+09e1d  v214e = (v28c2=40 + v214e) : IF v214e > v27a8=110 THEN @9e3f : GOTO @9dae
+09e40  rt_297b(bx=224, dx=23, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v0125, dx=140, cx=1, si=0, di=0, fac=?)
+09e5a  rt_297b(bx=v010b, dx=156, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v0123, dx=170, cx=1, si=0, di=0, fac=?)
+09e74  rt_297b(bx=v010d, dx=158, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v0121, dx=168, cx=1, si=0, di=0, fac=?)
+09e8e  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=111, dx=100, cx=101, si=0, di=0, fac=?)
+09ea8  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=111, dx=100, cx=102, si=0, di=0, fac=?)
+09ec2  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=111, dx=100, cx=103, si=0, di=0, fac=?)
+09edc  GOTO @9f74
+09ee8  GOTO @9f54
+09ef4  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013f, dx=199, cx=1, si=0, di=0, fac=?)
+09f0c  rt_297b(bx=2, dx=2, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013d, dx=197, cx=1, si=0, di=0, fac=?)
+09f25  rt_2a09(bx=CINT(v214e), dx=CINT(v21de), cx=-1, si=v214e, di=0, fac=?)
+09f40  rt_325c(bx='S4C3R5F4D5G4L5H4U5E4', dx=0, cx=0, si=0, di=0, fac=?)
+09f49  v21de = (v28de=174 + v21de) : IF v21de <= v25e2=180 THEN @9ef3
+09f69  v214e = (v28e2=292 + v214e) : IF v214e > v28e6=303 THEN @9f8b : GOTO @9ee7
+09f8c  IF v2192 <= v264e=45 THEN @9f9c : GOTO @a171
+09f9d  rt_2a09(bx=111, dx=102, cx=3, si=0, di=0, fac=?)
+09fac  rt_325c(bx='S4C3U4', dx=0, cx=0, si=0, di=0, fac=?)
+09fb5  rt_297b(bx=111, dx=100, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v232e), dx=CINT(v2332), cx=0, si=v232e, di=0, fac=?)
+09fda  v232e = (v28f8=111 + (COS(v2336) * v28f4=99))
+09ffb  v2332 = (v256c=100 + (SIN(v2336) * v28fc=89))
+0a01c  rt_297b(bx=111, dx=100, cx=0, si=0, di=0, fac=?) : rt_2981(bx=CINT(v232e), dx=CINT(v2332), cx=2, si=v232e, di=0, fac=?)
+0a042  GOTO @a15a
+0a04e  v233a = (v28f8=111 - ((SIN(A1e5e[CINT(v214e)]) * A1df2[CINT(v214e)]) * v2900=0.06500001))
+0a089  v233e = (v256c=100 - ((COS(A1e5e[CINT(v214e)]) * A1df2[CINT(v214e)]) * v2900=0.06500001))
+0a0c4  IF A1df2[CINT(v214e)] < v26f2=1350 THEN @a0e3 : GOTO @a14e
+0a0e4  rt_2a09(bx=CINT(v233a), dx=CINT(v233e), cx=2, si=v233a, di=0, fac=?)
+0a0ff  IF v214e = v23d0=1 THEN @a10f : GOTO @a14e
+0a110  rt_33ea(bx=v23d8=0.9000001, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=CINT(v233a), dx=CINT(v233e), cx=CINT((v2564=3 + (v2834=1200 / v1df6))), si=v233a, di=v2564=3, fac=(v2564=3 + (v2834=1200 / v1df6)))
+0a14f  v214e = (v23d0=1 + v214e) : IF v214e > v260a=8 THEN @a171 : GOTO @a04d
+0a172  rt_1257(bx=5, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+0a183  rt_3984(bx='###', dx=0, cx=0, si=0, di=0, fac=?) : rt_364a(bx=(CINT((v2910=450.0117 - (v219a * v290c=57.2958))) MOD 360), dx=(CINT((v2910=450.0117 - (v219a * v290c=57.2958))) MOD 360), cx=v0168, si=v2910=450.0117, di=v290c=57.2958, fac=(v2910=450.0117 - (v219a * v290c=57.2958)))
+0a1b2  rt_1257(bx=10, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+0a1c3  rt_3984(bx='###', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v2196, dx=0, cx=0, si=0, di=0, fac=?)
+0a1d4  rt_1257(bx=15, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+0a1e5  rt_3984(bx='###', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=FAC, dx=0, cx=0, si=0, di=0, fac=FIX(v2192))
+0a1fe  GOSUB 6412
+0a206  v2336 = (v27cc=0.2 + v2336)
+0a219  IF v2336 > v26b8=6.28 THEN @a229 : GOTO @a235
+0a22a  v2336 = v26bc=0
+0a236  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0a244  IF v21fe = v2656 THEN @a254 : GOTO @a258
+0a255  GOTO @9f8b
+0a259  IF v21fe = 'R' THEN @a269 : GOTO @a290
+0a26a  rt_30d4(bx=111, dx=17, cx=2, si=0, di=0, fac=?)
+0a27c  rt_30d4(bx=111, dx=190, cx=0, si=0, di=0, fac=?)
+0a28d  GOTO @9f8b
+0a291  IF v21fe = '5' THEN @a2a1 : GOTO @a2bd
+0a2a2  v217e = v26bc=0
+0a2ae  v21fa = v26bc=0
+0a2ba  GOTO @9f8b
+0a2be  GOSUB d0da
+0a2c6  IF v21fe <> v2656 THEN @a2d6 : GOTO @a2da
+0a2d7  GOTO @a2de
+0a2db  GOTO @9f8b
+0a2df  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0a2e5  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0a2f6  v21ce = v26bc=0
+0a302  GOTO @42a8
+0a307  SOUND 37, v26bc=0
+0a313  rt_282c(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0a31c  rt_282c(bx=4, dx=0, cx=0, si=0, di=0, fac=?)
+0a325  rt_282c(bx=8, dx=0, cx=0, si=0, di=0, fac=?)
+0a32e  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0a334  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0a345  v21ce = v23d0=1
+0a351  v2342 = v23d0=1
+0a35d  IF v177e > 0 THEN @a36a : GOTO @a382
+0a36b  rt_2a09(bx=175, dx=56, cx=2, si=0, di=0, fac=?)
+0a37a  rt_325c(bx='S4C2U7R12D2R2D5L14', dx=0, cx=0, si=0, di=0, fac=?)
+0a383  IF v1782 > 0 THEN @a390 : GOTO @a3a8
+0a391  rt_2a09(bx=7, dx=56, cx=2, si=0, di=0, fac=?)
+0a3a0  rt_325c(bx='S4C2E2R40D3R5D10L2D2BH11L20D1R20BD2L20D1R20BD2L20D1R20', dx=0, cx=0, si=0, di=0, fac=?)
+0a3a9  IF v1786 > 0 THEN @a3b6 : GOTO @a3ce
+0a3b7  rt_2a09(bx=79, dx=63, cx=2, si=0, di=0, fac=?)
+0a3c6  rt_325c(bx='S4C2ND5R125D5L12D1L13NU6L25NU6L25NU6L25NU6L12U1L13', dx=0, cx=0, si=0, di=0, fac=?)
+0a3cf  IF v178a > 0 THEN @a3dc : GOTO @a3f4
+0a3dd  rt_2a09(bx=210, dx=51, cx=2, si=0, di=0, fac=?)
+0a3ec  rt_325c(bx='S4C2R60L2D1R13L1D1R8D2L2D1L8D1L10DL14D1L45H2U4E2', dx=0, cx=0, si=0, di=0, fac=?)
+0a3f5  IF v178e > 0 THEN @a402 : GOTO @a41a
+0a403  rt_2a09(bx=v0105, dx=64, cx=2, si=0, di=0, fac=?)
+0a412  rt_325c(bx='S4C2L25U2L6D4R6U2BL6L5U2L2D4U5L7ND6L1G1D4F1R8U1R2U2', dx=0, cx=0, si=0, di=0, fac=?)
+0a41b  IF v1796 > 0 THEN @a428 : GOTO @a440
+0a429  rt_2a09(bx=100, dx=48, cx=2, si=0, di=0, fac=?)
+0a438  rt_325c(bx='S4C2NR53D8R53U8D3R22D3L22', dx=0, cx=0, si=0, di=0, fac=?)
+0a441  rt_33ea(bx=v2a24=0.07, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=146, dx=60, cx=115, si=v2342, di=0, fac=?)
+0a461  rt_22ce(bx=v2342, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v2342, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx='S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1', dx=0, cx=0, si=0, di=0, fac=?) : rt_325c(bx='S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1', dx=0, cx=0, si=0, di=0, fac=?)
+0a480  rt_22ce(bx=v2342, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v2342, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx='L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3', dx=0, cx=0, si=0, di=0, fac=?) : rt_325c(bx='L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3', dx=0, cx=0, si=0, di=0, fac=?)
+0a49f  rt_22ce(bx=v2342, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v2342, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx='BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10', dx=0, cx=0, si=0, di=0, fac=?) : rt_325c(bx='BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10', dx=0, cx=0, si=0, di=0, fac=?)
+0a4be  rt_297b(bx=30, dx=39, cx=0, si=0, di=0, fac=?) : rt_2981(bx=120, dx=31, cx=CINT(v2342), si=v2342, di=0, fac=?)
+0a4df  GOTO @a513
+0a4eb  rt_2a09(bx=CINT(v214e), dx=49, cx=CINT(v2342), si=v214e, di=0, fac=?)
+0a508  v214e = (v260a=8 + v214e) : IF v214e <= v2bd6=240 THEN @a4ea
+0a528  rt_1257(bx=16, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+0a539  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='CONTROL RM        CONNING TOWER', dx=0, cx=0, si=0, di=0, fac=?)
+0a547  rt_1257(bx=18, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+0a558  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='ENGINE RM         PERISCOPES', dx=0, cx=0, si=0, di=0, fac=?)
+0a566  rt_1257(bx=20, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+0a577  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='BATTERY RM        FUEL TANKS', dx=0, cx=0, si=0, di=0, fac=?)
+0a585  rt_1257(bx=22, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+0a596  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='TORPEDO RM        RADIO RM', dx=0, cx=0, si=0, di=0, fac=?)
+0a5a4  rt_297b(bx=0, dx=100, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013f, dx=199, cx=1, si=0, di=0, fac=?)
+0a5bd  rt_297b(bx=2, dx=102, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013d, dx=197, cx=1, si=0, di=0, fac=?)
+0a5d7  GOTO @a63d
+0a5e3  GOTO @a61d
+0a5ef  LINE?(bx=CINT(v214a), dx=CINT(v214e), cx=0, si=v214a, di=0, fac=?) : rt_2abb(bx=v0bb6, dx=-1, cx=0, si=v214a, di=0, fac=?)
+0a612  v214a = (v2c60=130 + v214a) : IF v214a <= v278c=150 THEN @a5ee
+0a632  v214e = (v2402=16 + v214e) : IF v214e <= v25e2=180 THEN @a5e2
+0a652  IF v177e > 0 THEN @a65f : GOTO @a675
+0a660  LINE?(bx=150, dx=166, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a676  IF v1782 > 0 THEN @a683 : GOTO @a699
+0a684  LINE?(bx=20, dx=166, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a69a  IF v1786 > 0 THEN @a6a7 : GOTO @a6bd
+0a6a8  LINE?(bx=20, dx=150, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a6be  IF v178a > 0 THEN @a6cb : GOTO @a6e0
+0a6cc  LINE?(bx=150, dx=150, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a6e1  IF v178e > 0 THEN @a6ee : GOTO @a704
+0a6ef  LINE?(bx=20, dx=134, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a705  IF v1792 > 0 THEN @a712 : GOTO @a74c
+0a713  LINE?(bx=150, dx=134, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a729  rt_30d4(bx=124, dx=30, cx=2, si=0, di=0, fac=?)
+0a73b  rt_30d4(bx=130, dx=32, cx=2, si=0, di=0, fac=?)
+0a74d  IF v1796 > 0 THEN @a75a : GOTO @a770
+0a75b  LINE?(bx=20, dx=118, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a771  IF v179a > 0 THEN @a77e : GOTO @a7b8
+0a77f  LINE?(bx=150, dx=118, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bf2, dx=0, cx=0, si=0, di=0, fac=?)
+0a795  rt_30d4(bx=124, dx=40, cx=2, si=0, di=0, fac=?)
+0a7a7  rt_30d4(bx=124, dx=43, cx=2, si=0, di=0, fac=?)
+0a7b9  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0a7c7  IF v21fe = v2656 THEN @a7b8
+0a7d5  GOSUB d0c0
+0a7dd  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0a7e3  v21ce = v2c64=0
+0a7ef  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0a800  GOTO @42a8
+0a805  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013f, dx=60, cx=0, si=0, di=0, fac=?)
+0a81c  v2346 = v23d0=1
+0a828  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+0a839  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='LAST SHIP IN LOG LIST SUNK', dx=0, cx=0, si=0, di=0, fac=?)
+0a847  rt_1257(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0a858  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='DO YOU WISH TO REVIEW BEFORE DELETION', dx=0, cx=0, si=0, di=0, fac=?)
+0a866  rt_2c63(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v234a, dx=0, cx=0, si=0, di=0, fac=?)
+0a87f  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0a896  LEFT$(bx=v234a, dx=1, cx=0, si=0, di=0, fac=?) : IF v234a = 'Y' THEN @a8af : GOTO @a8d7
+0a8b0  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0a8b9  GOSUB aa0e
+0a8c1  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0a8d8  rt_1257(bx=6, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=15, dx=0, cx=0, si=0, di=0, fac=?)
+0a8e9  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='LOG CLEARED', dx=0, cx=0, si=0, di=0, fac=?)
+0a8f7  GOTO @a965
+0a903  rt_035d(bx=2, dx=CINT(v234e), cx=0, si=v234e, di=0, fac=?)
+0a916  rt_2508(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_376e(bx=0, dx=v231e, cx=0, si=0, di=0, fac=?)
+0a926  rt_376e(bx=v2322, dx=v2322, cx=0, si=0, di=0, fac=?)
+0a931  rt_376e(bx=v2326, dx=v2326, cx=0, si=0, di=0, fac=?)
+0a93c  rt_376e(bx=v232a, dx=v232a, cx=0, si=0, di=0, fac=?)
+0a947  rt_0367(bx=2, dx=CINT(v234e), cx=0, si=v234e, di=0, fac=?)
+0a95a  v234e = (v23d0=1 + v234e) : IF v234e <= v28fc=89 THEN @a902
+0a97a  IF v2346 <> v23d0=1 THEN @a98a : GOTO @a9b2
+0a98b  rt_035d(bx=2, dx=90, cx=0, si=0, di=0, fac=?)
+0a997  rt_2508(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_376e(bx=0, dx=v2322, cx=0, si=0, di=0, fac=?)
+0a9a7  rt_0367(bx=2, dx=90, cx=0, si=0, di=0, fac=?)
+0a9b3  v2346 = v2506=0
+0a9bf  LEFT$(bx=v234a, dx=1, cx=0, si=0, di=0, fac=?) : IF v234a = 'Y' THEN @a9d8 : GOTO @a9e1
+0a9d9  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @a9e5
+0a9e2  GOTO @a9fe
+0a9e6  STRSET(bx=v2656, dx=v234a, cx=0, si=0, di=0, fac=?)
+0a9f2  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0a9fb  GOTO @42a8
+0a9ff  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0aa08  RETURN
+0aa0f  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0aa15  rt_0df6(bx=9, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0aa26  SOUND 37, v2506=0
+0aa32  rt_0eda(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0aa3a  v2352 = v2506=0
+0aa46  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0aa5d  rt_383b(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v231e, dx=2, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2326, dx=5, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v232a, dx=10, cx=0, si=0, di=0, fac=?)
+0aa92  rt_297b(bx=125, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=165, dx=24, cx=3, si=0, di=0, fac=?)
+0aaab  GOTO @aae0
+0aab7  rt_297b(bx=125, dx=CINT(v214e), cx=0, si=v214e, di=0, fac=?) : rt_2981(bx=165, dx=CINT(v214e), cx=2, si=v214e, di=0, fac=?)
+0aad5  v214e = (v24ce=2 + v214e) : IF v214e <= v24ea=24 THEN @aab6
+0aaf5  rt_297b(bx=125, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=144, dx=13, cx=1, si=0, di=0, fac=?)
+0ab0e  GOTO @abbe
+0ab1a  GOTO @ab9b
+0ab26  GOTO @ab60
+0ab32  rt_2a09(bx=CINT(v2342), dx=CINT((v24ce=2 + v224e)), cx=3, si=v2342, di=v24ce=2, fac=(v24ce=2 + v224e))
+0ab55  v2342 = (v24ce=2 + v2342) : IF v2342 <= v2cce=142 THEN @ab31
+0ab75  rt_2a09(bx=CINT(v221e), dx=CINT(v224e), cx=3, si=v221e, di=0, fac=?)
+0ab90  v221e = (v24ce=2 + v221e) : IF v221e > v2cd2=141 THEN @abb2 : GOTO @ab25
+0abb3  v224e = (v2568=4 + v224e) : IF v224e > v25d2=10 THEN @abd5 : GOTO @ab19
+0abd6  rt_1257(bx=5, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=12, dx=0, cx=0, si=0, di=0, fac=?)
+0abe7  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx="CAPTAIN'S LOG", dx=0, cx=0, si=0, di=0, fac=?)
+0abf5  v2356 = v2506=0
+0ac01  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0ac0f  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0ac1d  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='SHIP          TONNAGE       DATE SUNK', dx=0, cx=0, si=0, di=0, fac=?)
+0ac2b  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='_____________________________________', dx=0, cx=0, si=0, di=0, fac=?)
+0ac39  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0ac47  GOTO @ad01
+0ac53  rt_035d(bx=2, dx=CINT(v224e), cx=0, si=v224e, di=0, fac=?)
+0ac66  rt_24cd(bx=v231e, dx=0, cx=0, si=0, di=0, fac=?) : IF 8990 > 0 THEN @ac75 : GOTO @acf5
+0ac76  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : LEFT$(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?)
+0ac8c  rt_3984(bx='######', dx=0, cx=0, si=0, di=0, fac=?) : rt_24cd(bx=v2326, dx=0, cx=0, si=0, di=0, fac=?) : rt_3636(bx=v2326, dx=0, cx=0, si=0, di=0, fac=?)
+0aca2  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='      ', dx=0, cx=0, si=0, di=0, fac=?) : LEFT$(bx=v232a, dx=6, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx=v232a, dx=6, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='1943', dx=6, cx=0, si=0, di=0, fac=?)
+0acc8  rt_24cd(bx=v2326, dx=0, cx=0, si=0, di=0, fac=?) : v2352 = (v2352 + 8998)
+0ace3  v2356 = (v23d0=1 + v2356)
+0acf6  v224e = (v23d0=1 + v224e) : IF v224e > v28fc=89 THEN @ad18 : GOTO @ac52
+0ad19  rt_035d(bx=2, dx=90, cx=0, si=0, di=0, fac=?)
+0ad25  rt_24cd(bx=v2322, dx=0, cx=0, si=0, di=0, fac=?) : v235a = 8994
+0ad3b  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0ad44  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0ad52  rt_3984(bx='\\             \\######', dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='SHIPS SUNK      ', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v2356, dx=0, cx=0, si=0, di=0, fac=?)
+0ad6b  rt_3984(bx='\\             \\######', dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='TOTAL TONNAGE   ', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v2352, dx=0, cx=0, si=0, di=0, fac=?)
+0ad84  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0ad92  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='MISSIONS', dx=0, cx=0, si=0, di=0, fac=?)
+0ada0  rt_3984(bx='\\             \\######', dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='COMPLETED       ', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v235a, dx=0, cx=0, si=0, di=0, fac=?)
+0adb9  IF v2346 = v23d0=1 THEN @adc9 : GOTO @ade5
+0adca  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0add8  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='      (Press any key to continue)', dx=0, cx=0, si=0, di=0, fac=?)
+0ade6  IF v2346 = v23d0=1 THEN @adf6 : GOTO @ae3b
+0adf7  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0ae05  IF v21fe = v2656 THEN @ade5
+0ae13  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0ae19  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0ae2a  v21ce = v2506=0
+0ae36  RETURN
+0ae3c  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0ae4a  IF v21fe = v2656 THEN @ae3b
+0ae58  GOSUB d0c0
+0ae60  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0ae66  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0ae77  v21ce = v2506=0
+0ae83  GOTO @42a8
+0ae88  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0ae8e  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0ae9f  GOTO @aec4
+0aeab  rt_282c(bx=CINT(v214e), dx=0, cx=0, si=v214e, di=0, fac=?)
+0aeb9  v214e = (v23d0=1 + v214e) : IF v214e <= v2626=14 THEN @aeaa
+0aed9  rt_1257(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=15, dx=0, cx=0, si=0, di=0, fac=?)
+0aeea  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='GAME CONTROL', dx=0, cx=0, si=0, di=0, fac=?)
+0aef8  rt_1257(bx=6, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0af09  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='     [1] DIFFICULTY LEVEL', dx=0, cx=0, si=0, di=0, fac=?) : rt_2928(bx=34, dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v2256, dx=0, cx=0, si=0, di=0, fac=?)
+0af27  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='     [2] SOUND', dx=0, cx=0, si=0, di=0, fac=?) : rt_2928(bx=34, dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v09e2, dx=0, cx=0, si=0, di=0, fac=?)
+0af45  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='     [3] TIME OF DAY', dx=0, cx=0, si=0, di=0, fac=?) : rt_2928(bx=34, dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v21ca, dx=0, cx=0, si=0, di=0, fac=?)
+0af63  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx="     [4] RESET CAPTAIN'S LOG", dx=0, cx=0, si=0, di=0, fac=?)
+0af71  rt_1257(bx=23, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=8, dx=0, cx=0, si=0, di=0, fac=?)
+0af82  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='(Press RETURN to continue)', dx=0, cx=0, si=0, di=0, fac=?)
+0af90  rt_1257(bx=13, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=6, dx=0, cx=0, si=0, di=0, fac=?)
+0afa1  rt_2c63(bx='NUMBER OF ITEM TO CHANGE', dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx='NUMBER OF ITEM TO CHANGE', dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v224e, dx=0, cx=0, si=0, di=0, fac=?)
+0afba  rt_1257(bx=13, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+0afcb  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=' ', dx=0, cx=0, si=0, di=0, fac=?)
+0afd9  IF ((v224e > v2568=4) OR (v224e < v23d0=1)) THEN @b001 : GOTO @b028
+0b002  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0b008  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0b019  v21ce = v2506=0
+0b025  GOTO @42a8
+0b029  rt_1df6(bx=CINT(v224e), dx=0, cx=0, si=v224e, di=0, fac=?) : ? add al, 0x3f : IF ? <= ? THEN @afe1 : IF ? <= ? THEN @b013 : IF ? <= ? THEN @b045 : IF ? > ? THEN @b00c : rt_1257(bx=16, dx=0, cx=0, si=v224e, di=0, fac=?) : rt_1271(bx=6, dx=0, cx=0, si=v224e, di=0, fac=?)
+0b051  rt_2c63(bx='NEW DIFFICULTY LEVEL', dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx='NEW DIFFICULTY LEVEL', dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v2256, dx=0, cx=0, si=0, di=0, fac=?)
+0b06a  IF v2256 > v284c=9 THEN @b07a : GOTO @b089
+0b07b  v2256 = v284c=9 : GOTO @b0a3
+0b08a  IF v2256 < 0 THEN @b097 : GOTO @b0a3
+0b098  v2256 = v2eb0=0
+0b0a4  GOTO @aef7
+0b0a8  v09e2 = (CINT((v23d0=1 + v09e2)) MOD 2)
+0b0d4  GOTO @aef7
+0b0d8  v21ca = (CINT((v23d0=1 + v21ca)) MOD 2)
+0b104  GOTO @aef7
+0b108  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0b11f  rt_383b(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v231e, dx=2, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2326, dx=5, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v232a, dx=10, cx=0, si=0, di=0, fac=?)
+0b154  GOSUB a8f6
+0b15c  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0b165  GOTO @aef7
+0b16a  ? nop 
+0b16c  rt_2569(bx=30569, dx=0, cx=0, si=0, di=0, fac=?)
+0b175  rt_282c(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0b17e  rt_282c(bx=4, dx=0, cx=0, si=0, di=0, fac=?)
+0b187  rt_282c(bx=8, dx=0, cx=0, si=0, di=0, fac=?)
+0b190  v21ce = v23d0=1
+0b19c  rt_102f(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1049(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0b1ac  rt_0df6(bx=18, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0b1bd  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0b1c3  rt_297b(bx=3, dx=1, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013d, dx=196, cx=1, si=0, di=0, fac=?)
+0b1dd  GOTO @b261
+0b1e9  rt_2593(bx=v214e, dx=0, cx=0, si=0, di=0, fac=?) : rt_2593(bx=v21de, dx=0, cx=0, si=0, di=0, fac=?) : rt_2593(bx=v235e, dx=0, cx=0, si=0, di=0, fac=?) : rt_2593(bx=v2362, dx=0, cx=0, si=0, di=0, fac=?)
+0b20a  rt_33ea(bx=v2362, dx=0, cx=0, si=0, di=0, fac=?) : rt_33fe(bx=CINT(v214e), dx=CINT(v21de), cx=CINT(v235e), si=v214e, di=0, fac=?)
+0b239  rt_30d4(bx=CINT(v214e), dx=CINT(v21de), cx=0, si=v214e, di=0, fac=?)
+0b256  v214a = (v23d0=1 + v214a) : IF v214a > v260e=12 THEN @b278 : GOTO @b1e8
+0b279  GOTO @b2ae
+0b285  rt_297b(bx=3, dx=CINT(v214e), cx=0, si=v214e, di=0, fac=?) : rt_2981(bx=v013d, dx=CINT(v214e), cx=3, si=v214e, di=0, fac=?)
+0b2a3  v214e = (v2eb4=49 + v214e) : IF v214e <= v2eb8=199 THEN @b284
+0b2c3  GOTO @b2f6
+0b2cf  rt_297b(bx=CINT(v21de), dx=1, cx=0, si=v21de, di=0, fac=?) : rt_2981(bx=CINT(v21de), dx=197, cx=3, si=v21de, di=0, fac=?)
+0b2eb  v21de = (v2ebc=63 + v21de) : IF v21de <= v2850=319 THEN @b2ce
+0b30b  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013f, dx=199, cx=3, si=0, di=0, fac=?)
+0b323  rt_297b(bx=1, dx=1, cx=0, si=0, di=0, fac=?) : rt_2981(bx=v013d, dx=1, cx=0, si=0, di=0, fac=?)
+0b338  rt_297b(bx=2, dx=2, cx=0, si=0, di=0, fac=?) : rt_2981(bx=v013d, dx=2, cx=3, si=0, di=0, fac=?)
+0b34e  rt_2a09(bx=CINT((v2156 * v2ec8=0.01252)), dx=CINT((v2ec4=196 - (v215a * v2ec0=0.009650499))), cx=0, si=v2156, di=v2ec8=0.01252, fac=(v2156 * v2ec8=0.01252))
+0b380  IF v21fe = '5' THEN @b390 : GOTO @b3a8
+0b391  v217e = v2ecc=0
+0b39d  v21fa = v2ecc=0
+0b3a9  IF v2256 <= v24ce=2 THEN @b3b9 : GOTO @b460
+0b3ba  rt_2a09(bx=CINT((v1cfe * v2ec8=0.01252)), dx=CINT((v2ec4=196 - (v1d22 * v2ec0=0.009650499))), cx=0, si=v1cfe, di=v2ec8=0.01252, fac=(v1cfe * v2ec8=0.01252))
+0b3ec  GOTO @b44c
+0b3f8  rt_2a09(bx=CINT((A1cf6[CINT(v224e)] * v2ec8=0.01252)), dx=CINT((v2ec4=196 - (A1d1a[CINT(v224e)] * v2ec0=0.009650499))), cx=2, si=A1cf6[CINT(v224e)], di=v2ec8=0.01252, fac=(A1cf6[CINT(v224e)] * v2ec8=0.01252))
+0b441  v224e = (v23d0=1 + v224e) : IF v224e <= v260a=8 THEN @b3f7
+0b461  GOTO @b478
+0b46d  v224e = (v23d0=1 + v224e) : IF v224e <= v256c=100 THEN @b46c
+0b48d  GOSUB 6412
+0b495  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0b4a3  IF ((v21fe = '5') OR (v21fe = v2656)) is FALSE THEN @b4cb : GOTO @b34d
+0b4cc  GOSUB d0c0
+0b4d4  IF v21fe = 'Z' THEN @b4e4 : GOTO @b589
+0b4e5  IF v21aa = 0 THEN @b4f2 : GOTO @b579
+0b4f3  rt_1257(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0b501  rt_2c63(bx='PASSWORD?', dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx='PASSWORD?', dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v2366, dx=0, cx=0, si=0, di=0, fac=?)
+0b51a  IF v2366 = 'PAED' THEN @b52a : GOTO @b566
+0b52b  rt_1257(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0b539  rt_2c63(bx='ENTER NEW SUB COORDINATES (X,Y):', dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx='ENTER NEW SUB COORDINATES (X,Y):', dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v2156, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v215a, dx=0, cx=0, si=0, di=0, fac=?)
+0b55b  GOSUB c6c7
+0b563  GOTO @b169
+0b567  STRSET(bx=v2656, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0b573  GOTO @b169 : GOTO @b589
+0b57a  STRSET(bx=v2656, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0b586  GOTO @b169
+0b58a  rt_2829(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0b593  rt_2829(bx=4, dx=0, cx=0, si=0, di=0, fac=?)
+0b59c  rt_2829(bx=8, dx=0, cx=0, si=0, di=0, fac=?)
+0b5a5  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0b5ab  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0b5bc  v21ce = v2506=0
+0b5c8  GOTO @42a8
+0b5cd  SOUND 37, v2506=0
+0b5d9  SOUND 800, (v09e2 * v284c=9)
+0b5f0  IF v21ce = v23d0=1 THEN @b600 : GOTO @b6ef
+0b601  v236a = v27a0=-3 : GOTO @b6b4
+0b618  rt_297b(bx=0, dx=CINT(v224e), cx=v224e, si=v224e, di=0, fac=?) : rt_29c3(bx=v013f, dx=CINT((v263e=-4 + v224e)), cx=2, si=v224e, di=v263e=-4, fac=(v263e=-4 + v224e))
+0b64a  GOTO @b688
+0b656  SOUND CINT(SQR(v221e)), v23a6
+0b67d  v221e = (v26c4=300 + v221e) : IF v221e <= v2f14=32000 THEN @b655
+0b69d  SOUND 37, v26d0=0
+0b6a9  v224e = (v236a + v224e) : IF v236a < 0 THEN @b6c9 : GOTO @b6db : IF v224e < v2564=3 THEN @b6d8 : GOTO @b617 : GOTO @b6eb : IF v224e > v2564=3 THEN @b6eb : GOTO @b617
+0b6ec  GOTO @b923
+0b6f0  rt_2a09(bx=v0125, dx=0, cx=3, si=0, di=0, fac=?)
+0b6fe  rt_325c(bx='S4C3G30D20L50G40D7BL13H7U20H20L32H40L20H32', dx=0, cx=0, si=0, di=0, fac=?)
+0b707  rt_2a09(bx=32, dx=140, cx=3, si=0, di=0, fac=?)
+0b716  rt_325c(bx='S4C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7', dx=0, cx=0, si=0, di=0, fac=?)
+0b71f  v236e = v24e2=-1 : GOTO @b8f2
+0b736  IF v224e = v24c6=170 THEN @b746 : GOTO @b75e
+0b747  rt_2a09(bx=107, dx=130, cx=3, si=0, di=0, fac=?)
+0b756  rt_325c(bx='S4A2C3NR7H12U10H5BR40G23D9G8ND8NG6R10F10U4E9NF5H10NL3E12R10BL25H12U8BD33NR3L3G8L7', dx=0, cx=0, si=0, di=0, fac=?)
+0b75f  IF (CINT(v224e) MOD 4) = 0 THEN @b775 : GOTO @b7d4
+0b776  GOTO @b7b4
+0b782  SOUND CINT(SQR(v221e)), v23a6
+0b7a9  v221e = (v26c4=300 + v221e) : IF v221e <= v2f14=32000 THEN @b781
+0b7c9  SOUND 37, v26d0=0
+0b7d5  IF v224e = v2ff0=188 THEN @b7e5 : GOTO @b7fd
+0b7e6  rt_2a09(bx=167, dx=139, cx=3, si=0, di=0, fac=?)
+0b7f5  rt_325c(bx='S4A0C3NR7H12U10H5BR40G13D9G8D10NF11L10NG6BR10BF10BU4BE9NF5H10NL3E12R10BL24H13U7BD32NR3L13NG8NH11', dx=0, cx=0, si=0, di=0, fac=?)
+0b7fe  rt_297b(bx=0, dx=CINT(v224e), cx=0, si=v224e, di=0, fac=?) : rt_2981(bx=v013f, dx=CINT(v224e), cx=2, si=v224e, di=0, fac=?)
+0b81b  IF v224e = v3058=190 THEN @b82b : GOTO @b842
+0b82c  rt_2a09(bx=140, dx=0, cx=3, si=0, di=0, fac=?)
+0b83a  rt_325c(bx='S4C3D5L30G23D32G34D3', dx=0, cx=0, si=0, di=0, fac=?)
+0b843  IF v224e = v3074=178 THEN @b853 : GOTO @b86b
+0b854  rt_2a09(bx=v013f, dx=90, cx=3, si=0, di=0, fac=?)
+0b863  rt_325c(bx='S4C3L20H23U23H34', dx=0, cx=0, si=0, di=0, fac=?)
+0b86c  IF v224e = v2736=145 THEN @b87c : GOTO @b894
+0b87d  rt_2a09(bx=87, dx=35, cx=3, si=0, di=0, fac=?)
+0b88c  rt_325c(bx='S4A0C3G12L33NG23H12', dx=0, cx=0, si=0, di=0, fac=?)
+0b895  IF v224e = v30a4=155 THEN @b8a5 : GOTO @b8bd
+0b8a6  rt_2a09(bx=87, dx=35, cx=3, si=0, di=0, fac=?)
+0b8b5  rt_325c(bx='S4A0C3R35NE8R4NF23R12', dx=0, cx=0, si=0, di=0, fac=?)
+0b8be  IF v224e = v30c2=140 THEN @b8ce : GOTO @b8e6
+0b8cf  rt_2a09(bx=87, dx=35, cx=3, si=0, di=0, fac=?)
+0b8de  rt_325c(bx='S4A0C3G12D15NG9', dx=0, cx=0, si=0, di=0, fac=?)
+0b8e7  v224e = (v236e + v224e) : IF v236e < 0 THEN @b907 : GOTO @b916 : IF v224e < 0 THEN @b913 : GOTO @b735 : GOTO @b923 : IF v224e > 0 THEN @b923 : GOTO @b735
+0b924  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0b93b  rt_383b(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v231e, dx=2, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2326, dx=5, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v232a, dx=10, cx=0, si=0, di=0, fac=?)
+0b970  GOSUB a8f6
+0b978  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0b981  rt_1257(bx=5, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0b992  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0b998  GOTO @b9bd
+0b9a4  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0b9b2  v214e = (v23d0=1 + v214e) : IF v214e <= v2652=20 THEN @b9a3
+0b9d2  rt_1257(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0b9e3  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='DO YOU WANT DO PLAY AGAIN? (Y/N)', dx=0, cx=0, si=0, di=0, fac=?)
+0b9f1  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0b9ff  IF v21fe = v2656 THEN @ba0f : GOTO @ba13
+0ba10  GOTO @b9f0
+0ba14  IF v21fe = 'Y' THEN @ba24 : GOTO @ba2e
+0ba25  rt_17ce(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0ba2b  GOTO @3ac3
+0ba2f  rt_1049(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0ba38  rt_19da(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0ba3e  SOUND 37, v2506=0
+0ba4a  IF v177e > 0 THEN @ba57 : GOTO @bae3
+0ba58  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_29c3(bx=v013f, dx=65, cx=0, si=0, di=0, fac=?)
+0ba6f  rt_1257(bx=4, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=14, dx=0, cx=0, si=0, di=0, fac=?)
+0ba80  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='RADIO ROOM', dx=0, cx=0, si=0, di=0, fac=?)
+0ba8e  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='        REPORTS HEAVY DAMAGE', dx=0, cx=0, si=0, di=0, fac=?)
+0ba9c  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_3627(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='     NO MESSAGES MAY BE RECEIVED', dx=0, cx=0, si=0, di=0, fac=?)
+0bab2  GOTO @bac9
+0babe  v224e = (v23d0=1 + v224e) : IF v224e <= v266c=10000 THEN @babd
+0bade  RETURN
+0bae4  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0baea  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0bafb  CLOSE(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0bb04  v226e = v2506=0
+0bb10  rt_2b8d(bx=FAC, dx=0, cx=0, si=0, di=v23d0=1, fac=(v23d0=1 + FIX((RND * v2652=20)))) : STRSET(bx=FAC, dx=v234a, cx=0, si=0, di=v23d0=1, fac=(v23d0=1 + FIX((RND * v2652=20))))
+0bb3e  LEN(bx=v234a, dx=v234a, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=v234a, dx=(9034 - 1), cx=v234a, si=0, di=0, fac=?) : STRSET(bx=v234a, dx=v234a, cx=v234a, si=0, di=0, fac=?)
+0bb5a  rt_03a7(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v234a, dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=1, dx=v234a, cx=0, si=0, di=0, fac=?)
+0bb7c  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0bb82  rt_102f(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_1049(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0bb92  rt_0df6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_0df6(bx=7, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0bbaa  rt_1257(bx=24, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0bbbb  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx='                                        ', dx=0, cx=0, si=0, di=0, fac=?)
+0bbc9  rt_0306(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : ? not bx : IF 1 <> 0 THEN @bbda : GOTO @bbee
+0bbdb  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_2535(bx=v2372, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @bbf2
+0bbef  GOTO @beac
+0bbf3  LEFT$(bx=v2372, dx=1, cx=0, si=0, di=0, fac=?) : IF v2372 = '@' THEN @bc0c : GOTO @bc94
+0bc0d  LEN(bx=v2372, dx=v2372, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=v2372, dx=(9074 - 1), cx=v2372, si=0, di=0, fac=?) : rt_227d(bx=12, dx=v2372, cx=v2372, si=0, di=0, fac=?) : CONCAT(bx=12, dx=0, cx=v2372, si=0, di=0, fac=?) : CONCAT(bx='DTG ', dx=0, cx=v2372, si=0, di=0, fac=?) : rt_235e(bx='DTG ', dx='DTG ', cx=v2372, si=0, di=0, fac=?) : LEFT$(bx='DTG ', dx=2, cx=v2372, si=0, di=0, fac=?) : CONCAT(bx='DTG ', dx=2, cx=v2372, si=0, di=0, fac=?) : CONCAT(bx='/', dx=2, cx=v2372, si=0, di=0, fac=?) : rt_23d6(bx='/', dx=2, cx=v2372, si=0, di=0, fac=?) : LEFT$(bx='/', dx=2, cx=v2372, si=0, di=0, fac=?) : CONCAT(bx='/', dx=2, cx=v2372, si=0, di=0, fac=?) : rt_23d6(bx='/', dx=2, cx=v2372, si=0, di=0, fac=?) : ? mov word ptr [bp - 2], cx : rt_224e(bx='/', dx=4, cx=2, si=0, di=0, fac=?) : CONCAT(bx='/', dx=4, cx=2, si=0, di=0, fac=?) : CONCAT(bx=' ZULU', dx=4, cx=2, si=0, di=0, fac=?) : STRSET(bx=' ZULU', dx=('unk', '[word ptr [bp - 2]]'), cx=2, si=0, di=0, fac=?)
+0bc95  LEN(bx=v2372, dx=0, cx=0, si=0, di=0, fac=?) : IF 9074 = 0 THEN @bca4 : GOTO @bcc4
+0bca5  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0bcb3  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0bcc1  GOTO @bbc8
+0bcc5  LEFT$(bx=v2372, dx=1, cx=0, si=0, di=0, fac=?) : ASC(bx=v2372, dx=1, cx=0, si=0, di=0, fac=?) : v224e = 9010
+0bce6  IF v2256 < v260a=8 THEN @bcf6 : GOTO @bd0f
+0bcf7  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : LEFT$(bx=v2372, dx=1, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx=v2372, dx=1, cx=0, si=0, di=0, fac=?) : GOTO @bd3b
+0bd10  GOTO @bd27
+0bd1c  v2376 = (v23d0=1 + v2376) : IF v2376 <= v31a4=340 THEN @bd1b
+0bd3c  LEN(bx=v2372, dx=0, cx=0, si=0, di=0, fac=?) : IF 9074 > 1 THEN @bd4c : GOTO @bd6b
+0bd4d  LEN(bx=v2372, dx=v2372, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=v2372, dx=(9074 - 1), cx=v2372, si=0, di=0, fac=?) : STRSET(bx=v2372, dx=v2372, cx=v2372, si=0, di=0, fac=?) : GOTO @bd77
+0bd6c  STRSET(bx=v2656, dx=v2372, cx=0, si=0, di=0, fac=?)
+0bd78  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0bd86  IF v21fe <> v2656 THEN @bd96 : GOTO @bda6
+0bd97  SOUND 37, v2506=0
+0bda3  GOTO @bead
+0bda7  LEN(bx=v2372, dx=0, cx=0, si=0, di=0, fac=?) : IF 9074 <> 0 THEN @bdb6 : GOTO @bbc8
+0bdb7  IF ((v09e2 = v23d0=1) AND ((v224e > v31a8=-17) AND (v224e < v2722=-6))) THEN @bdf2 : GOTO @be08
+0bdf3  v224e = (v31ac=43 + v224e) : GOTO @be41
+0be09  IF ((v09e2 = 0) OR ((v224e > v2574=26) OR (v224e < v23d0=1))) is FALSE THEN @be41 : GOTO @bcc4
+0be42  ON CINT(v224e) GOSUB [c1cd,c1db,c1f9,c20f,c225,c233,c251,c267,c28d,c2a3,c2c1,c2d7,c2f5,c30b,c319,c337,c34d,c36b,c381,c39f,c3ad,c3c3,c3e1,c3f7,c40d,c42b,c449,c477,c49d,c4c3,c4e9,c50f,c53d,c563,c589,c5af]
+0be99  LEN(bx=v2372, dx=0, cx=0, si=0, di=0, fac=?) : IF 9074 <> 0 THEN @bea8 : GOTO @beac
+0bea9  GOTO @bcc4
+0beae  CLOSE(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0beb7  rt_03a7(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v234a, dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=1, dx=v234a, cx=0, si=0, di=0, fac=?)
+0bed9  GOTO @bf15
+0bee5  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=A1daa[CINT(v214e)], dx=0, cx=0, si=v214e, di=0, fac=?)
+0bf0a  v214e = (v23d0=1 + v214e) : IF v214e <= v260a=8 THEN @bee4
+0bf2a  GOTO @bf86
+0bf36  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=A1cf6[CINT(v214e)], dx=0, cx=0, si=v214e, di=0, fac=?)
+0bf5b  A1d3e[CINT(v214e)] = A1cf6[CINT(v214e)]
+0bf7b  v214e = (v23d0=1 + v214e) : IF v214e <= v260a=8 THEN @bf35
+0bf9b  GOTO @c012
+0bfa7  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=A1d1a[CINT(v214e)], dx=0, cx=0, si=v214e, di=0, fac=?)
+0bfcc  A1d62[CINT(v214e)] = A1d1a[CINT(v214e)]
+0bfec  A1cae[CINT(v214e)] = v2506=0
+0c007  v214e = (v23d0=1 + v214e) : IF v214e <= v260a=8 THEN @bfa6
+0c027  GOTO @c0de
+0c033  GOTO @c0bb
+0c03f  GOTO @c09b
+0c04b  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=A179e[(CINT(v214a) + (((CINT(v21de) * 9) + CINT(v214e)) * 9))], dx=9, cx=0, si=v214a, di=0, fac=?)
+0c090  v214a = (v23d0=1 + v214a) : IF v214a <= v260a=8 THEN @c04a
+0c0b0  v21de = (v23d0=1 + v21de) : IF v21de > v2564=3 THEN @c0d2 : GOTO @c03e
+0c0d3  v214e = (v23d0=1 + v214e) : IF v214e > v271e=7 THEN @c0f5 : GOTO @c032
+0c0f6  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v2246, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v2242, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=v226a, dx=0, cx=0, si=0, di=0, fac=?)
+0c120  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0c12e  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0c13c  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0c14a  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0c158  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STRNL(bx=v2656, dx=0, cx=0, si=0, di=0, fac=?)
+0c166  rt_1257(bx=23, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=7, dx=0, cx=0, si=0, di=0, fac=?)
+0c177  PRINT_BEGIN(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : PRINT_STR(bx='(Press any key to continue)', dx=0, cx=0, si=0, di=0, fac=?)
+0c185  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0c193  IF v21fe = v2656 THEN @c184
+0c1a1  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0c1a7  rt_102f(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : rt_1049(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0c1b7  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0c1c8  RETURN
+0c1ce  GOSUB c5f3
+0c1d6  RETURN
+0c1dc  GOSUB c602
+0c1e4  GOSUB c5d5
+0c1ec  GOSUB c5d5
+0c1f4  RETURN
+0c1fa  GOSUB c602
+0c202  GOSUB c602
+0c20a  RETURN
+0c210  GOSUB c602
+0c218  GOSUB c5d5
+0c220  RETURN
+0c226  GOSUB c5d5
+0c22e  RETURN
+0c234  GOSUB c5d5
+0c23c  GOSUB c5d5
+0c244  GOSUB c602
+0c24c  RETURN
+0c252  GOSUB c5e4
+0c25a  GOSUB c602
+0c262  RETURN
+0c268  GOSUB c5d5
+0c270  GOSUB c5d5
+0c278  GOSUB c5d5
+0c280  GOSUB c5d5
+0c288  RETURN
+0c28e  GOSUB c5d5
+0c296  GOSUB c5d5
+0c29e  RETURN
+0c2a4  GOSUB c5f3
+0c2ac  GOSUB c5e4
+0c2b4  GOSUB c5e4
+0c2bc  RETURN
+0c2c2  GOSUB c602
+0c2ca  GOSUB c5e4
+0c2d2  RETURN
+0c2d8  GOSUB c5f3
+0c2e0  GOSUB c5d5
+0c2e8  GOSUB c5d5
+0c2f0  RETURN
+0c2f6  GOSUB c5e4
+0c2fe  GOSUB c5e4
+0c306  RETURN
+0c30c  GOSUB c602
+0c314  RETURN
+0c31a  GOSUB c5e4
+0c322  GOSUB c5e4
+0c32a  GOSUB c5e4
+0c332  RETURN
+0c338  GOSUB c5f3
+0c340  GOSUB c602
+0c348  RETURN
+0c34e  GOSUB c5e4
+0c356  GOSUB c602
+0c35e  GOSUB c5e4
+0c366  RETURN
+0c36c  GOSUB c5f3
+0c374  GOSUB c5d5
+0c37c  RETURN
+0c382  GOSUB c5d5
+0c38a  GOSUB c5d5
+0c392  GOSUB c5d5
+0c39a  RETURN
+0c3a0  GOSUB c5e4
+0c3a8  RETURN
+0c3ae  GOSUB c5d5
+0c3b6  GOSUB c5f3
+0c3be  RETURN
+0c3c4  GOSUB c5d5
+0c3cc  GOSUB c5d5
+0c3d4  GOSUB c5f3
+0c3dc  RETURN
+0c3e2  GOSUB c5f3
+0c3ea  GOSUB c5e4
+0c3f2  RETURN
+0c3f8  GOSUB c602
+0c400  GOSUB c5f3
+0c408  RETURN
+0c40e  GOSUB c602
+0c416  GOSUB c5e4
+0c41e  GOSUB c5e4
+0c426  RETURN
+0c42c  GOSUB c5e4
+0c434  GOSUB c602
+0c43c  GOSUB c5d5
+0c444  RETURN
+0c44a  GOSUB c5e4
+0c452  GOSUB c5e4
+0c45a  GOSUB c5e4
+0c462  GOSUB c5e4
+0c46a  GOSUB c5e4
+0c472  RETURN
+0c478  GOSUB c5f3
+0c480  GOSUB c5e4
+0c488  GOSUB c5e4
+0c490  GOSUB c5e4
+0c498  RETURN
+0c49e  GOSUB c5d5
+0c4a6  GOSUB c5f3
+0c4ae  GOSUB c5e4
+0c4b6  GOSUB c5e4
+0c4be  RETURN
+0c4c4  GOSUB c5d5
+0c4cc  GOSUB c5d5
+0c4d4  GOSUB c5f3
+0c4dc  GOSUB c5e4
+0c4e4  RETURN
+0c4ea  GOSUB c5d5
+0c4f2  GOSUB c5d5
+0c4fa  GOSUB c5d5
+0c502  GOSUB c5f3
+0c50a  RETURN
+0c510  GOSUB c5d5
+0c518  GOSUB c5d5
+0c520  GOSUB c5d5
+0c528  GOSUB c5d5
+0c530  GOSUB c5d5
+0c538  RETURN
+0c53e  GOSUB c602
+0c546  GOSUB c5d5
+0c54e  GOSUB c5d5
+0c556  GOSUB c5d5
+0c55e  RETURN
+0c564  GOSUB c5e4
+0c56c  GOSUB c602
+0c574  GOSUB c5d5
+0c57c  GOSUB c5d5
+0c584  RETURN
+0c58a  GOSUB c5e4
+0c592  GOSUB c5e4
+0c59a  GOSUB c602
+0c5a2  GOSUB c5d5
+0c5aa  RETURN
+0c5b0  GOSUB c5e4
+0c5b8  GOSUB c5e4
+0c5c0  GOSUB c5e4
+0c5c8  GOSUB c602
+0c5d0  RETURN
+0c5d6  PLAY 'B32P62'
+0c5df  RETURN
+0c5e5  PLAY 'B10P62'
+0c5ee  RETURN
+0c5f4  PLAY 'B32P62B10P62'
+0c5fd  RETURN
+0c603  PLAY 'B10P62B32P62'
+0c60c  RETURN
+0c613  rt_03a7(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=3, dx='MXP', cx=0, si=0, di=0, fac=?)
+0c628  GOTO @c6a0
+0c634  GOTO @c680
+0c640  INPUT#(bx=3, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=3, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=A1eee[(CINT(v214e) + (CINT(v21de) * 21))], dx=0, cx=0, si=v214e, di=0, fac=?)
+0c675  v21de = (v23d0=1 + v21de) : IF v21de <= v25ee=6 THEN @c63f
+0c695  v214e = (v23d0=1 + v214e) : IF v214e > v2652=20 THEN @c6b7 : GOTO @c633
+0c6b8  CLOSE(bx=3, dx=0, cx=0, si=0, di=0, fac=?)
+0c6c1  RETURN
+0c6c8  v237a = (v23d0=1 + FIX((v2156 * v3216=0.0002)))
+0c6ec  v237e = (FIX((v215a * v3216=0.0002)) * v25ea=5)
+0c710  v224a = (v237e + v237a)
+0c724  v1cfa = A1f42[CINT(v224a)]
+0c73f  v1d1e = A1f96[CINT(v224a)]
+0c75a  v222a = A1fea[CINT(v224a)]
+0c775  v222e = A203e[CINT(v224a)]
+0c790  v2382 = A2092[CINT(v224a)]
+0c7ab  v2386 = A20e6[CINT(v224a)]
+0c7c6  v1dae = v23d0=1
+0c7d2  RETURN
+0c7d9  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0c7df  rt_0df6(bx=17, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0c7ef  rt_297b(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : rt_298a(bx=v013f, dx=199, cx=3, si=0, di=0, fac=?)
+0c807  rt_282c(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0c810  rt_282c(bx=4, dx=0, cx=0, si=0, di=0, fac=?)
+0c819  rt_282c(bx=8, dx=0, cx=0, si=0, di=0, fac=?)
+0c822  v21ce = v23d0=1
+0c82e  GOTO @c87c
+0c83a  rt_297b(bx=CINT(v224e), dx=0, cx=0, si=v224e, di=0, fac=?) : rt_2981(bx=CINT(v224e), dx=5, cx=3, si=v224e, di=0, fac=?)
+0c855  rt_297b(bx=CINT(v224e), dx=194, cx=0, si=v224e, di=0, fac=?) : rt_2981(bx=CINT(v224e), dx=199, cx=3, si=v224e, di=0, fac=?)
+0c871  v224e = (v321a=64 + v224e) : IF v224e <= v2850=319 THEN @c839
+0c891  GOTO @c8e3
+0c89d  rt_297b(bx=0, dx=CINT(v224e), cx=0, si=v224e, di=0, fac=?) : rt_2981(bx=5, dx=CINT(v224e), cx=3, si=v224e, di=0, fac=?)
+0c8ba  rt_297b(bx=v013a, dx=CINT(v224e), cx=0, si=v224e, di=0, fac=?) : rt_2981(bx=v013f, dx=CINT(v224e), cx=3, si=v224e, di=0, fac=?)
+0c8d8  v224e = (v28c2=40 + v224e) : IF v224e <= v2eb8=199 THEN @c89c
+0c8f8  IF v1cfa >= 0 THEN @c905 : GOTO @cd0c
+0c906  v238a = ((CINT(v1cfa) MOD 5000) * v321e=0.0638)
+0c92d  v238e = ((CINT(v1d1e) MOD 5000) * v3222=0.0398)
+0c954  IF v224a = v25ea=5 THEN @c964 : GOTO @c98f
+0c965  rt_2a09(bx=CINT(v238a), dx=CINT((v2eb8=199 - v238e)), cx=0, si=v238a, di=v238e, fac=(v2eb8=199 - v238e))
+0c987  rt_325c(bx='S4C3BF4BD7E2L2U2R3E3H2G2HE5FG2F2E6FG9R9D2L10G3H', dx=0, cx=0, si=0, di=0, fac=?)
+0c990  rt_2a09(bx=CINT(v238a), dx=CINT((v2eb8=199 - v238e)), cx=0, si=v238a, di=v238e, fac=(v2eb8=199 - v238e))
+0c9b2  rt_22ce(bx=v2386, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v2386, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx='X', dx=0, cx=0, si=0, di=0, fac=?) : rt_22da(bx=A213a[CINT(v2382)], dx='X', cx='X', si=v2382, di=0, fac=?) : CONCAT(bx=A213a[CINT(v2382)], dx='X', cx=v2386, si=v2382, di=0, fac=?) : rt_325c(bx=A213a[CINT(v2382)], dx='X', cx=v2386, si=v2382, di=0, fac=?)
+0c9f0  rt_30d4(bx=CINT(v238a), dx=CINT((v2eb8=199 - v238e)), cx=1, si=v238a, di=v238e, fac=(v2eb8=199 - v238e))
+0ca16  GOTO @ca9b
+0ca22  rt_0006(bx=FAC, dx=0, cx=0, si=v224e, di=v238e, fac=((SIN((v224e * v325a=0.1571)) * v222e) * v325e=0.04)) : rt_2a09(bx=CINT((v238a + ((COS(v23a6) * v222a) * v3262=0.064))), dx=CINT((v2eb8=199 + ((SIN((v224e * v325a=0.1571)) * v222e) * v325e=0.04))), cx=2, si=v224e, di=v238a, fac=(v238a + ((COS(v23a6) * v222a) * v3262=0.064)))
+0ca90  v224e = (v23d0=1 + v224e) : IF v224e > v28c2=40 THEN @cab2 : GOTO @ca21
+0cab3  rt_2a09(bx=CINT((v2222 * v321e=0.0638)), dx=CINT((v2eb8=199 - (v2226 * v3222=0.0398))), cx=1, si=v2222, di=v321e=0.0638, fac=(v2222 * v321e=0.0638))
+0cae6  IF v21fe = '5' THEN @caf6 : GOTO @cb0e
+0caf7  v217e = v3266=0
+0cb03  v21fa = v3266=0
+0cb0f  IF v2256 > v25ea=5 THEN @cb1f : GOTO @cb23
+0cb20  GOTO @cce7
+0cb24  v2392 = ((CINT(v1cfe) MOD 5000) * v321e=0.0638)
+0cb4b  v2396 = ((CINT(v1d22) MOD 5000) * v3222=0.0398)
+0cb72  IF (v23d0=1 + (FIX((v1cfe * v3216=0.0002)) + (FIX((v1d22 * v3216=0.0002)) * v25ea=5))) = v224a THEN @cbbe : GOTO @cbe1
+0cbbf  rt_2a09(bx=CINT(v2392), dx=CINT((v2eb8=199 - v2396)), cx=1, si=v2392, di=v2396, fac=(v2eb8=199 - v2396))
+0cbe2  GOTO @ccd0
+0cbee  IF (v23d0=1 + (FIX((A1cf6[CINT(v224e)] * v3216=0.0002)) + (FIX((A1d1a[CINT(v224e)] * v3216=0.0002)) * v25ea=5))) = v224a THEN @cc50 : GOTO @ccc4
+0cc51  rt_2a09(bx=CINT(((CINT(A1cf6[CINT(v224e)]) MOD 5000) * v321e=0.0638)), dx=CINT((v2eb8=199 - ((CINT(A1d1a[CINT(v224e)]) MOD 5000) * v3222=0.0398))), cx=2, si=A1cf6[CINT(v224e)], di=v321e=0.0638, fac=((CINT(A1cf6[CINT(v224e)]) MOD 5000) * v321e=0.0638))
+0ccc5  v224e = (v23d0=1 + v224e) : IF v224e > v260a=8 THEN @cce7 : GOTO @cbed
+0cce8  v239a = v224a
+0ccf4  GOSUB 6412
+0ccfc  IF v239a = v224a THEN @cd0c : GOTO @c7d8
+0cd0d  INKEY$(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=0, dx=v21fe, cx=0, si=0, di=0, fac=?)
+0cd1b  IF ((v21fe = '5') OR (v21fe = v2656)) is FALSE THEN @cd43 : GOTO @cab2
+0cd44  GOSUB d0c0
+0cd4c  rt_2829(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0cd55  rt_2829(bx=4, dx=0, cx=0, si=0, di=0, fac=?)
+0cd5e  rt_2829(bx=8, dx=0, cx=0, si=0, di=0, fac=?)
+0cd67  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0cd6d  rt_0df6(bx=8, dx=0, cx=0, si=0, di=0, fac=?) : rt_0e10(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0cd7e  v21ce = v3266=0
+0cd8a  GOTO @142a8
+0cd8f  SOUND 1200, (v09e2 * v284c=9)
+0cda6  SOUND 1200, (v09e2 * v284c=9)
+0cdbd  v231a = (v2186 / v25c4=90)
+0cdd1  IF v231a < v2788=400 THEN @cde1 : GOTO @ce5b
+0cde2  v231a = (v326a=0.1 + v231a)
+0cdf5  IF (CINT(v231a) MOD 10) = 0 THEN @ce0b : GOTO @ce22
+0ce0c  SOUND 1500, (v09e2 * v326e=0.7)
+0ce23  IF v21ce = 0 THEN @ce30 : GOTO @ce57
+0ce31  rt_1257(bx=14, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=32, dx=0, cx=0, si=0, di=0, fac=?)
+0ce42  rt_3984(bx='####', dx=0, cx=0, si=0, di=0, fac=?) : rt_364a(bx=CINT(v231a), dx=0, cx=0, si=v231a, di=0, fac=?)
+0ce58  GOTO @cdd1
+0ce5c  v2186 = (v231a * v25c4=90)
+0ce70  SOUND 1500, v27c4=0
+0ce7c  IF v21a6 < v24ea=24 THEN @ce8c : GOTO @ceff
+0ce8d  v21a6 = (v23d0=1 + v21a6)
+0cea0  GOTO @ceb7
+0ceac  v224e = (v23d0=1 + v224e) : IF v224e <= v3272=600 THEN @ceab
+0cecc  IF v21ce = 0 THEN @ced9 : GOTO @cefb
+0ceda  rt_1257(bx=22, dx=0, cx=0, si=0, di=0, fac=?) : rt_1271(bx=30, dx=0, cx=0, si=0, di=0, fac=?)
+0ceeb  rt_3984(bx='##', dx=0, cx=0, si=0, di=0, fac=?) : rt_3640(bx=v21a6, dx=0, cx=0, si=0, di=0, fac=?)
+0cefc  GOTO @ce7c
+0cf00  GOTO @cf32
+0cf0c  A177a[CINT(v231a)] = v2506=0
+0cf27  v231a = (v23d0=1 + v231a) : IF v231a <= v260a=8 THEN @cf0b
+0cf47  v2206 = v2506=0
+0cf53  IF v21ce = 0 THEN @cf60 : GOTO @cf76
+0cf61  LINE?(bx=194, dx=181, cx=0, si=0, di=0, fac=?) : rt_2abb(bx=v0bb6, dx=0, cx=0, si=0, di=0, fac=?)
+0cf77  v1dd6 = (v25ee=6 + v2256)
+0cf8b  RETURN
+0cf92  STRSET(bx='C0BR1', dx=v213a, cx=0, si=0, di=0, fac=?)
+0cf9e  STRSET(bx='C3BR9BU1U3HUHU2E2UERF2RFE2U4H2LHLHL4GL4HL6G4D2G5LG2D6FD4GDGDGD2FDF4R3FR3FR4E2R6ER2E4U3ER3E2U2EHUHL4GLGL2HUEH2L3U2', dx=v213e, cx=0, si=0, di=0, fac=?)
+0cfaa  STRSET(bx='C3BR26R4U2H4LU2H4U4E2U4H3UL2H4U2EU3H2L7G3D2GDGD2G2L4G3LG3D5GD3GDGDG4L2G3D4F4D9GD2GD4GD3GD3F5R3FR6ER5ER5E5U4E3UERERERE7UE4UEUEUEU3', dx=v2142, cx=0, si=0, di=0, fac=?)
+0cfb6  STRSET(bx='C3BR16BU2U2HUHL2HL2GL2H2U2H2LHUE2U3HLHL5GLG2LG2D3GD2G3LGD4F2RFD2FD2FD2G3D2FDF2R5ER2FR3ERE2R2ERE3U2EU3ER2EU2EU4', dx=v2146, cx=0, si=0, di=0, fac=?)
+0cfc2  GOTO @d0a3
+0cfce  IF v214e <> v24ce=2 THEN @cfde : GOTO @d097
+0cfdf  rt_2b8d(bx=v214e, dx=0, cx=0, si=0, di=0, fac=?) : STRSET(bx=v214e, dx=v234a, cx=0, si=0, di=0, fac=?)
+0cff0  LEN(bx=v234a, dx=v234a, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=v234a, dx=(9034 - 1), cx=v234a, si=0, di=0, fac=?) : STRSET(bx=v234a, dx=v234a, cx=v234a, si=0, di=0, fac=?)
+0d00c  rt_03a7(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : CONCAT(bx=v234a, dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=1, dx=v234a, cx=0, si=0, di=0, fac=?)
+0d02e  GOTO @d07a
+0d03a  INPUT#(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : INPUTCONV(bx=1, dx=0, cx=0, si=0, di=0, fac=?) : STORESNG(bx=A0e26[(CINT(v214e) + (CINT(v21de) * 9))], dx=0, cx=0, si=v214e, di=0, fac=?)
+0d06f  v21de = (v23d0=1 + v21de) : IF v21de <= v23fa=15 THEN @d039
+0d08f  CLOSE(bx=1, dx=0, cx=0, si=0, di=0, fac=?)
+0d098  v214e = (v23d0=1 + v214e) : IF v214e > v260a=8 THEN @d0ba : GOTO @cfcd
+0d0bb  RETURN
+0d0c1  IF v21fe = 'R' THEN @d0d1 : GOTO @d0da
+0d0d2  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @a306
+0d0db  IF v21fe = '5' THEN @d0eb : GOTO @d107
+0d0ec  v217e = v2506=0
+0d0f8  v21fa = v2506=0
+0d104  GOTO @d1b7
+0d108  IF v21fe = 'C' THEN @d118 : GOTO @d121
+0d119  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @b169
+0d122  IF v21fe = 'L' THEN @d132 : GOTO @d13b
+0d133  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @aa0e
+0d13c  IF v21fe = 'M' THEN @d14c : GOTO @d163
+0d14d  GOSUB ba3d
+0d155  rt_0d79(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0d15b  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @142a8
+0d164  IF v21fe = 'Q' THEN @d174 : GOTO @d17d
+0d175  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @c7d8
+0d17e  ASC(bx=v21fe, dx=0, cx=0, si=0, di=0, fac=?) : IF 8702 = 27 THEN @d18e : GOTO @d19d
+0d18f  rt_1049(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0d198  rt_19da(bx=0, dx=0, cx=0, si=0, di=0, fac=?)
+0d19e  ASC(bx=v21fe, dx=0, cx=0, si=0, di=0, fac=?) : IF 8702 = 9 THEN @d1ae : GOTO @d1b7
+0d1af  rt_1db6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : GOTO @ae87
+0d1b8  RETURN
+0d1be  IF ((RND < (v326a=0.1 + (v2256 * v2864=0.03))) AND (A1df2[CINT(v225a)] < (v2bd6=240 - (v2192 * v2712=1.5)))) THEN @d225 : GOTO @d29a
+0d226  A177a[CINT((v23d0=1 + FIX((RND * 2^3))))] = v23d0=1
+0d25c  SOUND 80, (v09e2 * 2^1)
+0d271  SOUND 100, (v09e2 * 2^3)
+0d286  SOUND 80, (v09e2 * 2^2)
+0d29b  IF v09e2 = 0 THEN @d2a8 : GOTO @d2ae
+0d2a9  RETURN
+0d2af  rt_23d6(bx=0, dx=0, cx=0, si=0, di=0, fac=?) : RIGHT$(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_1b05(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : rt_2021(bx=0, dx=2, cx=0, si=0, di=0, fac=?) : v239e = ?
+0d2cf  IF ((v239e = v23a2) OR ((CINT(v239e) MOD 3) <> 0)) is FALSE THEN @d303 : GOTO @d321
+0d304  v23a2 = v239e
+0d310  PLAY 'MBT40O4L64B-'
+0d319  PLAY 'MBT100L9B'
+0d322  RETURN
+0d328  rt_036c(bx='R', dx=0, cx=0, si=0, di=0, fac=?) : OPEN(bx=2, dx='LOG1', cx=32, si=0, di=0, fac=?)
+0d33f  rt_383b(bx=2, dx=0, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v231e, dx=2, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2322, dx=15, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v2326, dx=5, cx=0, si=0, di=0, fac=?) : rt_385d(bx=v232a, dx=10, cx=0, si=0, di=0, fac=?)
+0d374  rt_035d(bx=2, dx=90, cx=0, si=0, di=0, fac=?)
+0d380  rt_24cd(bx=v2322, dx=v2322, cx=0, si=0, di=0, fac=?) : rt_2508(bx=(8994 + 1), dx=v2322, cx=0, si=0, di=0, fac=?) : rt_376e(bx=(8994 + 1), dx=v2322, cx=0, si=0, di=0, fac=?)
+0d396  rt_0367(bx=2, dx=90, cx=0, si=0, di=0, fac=?)
+0d3a2  CLOSE(bx=2, dx=0, cx=0, si=0, di=0, fac=?)
+0d3ab  RETURN

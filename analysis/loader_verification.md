@@ -65,7 +65,7 @@ CLOSE #3
 * The array stride of 21 (`imul` by 0x15) means the BASIC array is dimensioned (6, 20) with index 0 unused.
 * Number type: **4-byte single-precision MBF in memory** (INPUT converts decimal text). Values such as `7500`, `666`, `-1` are
   stored as floats. On disk they are plain text; `parse_scenarios.py` keeps them as numbers, which is the right model.
-* Meaning of the last two columns is **not verified** (the loader only stores them; the code that uses `M(5, n)` and `M(6, n)` was not traced).
+* Meaning of the last two columns: **island picture index (1..3) and its DRAW scale**, read at Gato1.exe 0x0c9b2 (section 8).
 
 ## 4. ORDXX / DEMORD (orders) - partly verified
 
@@ -108,9 +108,9 @@ Verified from the code:
   goes to the first variable is assumed.
 * All numbers are read as decimal text (`INPUT #`) into 4-byte singles; nothing binary.
 
-Not determined: what the three trailer variables mean. Inside 0xbc00-0xc650 they are only stored and never read, and the rest of the
-program was not available, so `trailer[1]` (1 in scenarios 1-5) and `trailer[2]` (3..9) remain unidentified; `trailer[0]` matches the
-objective quadrant in ORDXX5/ORDXX7 by the data only. Also open: whether speed row W applies to reaching or leaving waypoint W.
+The meaning of the three trailer variables is resolved in section 8 (they are read far outside the 0xbc00-0xc650 slice, in the
+main loop at 0x06fef and 0x07bf8). The question whether speed row W applies to reaching or leaving waypoint W is also answered
+there: it applies while travelling **to** waypoint W.
 
 ## 6. Morse dispatcher (orders text) - verified by code
 
@@ -124,13 +124,59 @@ Gato1.exe 0xbc00-0xc610, decoded by `decode_gato1_slice.py` and written to `rema
 * **All 36 branches (A-Z, 0-9) decode to International Morse exactly** (checked by the script).
 * Timing (standard PLAY rule, tempo 120): dit 0.0625 s + 0.032 s rest, dah 0.2 s + 0.032 s rest; ratio 3.2 (tone only) or 2.45 (with
   rest). Foreground PLAY, no inter-letter or word gap other than the rests.
-* Character handling (`morse.text_to_morse`): `v = ASC - 64`; digits accepted only when ds:0x9e2 = 1 and mapped to 27..36; letters
-  need ds:0x9e2 <> 0; ds:0x2256 < 8 prints the character, otherwise it is hidden and a 340-step delay runs; a key press stops the
-  sound and abandons the orders; the last character of each line is not sounded.
-* Unresolved: what ds:0x9e2 and ds:0x2256 are (settings), and the PLAY runtime's staccato handling for real tone lengths.
+* Character handling (`morse.text_to_morse`): `v = ASC - 64`; digits accepted only when the SOUND setting ds:0x09e2 = 1 and mapped to
+  27..36; letters need ds:0x09e2 <> 0; the difficulty level ds:0x2256 < 8 prints the character, otherwise it is hidden and a 340-step
+  delay runs (so at difficulty 8 and 9 the orders must be copied from Morse); a key press stops the sound and abandons the orders;
+  the last character of each line is not sounded.
+* Resolved in section 8: ds:0x09e2 = SOUND on/off, ds:0x2256 = DIFFICULTY LEVEL. Open: the PLAY runtime's staccato handling.
 
 ## 7. Open items
 
-* Meaning of the COURXX trailer variables and the MXP columns 5 and 6 (readers not located).
 * Index order of the OBX string array (see section 2).
-* Variables ds:0x9e2 and ds:0x2256.
+* Control-room (compartment 7) and conning-tower (compartment 8) damage have no effect in the code that was read (they are displayed only).
+* Radio messages (variable ds:0x1dd6), the quadrant/chart screens and the log screens were not ported.
+
+## 8. Variables resolved while porting the simulation
+
+The compiled program was re-read as pseudo-BASIC with `analysis/decompile_gato1.py` (symbolic execution of the glue code over the
+statement stream from `list_statements.py`; output `gato1_basic.txt`). Runtime conventions it relies on are listed at the top of that
+script (single-precision `[si]*[di]`, `[si]/[di]`, **37c4 = COS, 37df = SIN**, 2f2e = ATN, 1def = `ON..GOSUB`; all angles are
+mathematical angles in radians, 0 = east, counter-clockwise; x += speed*COS(h), y += speed*SIN(h)).
+
+| Variable | Meaning | Evidence |
+|---|---|---|
+| ds:0x2246 (`trailer[0]`) | island quadrant that is the mission objective (0 = none) | 0x06fef: speed = 0 AND quadrant (ds:0x224a) = this AND TIME OF DAY = `trailer[1]` AND 200 + inner radius > distance to the island -> "CONTACT MADE / MISSION COMPLETED"; then 0x070f4 overwrites it with 1 |
+| ds:0x2242 (`trailer[1]`) | required TIME OF DAY for that objective (1 day, 0 night) | same condition compares it with ds:0x21ca, the GAME CONTROL "[3] TIME OF DAY" setting; ORDXX7 says "SUGGEST NIGHT RESCUE" and COURXX7 has 0 |
+| ds:0x226a (`trailer[2]`) | highest convoy slot: mission complete when every ship in slots 3..`trailer[2]` is sunk | 0x07bf8-0x07d9f: slots with 2 < k <= `trailer[2]` and y < -900 decrement a counter, any survivor resets it to 10; the counter < 0 prints "YOU HAVE SUCCESSFULLY COMPLETED YOUR MISSION". Sunk ships are moved to y = -2000 (0x095e4) |
+| ds:0x09e2 | SOUND setting, 1 = on (initialised to 1 at 0x03ae1) | GAME CONTROL "[2] SOUND" prints it and toggles it with `(x + 1) MOD 2` (0x0b0a8); every SOUND duration is `3 * ds:0x09e2` or `ds:0x09e2`, so 0 mutes; the Morse dispatcher requires it |
+| ds:0x2256 | DIFFICULTY LEVEL, clamped to 0..9 (0x0b051-0x0b098) | GAME CONTROL "[1] DIFFICULTY LEVEL". Used as: enemy speed = difficulty + row speed; flee speed 7 + d, chase speed 10 + d; detection numerator 2 + d + periscope; alert length 45 + 15 d; depth-charge chance 0.1 + 0.03 d; torpedo-hit survival chance d/12; orders hidden when >= 8 |
+| ds:0x21ca | TIME OF DAY, 1 = day (default), 0 = night | GAME CONTROL "[3]", toggled with `(x + 1) MOD 2`; scales ship detection `(0.2 + tod)` |
+| ds:0x2382, ds:0x2386 (MXP columns 5, 6) | island picture index 1..3 and its DRAW scale | 0x0c9b2: `"S=" + STR$(col6) + "X" + A213a(col5)` draws one of the three island DRAW strings |
+
+Answer to "does the waypoint speed apply to reaching or leaving a waypoint": reaching. When a ship arrives (|dx| and |dy| <= 20) it
+increments its counter, loads target = waypoint[counter] and sets `speed = difficulty + speed_row[counter]` (0x07a03-0x07a7b); it then
+holds that heading and speed (heading is only recomputed on arrival) until it arrives at the next one. After waypoint 7 the subtender
+and patrol boats (type 7) restart at waypoint 1, every other ship stops. (0,0) waypoints are not skipped; they are targets like any other.
+
+Compartments (damage array A177a[1..8], from the damage-report layout at 0x0a652-0x0a7b8 and the use of each cell):
+1 radio room (no radio messages), 2 torpedo room (cannot fire), 3 battery room (+0.5 battery drain per step), 4 fuel tanks (+5 fuel
+drain per step), 5 engine room (ordered speed x 0.5), 6 periscopes (scope is blind), 7 control room, 8 conning tower (no effect found).
+More than 5 damaged compartments destroys the boat (0x05be4); the sum of the damaged compartment numbers above 14 sounds an alarm every
+second step and above 20 loses the boat at such a step (0x06441-0x065b6). Depth charges set one random compartment (0x0d226).
+
+## 9. Port notes: what `remake/src/core` implements and how faithful it is
+
+* **Verified formulas (read from the code, constants named with their offsets in `constants.ts`)**: ordered speed = (N - doors) *
+  (1 - 0.5 engine damage) * engine; speed +0.25 / -1 per step; rudder +-0.005 * speed per step; heading wrap at 6.28; position clamp
+  and island collision `depth + e <= 1 + depth^1.001`; fuel, battery and oxygen drain and diesel charging; crush probability
+  `-0.04 + 0.000112 depth` below 350; ship detection chance; evade/pursue turns (0.028 / 0.035); waypoint traversal; torpedo speed 17,
+  range 960, three sub-steps per step, hit ellipse `9.9 + cos^6 * 18` (patrol boat `9.24 + cos^6 * 14`); depth charges; scope windows;
+  radar range 1350; resupply at the subtender (range 150).
+* **Faithful quirks kept on purpose**: the heading wraps to 0 / 6.28 instead of modulo 2 pi; `ds:0x23a6` (read as a variable that is
+  never assigned, so 0) makes the tender-alignment test in the resupply condition vacuous; damaged ships are marked by speed 1.75;
+  an animated hit can be survived with probability difficulty/12 and can destroy the own boat when the target is closer than about 22
+  units; hits outside the visible scope sink the target directly.
+* **Remake choices (not in the original)**: the step rate (default 10 per second); durations of the resupply loops (their original
+  timing depended on the CPU); the damage alarm interval in steps; demo page durations (`demo_script.json`, estimated).
+* **Not decoded / not ported**: radio messages, quadrant map and chart drawing, log screens, the PLAY note frequencies and the
+  explosion animation timing. DEMO.EXE is modelled as a narration script (it does not run the simulation).

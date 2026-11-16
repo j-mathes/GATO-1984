@@ -365,12 +365,12 @@ def morse_section(result):
         "text_to_morse": [
             "Subroutine at Gato1 0xbc00-0xbe97 prints one order line (L$, ds:0x2372, read with LINE INPUT #1 from ORDXXn) one character at a time.",
             "v = ASC(LEFT$(L$,1)) - 64 (stored in ds:0x224e): A-Z give 1-26.",
-            "If ds:0x2256 < 8 the character is PRINTed; otherwise a FOR 1 TO 340 delay loop runs instead (ds:0x2256 is not identified: "
-            "it looks like a setting that hides the text so orders must be copied from Morse; inferred, not proved).",
+            "If the DIFFICULTY LEVEL (ds:0x2256, GAME CONTROL [1], 0..9) is below 8 the character is PRINTed; otherwise a FOR 1 TO 340 "
+            "delay loop runs instead, so at difficulty 8 and 9 the orders can only be copied from the Morse (resolved in loader_verification.md section 8).",
             "L$ is shortened by one character; INKEY$ is polled and any key does SOUND 37,0 and abandons the rest of the orders.",
-            "Digits ('0'-'9' give -16..-7) are accepted only when ds:0x9e2 = 1 and become v + 43 = 27..36; letters (1 <= v <= 26) "
-            "require ds:0x9e2 <> 0; every other character is skipped. ds:0x9e2 is also the duration operand of several SOUND "
-            "statements, so its role is unresolved (likely a sound on/off setting).",
+            "Digits ('0'-'9' give -16..-7) are accepted only when the SOUND setting ds:0x9e2 = 1 and become v + 43 = 27..36; letters "
+            "(1 <= v <= 26) require ds:0x9e2 <> 0 (it is GAME CONTROL [2] SOUND, 1 = on; the same variable scales every SOUND duration); "
+            "every other character is skipped.",
             "If L$ is now empty the next line is read, so the last character of each line is printed but not sounded.",
             "Otherwise ON v GOSUB (runtime 199b:1def, 36 entries) calls the letter's branch; it GOSUBs the dit/dah subroutines "
             "and RETURNs to 0xbe98, which loops to the next character.",
