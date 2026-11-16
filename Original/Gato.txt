@@ -1,0 +1,51 @@
+*** Touches de fonction :
+
+    F1 : Avant toute
+    F3 :
+    F5 : Vitesses interm‚diaires
+    F7 :
+    F9 : Stop
+
+    F10 : Marche arriŠre
+
+    F2 : Sortir le p‚riscope
+    F4 : Rentrer "    "
+
+    F6 : Radar
+
+    F8 : FEU
+
+*** Commandes lettres :
+
+    F : Devant
+    P : Gauche
+    A : ArriŠre
+    S : Droite
+
+    L : ( Log ) liste des bateaux coul‚s
+
+    M : ( Mission ) D‚buter une nouvelle mission
+
+    R : ( Report ) Evaluer les d‚gats subits
+
+    C : Carte g‚n‚rale
+    Q : Carte du secteur courant
+
+    T : ( Torpedoes ) Ouvrir & Fermer la tappe
+
+    D : ( Diesel ) Seulement si profondeur <= 20
+    E : ( Electric )
+
+    Esc : Sortir du jeu
+
+    Tab : ParamŠtres g‚n‚raux du jeu
+
+*** D‚placement du curseur :
+
+    Les touches du curseur contr“lent la direction du sous-marin .
+
+    Il faut appuyer sur la touche d‚sir‚e pour commencer un changement de
+    direction, puis stabiliser avec la touche 5 lorsque le cap d‚sir‚ est
+    atteint
+
+
