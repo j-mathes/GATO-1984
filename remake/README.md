@@ -83,6 +83,7 @@ Details live in `../analysis/` (`loader_verification.md`, `exe_architecture.md`,
 - **DEMO.EXE** is a narration slide show, not the simulation. Page timings in the remake are estimates.
 - **HISTORY.EXE** is a pager. The encyclopedia text is in the data file `History`, not in the EXE.
 - **Graphics:** there are no raw CGA bitmaps. Sprites are BASIC `DRAW` strings (`OBX1`, `OBX3`–`OBX8` hold 16 view-angle frames each), exported as PNG atlases and JSON.
+- **Title screen:** also drawn at run time (`DRAW`/`PAINT`/`LINE`/`CIRCLE`), not stored. `analysis/export_title_art.py` replays the program's drawing statements into `public/assets/title_screen.json`; the striped GATO lettering, credits and the launcher's surfaced-submarine backdrop come from that. Details and what is inferred (palette, the (c) ring) are in `../analysis/title_art.md`. Regenerate with `python analysis/export_title_art.py` from the repository root (needs Pillow).
 - **Sound:** the runtime programs the PIT channel 2 speaker.
 
 ## Caveats

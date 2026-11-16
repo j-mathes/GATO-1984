@@ -11,6 +11,7 @@ import { attachKeyboard } from "./input/keyboard.js";
 import { Gfx } from "./render/gfx.js";
 import { setupDisplay } from "./render/display.js";
 import { SpriteLibrary } from "./render/sprites.js";
+import { TitleArt } from "./render/titleArt.js";
 
 /** Scenario number from a file name such as ".../COURXX7.json" or ".../ORDXX12.json". */
 function byNumber<T>(modules: Record<string, T>): Record<number, T> {
@@ -44,6 +45,13 @@ async function boot(): Promise<void> {
     console.warn("sprites unavailable, drawing placeholders", err);
   }
 
+  let titleArt: TitleArt | null = null;
+  try {
+    titleArt = await TitleArt.load();
+  } catch (err) {
+    console.warn("title artwork unavailable, using the sprite layout", err);
+  }
+
   let storage: Storage | null = null;
   try {
     storage = window.localStorage;
@@ -51,7 +59,7 @@ async function boot(): Promise<void> {
     storage = null;
   }
 
-  const app = new App(gfx, data, sprites, new SoundEngine(), storage);
+  const app = new App(gfx, data, sprites, new SoundEngine(), storage, Math.random, titleArt);
   const display = setupDisplay(canvas, document.getElementById("crt"), storage);
   attachKeyboard(window, (e) => {
     // V cycles authentic -> fit window -> fit window + CRT scanlines (not while typing into a prompt)

@@ -45,6 +45,7 @@ import {
   type PlayView,
 } from "../render/playScreens.js";
 import type { SpriteLibrary } from "../render/sprites.js";
+import type { TitleArt } from "../render/titleArt.js";
 import { drawDemoNarration, drawHistory, drawLauncherMenu, drawOrders, drawTitle } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
@@ -103,6 +104,7 @@ export class App {
     readonly sound: SoundEngine,
     storage: StorageLike | null = null,
     private readonly random: () => number = Math.random,
+    private readonly titleArt: TitleArt | null = null,
   ) {
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
@@ -447,7 +449,7 @@ export class App {
     const g = this.g;
     switch (this.mode) {
       case "title":
-        drawTitle(g, this.sprites, timeMs);
+        drawTitle(g, this.titleArt, this.sprites, timeMs);
         return;
       case "menu":
         drawLauncherMenu(g, this.menuEntry);
@@ -564,7 +566,7 @@ export class App {
         drawGameControl(g, DEFAULT_SETTINGS, null, "");
         break;
       case "title":
-        drawTitle(g, this.sprites, timeMs);
+        drawTitle(g, this.titleArt, this.sprites, timeMs);
         break;
       case "playAgain":
       case "radioRoom":

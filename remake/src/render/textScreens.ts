@@ -3,9 +3,22 @@ import { LAUNCHER_MENU, LAUNCHER_PROMPT, TITLE_LINES } from "../core/index.js";
 import { CONTINUE_PROMPT, REREAD_PROMPT, RETURN_PROMPT, type HistoryView } from "../app/historyViewer.js";
 import { COLORS, Gfx } from "./gfx.js";
 import type { SpriteLibrary } from "./sprites.js";
+import { TITLE_ART_HEIGHT, TITLE_ART_WIDTH, type TitleArt } from "./titleArt.js";
 
-/** Title page of GATO.EXE: the DRAW-string logo is replaced by the sprite art, the text lines are the original's. */
-export function drawTitle(g: Gfx, sprites: SpriteLibrary | null, timeMs: number): void {
+/**
+ * Title page of GATO.EXE. With the exported artwork it is the original picture (striped GATO lettering, credits and the (c) ring
+ * as drawn by the BASIC program, text placed on the original LOCATE cells); the old sprite layout is only a fallback when the
+ * asset could not be loaded. "PRESS ANY KEY" is a remake addition: the original advances by itself.
+ */
+export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary | null, timeMs: number): void {
+  const frame = art?.primary;
+  if (art && frame) {
+    g.clear(frame.palette[0]);
+    g.image(art.image(), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
+    for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
+    g.centered(25, "PRESS ANY KEY", frame.palette[3]);
+    return;
+  }
   g.clear();
   g.centered(3, TITLE_LINES[0], COLORS.yellow);
   const sprite = sprites?.ship(3, Math.floor(timeMs / 400), true);

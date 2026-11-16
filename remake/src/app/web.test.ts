@@ -12,6 +12,8 @@ import { Simulation, buildScenario, createRng, type CourseJson, type DemoScriptD
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
+import { drawTitle } from "../render/textScreens.js";
+import { TitleArt, frameToRgba, parseTitleArt } from "../render/titleArt.js";
 
 const root = new URL("../../", import.meta.url);
 const read = <T>(path: string): T => JSON.parse(readFileSync(new URL(path, root), "utf8")) as T;
@@ -341,5 +343,64 @@ describe("application shell", () => {
     expect(computeDisplaySize("authentic", 200, 100)).toEqual({ width: 320, height: 200 }); // never below 1x
     expect(isDisplayMode("fit")).toBe(true);
     expect(isDisplayMode("sepia")).toBe(false);
+  });
+});
+
+describe("title artwork", () => {
+  const raw = (): Record<string, any> => read<Record<string, any>>("public/assets/title_screen.json");
+
+  function fakeCanvas(puts: { data: Uint8ClampedArray }[]) {
+    return () =>
+      ({
+        getContext: () => ({
+          createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4), width: w, height: h }),
+          putImageData: (img: { data: Uint8ClampedArray }) => puts.push(img),
+        }),
+      }) as unknown as HTMLCanvasElement;
+  }
+
+  it("loads the exported GATO.EXE artwork cleanly", () => {
+    const doc = parseTitleArt(raw());
+    expect(Object.keys(doc.frames)).toEqual(["spectrum_logo", "title_letters", "title", "launcher_menu"]);
+    const title = doc.frames[doc.primary]!;
+    expect(doc.primary).toBe("title");
+    expect(title.palette).toEqual(["#5555ff", "#55ffff", "#ff55ff", "#ffffff"]); // COLOR 9 background, bright palette 1
+    // the striped GATO lettering: colour 2, 3442 pixels, inside x 40..276 and y 21..78
+    const magenta: [number, number][] = [];
+    title.rows.forEach((row, y) => [...row].forEach((v, x) => v === "2" && magenta.push([x, y])));
+    expect(magenta).toHaveLength(3442);
+    expect(Math.min(...magenta.map((p) => p[0]))).toBe(40);
+    expect(Math.max(...magenta.map((p) => p[0]))).toBe(276);
+    expect(Math.min(...magenta.map((p) => p[1]))).toBe(21);
+    expect(Math.max(...magenta.map((p) => p[1]))).toBe(78);
+    expect(title.text).toContainEqual({ row: 15, col: 12, text: "CLASS  SUBMARINE", colorIndex: 3 });
+    expect(title.text).toContainEqual({ row: 23, col: 9, text: "Spectrum HoloByte, Inc.", colorIndex: 3 });
+  });
+
+  it("rejects a damaged asset instead of rendering it", () => {
+    expect(() => parseTitleArt({ ...raw(), format: "other" })).toThrow(/format/);
+    const shortRow = raw();
+    shortRow.frames.title.rows[10] = "0".repeat(319);
+    expect(() => parseTitleArt(shortRow)).toThrow(/row 10/);
+    const badPixel = raw();
+    badPixel.frames.title.rows[0] = "4".repeat(320);
+    expect(() => parseTitleArt(badPixel)).toThrow(/two-bit/);
+  });
+
+  it("converts pixel values through the frame palette and draws the picture, text layer and prompt", () => {
+    const puts: { data: Uint8ClampedArray }[] = [];
+    const art = new TitleArt(parseTitleArt(raw()), fakeCanvas(puts));
+    const rgba = frameToRgba(art.primary);
+    expect([...rgba.slice(0, 4)]).toEqual([0x55, 0x55, 0xff, 255]); // (0,0) is background
+    const calls: [string, unknown[]][] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    drawTitle(g, art, null, 0);
+    expect(puts).toHaveLength(1); // the picture is built once
+    expect(puts[0]?.data.slice(0, 4)).toEqual(rgba.slice(0, 4));
+    expect(calls.find(([n]) => n === "image")?.[1].slice(1)).toEqual([0, 0, 320, 200, 0, 0, 320, 200]);
+    expect(calls.filter(([n]) => n === "text").map(([, a]) => a[2])).toContain("CLASS  SUBMARINE");
+    expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
+    drawTitle(g, null, null, 0); // asset missing: the old layout still draws the credits
+    expect(calls.some(([n, a]) => n === "centered" && a[1] === "by Paul Arlton and Ed Dawson")).toBe(true);
   });
 });
