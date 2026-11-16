@@ -17,6 +17,12 @@ npm run sync:data  # re-copy scenario JSON from ../analysis/json into src/data/s
 
 Click or press a key once so the browser allows audio.
 
+### Playing the built game on Windows
+
+- **`Play_GATO.bat`** (in the repository root): double-click it. It installs dependencies if `node_modules` is missing, runs `npm run build` if `remake/dist/` does not exist, starts `npx vite preview --port 4173 --strictPort` in a separate window and opens <http://localhost:4173/> in Chrome (the default browser if Chrome is not found). Close the "GATO server" window to stop. It only needs Node.js and uses paths relative to the script, so the folder can live anywhere. Delete `remake/dist/` to force a rebuild after changing the code.
+- **Desktop shortcut:** right-click `Play_GATO.bat` > Send to > Desktop (create shortcut). The shortcut keeps working while the repository stays where it is.
+- **`npm run play`** (in `remake/`): builds with `vite build` (no type-check; use `npm run build` for that) and starts the preview server, opening the default browser.
+
 ## Display (V)
 
 The default is the authentic 320×200 picture, drawn with `imageSmoothingEnabled = false` and shown at the largest whole-number scale that fits the window. **V** cycles:
