@@ -1,0 +1,1286 @@
+{
+  "_about": "PC speaker data of GATO. frequency_hz = 1193180 / divisor; duration unit = 1/582.6 s (32 units per 18.2 Hz BIOS tick).",
+  "runtime": {
+    "Gato.exe": {
+      "pit_channel2_square_wave_setup": {
+        "file_offset": 5872,
+        "bytes": "b0 b6 e6 43 e4 61 0c 03 e6 61",
+        "meaning": "mov al,0B6h; out 43h,al (PIT ch2, mode 3); in al,61h; or al,3; out 61h,al (speaker on)"
+      },
+      "divisor_formula": {"file_offset": 5769, "expression": "divisor = 0x1234DC / frequency = 1193180 / f"},
+      "timer_tick": {
+        "file_offset": 5856,
+        "pit0_divisor": 2048,
+        "tick_hz": 582.607,
+        "ticks_per_bios_tick": 32,
+        "meaning": "the runtime reprograms PIT channel 0 to 2048 (582.6 Hz) and chains the original 18.2 Hz handler every 32nd tick; note durations are counted in these ticks"
+      },
+      "beep": {
+        "file_offset": 5692,
+        "frequency_hz": 800,
+        "duration_units": 128,
+        "duration_seconds": 0.2197,
+        "meaning": "BEEP / BEL character: 800 Hz for 128 timer ticks (4 BIOS ticks)"
+      },
+      "alarm_two_tone": {
+        "file_offset": 15759,
+        "tones": [{"frequency_hz": 1000, "duration_units": 32, "seconds": 0.0549}, {"frequency_hz": 500, "duration_units": 32, "seconds": 0.0549}],
+        "meaning": "runtime routine that plays 1000 Hz then 500 Hz, 1 BIOS tick each"
+      },
+      "note_divisor_tables": []
+    },
+    "Gato1.exe": {
+      "pit_channel2_square_wave_setup": {
+        "file_offset": 57470,
+        "bytes": "b0 b6 e6 43 e4 61 0c 03 e6 61",
+        "meaning": "mov al,0B6h; out 43h,al (PIT ch2, mode 3); in al,61h; or al,3; out 61h,al (speaker on)"
+      },
+      "divisor_formula": {"file_offset": 57367, "expression": "divisor = 0x1234DC / frequency = 1193180 / f"},
+      "timer_tick": {
+        "file_offset": 57454,
+        "pit0_divisor": 2048,
+        "tick_hz": 582.607,
+        "ticks_per_bios_tick": 32,
+        "meaning": "the runtime reprograms PIT channel 0 to 2048 (582.6 Hz) and chains the original 18.2 Hz handler every 32nd tick; note durations are counted in these ticks"
+      },
+      "beep": {
+        "file_offset": 57290,
+        "frequency_hz": 800,
+        "duration_units": 128,
+        "duration_seconds": 0.2197,
+        "meaning": "BEEP / BEL character: 800 Hz for 128 timer ticks (4 BIOS ticks)"
+      },
+      "alarm_two_tone": {
+        "file_offset": 70835,
+        "tones": [{"frequency_hz": 1000, "duration_units": 32, "seconds": 0.0549}, {"frequency_hz": 500, "duration_units": 32, "seconds": 0.0549}],
+        "meaning": "runtime routine that plays 1000 Hz then 500 Hz, 1 BIOS tick each"
+      },
+      "note_divisor_tables": []
+    },
+    "DEMO.EXE": {
+      "pit_channel2_square_wave_setup": {
+        "file_offset": 36738,
+        "bytes": "b0 b6 e6 43 e4 61 0c 03 e6 61",
+        "meaning": "mov al,0B6h; out 43h,al (PIT ch2, mode 3); in al,61h; or al,3; out 61h,al (speaker on)"
+      },
+      "divisor_formula": {"file_offset": 36635, "expression": "divisor = 0x1234DC / frequency = 1193180 / f"},
+      "timer_tick": {
+        "file_offset": 36722,
+        "pit0_divisor": 2048,
+        "tick_hz": 582.607,
+        "ticks_per_bios_tick": 32,
+        "meaning": "the runtime reprograms PIT channel 0 to 2048 (582.6 Hz) and chains the original 18.2 Hz handler every 32nd tick; note durations are counted in these ticks"
+      },
+      "beep": {
+        "file_offset": 36558,
+        "frequency_hz": 800,
+        "duration_units": 128,
+        "duration_seconds": 0.2197,
+        "meaning": "BEEP / BEL character: 800 Hz for 128 timer ticks (4 BIOS ticks)"
+      },
+      "alarm_two_tone": {
+        "file_offset": 50039,
+        "tones": [{"frequency_hz": 1000, "duration_units": 32, "seconds": 0.0549}, {"frequency_hz": 500, "duration_units": 32, "seconds": 0.0549}],
+        "meaning": "runtime routine that plays 1000 Hz then 500 Hz, 1 BIOS tick each"
+      },
+      "note_divisor_tables": []
+    },
+    "History.exe": {
+      "pit_channel2_square_wave_setup": {
+        "file_offset": 2622,
+        "bytes": "b0 b6 e6 43 e4 61 0c 03 e6 61",
+        "meaning": "mov al,0B6h; out 43h,al (PIT ch2, mode 3); in al,61h; or al,3; out 61h,al (speaker on)"
+      },
+      "divisor_formula": {"file_offset": 2519, "expression": "divisor = 0x1234DC / frequency = 1193180 / f"},
+      "timer_tick": {
+        "file_offset": 2606,
+        "pit0_divisor": 2048,
+        "tick_hz": 582.607,
+        "ticks_per_bios_tick": 32,
+        "meaning": "the runtime reprograms PIT channel 0 to 2048 (582.6 Hz) and chains the original 18.2 Hz handler every 32nd tick; note durations are counted in these ticks"
+      },
+      "beep": {
+        "file_offset": 2442,
+        "frequency_hz": 800,
+        "duration_units": 128,
+        "duration_seconds": 0.2197,
+        "meaning": "BEEP / BEL character: 800 Hz for 128 timer ticks (4 BIOS ticks)"
+      },
+      "alarm_two_tone": {
+        "file_offset": 8614,
+        "tones": [{"frequency_hz": 1000, "duration_units": 32, "seconds": 0.0549}, {"frequency_hz": 500, "duration_units": 32, "seconds": 0.0549}],
+        "meaning": "runtime routine that plays 1000 Hz then 500 Hz, 1 BIOS tick each"
+      },
+      "note_divisor_tables": []
+    }
+  },
+  "sound_statement": {
+    "Gato1.exe": {
+      "sound_routine_file_offset": 57301,
+      "call_sites": [
+        {
+          "site_file_offset": 22199,
+          "region": {"id": 8, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["056a6 mov di, 0x2564", "056a9 mov si, 0x9e2", "056ac call 199b:015e", "056b1 mov bx, 0x9c4", "056b4 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 22260,
+          "region": {"id": 8, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["056e3 mov di, 0x2564", "056e6 mov si, 0x9e2", "056e9 call 199b:015e", "056ee mov bx, 0x9c4", "056f1 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 22377,
+          "region": {"id": 8, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["05758 mov di, 0x2564", "0575b mov si, 0x9e2", "0575e call 199b:015e", "05763 mov bx, 0x9c4", "05766 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 22452,
+          "region": {"id": 8, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["057a3 mov di, 0x2564", "057a6 mov si, 0x9e2", "057a9 call 199b:015e", "057ae mov bx, 0x9c4", "057b1 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 22645,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 900,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["05864 mov di, 0x2564", "05867 mov si, 0x9e2", "0586a call 199b:015e", "0586f mov bx, 0x384", "05872 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 22779,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 900,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["058ea mov di, 0x2564", "058ed mov si, 0x9e2", "058f0 call 199b:015e", "058f5 mov bx, 0x384", "058f8 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 22850,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0593c mov bx, 0x9c4", "0593f mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 22985,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["059c3 mov bx, 0x9c4", "059c6 mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 23120,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["05a4a mov bx, 0x9c4", "05a4d mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 23255,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 2500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["05ad1 mov bx, 0x9c4", "05ad4 mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 23780,
+          "region": {"id": 12, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 900,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["05cd3 mov di, 0x2564", "05cd6 mov si, 0x9e2", "05cd9 call 199b:015e", "05cde mov bx, 0x384", "05ce1 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 23879,
+          "region": {"id": 12, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 900,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["05d36 mov di, 0x2564", "05d39 mov si, 0x9e2", "05d3c call 199b:015e", "05d41 mov bx, 0x384", "05d44 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 24036,
+          "region": {"id": 12, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 3500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["05dd3 mov di, 0x2564", "05dd6 mov si, 0x9e2", "05dd9 call 199b:015e", "05dde mov bx, 0xdac", "05de1 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 24168,
+          "region": {"id": 12, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 3000,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["05e57 mov di, 0x2564", "05e5a mov si, 0x9e2", "05e5d call 199b:015e", "05e62 mov bx, 0xbb8", "05e65 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 25976,
+          "region": {"id": 13, "purpose": "string building / text output (no fixed literals)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x23a6",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": [
+            "0655c mov di, 0x26c8", "0655f mov si, 0x9e2", "06562 call 199b:015e", "06567 mov si, 0x221e", "0656a call 199b:132b",
+            "0656f sbb word ptr [bp + si + 0x2047], 0x99b", "06575 mov dx, 0x23a6"
+          ]
+        },
+        {
+          "site_file_offset": 26020,
+          "region": {"id": 13, "purpose": "string building / text output (no fixed literals)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x26d0",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0659e mov bx, 0x25", "065a1 mov dx, 0x26d0"]
+        },
+        {
+          "site_file_offset": 32513,
+          "region": {"id": 28, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 3000,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["07efb mov bx, 0xbb8", "07efe mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 32611,
+          "region": {"id": 28, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 3000,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["07f5d mov bx, 0xbb8", "07f60 mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 32899,
+          "region": {"id": 28, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 600,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09e2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0807d mov bx, 0x258", "08080 mov dx, 0x9e2"]
+        },
+        {
+          "site_file_offset": 33595,
+          "region": {"id": 29, "purpose": "logic using FP math (MBF), string, sound runtime services (no text literals)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:141d"
+          },
+          "statement_instructions": ["0832c mov si, 0x9e2", "0832f call 199b:141d", "08334 add bh, byte ptr [bp + di + 0x258]", "08338 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 41741,
+          "region": {"id": 43, "purpose": "vector drawing (DRAW strings: logo / sprites); damage report"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x26bc",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0a307 mov bx, 0x25", "0a30a mov dx, 0x26bc"]
+        },
+        {
+          "site_file_offset": 43564,
+          "region": {"id": 45, "purpose": "captain's log screen / log file"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x2506", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["0aa26 mov bx, 0x25", "0aa29 mov dx, 0x2506"]
+        },
+        {
+          "site_file_offset": 46547,
+          "region": {"id": 51, "purpose": "vector drawing (DRAW strings: logo / sprites)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x2506", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["0b5cd mov bx, 0x25", "0b5d0 mov dx, 0x2506"]
+        },
+        {
+          "site_file_offset": 46570,
+          "region": {"id": 51, "purpose": "vector drawing (DRAW strings: logo / sprites)"},
+          "frequency_hz": 800,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["0b5d9 mov di, 0x284c", "0b5dc mov si, 0x9e2", "0b5df call 199b:015e", "0b5e4 mov bx, 0x320", "0b5e7 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 46711,
+          "region": {"id": 51, "purpose": "vector drawing (DRAW strings: logo / sprites)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x23a6",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": [
+            "0b656 mov di, 0x26c8", "0b659 mov si, 0x9e2", "0b65c call 199b:015e", "0b661 mov bx, 0x221e", "0b664 call 199b:132b",
+            "0b669 sbb word ptr [bp + si + 0x1e27], 0x99b", "0b66f call 199b:2092", "0b674 mov dx, 0x23a6"
+          ]
+        },
+        {
+          "site_file_offset": 46755,
+          "region": {"id": 51, "purpose": "vector drawing (DRAW strings: logo / sprites)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x26d0",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0b69d mov bx, 0x25", "0b6a0 mov dx, 0x26d0"]
+        },
+        {
+          "site_file_offset": 47011,
+          "region": {"id": 51, "purpose": "vector drawing (DRAW strings: logo / sprites)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x23a6",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": [
+            "0b782 mov di, 0x26c8", "0b785 mov si, 0x9e2", "0b788 call 199b:015e", "0b78d mov bx, 0x221e", "0b790 call 199b:132b",
+            "0b795 sbb word ptr [bp + si + 0x1e27], 0x99b", "0b79b call 199b:2092", "0b7a0 mov dx, 0x23a6"
+          ]
+        },
+        {
+          "site_file_offset": 47055,
+          "region": {"id": 51, "purpose": "vector drawing (DRAW strings: logo / sprites)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x26d0",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0b7c9 mov bx, 0x25", "0b7cc mov dx, 0x26d0"]
+        },
+        {
+          "site_file_offset": 47684,
+          "region": {"id": 53, "purpose": "damage report; mission assignment / orders (Morse message)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x2506", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["0ba3e mov bx, 0x25", "0ba41 mov dx, 0x2506"]
+        },
+        {
+          "site_file_offset": 48541,
+          "region": {"id": 53, "purpose": "damage report; mission assignment / orders (Morse message)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x2506", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["0bd97 mov bx, 0x25", "0bd9a mov dx, 0x2506"]
+        },
+        {
+          "site_file_offset": 52640,
+          "region": {"id": 59, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1200,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["0cd8f mov di, 0x284c", "0cd92 mov si, 0x9e2", "0cd95 call 199b:015e", "0cd9a mov bx, 0x4b0", "0cd9d mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 52663,
+          "region": {"id": 59, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1200,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["0cda6 mov di, 0x284c", "0cda9 mov si, 0x9e2", "0cdac call 199b:015e", "0cdb1 mov bx, 0x4b0", "0cdb4 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 52765,
+          "region": {"id": 59, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:015e"
+          },
+          "statement_instructions": ["0ce0c mov di, 0x326e", "0ce0f mov si, 0x9e2", "0ce12 call 199b:015e", "0ce17 mov bx, 0x5dc", "0ce1a mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 52854,
+          "region": {"id": 59, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x27c4",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0ce70 mov bx, 0x5dc", "0ce73 mov dx, 0x27c4"]
+        },
+        {
+          "site_file_offset": 53867,
+          "region": {"id": 64, "purpose": "sound effect (PLAY string)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:141d"
+          },
+          "statement_instructions": ["0d25c mov si, 0x9e2", "0d25f call 199b:141d", "0d264 add word ptr [bp + di + 0x50], di", "0d268 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 53888,
+          "region": {"id": 64, "purpose": "sound effect (PLAY string)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:141d"
+          },
+          "statement_instructions": ["0d271 mov si, 0x9e2", "0d274 call 199b:141d", "0d279 add di, word ptr [bp + di + 0x64]", "0d27d mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 53909,
+          "region": {"id": 64, "purpose": "sound effect (PLAY string)"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09e2 through runtime routine 199b:141d"
+          },
+          "statement_instructions": ["0d286 mov si, 0x9e2", "0d289 call 199b:141d", "0d28e add bh, byte ptr [bp + di + 0x50]", "0d292 mov dx, 0xb2"]
+        }
+      ],
+      "sound_routine_ghidra_name": "FUN_199b_0c25"
+    },
+    "DEMO.EXE": {
+      "sound_routine_file_offset": 36569,
+      "call_sites": [
+        {
+          "site_file_offset": 15817,
+          "region": {"id": 7, "purpose": "logic using string, FP math (MBF), sound runtime services (no text literals)"},
+          "frequency_hz": 900,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["03db8 mov di, 0x2554", "03dbb mov si, 0x9c2", "03dbe call 15cb:04f8", "03dc3 mov bx, 0x384", "03dc6 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 15916,
+          "region": {"id": 7, "purpose": "logic using string, FP math (MBF), sound runtime services (no text literals)"},
+          "frequency_hz": 900,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["03e1b mov di, 0x2554", "03e1e mov si, 0x9c2", "03e21 call 15cb:04f8", "03e26 mov bx, 0x384", "03e29 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 16073,
+          "region": {"id": 8, "purpose": "demo narration; chart / quadrant map"},
+          "frequency_hz": 3500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["03eb8 mov di, 0x2554", "03ebb mov si, 0x9c2", "03ebe call 15cb:04f8", "03ec3 mov bx, 0xdac", "03ec6 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 16205,
+          "region": {"id": 8, "purpose": "demo narration; chart / quadrant map"},
+          "frequency_hz": 3000,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["03f3c mov di, 0x2554", "03f3f mov si, 0x9c2", "03f42 call 15cb:04f8", "03f47 mov bx, 0xbb8", "03f4a mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 17848,
+          "region": {"id": 9, "purpose": "demo narration; vector drawing (DRAW strings: logo / sprites); damage report"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:1421"
+          },
+          "statement_instructions": ["045a9 mov si, 0x9c2", "045ac call 15cb:1421", "045b1 add word ptr [bp + di + 0x50], di", "045b5 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 17869,
+          "region": {"id": 9, "purpose": "demo narration; vector drawing (DRAW strings: logo / sprites); damage report"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:1421"
+          },
+          "statement_instructions": ["045be mov si, 0x9c2", "045c1 call 15cb:1421", "045c6 add di, word ptr [bp + di + 0x64]", "045ca mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 17890,
+          "region": {"id": 9, "purpose": "demo narration; vector drawing (DRAW strings: logo / sprites); damage report"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:1421"
+          },
+          "statement_instructions": ["045d3 mov si, 0x9c2", "045d6 call 15cb:1421", "045db add bh, byte ptr [bp + di + 0x50]", "045df mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 18230,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 3000,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09c2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["04730 mov bx, 0xbb8", "04733 mov dx, 0x9c2"]
+        },
+        {
+          "site_file_offset": 18328,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 3000,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09c2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["04792 mov bx, 0xbb8", "04795 mov dx, 0x9c2"]
+        },
+        {
+          "site_file_offset": 18616,
+          "region": {"id": 10, "purpose": "sound / tone generation logic (suspected)"},
+          "frequency_hz": 600,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x09c2",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["048b2 mov bx, 0x258", "048b5 mov dx, 0x9c2"]
+        },
+        {
+          "site_file_offset": 20519,
+          "region": {"id": 15, "purpose": "vector drawing (DRAW strings: logo / sprites); damage report"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x2410",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["05021 mov bx, 0x25", "05024 mov dx, 0x2410"]
+        },
+        {
+          "site_file_offset": 22684,
+          "region": {"id": 18, "purpose": "captain's log screen / log file; demo narration; title / credits screen"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x23e4", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["05896 mov bx, 0x25", "05899 mov dx, 0x23e4"]
+        },
+        {
+          "site_file_offset": 26836,
+          "region": {"id": 28, "purpose": "vector drawing (DRAW strings: logo / sprites); mission result / end of game"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x23e4", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["068ce mov bx, 0x25", "068d1 mov dx, 0x23e4"]
+        },
+        {
+          "site_file_offset": 26859,
+          "region": {"id": 28, "purpose": "vector drawing (DRAW strings: logo / sprites); mission result / end of game"},
+          "frequency_hz": 800,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["068da mov di, 0x2df4", "068dd mov si, 0x9c2", "068e0 call 15cb:04f8", "068e5 mov bx, 0x320", "068e8 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 27000,
+          "region": {"id": 28, "purpose": "vector drawing (DRAW strings: logo / sprites); mission result / end of game"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x2286",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": [
+            "06957 mov di, 0x31fa", "0695a mov si, 0x9c2", "0695d call 15cb:04f8", "06962 mov bx, 0x2222", "06965 call 15cb:132f",
+            "0696a sbb word ptr [bp + si + 0x1e2b], 0x5cb", "06970 call 15cb:2e36", "06975 mov dx, 0x2286"
+          ]
+        },
+        {
+          "site_file_offset": 27044,
+          "region": {"id": 28, "purpose": "vector drawing (DRAW strings: logo / sprites); mission result / end of game"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x3206",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0699e mov bx, 0x25", "069a1 mov dx, 0x3206"]
+        },
+        {
+          "site_file_offset": 27300,
+          "region": {"id": 28, "purpose": "vector drawing (DRAW strings: logo / sprites); mission result / end of game"},
+          "frequency_hz": null,
+          "frequency_source": "computed (variable/expression; not a constant)",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x2286",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": [
+            "06a83 mov di, 0x31fa", "06a86 mov si, 0x9c2", "06a89 call 15cb:04f8", "06a8e mov bx, 0x2222", "06a91 call 15cb:132f",
+            "06a96 sbb word ptr [bp + si + 0x1e2b], 0x5cb", "06a9c call 15cb:2e36", "06aa1 mov dx, 0x2286"
+          ]
+        },
+        {
+          "site_file_offset": 27344,
+          "region": {"id": 28, "purpose": "vector drawing (DRAW strings: logo / sprites); mission result / end of game"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x3206",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["06aca mov bx, 0x25", "06acd mov dx, 0x3206"]
+        },
+        {
+          "site_file_offset": 27915,
+          "region": {"id": 29, "purpose": "damage report; mission assignment / orders (Morse message)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x33f4",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["06d05 mov bx, 0x25", "06d08 mov dx, 0x33f4"]
+        },
+        {
+          "site_file_offset": 28685,
+          "region": {"id": 30, "purpose": "mission assignment / orders (Morse message)"},
+          "frequency_hz": 37,
+          "frequency_source": "constant",
+          "duration": {"kind": "constant", "ds_offset": "0x23e4", "bios_ticks": 0.0, "seconds": 0.0, "stop_sound": true},
+          "statement_instructions": ["07007 mov bx, 0x25", "0700a mov dx, 0x23e4"]
+        },
+        {
+          "site_file_offset": 32622,
+          "region": {"id": 38, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1200,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["07f5d mov di, 0x2df4", "07f60 mov si, 0x9c2", "07f63 call 15cb:04f8", "07f68 mov bx, 0x4b0", "07f6b mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 32645,
+          "region": {"id": 38, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1200,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["07f74 mov di, 0x2df4", "07f77 mov si, 0x9c2", "07f7a call 15cb:04f8", "07f7f mov bx, 0x4b0", "07f82 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 32747,
+          "region": {"id": 38, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "expression_result",
+            "note": "FAC (ds:0x00b2) holds the value of the expression evaluated just before; typical preceding statement: constant 3.0 combined with the variable at ds:0x09c2 through runtime routine 15cb:04f8"
+          },
+          "statement_instructions": ["07fda mov di, 0x365a", "07fdd mov si, 0x9c2", "07fe0 call 15cb:04f8", "07fe5 mov bx, 0x5dc", "07fe8 mov dx, 0xb2"]
+        },
+        {
+          "site_file_offset": 32836,
+          "region": {"id": 38, "purpose": "vector drawing (DRAW strings: logo / sprites); map and sprite loading"},
+          "frequency_hz": 1500,
+          "frequency_source": "constant",
+          "duration": {
+            "kind": "variable",
+            "ds_offset": "0x365e",
+            "note": "program variable (not a numeric literal in the constant pool); initial value not recoverable statically"
+          },
+          "statement_instructions": ["0803e mov bx, 0x5dc", "08041 mov dx, 0x365e"]
+        }
+      ],
+      "sound_routine_ghidra_name": "FUN_15cb_0c29"
+    }
+  },
+  "play": {
+    "Gato1.exe": {
+      "strings": [
+        {
+          "play": "B32P62",
+          "load_site_file_offset": 50646,
+          "events": [
+            {"op": "note", "note": "B", "octave": 4, "length": 32, "tempo": 120, "seconds": 0.0625},
+            {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+          ],
+          "total_seconds": 0.09476
+        },
+        {
+          "play": "B10P62",
+          "load_site_file_offset": 50661,
+          "events": [
+            {"op": "note", "note": "B", "octave": 4, "length": 10, "tempo": 120, "seconds": 0.2},
+            {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+          ],
+          "total_seconds": 0.23226
+        },
+        {
+          "play": "B32P62B10P62",
+          "load_site_file_offset": 50676,
+          "events": [
+            {"op": "note", "note": "B", "octave": 4, "length": 32, "tempo": 120, "seconds": 0.0625},
+            {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226},
+            {"op": "note", "note": "B", "octave": 4, "length": 10, "tempo": 120, "seconds": 0.2},
+            {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+          ],
+          "total_seconds": 0.32702
+        },
+        {
+          "play": "B10P62B32P62",
+          "load_site_file_offset": 50691,
+          "events": [
+            {"op": "note", "note": "B", "octave": 4, "length": 10, "tempo": 120, "seconds": 0.2},
+            {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226},
+            {"op": "note", "note": "B", "octave": 4, "length": 32, "tempo": 120, "seconds": 0.0625},
+            {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+          ],
+          "total_seconds": 0.32702
+        },
+        {
+          "play": "MBT40O4L64B-",
+          "load_site_file_offset": 54032,
+          "events": [
+            {"op": "mode", "value": "B"},
+            {"op": "tempo", "value": 40},
+            {"op": "octave", "value": 4},
+            {"op": "length", "value": 64},
+            {"op": "note", "note": "B-", "octave": 4, "length": 64, "tempo": 40, "seconds": 0.09375}
+          ],
+          "total_seconds": 0.09375
+        },
+        {
+          "play": "MBT100L9B",
+          "load_site_file_offset": 54041,
+          "events": [
+            {"op": "mode", "value": "B"},
+            {"op": "tempo", "value": 100},
+            {"op": "length", "value": 9},
+            {"op": "note", "note": "B", "octave": 4, "length": 9, "tempo": 100, "seconds": 0.26667}
+          ],
+          "total_seconds": 0.26667
+        }
+      ],
+      "routine_file_offset": 65828,
+      "call_sites": [
+        {
+          "site_file_offset": 50649,
+          "region": {"id": 56, "purpose": "map and sprite loading"},
+          "statement_instructions": ["0c5d6 mov bx, 0x31da"],
+          "constants": [{"at": 50646, "string": "B32P62"}]
+        },
+        {
+          "site_file_offset": 50664,
+          "region": {"id": 56, "purpose": "map and sprite loading"},
+          "statement_instructions": ["0c5e5 mov bx, 0x31e4"],
+          "constants": [{"at": 50661, "string": "B10P62"}]
+        },
+        {
+          "site_file_offset": 50679,
+          "region": {"id": 56, "purpose": "map and sprite loading"},
+          "statement_instructions": ["0c5f4 mov bx, 0x31ee"],
+          "constants": [{"at": 50676, "string": "B32P62B10P62"}]
+        },
+        {
+          "site_file_offset": 50694,
+          "region": {"id": 56, "purpose": "map and sprite loading"},
+          "statement_instructions": ["0c603 mov bx, 0x31fe"],
+          "constants": [{"at": 50691, "string": "B10P62B32P62"}]
+        },
+        {
+          "site_file_offset": 54035,
+          "region": {"id": 64, "purpose": "sound effect (PLAY string)"},
+          "statement_instructions": ["0d310 mov bx, 0x340e"],
+          "constants": [{"at": 54032, "string": "MBT40O4L64B-"}]
+        },
+        {
+          "site_file_offset": 54044,
+          "region": {"id": 64, "purpose": "sound effect (PLAY string)"},
+          "statement_instructions": ["0d319 mov bx, 0x341e"],
+          "constants": [{"at": 54041, "string": "MBT100L9B"}]
+        }
+      ],
+      "routine_ghidra_name": "FUN_199b_2d74",
+      "routine_evidence": "the routine's dispatch table compares the command letter with 'A'..'G' and its handlers range-check octave (<7), tempo (>=32) and length (<=64): PLAY command parser"
+    },
+    "DEMO.EXE": {"strings": [], "routine_file_offset": null, "call_sites": []}
+  },
+  "play_duration_rule": {
+    "whole_note_seconds": "240 / tempo",
+    "note_seconds": "240 / (tempo * length)",
+    "defaults": {"tempo": 120, "length": 4, "octave": 4},
+    "certainty": "standard BASIC PLAY rule; defaults assumed from the BASIC manual, not decoded from the runtime (the runtime stores tempo/length/octave at ds:0x8c/0x8d/0x8b)"
+  },
+  "morse": {
+    "table_found": true,
+    "source": "Gato1.exe, ON v GOSUB dispatcher at file 0xbe4a, branch bodies 0xc1cd-0xc5d4, tone subroutines 0xc5d5-0xc610",
+    "verification": "all 36 branches decoded; 36 of 36 equal International Morse (A-Z, 0-9)",
+    "letters": {
+      "A": {"pattern": ".-", "play_strings": ["B32P62B10P62"], "gosub_targets": ["0x8bf3"], "branch_file_offset": "0x0c1cd", "index": 1},
+      "B": {
+        "pattern": "-...",
+        "play_strings": ["B10P62B32P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8c02", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c1db",
+        "index": 2
+      },
+      "C": {
+        "pattern": "-.-.",
+        "play_strings": ["B10P62B32P62", "B10P62B32P62"],
+        "gosub_targets": ["0x8c02", "0x8c02"],
+        "branch_file_offset": "0x0c1f9",
+        "index": 3
+      },
+      "D": {
+        "pattern": "-..",
+        "play_strings": ["B10P62B32P62", "B32P62"],
+        "gosub_targets": ["0x8c02", "0x8bd5"],
+        "branch_file_offset": "0x0c20f",
+        "index": 4
+      },
+      "E": {"pattern": ".", "play_strings": ["B32P62"], "gosub_targets": ["0x8bd5"], "branch_file_offset": "0x0c225", "index": 5},
+      "F": {
+        "pattern": "..-.",
+        "play_strings": ["B32P62", "B32P62", "B10P62B32P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8c02"],
+        "branch_file_offset": "0x0c233",
+        "index": 6
+      },
+      "G": {
+        "pattern": "--.",
+        "play_strings": ["B10P62", "B10P62B32P62"],
+        "gosub_targets": ["0x8be4", "0x8c02"],
+        "branch_file_offset": "0x0c251",
+        "index": 7
+      },
+      "H": {
+        "pattern": "....",
+        "play_strings": ["B32P62", "B32P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c267",
+        "index": 8
+      },
+      "I": {
+        "pattern": "..",
+        "play_strings": ["B32P62", "B32P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c28d",
+        "index": 9
+      },
+      "J": {
+        "pattern": ".---",
+        "play_strings": ["B32P62B10P62", "B10P62", "B10P62"],
+        "gosub_targets": ["0x8bf3", "0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c2a3",
+        "index": 10
+      },
+      "K": {
+        "pattern": "-.-",
+        "play_strings": ["B10P62B32P62", "B10P62"],
+        "gosub_targets": ["0x8c02", "0x8be4"],
+        "branch_file_offset": "0x0c2c1",
+        "index": 11
+      },
+      "L": {
+        "pattern": ".-..",
+        "play_strings": ["B32P62B10P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8bf3", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c2d7",
+        "index": 12
+      },
+      "M": {
+        "pattern": "--",
+        "play_strings": ["B10P62", "B10P62"],
+        "gosub_targets": ["0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c2f5",
+        "index": 13
+      },
+      "N": {"pattern": "-.", "play_strings": ["B10P62B32P62"], "gosub_targets": ["0x8c02"], "branch_file_offset": "0x0c30b", "index": 14},
+      "O": {
+        "pattern": "---",
+        "play_strings": ["B10P62", "B10P62", "B10P62"],
+        "gosub_targets": ["0x8be4", "0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c319",
+        "index": 15
+      },
+      "P": {
+        "pattern": ".--.",
+        "play_strings": ["B32P62B10P62", "B10P62B32P62"],
+        "gosub_targets": ["0x8bf3", "0x8c02"],
+        "branch_file_offset": "0x0c337",
+        "index": 16
+      },
+      "Q": {
+        "pattern": "--.-",
+        "play_strings": ["B10P62", "B10P62B32P62", "B10P62"],
+        "gosub_targets": ["0x8be4", "0x8c02", "0x8be4"],
+        "branch_file_offset": "0x0c34d",
+        "index": 17
+      },
+      "R": {
+        "pattern": ".-.",
+        "play_strings": ["B32P62B10P62", "B32P62"],
+        "gosub_targets": ["0x8bf3", "0x8bd5"],
+        "branch_file_offset": "0x0c36b",
+        "index": 18
+      },
+      "S": {
+        "pattern": "...",
+        "play_strings": ["B32P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c381",
+        "index": 19
+      },
+      "T": {"pattern": "-", "play_strings": ["B10P62"], "gosub_targets": ["0x8be4"], "branch_file_offset": "0x0c39f", "index": 20},
+      "U": {
+        "pattern": "..-",
+        "play_strings": ["B32P62", "B32P62B10P62"],
+        "gosub_targets": ["0x8bd5", "0x8bf3"],
+        "branch_file_offset": "0x0c3ad",
+        "index": 21
+      },
+      "V": {
+        "pattern": "...-",
+        "play_strings": ["B32P62", "B32P62", "B32P62B10P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8bf3"],
+        "branch_file_offset": "0x0c3c3",
+        "index": 22
+      },
+      "W": {
+        "pattern": ".--",
+        "play_strings": ["B32P62B10P62", "B10P62"],
+        "gosub_targets": ["0x8bf3", "0x8be4"],
+        "branch_file_offset": "0x0c3e1",
+        "index": 23
+      },
+      "X": {
+        "pattern": "-..-",
+        "play_strings": ["B10P62B32P62", "B32P62B10P62"],
+        "gosub_targets": ["0x8c02", "0x8bf3"],
+        "branch_file_offset": "0x0c3f7",
+        "index": 24
+      },
+      "Y": {
+        "pattern": "-.--",
+        "play_strings": ["B10P62B32P62", "B10P62", "B10P62"],
+        "gosub_targets": ["0x8c02", "0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c40d",
+        "index": 25
+      },
+      "Z": {
+        "pattern": "--..",
+        "play_strings": ["B10P62", "B10P62B32P62", "B32P62"],
+        "gosub_targets": ["0x8be4", "0x8c02", "0x8bd5"],
+        "branch_file_offset": "0x0c42b",
+        "index": 26
+      },
+      "0": {
+        "pattern": "-----",
+        "play_strings": ["B10P62", "B10P62", "B10P62", "B10P62", "B10P62"],
+        "gosub_targets": ["0x8be4", "0x8be4", "0x8be4", "0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c449",
+        "index": 27
+      },
+      "1": {
+        "pattern": ".----",
+        "play_strings": ["B32P62B10P62", "B10P62", "B10P62", "B10P62"],
+        "gosub_targets": ["0x8bf3", "0x8be4", "0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c477",
+        "index": 28
+      },
+      "2": {
+        "pattern": "..---",
+        "play_strings": ["B32P62", "B32P62B10P62", "B10P62", "B10P62"],
+        "gosub_targets": ["0x8bd5", "0x8bf3", "0x8be4", "0x8be4"],
+        "branch_file_offset": "0x0c49d",
+        "index": 29
+      },
+      "3": {
+        "pattern": "...--",
+        "play_strings": ["B32P62", "B32P62", "B32P62B10P62", "B10P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8bf3", "0x8be4"],
+        "branch_file_offset": "0x0c4c3",
+        "index": 30
+      },
+      "4": {
+        "pattern": "....-",
+        "play_strings": ["B32P62", "B32P62", "B32P62", "B32P62B10P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8bd5", "0x8bf3"],
+        "branch_file_offset": "0x0c4e9",
+        "index": 31
+      },
+      "5": {
+        "pattern": ".....",
+        "play_strings": ["B32P62", "B32P62", "B32P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8bd5", "0x8bd5", "0x8bd5", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c50f",
+        "index": 32
+      },
+      "6": {
+        "pattern": "-....",
+        "play_strings": ["B10P62B32P62", "B32P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8c02", "0x8bd5", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c53d",
+        "index": 33
+      },
+      "7": {
+        "pattern": "--...",
+        "play_strings": ["B10P62", "B10P62B32P62", "B32P62", "B32P62"],
+        "gosub_targets": ["0x8be4", "0x8c02", "0x8bd5", "0x8bd5"],
+        "branch_file_offset": "0x0c563",
+        "index": 34
+      },
+      "8": {
+        "pattern": "---..",
+        "play_strings": ["B10P62", "B10P62", "B10P62B32P62", "B32P62"],
+        "gosub_targets": ["0x8be4", "0x8be4", "0x8c02", "0x8bd5"],
+        "branch_file_offset": "0x0c589",
+        "index": 35
+      },
+      "9": {
+        "pattern": "----.",
+        "play_strings": ["B10P62", "B10P62", "B10P62", "B10P62B32P62"],
+        "gosub_targets": ["0x8be4", "0x8be4", "0x8be4", "0x8c02"],
+        "branch_file_offset": "0x0c5af",
+        "index": 36
+      }
+    },
+    "tone_subroutines": {
+      "0x8bd5": {
+        "program_offset": "0x8bd5",
+        "file_offset": "0x0c5d5",
+        "play_string": "B32P62",
+        "morse": ".",
+        "total_seconds": 0.09476,
+        "events": [
+          {"op": "note", "note": "B", "octave": 4, "length": 32, "tempo": 120, "seconds": 0.0625},
+          {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+        ]
+      },
+      "0x8be4": {
+        "program_offset": "0x8be4",
+        "file_offset": "0x0c5e4",
+        "play_string": "B10P62",
+        "morse": "-",
+        "total_seconds": 0.23226,
+        "events": [
+          {"op": "note", "note": "B", "octave": 4, "length": 10, "tempo": 120, "seconds": 0.2},
+          {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+        ]
+      },
+      "0x8bf3": {
+        "program_offset": "0x8bf3",
+        "file_offset": "0x0c5f3",
+        "play_string": "B32P62B10P62",
+        "morse": ".-",
+        "total_seconds": 0.32702,
+        "events": [
+          {"op": "note", "note": "B", "octave": 4, "length": 32, "tempo": 120, "seconds": 0.0625},
+          {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226},
+          {"op": "note", "note": "B", "octave": 4, "length": 10, "tempo": 120, "seconds": 0.2},
+          {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+        ]
+      },
+      "0x8c02": {
+        "program_offset": "0x8c02",
+        "file_offset": "0x0c602",
+        "play_string": "B10P62B32P62",
+        "morse": "-.",
+        "total_seconds": 0.32702,
+        "events": [
+          {"op": "note", "note": "B", "octave": 4, "length": 10, "tempo": 120, "seconds": 0.2},
+          {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226},
+          {"op": "note", "note": "B", "octave": 4, "length": 32, "tempo": 120, "seconds": 0.0625},
+          {"op": "rest", "length": 62, "tempo": 120, "seconds": 0.03226}
+        ]
+      }
+    },
+    "timing": {
+      "dit_tone_seconds": 0.0625,
+      "dit_rest_seconds": 0.03226,
+      "dah_tone_seconds": 0.2,
+      "dah_rest_seconds": 0.03226,
+      "dah_to_dit_ratio_tone_only": 3.2,
+      "dah_to_dit_ratio_with_rest": 2.45,
+      "note": "seconds from the standard PLAY rule at default tempo 120 (see play_duration_rule); the runtime's staccato/legato handling (MN/ML/MS) was not decoded, so real tone lengths can be up to 1/8 shorter. The PLAYs are foreground (no MB prefix), so each element blocks the program until finished. There is no extra letter or word gap: characters are sounded back to back, spaces and punctuation are silent.",
+      "pitch": "no octave command: the runtime default octave 4 applies, note B (about 494 Hz); inferred from the PLAY syntax, the frequency table of the runtime was not extracted"
+    },
+    "text_to_morse": [
+      "Subroutine at Gato1 0xbc00-0xbe97 prints one order line (L$, ds:0x2372, read with LINE INPUT #1 from ORDXXn) one character at a time.",
+      "v = ASC(LEFT$(L$,1)) - 64 (stored in ds:0x224e): A-Z give 1-26.",
+      "If ds:0x2256 < 8 the character is PRINTed; otherwise a FOR 1 TO 340 delay loop runs instead (ds:0x2256 is not identified: it looks like a setting that hides the text so orders must be copied from Morse; inferred, not proved).",
+      "L$ is shortened by one character; INKEY$ is polled and any key does SOUND 37,0 and abandons the rest of the orders.",
+      "Digits ('0'-'9' give -16..-7) are accepted only when ds:0x9e2 = 1 and become v + 43 = 27..36; letters (1 <= v <= 26) require ds:0x9e2 <> 0; every other character is skipped. ds:0x9e2 is also the duration operand of several SOUND statements, so its role is unresolved (likely a sound on/off setting).",
+      "If L$ is now empty the next line is read, so the last character of each line is printed but not sounded.",
+      "Otherwise ON v GOSUB (runtime 199b:1def, 36 entries) calls the letter's branch; it GOSUBs the dit/dah subroutines and RETURNs to 0xbe98, which loops to the next character.",
+      "Each element subroutine is a single PLAY of one of the four strings; the two-element strings (dit-dah, dah-dit) are used as shortcuts for A, N and adjacent element pairs."
+    ],
+    "demo_exe": "DEMO.EXE contains no PLAY statement and no equivalent dispatcher; its DEMORD text is shown silently (its SOUND calls are effects, not Morse).",
+    "unused_play_strings": {
+      "MBT40O4L64B-": "0xd310, short blip, background mode",
+      "MBT100L9B": "0xd319, longer blip, background mode; both are sounded in region 64, just before the LOG1 record is written, and are not part of the Morse code"
+    },
+    "reference_ITU_table": {
+      "A": ".-",
+      "B": "-...",
+      "C": "-.-.",
+      "D": "-..",
+      "E": ".",
+      "F": "..-.",
+      "G": "--.",
+      "H": "....",
+      "I": "..",
+      "J": ".---",
+      "K": "-.-",
+      "L": ".-..",
+      "M": "--",
+      "N": "-.",
+      "O": "---",
+      "P": ".--.",
+      "Q": "--.-",
+      "R": ".-.",
+      "S": "...",
+      "T": "-",
+      "U": "..-",
+      "V": "...-",
+      "W": ".--",
+      "X": "-..-",
+      "Y": "-.--",
+      "Z": "--..",
+      "0": "-----",
+      "1": ".----",
+      "2": "..---",
+      "3": "...--",
+      "4": "....-",
+      "5": ".....",
+      "6": "-....",
+      "7": "--...",
+      "8": "---..",
+      "9": "----."
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "_about": "The 12-record DATA list in Gato1.exe (file 0x13d32) and DEMO.EXE (0xeff2): (x, y, radius, aspect) in 320x200 screen pixels, inferred to be CIRCLE arguments. Identical in both programs. How the records map to the MXP islands is not established.",
+  "records": [
+    {"index": 1, "x": 19.0, "y": 35.0, "radius": 5.0, "aspect": 0.9},
+    {"index": 2, "x": 170.0, "y": 37.0, "radius": 5.0, "aspect": 0.9},
+    {"index": 3, "x": 208.0, "y": 22.0, "radius": 6.0, "aspect": 1.5},
+    {"index": 4, "x": 38.0, "y": 80.0, "radius": 10.0, "aspect": 0.9},
+    {"index": 5, "x": 162.0, "y": 75.0, "radius": 13.0, "aspect": 1.5},
+    {"index": 6, "x": 208.0, "y": 85.0, "radius": 5.0, "aspect": 0.9},
+    {"index": 7, "x": 48.0, "y": 134.0, "radius": 5.0, "aspect": 0.9},
+    {"index": 8, "x": 209.0, "y": 113.0, "radius": 5.0, "aspect": 0.9},
+    {"index": 9, "x": 269.0, "y": 128.0, "radius": 6.0, "aspect": 1.5},
+    {"index": 10, "x": 95.0, "y": 174.0, "radius": 13.0, "aspect": 1.5},
+    {"index": 11, "x": 214.0, "y": 168.0, "radius": 9.0, "aspect": 0.9},
+    {"index": 12, "x": 287.0, "y": 174.0, "radius": 15.0, "aspect": 0.9}
+  ]
+}

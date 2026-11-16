@@ -1,0 +1,228 @@
+{
+  "_about": "GATO 'History and Specifications' (main menu item 3). Text (c) 1984 Spectrum HoloByte; confirm you may reuse it before shipping the remake.",
+  "source": {
+    "text": {
+      "path": "Original/History",
+      "bytes": 4083,
+      "sha256": "470a23b3d7a02582c8aeb9ab6cd1e260070479948497c8a7f5fe3f148a0b4815"
+    },
+    "viewer": {
+      "path": "Original/History.exe",
+      "bytes": 19072,
+      "sha256": "ae0a6539e327673533f303441f83713c63a46981c8f801816a9f91c1a8ecccba"
+    },
+    "note": "History.exe holds no history text; it reads the file named by the literal 'HISTORY'."
+  },
+  "display": {
+    "columns": 80,
+    "left_margin_spaces": 6,
+    "max_text_width": 68,
+    "text_rows_per_page_max": 21,
+    "continue_prompt_position": {
+      "row": 23,
+      "column": 25,
+      "certainty": "arguments 0x17 and 0x19 of two runtime calls (assumed LOCATE row,col) read from the listing; the call semantics are inferred"
+    },
+    "character_set": "IBM PC code page 437 (the only non-ASCII byte is 0x8A)"
+  },
+  "pages": [
+    {
+      "index": 1,
+      "kind": "prose",
+      "lines": [
+        "     The GATO class formed the backbone of the American",
+        "submarine fleet during the Second World War.  Seventy-three",
+        "of these oceanic vessels were built between 1940 and 1943.",
+        "They were fast, strong, well armed, and capable of", "patrolling for long periods.",
+        "     GATO class submarines bore the brunt of the undersea",
+        "Pacific campaign.  Their primary functions were to patrol",
+        "enemy sea lanes, bombard enemy islands, lay mine fields, land",
+        "supplies for guerrillas and coast watchers, and rescue",
+        "downed aircraft crews.  Rescue missions were particularly",
+        "hazardous since they forced the submarine to remain", "vulnerable in dangerous waters for seemingly endless",
+        "periods.  Even with these unfavorable odds, submarines",
+        "were still credited with saving the lives of 380 airmen", "during the war.",
+        "     The usual armament of a GATO class submarine included",
+        "24 torpedoes, with six torpedo tubes forward and four tubes",
+        "aft (the enclosed video game allows use of only four",
+        "forward tubes).  Up to forty underwater mines could be",
+        "carried in lieu of spare torpedoes, and these were laid", "through the torpedo tubes."
+      ],
+      "trailing_blank_lines": 0,
+      "ends_with": "page_break_marker",
+      "paragraphs": [
+        "The GATO class formed the backbone of the American submarine fleet during the Second World War.  Seventy-three of these oceanic vessels were built between 1940 and 1943. They were fast, strong, well armed, and capable of patrolling for long periods.",
+        "GATO class submarines bore the brunt of the undersea Pacific campaign.  Their primary functions were to patrol enemy sea lanes, bombard enemy islands, lay mine fields, land supplies for guerrillas and coast watchers, and rescue downed aircraft crews.  Rescue missions were particularly hazardous since they forced the submarine to remain vulnerable in dangerous waters for seemingly endless periods.  Even with these unfavorable odds, submarines were still credited with saving the lives of 380 airmen during the war.",
+        "The usual armament of a GATO class submarine included 24 torpedoes, with six torpedo tubes forward and four tubes aft (the enclosed video game allows use of only four forward tubes).  Up to forty underwater mines could be carried in lieu of spare torpedoes, and these were laid through the torpedo tubes."
+      ]
+    },
+    {
+      "index": 2,
+      "kind": "prose",
+      "lines": [
+        "     All boats were fitted with two deck gun mounts, one",
+        "forward of the conning tower and one aft.  Often, however,",
+        "only one gun was actually mounted.  Gun calibers",
+        "varied greatly.  The first boats had 3 inch (76 mm) 50-cal.",
+        "guns, several had 20 mm 70-cal. anti-aircraft guns,",
+        "and, toward the end of the war, some boats were fitted with", "5 inch (127 mm) 25-cal. guns.",
+        "     GATO class submarines were built with two hulls.  The",
+        "inner, or pressure hull, contained the crew, engines and",
+        "controls.  The space between inner and outer hulls held the",
+        "ballast tanks and fuel and was open to the circulation of",
+        "sea water.  As fuel was used, sea water was allowed to enter",
+        "the fuel tanks to maintain a constant buoyancy.  (Diesel fuel",
+        "floats on top of water and was siphoned from the top of the", "tanks.)",
+        "     The size and shape of the conning tower underwent several",
+        "modifications during the war.  The use of larger surface",
+        "armament required enlargement and strengthening of the tower.",
+        "     Normally, each submarine had two periscopes, one",
+        "large spotting scope and one smaller (slimmer and harder to", "detect) attack scope."
+      ],
+      "trailing_blank_lines": 0,
+      "ends_with": "page_break_marker",
+      "paragraphs": [
+        "All boats were fitted with two deck gun mounts, one forward of the conning tower and one aft.  Often, however, only one gun was actually mounted.  Gun calibers varied greatly.  The first boats had 3 inch (76 mm) 50-cal. guns, several had 20 mm 70-cal. anti-aircraft guns, and, toward the end of the war, some boats were fitted with 5 inch (127 mm) 25-cal. guns.",
+        "GATO class submarines were built with two hulls.  The inner, or pressure hull, contained the crew, engines and controls.  The space between inner and outer hulls held the ballast tanks and fuel and was open to the circulation of sea water.  As fuel was used, sea water was allowed to enter the fuel tanks to maintain a constant buoyancy.  (Diesel fuel floats on top of water and was siphoned from the top of the tanks.)",
+        "The size and shape of the conning tower underwent several modifications during the war.  The use of larger surface armament required enlargement and strengthening of the tower.",
+        "Normally, each submarine had two periscopes, one large spotting scope and one smaller (slimmer and harder to detect) attack scope."
+      ]
+    },
+    {
+      "index": 3,
+      "kind": "prose",
+      "lines": [
+        "     After 1942, the radar antenna was installed aft of the",
+        "periscopes.  The periscope radar complex also contained the",
+        "radio antenna and two crew member lookout stations.",
+        "     The diesel-electric propulsion system provided power",
+        "with either four diesel engines or four electric motors coupled",
+        "in pairs to drive two propeller shafts through reduction gears.",
+        "The diesel engines also charged the batteries, which were made", "up of 252 elements.", "", "", ""
+      ],
+      "trailing_blank_lines": 3,
+      "ends_with": "page_break_marker",
+      "paragraphs": [
+        "After 1942, the radar antenna was installed aft of the periscopes.  The periscope radar complex also contained the radio antenna and two crew member lookout stations.",
+        "The diesel-electric propulsion system provided power with either four diesel engines or four electric motors coupled in pairs to drive two propeller shafts through reduction gears. The diesel engines also charged the batteries, which were made up of 252 elements."
+      ]
+    },
+    {
+      "index": 4,
+      "kind": "specifications",
+      "lines": [
+        "                      SPECIFICATIONS", "     Builders:          Electric Boat, Groton",
+        "                        Portsmouth Navy Yard", "                        Mare Island Navy Yard",
+        "                        Manitowoc Shipyards", "", "     Displacement:      1825 tons surfaced",
+        "                        2417 (+ or - 7) tons submerged", "",
+        "     Dimensions:        311 ft. 9 in. x 27 ft. 3 in. x 15 ft. 3 in.", "",
+        "     Machinery:         Diesel   - 4 General Motors",
+        "                                    or Fairbanks Morse", "                        Electric - 4 Elliot or",
+        "                                    General Electric", "", "     Maximum Power:     5400 hp surfaced",
+        "                        2740 hp submerged"
+      ],
+      "trailing_blank_lines": 0,
+      "ends_with": "page_break_marker"
+    },
+    {
+      "index": 5,
+      "kind": "specifications",
+      "lines": [
+        "     Maximum Speed:     20.25 knots surfaced", "                        8.75 knots submerged", "",
+        "     Fuel Load:         378-472 tons", "", "     Range:             11,800 miles at 10 knots surfaced",
+        "                        95 miles at 5 knots submerged", "", "     Torpedos:          24, 21-inch diameter",
+        "", "     Maximum Depth:     300 feet", "", "     Complement:        65", "",
+        "     Cost:              $6,288,200", "NOTE: As of 1972, twelve GATO class submarines were still in use by",
+        "      the United States Navy. As of 1984, all diesel-powered sub-",
+        "      marines are retired.  PRESENTLY, the USS GATO,a 594 class",
+        "      nuclear submarine, is docked at the New London Submarine Base."
+      ],
+      "trailing_blank_lines": 0,
+      "ends_with": "end_of_file"
+    }
+  ],
+  "specifications": {
+    "value_column": 24,
+    "fields": [
+      {
+        "label": "Builders",
+        "lines": ["Electric Boat, Groton", "Portsmouth Navy Yard", "Mare Island Navy Yard", "Manitowoc Shipyards"]
+      },
+      {"label": "Displacement", "lines": ["1825 tons surfaced", "2417 (+ or - 7) tons submerged"]},
+      {"label": "Dimensions", "lines": ["311 ft. 9 in. x 27 ft. 3 in. x 15 ft. 3 in."]},
+      {
+        "label": "Machinery",
+        "lines": ["Diesel   - 4 General Motors", "or Fairbanks Morse", "Electric - 4 Elliot or", "General Electric"]
+      },
+      {"label": "Maximum Power", "lines": ["5400 hp surfaced", "2740 hp submerged"]},
+      {"label": "Maximum Speed", "lines": ["20.25 knots surfaced", "8.75 knots submerged"]},
+      {"label": "Fuel Load", "lines": ["378-472 tons"]},
+      {"label": "Range", "lines": ["11,800 miles at 10 knots surfaced", "95 miles at 5 knots submerged"]},
+      {"label": "Torpedos", "lines": ["24, 21-inch diameter"]},
+      {"label": "Maximum Depth", "lines": ["300 feet"]},
+      {"label": "Complement", "lines": ["65"]},
+      {"label": "Cost", "lines": ["$6,288,200"]}
+    ],
+    "note": "As of 1972, twelve GATO class submarines were still in use by the United States Navy. As of 1984, all diesel-powered submarines are retired.  PRESENTLY, the USS GATO,a 594 class nuclear submarine, is docked at the New London Submarine Base."
+  },
+  "triggers": {
+    "page_turn": {
+      "marker": "a line consisting only of '*' in the data file (compared with literal at ds:0x088c)",
+      "occurrences_byte_offsets": [1111, 2246, 2704, 3405],
+      "action": "show the continue prompt, wait for any key (INKEY$ <> \"\"), CLS, continue reading",
+      "key": "any key"
+    },
+    "end_of_text": {
+      "condition": "EOF(1)",
+      "action": "print 2 empty lines, the reread prompt and the return prompt, wait for a key, CLOSE #1",
+      "reread_key": "R (case-sensitive, exact string compare)",
+      "on_reread": "CLS, reopen the file, restart from page 1",
+      "on_other_key": "CHAIN \"GATO\" (back to the main menu)"
+    },
+    "diagrams": {
+      "found": false,
+      "evidence": "no DRAW/PAINT/GET/PUT string literals in History.exe; the data file contains only text plus the 0x8A and 0x1A bytes"
+    }
+  },
+  "prompts": {
+    "continue": {"text": "PRESS ANY KEY TO CONTINUE", "file_offset": 16630, "data_segment_descriptor": "0x0892"},
+    "reread": {"text": "PRESS 'R' TO REREAD THIS INFORMATION", "file_offset": 16674, "data_segment_descriptor": "0x08be"},
+    "return": {"text": "PRESS ANY OTHER KEY TO RETURN", "file_offset": 16714, "data_segment_descriptor": "0x08e6"},
+    "page_break_marker": {"text": "*", "file_offset": 16624, "data_segment_descriptor": "0x088c"},
+    "reread_key": {"text": "R", "file_offset": 16748, "data_segment_descriptor": "0x0908"},
+    "data_file": {"text": "HISTORY", "file_offset": 16612, "data_segment_descriptor": "0x0880"},
+    "chain_target": {"text": "GATO", "file_offset": 16754, "data_segment_descriptor": "0x090e"},
+    "left_margin": {"text": "      ", "file_offset": 16664, "data_segment_descriptor": "0x08b4"}
+  },
+  "control_codes": [
+    {"byte": "0x2A '*'", "meaning": "page break when alone on a line", "offsets": [1111, 2246, 2704, 3405]},
+    {"byte": "0x1A", "meaning": "end-of-file marker", "offset": 4082},
+    {
+      "byte": "0x8A",
+      "offset": [2744],
+      "context": "SPECIFICATIONS<CR><0x8A><CR><LF> on page 4",
+      "interpretation": "0x0A with bit 7 set (WordStar soft line feed) after a lone CR. The page text above has it removed. If the original BASIC LINE INPUT pushes back a non-LF byte after CR (the runtime code at History.exe 0x1a38-0x1a4d compares the next byte with 0x0A), the viewer showed it as an extra line containing CP437 glyph 0x8A (e-grave) right after the SPECIFICATIONS heading.",
+      "certainty": "stray byte and runtime comparison are exact; the visible effect is inferred, not run"
+    }
+  ],
+  "flow": [
+    {"addr": "1000:001a", "step": "runtime start-up, CLS, WIDTH 80"},
+    {
+      "addr": "1000:0047",
+      "step": "OPEN \"HISTORY\" FOR INPUT AS #1 (runtime calls 1016:0e57, 1016:0e66 with descriptor 0x880)"
+    },
+    {"addr": "1000:005b", "step": "IF EOF(1) THEN goto 1000:00f0 (1016:0db6)"},
+    {"addr": "1000:006c", "step": "LINE INPUT #1, A$ (1016:19ee) - A$ is ds:0x0872"},
+    {"addr": "1000:0082", "step": "compare A$ with \"*\" (descriptor 0x88c, 1016:0c3c)"},
+    {"addr": "1000:009b", "step": "page break: LOCATE 23,25 ; PRINT \"PRESS ANY KEY TO CONTINUE\""},
+    {
+      "addr": "1000:00b8",
+      "step": "wait loop: key := INKEY$ (1016:10bf); repeat while key = \"\" (descriptor 0x8b0 = empty string)"
+    },
+    {"addr": "1000:00d0", "step": "CLS (1016:0789), back to 1000:005b"},
+    {"addr": "1000:00d8", "step": "normal line: PRINT \"      \"; A$ (1016:1ce3, 1ad6, 1aea)"},
+    {"addr": "1000:00f0", "step": "end: PRINT \"\" twice, PRINT reread prompt, PRINT return prompt"},
+    {"addr": "1000:0121", "step": "wait for a key, then CLOSE (1016:0de1)"},
+    {"addr": "1000:013e", "step": "IF key$ = \"R\" THEN CLS: goto 1000:0047 ELSE CHAIN \"GATO\" (loader 1016:185f)"}
+  ]
+}

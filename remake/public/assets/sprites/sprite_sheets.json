@@ -1,0 +1,1401 @@
+{
+  "_about": "GATO vector sprites exported from DRAW strings. See export_sprites.py for assumptions. No raw CGA 2bpp bitmap data exists in the game files; GET/PUT arrays only exist at run time.",
+  "screen": {
+    "width": 320,
+    "height": 200,
+    "mode": "CGA 320x200 4-colour (inferred from DRAW colours C0..C3)",
+    "palette0": {"0": "background", "1": "#00aa00 green", "2": "#aa0000 red", "3": "#aa5500 brown"},
+    "pixel_aspect_hint": "about 1.2 (taller than wide) on a 4:3 monitor"
+  },
+  "capture_routines": {"Gato1.exe": "0x10f8c-0x1137c (CGA interleaved-row pixel routines)", "DEMO.EXE": "0xbe52-0xc254 (same code)"},
+  "sheets": [
+    {
+      "id": "obx1_island",
+      "source": "OBX1",
+      "object_type": 1,
+      "object_name": "island",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx1_island.png",
+      "image_silhouette": "obx1_island_silhouette.png",
+      "cell_size": {"w": 107, "h": 23},
+      "origin_in_cell": {"x": 49, "y": 20},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 49, "y": 20},
+          "ink_pixels": 91,
+          "filled_pixels": 95,
+          "bounds_rel_origin": {"min_x": -24, "min_y": -18, "max_x": 38, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0BL24E10F3NG7E8F8BGH4G10BR8E18R4F18",
+          "pen_end": {"x": 38, "y": 0}
+        },
+        {
+          "cell": {"x": 107, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 156, "y": 20},
+          "ink_pixels": 58,
+          "filled_pixels": 58,
+          "bounds_rel_origin": {"min_x": -13, "min_y": -18, "max_x": 31, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BL13E15F2NG13E5R4F18",
+          "pen_end": {"x": 31, "y": 0}
+        },
+        {
+          "cell": {"x": 214, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 263, "y": 20},
+          "ink_pixels": 47,
+          "filled_pixels": 47,
+          "bounds_rel_origin": {"min_x": -18, "min_y": -18, "max_x": 26, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BL18E18R4F16BH2E2F6",
+          "pen_end": {"x": 26, "y": 0}
+        },
+        {
+          "cell": {"x": 321, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 370, "y": 20},
+          "ink_pixels": 70,
+          "filled_pixels": 88,
+          "bounds_rel_origin": {"min_x": -26, "min_y": -18, "max_x": 22, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BL26E18R4F14G1E3F6BL1BH6H9G1BF6BR3E2F10",
+          "pen_end": {"x": 22, "y": 0}
+        },
+        {
+          "cell": {"x": 428, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 477, "y": 20},
+          "ink_pixels": 88,
+          "filled_pixels": 93,
+          "bounds_rel_origin": {"min_x": -33, "min_y": -18, "max_x": 29, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BL33E18R4F14NG3E2F6BR12H15G7F3H5G1BR16F2E3F10",
+          "pen_end": {"x": 29, "y": 0}
+        },
+        {
+          "cell": {"x": 535, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 584, "y": 20},
+          "ink_pixels": 100,
+          "filled_pixels": 100,
+          "bounds_rel_origin": {"min_x": -40, "min_y": -18, "max_x": 36, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BL40E18R4F14NG4E2F6BR5H10G4BR9BF1E10F12BH4E3F10",
+          "pen_end": {"x": 36, "y": 0}
+        },
+        {
+          "cell": {"x": 642, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 691, "y": 20},
+          "ink_pixels": 103,
+          "filled_pixels": 103,
+          "bounds_rel_origin": {"min_x": -47, "min_y": -18, "max_x": 43, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BL47E18R4F14NG4E2NF6BF2E6F9BH1E13F9G3E7F10",
+          "pen_end": {"x": 43, "y": 0}
+        },
+        {
+          "cell": {"x": 749, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 798, "y": 20},
+          "ink_pixels": 103,
+          "filled_pixels": 103,
+          "bounds_rel_origin": {"min_x": -40, "min_y": -18, "max_x": 36, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BL6H6G6BL22E18R4F12NG3E4F6NG4E11F8NG7E3F10",
+          "pen_end": {"x": 36, "y": 0}
+        },
+        {
+          "cell": {"x": 856, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 905, "y": 20},
+          "ink_pixels": 98,
+          "filled_pixels": 98,
+          "bounds_rel_origin": {"min_x": -33, "min_y": -18, "max_x": 27, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL10H6G6BL11E18R4F9NG8E1F3NG7E8F6NG9E1F10",
+          "pen_end": {"x": 27, "y": 0}
+        },
+        {
+          "cell": {"x": 963, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1012, "y": 20},
+          "ink_pixels": 106,
+          "filled_pixels": 281,
+          "bounds_rel_origin": {"min_x": -26, "min_y": -18, "max_x": 22, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL13H6G6BL1E18R4F7BG3H2G10BR4E15F15BL4H10G10",
+          "pen_end": {"x": -2, "y": 0}
+        },
+        {
+          "cell": {"x": 1070, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1119, "y": 20},
+          "ink_pixels": 105,
+          "filled_pixels": 105,
+          "bounds_rel_origin": {"min_x": -28, "min_y": -18, "max_x": 24, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL28E6F6E18R4F18BL5H15G15BR3E10F10",
+          "pen_end": {"x": 12, "y": 0}
+        },
+        {
+          "cell": {"x": 1177, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1226, "y": 20},
+          "ink_pixels": 80,
+          "filled_pixels": 80,
+          "bounds_rel_origin": {"min_x": -24, "min_y": -18, "max_x": 32, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL24E6F3NG3E7NF10BF2E7NF15BF3E6R4F18",
+          "pen_end": {"x": 32, "y": 0}
+        },
+        {
+          "cell": {"x": 1284, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1333, "y": 20},
+          "ink_pixels": 89,
+          "filled_pixels": 98,
+          "bounds_rel_origin": {"min_x": -26, "min_y": -18, "max_x": 40, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL26E10F10BH6E9F15BR2H10G1BF3BE1E11R4F18",
+          "pen_end": {"x": 40, "y": 0}
+        },
+        {
+          "cell": {"x": 1391, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1440, "y": 20},
+          "ink_pixels": 93,
+          "filled_pixels": 93,
+          "bounds_rel_origin": {"min_x": -33, "min_y": -18, "max_x": 47, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL33E10NF7BF5E10F15BH6E4F10BH4E14R4F18",
+          "pen_end": {"x": 47, "y": 0}
+        },
+        {
+          "cell": {"x": 1498, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1547, "y": 20},
+          "ink_pixels": 101,
+          "filled_pixels": 101,
+          "bounds_rel_origin": {"min_x": -39, "min_y": -18, "max_x": 55, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL39E10F6G2E13F15BH4E6F10E18R4F18",
+          "pen_end": {"x": 55, "y": 0}
+        },
+        {
+          "cell": {"x": 1605, "y": 0, "w": 107, "h": 23},
+          "origin": {"x": 1654, "y": 20},
+          "ink_pixels": 88,
+          "filled_pixels": 88,
+          "bounds_rel_origin": {"min_x": -32, "min_y": -18, "max_x": 46, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BL32E10F5NG4E10F7G2E4F7BG3E18R4F18",
+          "pen_end": {"x": 46, "y": 0}
+        }
+      ]
+    },
+    {
+      "id": "obx3_subtender",
+      "source": "OBX3",
+      "object_type": 3,
+      "object_name": "subtender",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx3_subtender.png",
+      "image_silhouette": "obx3_subtender_silhouette.png",
+      "cell_size": {"w": 83, "h": 25},
+      "origin_in_cell": {"x": 41, "y": 22},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 41, "y": 22},
+          "ink_pixels": 102,
+          "filled_pixels": 157,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -20, "max_x": 8, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0U1BU5U5NU9R1D2R6D2L2ND1L4NU3L2NU3L4ND1L2U2R6U2R2L1BD5R6D3G1L10H1U3NR6L2D6BR1NE1BR14NH1BR1U6L3",
+          "pen_end": {"x": 5, "y": -6}
+        },
+        {
+          "cell": {"x": 83, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 124, "y": 22},
+          "ink_pixels": 109,
+          "filled_pixels": 145,
+          "bounds_rel_origin": {"min_x": -11, "min_y": -20, "max_x": 10, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BR9E1U5NL3G2L2R1BU3L4ND2L7ND1R1U2R2D2U4R2D4U2R5NU11R1ND2R1D2L1D3L3H2L4NU14L9D5NF1U2F1R3BD1ND1NF1BU1R3E1U3",
+          "pen_end": {"x": -3, "y": -6}
+        },
+        {
+          "cell": {"x": 166, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 207, "y": 22},
+          "ink_pixels": 146,
+          "filled_pixels": 185,
+          "bounds_rel_origin": {"min_x": -15, "min_y": -20, "max_x": 23, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BR17E6L13NG1R6G2L2NU16NE6NH3L14H1U2R5ND3R5NU2R2D2NF1U2R1U2L3NH1L6D2U4L2D4BD3BL1BH1NE5H1NU14L2NH4L9D3F3U1NF1BL1BH2BF1R2E1U3",
+          "pen_end": {"x": -11, "y": -6}
+        },
+        {
+          "cell": {"x": 249, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 290, "y": 22},
+          "ink_pixels": 174,
+          "filled_pixels": 224,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -20, "max_x": 31, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BR25E6L13R2G2L2NE8NU16NH8L19U3R1ND3R3U4L2D4R4U2R2ND2R5D2L2D2NF1U2L8BD3L8NU16NE8NH8H2L13D4NF2R1BD2U1BU1U4",
+          "pen_end": {"x": -22, "y": -6}
+        },
+        {
+          "cell": {"x": 332, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 373, "y": 22},
+          "ink_pixels": 185,
+          "filled_pixels": 219,
+          "bounds_rel_origin": {"min_x": -31, "min_y": -20, "max_x": 39, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BR33E6L15G2L2NU16NE8NH8L23U3R8U2R6D2L2D2NF1U2L8U4L2D4L2BD3L9NU16NE8NH8L2H2L15D4F2BL1U1",
+          "pen_end": {"x": -30, "y": -1}
+        },
+        {
+          "cell": {"x": 415, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 456, "y": 22},
+          "ink_pixels": 170,
+          "filled_pixels": 219,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -20, "max_x": 31, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BR25E6L13E6G8NU16NH8L19U3R4U4L2D4R4U2R7D2L2D2NF1NL2U2L1NU2L1D2NF1U2L5BD3L11H2R2F2NU16NE8H8F6L13D4F2BU6",
+          "pen_end": {"x": -21, "y": -6}
+        },
+        {
+          "cell": {"x": 498, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 539, "y": 22},
+          "ink_pixels": 145,
+          "filled_pixels": 168,
+          "bounds_rel_origin": {"min_x": -15, "min_y": -20, "max_x": 23, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BR17E6L9NE5L2NU14G1NH6G1BL2BU3R1U2L7ND2L2ND2R1NE2U2L2D4L2ND3R11D2NL7F1R1L9R1H1NU2BD1L5NU16NE1NH6L2H2NR5L5BD6H2U4R2",
+          "pen_end": {"x": -13, "y": -6}
+        },
+        {
+          "cell": {"x": 581, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 622, "y": 22},
+          "ink_pixels": 106,
+          "filled_pixels": 135,
+          "bounds_rel_origin": {"min_x": -9, "min_y": -20, "max_x": 12, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BR9NE1BR2E1U5L4D5G1BL4NH1BR4E1U5L3NU14L6G2L4H2D5NF1U5R4BU1R1U2R1ND2R1NU11R3U2L2D2R8D2L1ND1L8ND2L3D3",
+          "pen_end": {"x": -5, "y": -4}
+        },
+        {
+          "cell": {"x": 664, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 705, "y": 22},
+          "ink_pixels": 87,
+          "filled_pixels": 99,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -20, "max_x": 8, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL3NH1BL5U6R16D6BL5NE1BL3U20D14BL5U1BR10D1BL5BU3R7D2L14U2R7BU2R1D2BL2U2R2",
+          "pen_end": {"x": 1, "y": -11}
+        },
+        {
+          "cell": {"x": 747, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 788, "y": 22},
+          "ink_pixels": 106,
+          "filled_pixels": 135,
+          "bounds_rel_origin": {"min_x": -12, "min_y": -20, "max_x": 9, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL9NH1BL2H1U5R4D5F1BR4NE1BL4H1U5R3NU14R6F2R4E2D5NG1U5L4BU1L1U2L1ND2L1NU11L3U2R2D2L8D2R1ND1R8ND2R3D3",
+          "pen_end": {"x": 5, "y": -4}
+        },
+        {
+          "cell": {"x": 830, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 871, "y": 22},
+          "ink_pixels": 145,
+          "filled_pixels": 168,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -20, "max_x": 15, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL17H6R9NH5R2NU14F1NE6F1BR2BU3L1U2R7ND2R2ND2L1NH2U2R2D4R2ND3L11D2NR7G1L1R9L1E1NU2BD1R5NU16NH1NE6R2E2NL5R5BD6E2U4L2",
+          "pen_end": {"x": 13, "y": -6}
+        },
+        {
+          "cell": {"x": 913, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 954, "y": 22},
+          "ink_pixels": 170,
+          "filled_pixels": 219,
+          "bounds_rel_origin": {"min_x": -31, "min_y": -20, "max_x": 23, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL25H6R13H6F8NU16NE8R19U3L4U4R2D4L4U2L7D2R2D2NG1NR2U2R1NU2R1D2NG1U2R5BD3R11E2L2G2NU16NH8E8G6R13D4G2BU6",
+          "pen_end": {"x": 21, "y": -6}
+        },
+        {
+          "cell": {"x": 996, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 1037, "y": 22},
+          "ink_pixels": 185,
+          "filled_pixels": 219,
+          "bounds_rel_origin": {"min_x": -39, "min_y": -20, "max_x": 31, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL33H6R15F2R2NU16NH8NE8R23U3L8U2L6D2R2D2NG1U2R8U4R2D4R2BD3R9NU16NH8NE8R2E2R15D4G2BR1U1",
+          "pen_end": {"x": 30, "y": -1}
+        },
+        {
+          "cell": {"x": 1079, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 1120, "y": 22},
+          "ink_pixels": 174,
+          "filled_pixels": 224,
+          "bounds_rel_origin": {"min_x": -31, "min_y": -20, "max_x": 23, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL25H6R13L2F2R2NH8NU16NE8R19U3L1ND3L3U4R2D4L4U2L2ND2L5D2R2D2NG1U2R8BD3R8NU16NH8NE8E2R13D4NG2L1BD2U1BU1U4",
+          "pen_end": {"x": 22, "y": -6}
+        },
+        {
+          "cell": {"x": 1162, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 1203, "y": 22},
+          "ink_pixels": 146,
+          "filled_pixels": 185,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -20, "max_x": 15, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL17H6R13NF1L6F2R2NU16NH6NE3R14E1U2L5ND3L5NU2L2D2NG1U2L1U2R3NE1R6D2U4R2D4BD3BR1BE1NH5E1NU14R2NE4R9D3G3U1NG1BR1BE2BG1L2H1U3",
+          "pen_end": {"x": 11, "y": -6}
+        },
+        {
+          "cell": {"x": 1245, "y": 0, "w": 83, "h": 25},
+          "origin": {"x": 1286, "y": 22},
+          "ink_pixels": 109,
+          "filled_pixels": 145,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -20, "max_x": 11, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BL9H1U5NR3F2R2L1BU3R4ND2R7ND1L1U2L2D2U4L2D4U2L5NU11L1ND2L1D2R1D3R3E2R4NU14R9D5NG1U2G1L3BD1ND1NG1BU1L3H1U3",
+          "pen_end": {"x": 3, "y": -6}
+        }
+      ]
+    },
+    {
+      "id": "obx4_freighter",
+      "source": "OBX4",
+      "object_type": 4,
+      "object_name": "freighter",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx4_freighter.png",
+      "image_silhouette": "obx4_freighter_silhouette.png",
+      "cell_size": {"w": 83, "h": 30},
+      "origin_in_cell": {"x": 41, "y": 27},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 41, "y": 27},
+          "ink_pixels": 105,
+          "filled_pixels": 172,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -25, "max_x": 8, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0NU1BU12NU13R1D2R6D2L2ND2L4NU3L2NU3L4ND2L2U2R6U2R2L1BD6R6D3G1L10H1U3NR6L2D6BR1NE1BR14NH1BR1U6L3",
+          "pen_end": {"x": 5, "y": -6}
+        },
+        {
+          "cell": {"x": 83, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 124, "y": 27},
+          "ink_pixels": 108,
+          "filled_pixels": 152,
+          "bounds_rel_origin": {"min_x": -11, "min_y": -24, "max_x": 10, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BR9E1U5NL8G2L3H2NU18L14D5NF1U2F1R3BD1ND1NF1BU1R3E1U3BR4U2L3ND2L8ND2R1U2R2D2U4R2D4U2R6ND2R1D2L2",
+          "pen_end": {"x": 0, "y": -8}
+        },
+        {
+          "cell": {"x": 166, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 207, "y": 27},
+          "ink_pixels": 146,
+          "filled_pixels": 198,
+          "bounds_rel_origin": {"min_x": -17, "min_y": -24, "max_x": 23, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BR17E6L16NG2R6G2L5NU20NE12NH12L5H2L16D3F3U1NF1BL1BH2BF1R2E1U3BL2U2R5ND2R5NU2R2ND2R1U2L9D2U4L2D4",
+          "pen_end": {"x": -13, "y": -8}
+        },
+        {
+          "cell": {"x": 249, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 290, "y": 27},
+          "ink_pixels": 156,
+          "filled_pixels": 176,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -24, "max_x": 31, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BR25E6L18R2G2L2NE2L2NU20NE12NH12L14H2L16D4F2H1ND1H1R1U4BR1U2R1ND2R3U4L2D4R4U2R2ND2R5D2L2ND2L5",
+          "pen_end": {"x": -15, "y": -8}
+        },
+        {
+          "cell": {"x": 332, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 373, "y": 27},
+          "ink_pixels": 163,
+          "filled_pixels": 182,
+          "bounds_rel_origin": {"min_x": -31, "min_y": -24, "max_x": 39, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BR33E6L20G2L6NU20NE12NH12L20H2L16U2R8U2R6D2L2ND2L8U4L2D4L2D2L4D4F2H1D1",
+          "pen_end": {"x": -30, "y": 0}
+        },
+        {
+          "cell": {"x": 415, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 456, "y": 27},
+          "ink_pixels": 151,
+          "filled_pixels": 169,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -24, "max_x": 31, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BR25E6L16G2L4NU20NE12NH12L16H2R2NF2L16D4F2BU6U2R4U4L2D4R4U2R7D2L2ND2L1NU2L1ND2L5",
+          "pen_end": {"x": -17, "y": -8}
+        },
+        {
+          "cell": {"x": 498, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 539, "y": 27},
+          "ink_pixels": 139,
+          "filled_pixels": 162,
+          "bounds_rel_origin": {"min_x": -17, "min_y": -24, "max_x": 23, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BR17E6L13G2L2NU20NE12NH12L11H2L2R7NF2L2U2R1U2L9D2R2NU2R6L5D2L6BD6H2U4R2U2R4L2U4R2D2",
+          "pen_end": {"x": -11, "y": -10}
+        },
+        {
+          "cell": {"x": 581, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 622, "y": 27},
+          "ink_pixels": 104,
+          "filled_pixels": 142,
+          "bounds_rel_origin": {"min_x": -11, "min_y": -24, "max_x": 10, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BR7NE1BR2E1U5L4D5G1BL4NH1BR4E1U5L3NU18L7G2L3H2D5NF1U5R1BU2R1U2R1ND2R3U2L2D2R9D2L1ND2L8ND2L3D2R8",
+          "pen_end": {"x": -2, "y": -6}
+        },
+        {
+          "cell": {"x": 664, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 705, "y": 27},
+          "ink_pixels": 93,
+          "filled_pixels": 113,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -24, "max_x": 8, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL3NH1BL5U6R16D6BL5NE1BL3U24D18BL5U2BR10D2BL5BU4R7D2L14U2R7BU2R1D2BL2U2R2",
+          "pen_end": {"x": 1, "y": -12}
+        },
+        {
+          "cell": {"x": 747, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 788, "y": 27},
+          "ink_pixels": 104,
+          "filled_pixels": 142,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -24, "max_x": 11, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL7NH1BL2H1U5R4D5F1BR4NE1BL4H1U5R3NU18R7F2R3E2D5NG1U5L1BU2L1U2L1ND2L3U2R2D2L9D2R1ND2R8ND2R3D2L8",
+          "pen_end": {"x": 2, "y": -6}
+        },
+        {
+          "cell": {"x": 830, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 871, "y": 27},
+          "ink_pixels": 139,
+          "filled_pixels": 162,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -24, "max_x": 17, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL17H6R13F2R2NU20NH12NE12R11E2R2L7NG2R2U2L1U2R9D2L2NU2L6R5D2R6BD6E2U4L2U2L4R2U4L2D2",
+          "pen_end": {"x": 11, "y": -10}
+        },
+        {
+          "cell": {"x": 913, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 954, "y": 27},
+          "ink_pixels": 151,
+          "filled_pixels": 169,
+          "bounds_rel_origin": {"min_x": -31, "min_y": -24, "max_x": 23, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL25H6R16F2R4NU20NH12NE12R16E2L2NG2R16D4G2BU6U2L4U4R2D4L4U2L7D2R2ND2R1NU2R1ND2R5",
+          "pen_end": {"x": 17, "y": -8}
+        },
+        {
+          "cell": {"x": 996, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 1037, "y": 27},
+          "ink_pixels": 163,
+          "filled_pixels": 182,
+          "bounds_rel_origin": {"min_x": -39, "min_y": -24, "max_x": 31, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL33H6R20F2R6NU20NH12NE12R20E2R16U2L8U2L6D2R2ND2R8U4R2D4R2D2R4D4G2E1D1",
+          "pen_end": {"x": 30, "y": 0}
+        },
+        {
+          "cell": {"x": 1079, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 1120, "y": 27},
+          "ink_pixels": 156,
+          "filled_pixels": 176,
+          "bounds_rel_origin": {"min_x": -31, "min_y": -24, "max_x": 23, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL25H6R18L2F2R2NH2R2NU20NH12NE12R14E2R16D4NG2L1BD2U1BU1U4BL1U2L1ND2L3U4R2D4L4U2L2ND2L5D2R2ND2R5",
+          "pen_end": {"x": 15, "y": -8}
+        },
+        {
+          "cell": {"x": 1162, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 1203, "y": 27},
+          "ink_pixels": 146,
+          "filled_pixels": 198,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -24, "max_x": 17, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL17H6R16NF2L6F2R5NU20NH12NE12R5E2R16D3G3U1NG1BR1BE2BG1L2H1U3BR2U2L5ND2L5NU2L2ND2L1U2R9D2U4R2D4",
+          "pen_end": {"x": 13, "y": -8}
+        },
+        {
+          "cell": {"x": 1245, "y": 0, "w": 83, "h": 30},
+          "origin": {"x": 1286, "y": 27},
+          "ink_pixels": 108,
+          "filled_pixels": 152,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -24, "max_x": 11, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BL9H1U5NR8F2R3E2NU18R14D5NG1U2G1L3BD1ND1NG1BU1L3H1U3BL4U2R3ND2R8ND2L1U2L2D2U4L2D4U2L6ND2L1D2R2",
+          "pen_end": {"x": 0, "y": -8}
+        }
+      ]
+    },
+    {
+      "id": "obx5_tanker",
+      "source": "OBX5",
+      "object_type": 5,
+      "object_name": "tanker",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx5_tanker.png",
+      "image_silhouette": "obx5_tanker_silhouette.png",
+      "cell_size": {"w": 77, "h": 13},
+      "origin_in_cell": {"x": 38, "y": 10},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 38, "y": 10},
+          "ink_pixels": 80,
+          "filled_pixels": 101,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -8, "max_x": 8, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0NU1BL5NEBL3U4NR3NFBDR4NR10DFR6EUR4UNL3NGBDD3BL3NHBU3U2L10ND2BR2U2R6ND2BL2UL2DNR5L3ND2ULD2DBR9U3RD3",
+          "pen_end": {"x": 5, "y": -5}
+        },
+        {
+          "cell": {"x": 77, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 115, "y": 10},
+          "ink_pixels": 89,
+          "filled_pixels": 107,
+          "bounds_rel_origin": {"min_x": -7, "min_y": -8, "max_x": 12, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BR11E1U3NGL2BLL4BLGBR8L18D1FNFR3E1UBL4U2R5ND2R2ND2BLU2L2ND2L3ND2BRUR2DBR2RD2D2U2U2URD2D2DBR8U5LDND4L4ND4ULD5",
+          "pen_end": {"x": 4, "y": -3}
+        },
+        {
+          "cell": {"x": 154, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 192, "y": 10},
+          "ink_pixels": 113,
+          "filled_pixels": 132,
+          "bounds_rel_origin": {"min_x": -16, "min_y": -8, "max_x": 21, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BR18E3U1L13BLL2NGBR6G1L10L16DFNFR2E1UBLU2R3ND2R6ND2BL3U2L3ND2L2ND2BRHR2FBR2URDND2R3D2D2U2U2URD2D2DBR14BUU4LDND3L3ND4ULND5",
+          "pen_end": {"x": 7, "y": -8}
+        },
+        {
+          "cell": {"x": 231, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 269, "y": 10},
+          "ink_pixels": 128,
+          "filled_pixels": 147,
+          "bounds_rel_origin": {"min_x": -22, "min_y": -8, "max_x": 29, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BR26E3UL18R2GL2NEL32D2NFR1U2BR1U2R2ND2R10ND2BL3U2L7ND2L1ND2BR2HR2FBR5ND2URDND2R2D2D2U2U2URD2D2DBR21BUU4RDND3R2ND3URND4",
+          "pen_end": {"x": 19, "y": -8}
+        },
+        {
+          "cell": {"x": 308, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 346, "y": 10},
+          "ink_pixels": 128,
+          "filled_pixels": 148,
+          "bounds_rel_origin": {"min_x": -35, "min_y": -8, "max_x": 36, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BR33E3UL26GL24L20D2FBU3BR3U2R14ND2BL4U2L8ND2BRHR2FBR13BD1BD3U5RD5BR32BUU4RD4",
+          "pen_end": {"x": 21, "y": -4}
+        },
+        {
+          "cell": {"x": 385, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 423, "y": 10},
+          "ink_pixels": 127,
+          "filled_pixels": 143,
+          "bounds_rel_origin": {"min_x": -24, "min_y": -8, "max_x": 29, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BR26E3U1L16G1L20L16D2FBU3BRU2R9ND2RBRRND2BL3U2L1ND2L6ND2BRHR2FBD2BD2BR5U5RDND4R2ND4URD5BR23BUU4RDND3R2ND3URD4",
+          "pen_end": {"x": 19, "y": -4}
+        },
+        {
+          "cell": {"x": 462, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 500, "y": 10},
+          "ink_pixels": 108,
+          "filled_pixels": 122,
+          "bounds_rel_origin": {"min_x": -15, "min_y": -8, "max_x": 20, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BR17E3U1L13GL13L8D2FBU3BRU2R6ND2RBRR2ND2BLU2LBLLND2L4ND2BRUR2DBR2D2D2U2U2URDND4R3ND4URD2D3BR6U5RDND4R3ND3URD4",
+          "pen_end": {"x": 10, "y": -4}
+        },
+        {
+          "cell": {"x": 539, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 577, "y": 10},
+          "ink_pixels": 89,
+          "filled_pixels": 110,
+          "bounds_rel_origin": {"min_x": -11, "min_y": -8, "max_x": 10, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BR7NE1BR2E1U3L4D3G1BL4NH1BR4E1U3L11G1L5D2FBU3BRU2R3BR1R4ND1BL2U2L2BL1L2ND2BRURND5RDND3R4ND3URD1D3BR1U4RDND3R5ND3URD4",
+          "pen_end": {"x": 8, "y": -4}
+        },
+        {
+          "cell": {"x": 616, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 654, "y": 10},
+          "ink_pixels": 68,
+          "filled_pixels": 73,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -8, "max_x": 8, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL3NH1BL5U4R16D4BL5NE1BL3U4BL4BU1R8L1U2L6ND2BR2UR2DNR3L5ND3ULDDDDBR9UUUURDDDD",
+          "pen_end": {"x": 5, "y": -4}
+        },
+        {
+          "cell": {"x": 693, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 731, "y": 10},
+          "ink_pixels": 89,
+          "filled_pixels": 110,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -8, "max_x": 11, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL7NH1BL2H1U3R4D3F1BR4NE1BL4H1U3R11F1R5D2GBU3BLU2L3BL1L4ND1BR2U2R2BR1R2ND2BLULND5LDND3L4ND3ULD1D3BL1U4LDND3L5ND3ULD4",
+          "pen_end": {"x": -8, "y": -4}
+        },
+        {
+          "cell": {"x": 770, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 808, "y": 10},
+          "ink_pixels": 108,
+          "filled_pixels": 122,
+          "bounds_rel_origin": {"min_x": -20, "min_y": -8, "max_x": 15, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL17H3U1R13FR13R8D2GBU3BLU2L6ND2LBLL2ND2BRU2RBRRND2R4ND2BLUL2DBL2D2D2U2U2ULDND4L3ND4ULD2D3BL6U5LDND4L3ND3ULD4",
+          "pen_end": {"x": -10, "y": -4}
+        },
+        {
+          "cell": {"x": 847, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 885, "y": 10},
+          "ink_pixels": 127,
+          "filled_pixels": 143,
+          "bounds_rel_origin": {"min_x": -29, "min_y": -8, "max_x": 24, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL26H3U1R16F1R20R16D2GBU3BLU2L9ND2LBLLND2BR3U2R1ND2R6ND2BLEL2GBD2BD2BL5U5LDND4L2ND4ULD5BL23BUU4LDND3L2ND3ULD4",
+          "pen_end": {"x": -19, "y": -4}
+        },
+        {
+          "cell": {"x": 924, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 962, "y": 10},
+          "ink_pixels": 128,
+          "filled_pixels": 148,
+          "bounds_rel_origin": {"min_x": -36, "min_y": -8, "max_x": 35, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL33H3UR26FR24R20D2GBU3BL3U2L14ND2BR4U2R8ND2BLEL2GBL13BD1BD3U5LD5BL32BUU4LD4",
+          "pen_end": {"x": -21, "y": -4}
+        },
+        {
+          "cell": {"x": 1001, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 1039, "y": 10},
+          "ink_pixels": 128,
+          "filled_pixels": 147,
+          "bounds_rel_origin": {"min_x": -29, "min_y": -8, "max_x": 22, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL26H3UR18L2FR2NHR32D2NGL1U2BL1U2L2ND2L10ND2BR3U2R7ND2R1ND2BL2EL2GBL5ND2ULDND2L2D2D2U2U2ULD2D2DBL21BUU4LDND3L2ND3ULND4",
+          "pen_end": {"x": -19, "y": -8}
+        },
+        {
+          "cell": {"x": 1078, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 1116, "y": 10},
+          "ink_pixels": 113,
+          "filled_pixels": 132,
+          "bounds_rel_origin": {"min_x": -21, "min_y": -8, "max_x": 16, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL18H3U1R13BRR2NFBL6F1R10R16DGNGL2H1UBRU2L3ND2L6ND2BR3U2R3ND2R2ND2BLEL2GBL2ULDND2L3D2D2U2U2ULD2D2DBL14BUU4RDND3R3ND4URND5",
+          "pen_end": {"x": -7, "y": -8}
+        },
+        {
+          "cell": {"x": 1155, "y": 0, "w": 77, "h": 13},
+          "origin": {"x": 1193, "y": 10},
+          "ink_pixels": 89,
+          "filled_pixels": 107,
+          "bounds_rel_origin": {"min_x": -12, "min_y": -8, "max_x": 7, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BL11H1U3NFR2BRR4BRFBL8R18D1GNGL3H1UBR4U2L5ND2L2ND2BRU2R2ND2R3ND2BLUL2DBL2LD2D2U2U2ULD2D2DBL8U5RDND4R4ND4URD5",
+          "pen_end": {"x": -4, "y": -3}
+        }
+      ]
+    },
+    {
+      "id": "obx6_troop_carrier",
+      "source": "OBX6",
+      "object_type": 6,
+      "object_name": "troop_carrier",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx6_troop_carrier.png",
+      "image_silhouette": "obx6_troop_carrier_silhouette.png",
+      "cell_size": {"w": 81, "h": 15},
+      "origin_in_cell": {"x": 40, "y": 12},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 40, "y": 12},
+          "ink_pixels": 75,
+          "filled_pixels": 101,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -10, "max_x": 8, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0NUBL7NEBLU5R3NR12D2FR8EU2R3D5BLNHBU5BLU1L12NDBR2U2R8ND2BL3U2L2D2",
+          "pen_end": {"x": -1, "y": -8}
+        },
+        {
+          "cell": {"x": 81, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 121, "y": 12},
+          "ink_pixels": 89,
+          "filled_pixels": 120,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -10, "max_x": 11, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BL6UFBR15E1U4NL2G1L6H1L13D4NF1U2F1R6E1U2BL5U1R6ND1R10D2BU2BL3U2L8ND2L4ND2R3U2R2ND2BR1ND2R2D2",
+          "pen_end": {"x": 2, "y": -8}
+        },
+        {
+          "cell": {"x": 162, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 202, "y": 12},
+          "ink_pixels": 122,
+          "filled_pixels": 171,
+          "bounds_rel_origin": {"min_x": -18, "min_y": -10, "max_x": 22, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BR17E5L7G1L18H1L13D2F3U1NF1BL1BH2BF1R2E1U2BR3U1R4ND1R22ND1BL3U2L19ND2L3ND2BR6U2R3ND2BR2ND2R3D2",
+          "pen_end": {"x": 4, "y": -8}
+        },
+        {
+          "cell": {"x": 243, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 283, "y": 12},
+          "ink_pixels": 154,
+          "filled_pixels": 214,
+          "bounds_rel_origin": {"min_x": -24, "min_y": -10, "max_x": 30, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BR25E5L13G1L26H1L13D3NF2R1BD2U1BU1U3BR5U1R1ND1R36ND1BL4U2L30ND2L1ND2BR10U2R3ND2BR3ND2R3D2",
+          "pen_end": {"x": 3, "y": -8}
+        },
+        {
+          "cell": {"x": 324, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 364, "y": 12},
+          "ink_pixels": 178,
+          "filled_pixels": 252,
+          "bounds_rel_origin": {"min_x": -32, "min_y": -10, "max_x": 38, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BR33E5L15G1L38H1L15D3F2H1D1BR9BU5UR48NDBL8U2L32ND2BR8U2R3ND2BR6ND2R3D2",
+          "pen_end": {"x": 6, "y": -8}
+        },
+        {
+          "cell": {"x": 405, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 445, "y": 12},
+          "ink_pixels": 155,
+          "filled_pixels": 215,
+          "bounds_rel_origin": {"min_x": -28, "min_y": -10, "max_x": 30, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BR25E5L16G1L27H1L13D3F2BU5BR6UR36NDR3NDBL4U2L2ND2L28ND2BR10U2R3ND2BR3ND2R3D2",
+          "pen_end": {"x": 4, "y": -8}
+        },
+        {
+          "cell": {"x": 486, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 526, "y": 12},
+          "ink_pixels": 125,
+          "filled_pixels": 168,
+          "bounds_rel_origin": {"min_x": -22, "min_y": -10, "max_x": 22, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BR17E5L15G1L16H1L11D3F2BU5BR4U1R24ND1R5ND1BL3U2L3ND2L21ND2BR6U2R3ND2BR2ND2R3D2",
+          "pen_end": {"x": 0, "y": -8}
+        },
+        {
+          "cell": {"x": 567, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 607, "y": 12},
+          "ink_pixels": 87,
+          "filled_pixels": 116,
+          "bounds_rel_origin": {"min_x": -11, "min_y": -10, "max_x": 10, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BR7NE1BR2E1U4L4D4G1BL4NH1BR4E1U4L9G1L6H1D4NF1U4R2NDU1R9ND1R7ND1BL2U2L4ND2L9ND2BR3U2R2ND2BR1ND2R2D2",
+          "pen_end": {"x": 0, "y": -8}
+        },
+        {
+          "cell": {"x": 648, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 688, "y": 12},
+          "ink_pixels": 65,
+          "filled_pixels": 73,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -10, "max_x": 8, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL3NH1BL5U5R16D5BL5NE1BL3U5BL6U1R12D1BL6BU3R4D2BL8U2R4BU2R1D2BL2U2R2",
+          "pen_end": {"x": 1, "y": -10}
+        },
+        {
+          "cell": {"x": 729, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 769, "y": 12},
+          "ink_pixels": 87,
+          "filled_pixels": 116,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -10, "max_x": 11, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL7NH1BL2H1U4R4D4F1BR4NE1BL4H1U4R9F1R6E1D4NG1U4L2NDU1L9ND1L7ND1BR2U2R4ND2R9ND2BL3U2L2ND2BL1ND2L2D2",
+          "pen_end": {"x": 0, "y": -8}
+        },
+        {
+          "cell": {"x": 810, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 850, "y": 12},
+          "ink_pixels": 125,
+          "filled_pixels": 168,
+          "bounds_rel_origin": {"min_x": -22, "min_y": -10, "max_x": 22, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL17H5R15F1R16E1R11D3G2BU5BL4U1L24ND1L5ND1BR3U2R3ND2R21ND2BL6U2L3ND2BL2ND2L3D2",
+          "pen_end": {"x": 0, "y": -8}
+        },
+        {
+          "cell": {"x": 891, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 931, "y": 12},
+          "ink_pixels": 155,
+          "filled_pixels": 215,
+          "bounds_rel_origin": {"min_x": -30, "min_y": -10, "max_x": 28, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL25H5R16F1R27E1R13D3G2BU5BL6UL36NDL3NDBR4U2R2ND2R28ND2BL10U2L3ND2BL3ND2L3D2",
+          "pen_end": {"x": -4, "y": -8}
+        },
+        {
+          "cell": {"x": 972, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 1012, "y": 12},
+          "ink_pixels": 178,
+          "filled_pixels": 252,
+          "bounds_rel_origin": {"min_x": -38, "min_y": -10, "max_x": 32, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL33H5R15F1R38E1R15D3G2E1D1BL9BU5UL48NDBR8U2R32ND2BL8U2L3ND2BL6ND2L3D2",
+          "pen_end": {"x": -6, "y": -8}
+        },
+        {
+          "cell": {"x": 1053, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 1093, "y": 12},
+          "ink_pixels": 154,
+          "filled_pixels": 214,
+          "bounds_rel_origin": {"min_x": -30, "min_y": -10, "max_x": 24, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL25H5R13F1R26E1R13D3NG2L1BD2U1BU1U3BL5U1L1ND1L36ND1BR4U2R30ND2R1ND2BL10U2L3ND2BL3ND2L3D2",
+          "pen_end": {"x": -3, "y": -8}
+        },
+        {
+          "cell": {"x": 1134, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 1174, "y": 12},
+          "ink_pixels": 122,
+          "filled_pixels": 171,
+          "bounds_rel_origin": {"min_x": -22, "min_y": -10, "max_x": 18, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL17H5R7F1R18E1R13D2G3U1NG1BR1BE2BG1L2H1U2BL3U1L4ND1L22ND1BR3U2R19ND2R3ND2BL6U2L3ND2BL2ND2L3D2",
+          "pen_end": {"x": -4, "y": -8}
+        },
+        {
+          "cell": {"x": 1215, "y": 0, "w": 81, "h": 15},
+          "origin": {"x": 1255, "y": 12},
+          "ink_pixels": 89,
+          "filled_pixels": 120,
+          "bounds_rel_origin": {"min_x": -11, "min_y": -10, "max_x": 10, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BR6UGBL15H1U4NR2F1R6E1R13D4NG1U2G1L6H1U2BR5U1L6ND1L10D2BU2BR3U2R8ND2R4ND2L3U2L2ND2BL1ND2L2D2",
+          "pen_end": {"x": -2, "y": -8}
+        }
+      ]
+    },
+    {
+      "id": "obx7_patrol_boat",
+      "source": "OBX7",
+      "object_type": 7,
+      "object_name": "patrol_boat",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx7_patrol_boat.png",
+      "image_silhouette": "obx7_patrol_boat_silhouette.png",
+      "cell_size": {"w": 93, "h": 17},
+      "origin_in_cell": {"x": 46, "y": 14},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 46, "y": 14},
+          "ink_pixels": 104,
+          "filled_pixels": 150,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -11, "max_x": 11, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0BL8NU4BL2U6NR2D2R4EUHLGDFR15EUHLGDFR2ND4R2D4U6NL2D2L10UUUUUUULDRDRU2L2DDDDDDDUUUUULUURD3L7DU3R6BR3R6D3UL7",
+          "pen_end": {"x": 1, "y": -8}
+        },
+        {
+          "cell": {"x": 93, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 139, "y": 14},
+          "ink_pixels": 161,
+          "filled_pixels": 239,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -12, "max_x": 23, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BR21E2U4L10NG2R4H4L4ND2L11D2L3NDR14L4D4R6L19ND4L6NU5L9ND4R6EUHLGDFHUER8FDGR4EUHLGDFHUER9FDGBHBL7BU2U4R2ND2RD2LHLDRUL2ND3L3NULUR2NUR3",
+          "pen_end": {"x": -6, "y": -11}
+        },
+        {
+          "cell": {"x": 186, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 232, "y": 14},
+          "ink_pixels": 186,
+          "filled_pixels": 295,
+          "bounds_rel_origin": {"min_x": -34, "min_y": -12, "max_x": 28, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BR22E6L16NG2R4H4L4ND2L9D2R9L6DDDDUUUUL10DBD3NR18L26D4BR11U4L4NH5L5HUEFDGEUHR10FDGHUER19FDGBHBL6BU2U4R2ND2RD2L2HRFLHLND3L3NU2LUR5",
+          "pen_end": {"x": -10, "y": -11}
+        },
+        {
+          "cell": {"x": 279, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 325, "y": 14},
+          "ink_pixels": 203,
+          "filled_pixels": 332,
+          "bounds_rel_origin": {"min_x": -40, "min_y": -12, "max_x": 36, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BR30E6L26NG2R10H4L9ND2L6D2R6L7ND4L6D4NR14L34D4BR6U4LNH5L3HUEFDGEUHR5FDGHUER25FDGBHBL7BU2U4R2ND2RD2LHL2ND3L4NU2LUR6",
+          "pen_end": {"x": -16, "y": -11}
+        },
+        {
+          "cell": {"x": 372, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 418, "y": 14},
+          "ink_pixels": 182,
+          "filled_pixels": 294,
+          "bounds_rel_origin": {"min_x": -44, "min_y": -12, "max_x": 39, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BR33E6L32NG2R12H4L10D2L8D4NR8L38ND4BR2NH5RU3R27FDGBL8BU3U4R2ND2RD2LHL2ND3L5URNUR5",
+          "pen_end": {"x": -19, "y": -11}
+        },
+        {
+          "cell": {"x": 465, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 511, "y": 14},
+          "ink_pixels": 190,
+          "filled_pixels": 313,
+          "bounds_rel_origin": {"min_x": -44, "min_y": -12, "max_x": 36, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BR30E6L34G2L6U4R7U2R10NF4R5F4L18G2L42ND4R3NH5U3R25FDGBR5EUHL8U4R2ND2RD2LHL2ND3L4URNUR4",
+          "pen_end": {"x": -17, "y": -11}
+        },
+        {
+          "cell": {"x": 558, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 604, "y": 14},
+          "ink_pixels": 163,
+          "filled_pixels": 267,
+          "bounds_rel_origin": {"min_x": -36, "min_y": -12, "max_x": 28, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BR22E6L31G2L3U4R6U2R6NF4R9F4L20G2L30ND4R2U2NH3U1R19F1D1G1R1U3NR5U4R1ND2R1ND2R1D2L2H1L1ND3L3U1R1NU1R3",
+          "pen_end": {"x": -13, "y": -11}
+        },
+        {
+          "cell": {"x": 651, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 697, "y": 14},
+          "ink_pixels": 134,
+          "filled_pixels": 200,
+          "bounds_rel_origin": {"min_x": -22, "min_y": -12, "max_x": 20, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BR10NH2BR4NE2BR4E2U4L4ND4L22GU3R3U2R3NF4R11F4BL20G2L14ND4R2HUER4NU2R6FDGLHUER2DDDRUUUNRU4RND2RNDRD2HLDHLND4L2URNUR2",
+          "pen_end": {"x": -8, "y": -11}
+        },
+        {
+          "cell": {"x": 744, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 790, "y": 14},
+          "ink_pixels": 68,
+          "filled_pixels": 107,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -12, "max_x": 10, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL2NHBL8U6R20D6BL8NEBL2U6BL8EDU4R8ULNULDR8D4RH",
+          "pen_end": {"x": 7, "y": -7}
+        },
+        {
+          "cell": {"x": 837, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 883, "y": 14},
+          "ink_pixels": 134,
+          "filled_pixels": 200,
+          "bounds_rel_origin": {"min_x": -20, "min_y": -12, "max_x": 22, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL10NE2BL4NH2BL4H2U4R4ND4R22FU3L3U2L3NG4L11G4BR20F2R14ND4L2EUHL4NU2L6GDFREUHL2DDDLUUUNLU4LND2LNDLD2ERDERND4R2ULNUL2",
+          "pen_end": {"x": 8, "y": -11}
+        },
+        {
+          "cell": {"x": 930, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 976, "y": 14},
+          "ink_pixels": 163,
+          "filled_pixels": 267,
+          "bounds_rel_origin": {"min_x": -28, "min_y": -12, "max_x": 36, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL22H6R31F2R3U4L6U2L6NG4L9G4R20F2R30ND4L2U2NE3U1L19G1D1F1L1U3NL5U4L1ND2L1ND2L1D2R2E1R1ND3R3U1L1NU1L3",
+          "pen_end": {"x": 13, "y": -11}
+        },
+        {
+          "cell": {"x": 1023, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 1069, "y": 14},
+          "ink_pixels": 190,
+          "filled_pixels": 313,
+          "bounds_rel_origin": {"min_x": -36, "min_y": -12, "max_x": 44, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL30H6R34F2R6U4L7U2L10NG4L5G4R18F2R42ND4L3NE5U3L25GDFBL5HUER8U4L2ND2LD2RER2ND3R4ULNUL4",
+          "pen_end": {"x": 17, "y": -11}
+        },
+        {
+          "cell": {"x": 1116, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 1162, "y": 14},
+          "ink_pixels": 182,
+          "filled_pixels": 294,
+          "bounds_rel_origin": {"min_x": -39, "min_y": -12, "max_x": 44, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL33H6R32NF2L12E4R10D2R8D4NL8R38ND4BL2NE5LU3L27GDFBR8BU3U4L2ND2LD2RER2ND3R5ULNUL5",
+          "pen_end": {"x": 19, "y": -11}
+        },
+        {
+          "cell": {"x": 1209, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 1255, "y": 14},
+          "ink_pixels": 203,
+          "filled_pixels": 332,
+          "bounds_rel_origin": {"min_x": -36, "min_y": -12, "max_x": 40, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL30H6R26NF2L10E4R9ND2R6D2L6R7ND4R6D4NL14R34D4BL6U4RNE5R3EUHGDFHUEL5GDFEUHL25GDFBEBR7BU2U4L2ND2LD2RER2ND3R4NU2RUL6",
+          "pen_end": {"x": 16, "y": -11}
+        },
+        {
+          "cell": {"x": 1302, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 1348, "y": 14},
+          "ink_pixels": 186,
+          "filled_pixels": 295,
+          "bounds_rel_origin": {"min_x": -28, "min_y": -12, "max_x": 34, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL22H6R16NF2L4E4R4ND2R9D2L9R6DDDDUUUUR10DBD3NL18R26D4BL11U4R4NE5R5EUHGDFHUEL10GDFEUHL19GDFBEBR6BU2U4L2ND2LD2R2ELGRERND3R3NU2RUL5",
+          "pen_end": {"x": 10, "y": -11}
+        },
+        {
+          "cell": {"x": 1395, "y": 0, "w": 93, "h": 17},
+          "origin": {"x": 1441, "y": 14},
+          "ink_pixels": 161,
+          "filled_pixels": 239,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -12, "max_x": 23, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BL21H2U4R10NF2L4E4R4ND2R11D2R3NDL14R4D4L6R19ND4R6NU5R9ND4L6HUERFDGEUHL8GDFL4HUERFDGEUHL9GDFBEBR7BU2U4L2ND2LD2RERDLUR2ND3R3NURUL2NUL3",
+          "pen_end": {"x": 6, "y": -11}
+        }
+      ]
+    },
+    {
+      "id": "obx8_destroyer",
+      "source": "OBX8",
+      "object_type": 8,
+      "object_name": "destroyer",
+      "kind": "view_angle_frames",
+      "frame_count": 16,
+      "image_outline": "obx8_destroyer.png",
+      "image_silhouette": "obx8_destroyer_silhouette.png",
+      "cell_size": {"w": 77, "h": 14},
+      "origin_in_cell": {"x": 38, "y": 11},
+      "origin_meaning": "pen start of every DRAW string = centre of the keel on the waterline; y grows downward, so the hull rises to negative y (OBX1 islands rise from y=0 the same way)",
+      "colour": "every string starts with C0 (background colour): the original draws a mask/outline that is then filled or used as a silhouette; the PNGs use white (outline) / black (silhouette)",
+      "frame_meaning": "inferred: 16 headings at 22.5 degree steps (frame 0/8 end-on, 4/12 broadside)",
+      "frames": [
+        {
+          "cell": {"x": 0, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 38, "y": 11},
+          "ink_pixels": 65,
+          "filled_pixels": 82,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -9, "max_x": 8, "max_y": 0},
+          "index": 0,
+          "draw_string": "C0BL8U2NR8URNDR4NDBR6NDR4NDRDNL8ND2BUBL3UL10NDBR4U5R2D5BR3U3L3BL2L3D3",
+          "pen_end": {"x": -4, "y": -4}
+        },
+        {
+          "cell": {"x": 77, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 115, "y": 11},
+          "ink_pixels": 84,
+          "filled_pixels": 93,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -9, "max_x": 10, "max_y": 0},
+          "index": 1,
+          "draw_string": "C0BR9E1U2NL4G1L11ND2L8ND2BR2UR3NDRNDR3NDR4NDBL5UR2NU3RU5R2D5NL2R2DDRUULBL2BU3BL2LBR3R3ND3RDND3RND3FRDLNUD1",
+          "pen_end": {"x": 9, "y": -3}
+        },
+        {
+          "cell": {"x": 154, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 192, "y": 11},
+          "ink_pixels": 108,
+          "filled_pixels": 130,
+          "bounds_rel_origin": {"min_x": -17, "min_y": -9, "max_x": 20, "max_y": 0},
+          "index": 2,
+          "draw_string": "C0BR17E3L13GL23ND2BR4ND2BL1UR2NDRNDR2NDR2R4NDBL2UR6DDUULU5R2D5NL2R4DDUUBL3U3R2ND3R2FDDDBRU3R2ND3RFR2DL2D",
+          "pen_end": {"x": 13, "y": -3}
+        },
+        {
+          "cell": {"x": 231, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 269, "y": 11},
+          "ink_pixels": 131,
+          "filled_pixels": 167,
+          "bounds_rel_origin": {"min_x": -23, "min_y": -9, "max_x": 28, "max_y": 0},
+          "index": 3,
+          "draw_string": "C0BR25E3L15G1L35ND2R1ND2BR5URNDRNDRNDR10DBRU2R4ND2R2U5R2D5NL2R5ND2BL3U3R2ND3R4F2D2BR2U3RND3R2FR3DL3NUD",
+          "pen_end": {"x": 21, "y": -3}
+        },
+        {
+          "cell": {"x": 308, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 346, "y": 11},
+          "ink_pixels": 147,
+          "filled_pixels": 196,
+          "bounds_rel_origin": {"min_x": -34, "min_y": -9, "max_x": 36, "max_y": 0},
+          "index": 4,
+          "draw_string": "C0BR33E3L25G1L44ND2BR8U1R14D1BR8U2R7U5R2D5NL5R3ND2U3R8F2D2BR2U3R3FR4DL4NU1D1BD1",
+          "pen_end": {"x": 24, "y": -2}
+        },
+        {
+          "cell": {"x": 385, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 423, "y": 11},
+          "ink_pixels": 131,
+          "filled_pixels": 169,
+          "bounds_rel_origin": {"min_x": -25, "min_y": -9, "max_x": 28, "max_y": 0},
+          "index": 5,
+          "draw_string": "C0BR25E3L15G1L24L13ND2BR6UR10NDRNDRNDRDBR2U2R6U5R2D5NL2R2ND2RND2U3R4NF2R2F2L2D2BR2NU2BRU3R2NFRFLND2R4DLNUL2NLD",
+          "pen_end": {"x": 20, "y": -3}
+        },
+        {
+          "cell": {"x": 462, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 500, "y": 11},
+          "ink_pixels": 111,
+          "filled_pixels": 140,
+          "bounds_rel_origin": {"min_x": -19, "min_y": -9, "max_x": 20, "max_y": 0},
+          "index": 6,
+          "draw_string": "C0BR17E3L11G1L20L7ND2BR3UR6NDR2NDRNDRNDUR7U5R2D5NRLNLDDBR2UUU3R2NF2R3F2L3DDDBR3BUU3RNR2FND2R2NHR2DLNULNDLNU",
+          "pen_end": {"x": 14, "y": -4}
+        },
+        {
+          "cell": {"x": 539, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 577, "y": 11},
+          "ink_pixels": 78,
+          "filled_pixels": 97,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -9, "max_x": 10, "max_y": 0},
+          "index": 7,
+          "draw_string": "C0BR7NE1BR2E1U2L4D2G1BL4NH1BR4E1U2L9G1L6ND2BR1UR2NDUR3DDUURNDU3RU2R2D2NL2R3NFBL4F2NRDDBRU3RNFR3FL3ND2R5DLNULNDLLNU",
+          "pen_end": {"x": 5, "y": -4}
+        },
+        {
+          "cell": {"x": 616, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 654, "y": 11},
+          "ink_pixels": 71,
+          "filled_pixels": 74,
+          "bounds_rel_origin": {"min_x": -8, "min_y": -9, "max_x": 8, "max_y": 0},
+          "index": 8,
+          "draw_string": "C0BL3NH1BL5U3R16D3BL5NE1BL3U3BR3U3L6D3BU2R2DR2UNL2R2BD2BR2ULNDU3L8D3NDLDBR4BU4U2R2D2",
+          "pen_end": {"x": 1, "y": -7}
+        },
+        {
+          "cell": {"x": 693, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 731, "y": 11},
+          "ink_pixels": 78,
+          "filled_pixels": 97,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -9, "max_x": 10, "max_y": 0},
+          "index": 9,
+          "draw_string": "C0BL7NH1BL2H1U2R4D2F1BR4NE1BL4H1U2R9F1R6ND2BL1UL2NDUL3DDUULNDU3LU2L2D2NR2L3NGBR4G2NLDDBLU3LNGL3GR3ND2L5DRNURNDRRNU",
+          "pen_end": {"x": -5, "y": -4}
+        },
+        {
+          "cell": {"x": 770, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 808, "y": 11},
+          "ink_pixels": 111,
+          "filled_pixels": 140,
+          "bounds_rel_origin": {"min_x": -20, "min_y": -9, "max_x": 19, "max_y": 0},
+          "index": 10,
+          "draw_string": "C0BL17H3R11F1R20R7ND2BL3UL6NDL2NDLNDLNDUL7U5L2D5NLRNRDDBL2UUU3L2NG2L3G2R3DDDBL3BUU3LNL2GND2L2NEL2DRNURNDRNU",
+          "pen_end": {"x": -14, "y": -4}
+        },
+        {
+          "cell": {"x": 847, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 885, "y": 11},
+          "ink_pixels": 131,
+          "filled_pixels": 169,
+          "bounds_rel_origin": {"min_x": -28, "min_y": -9, "max_x": 25, "max_y": 0},
+          "index": 11,
+          "draw_string": "C0BL25H3R15FR24R13ND2BL6UL10NDLNDLNDLDBL2U2L6U5L2D5NR2L2ND2LND2U3L4NG2L2G2R2D2BL2NU2BLU3L2NGLGRND2L4DRNUR2NRD",
+          "pen_end": {"x": -20, "y": -3}
+        },
+        {
+          "cell": {"x": 924, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 962, "y": 11},
+          "ink_pixels": 147,
+          "filled_pixels": 196,
+          "bounds_rel_origin": {"min_x": -36, "min_y": -9, "max_x": 34, "max_y": 0},
+          "index": 12,
+          "draw_string": "C0BL33H3R25F1R44ND2BL8U1L14D1BL8U2L7U5L2D5NR5L3ND2U3L8G2D2BL2U3L3GL4DR4NU1D1BD1",
+          "pen_end": {"x": -24, "y": -2}
+        },
+        {
+          "cell": {"x": 1001, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 1039, "y": 11},
+          "ink_pixels": 131,
+          "filled_pixels": 167,
+          "bounds_rel_origin": {"min_x": -28, "min_y": -9, "max_x": 23, "max_y": 0},
+          "index": 13,
+          "draw_string": "C0BL25H3R15F1R35ND2L1ND2BL5ULNDLNDLNDL10DBLU2L4ND2L2U5L2D5NR2L5ND2BR3U3L2ND3L4G2D2BL2U3LND3L2GL3DR3NUD",
+          "pen_end": {"x": -21, "y": -3}
+        },
+        {
+          "cell": {"x": 1078, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 1116, "y": 11},
+          "ink_pixels": 108,
+          "filled_pixels": 130,
+          "bounds_rel_origin": {"min_x": -20, "min_y": -9, "max_x": 17, "max_y": 0},
+          "index": 14,
+          "draw_string": "C0BL17H3R13FR23ND2BL4ND2BR1UL2NDLNDL2NDL2L4NDBR2UL6DDUURU5L2D5NR2L4DDUUBR3U3L2ND3L2GDDDBLU3L2ND3LGL2DR2D",
+          "pen_end": {"x": -13, "y": -3}
+        },
+        {
+          "cell": {"x": 1155, "y": 0, "w": 77, "h": 14},
+          "origin": {"x": 1193, "y": 11},
+          "ink_pixels": 84,
+          "filled_pixels": 93,
+          "bounds_rel_origin": {"min_x": -10, "min_y": -9, "max_x": 10, "max_y": 0},
+          "index": 15,
+          "draw_string": "C0BL9H1U2NR4F1R11ND2R8ND2BL2UL3NDLNDL3NDL4NDBR5UL2NU3LU5L2D5NR2L2DDLUURBR2BU3BR2RBL3L3ND3LDND3LND3GLDRNUD1",
+          "pen_end": {"x": -9, "y": -3}
+        }
+      ]
+    },
+    {
+      "id": "draw_gato_058d8",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato_058d8.png",
+      "sources": [{"exe": "Gato.exe", "file_offset": "0x058d8", "ds_offset": "0x0b98"}],
+      "draw_string": "C1BD10R40H20G20",
+      "colours_used": [1],
+      "size": {"w": 45, "h": 25},
+      "origin_in_image": {"x": 2, "y": 12},
+      "bounds_rel_origin": {"min_x": 0, "min_y": -10, "max_x": 40, "max_y": 10},
+      "pen_end": {"x": 0, "y": 10},
+      "purpose": "green isosceles triangle, 41 px wide and 20 px tall (C1 BD10 R40 H20 G20); use not determined"
+    },
+    {
+      "id": "draw_gato_05ada",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato_05ada.png",
+      "sources": [{"exe": "Gato.exe", "file_offset": "0x05ada", "ds_offset": "0x0d9a"}],
+      "draw_string": "C3LUL2UL4UL6UL11RL20R5G2E4R4ND6R6ND6R4F4BU3BL24L10UR3DL13UR3DL35UL35UL20U4ERFND4R7DL7BL3L2UR2D4L30UL20U5R32BD5BLU4E2U2L4ND3L4ND3L6R2D3U12LNU10LD12L3U3NR2U11LNU8L2NU7L2FD8R3L10G2D3",
+      "colours_used": [3],
+      "size": {"w": 204, "h": 40},
+      "origin_in_image": {"x": 201, "y": 37},
+      "bounds_rel_origin": {"min_x": -199, "min_y": -35, "max_x": 0, "max_y": 0},
+      "pen_end": {"x": -196, "y": -13},
+      "purpose": "ship profile (hull line, masts, wake) in colour 3; Gato.exe variant; title-screen use inferred"
+    },
+    {
+      "id": "draw_gato_05b92",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato_05b92.png",
+      "sources": [{"exe": "Gato.exe", "file_offset": "0x05b92", "ds_offset": "0x0e52"}],
+      "draw_string": "C3BD5L21UL6U5E1R1F1ND4R2D1L2BL3L7U1R7BD5L41UL10U10",
+      "colours_used": [3],
+      "size": {"w": 83, "h": 17},
+      "origin_in_image": {"x": 80, "y": 9},
+      "bounds_rel_origin": {"min_x": -78, "min_y": -7, "max_x": 0, "max_y": 5},
+      "pen_end": {"x": -78, "y": -7},
+      "purpose": "second piece of the Gato.exe title picture (lines at lower left of the ship); exact subject not determined"
+    },
+    {
+      "id": "draw_gato_05d50",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato_05d50.png",
+      "sources": [{"exe": "Gato.exe", "file_offset": "0x05d50", "ds_offset": "0x1010"}],
+      "draw_string": "C3L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3",
+      "colours_used": [3],
+      "size": {"w": 212, "h": 37},
+      "origin_in_image": {"x": 209, "y": 34},
+      "bounds_rel_origin": {"min_x": -207, "min_y": -32, "max_x": 0, "max_y": 0},
+      "pen_end": {"x": -204, "y": -10},
+      "purpose": "ship profile in colour 3; Gato.exe variant of the 188-character string (drawn from the same start)"
+    },
+    {
+      "id": "draw_gato_05e12",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato_05e12.png",
+      "sources": [
+        {"exe": "Gato.exe", "file_offset": "0x05e12", "ds_offset": "0x10d2"},
+        {"exe": "Gato1.exe", "file_offset": "0x134ac", "ds_offset": "0x2bac"},
+        {"exe": "DEMO.EXE", "file_offset": "0x0e3b8", "ds_offset": "0x2bb8"}
+      ],
+      "draw_string": "BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10",
+      "colours_used": [3],
+      "size": {"w": 88, "h": 15},
+      "origin_in_image": {"x": 85, "y": 7},
+      "bounds_rel_origin": {"min_x": -83, "min_y": -5, "max_x": 0, "max_y": 5},
+      "pen_end": {"x": -83, "y": -5},
+      "purpose": "second piece of the ship picture (BD5 L23 ...), no C command so default colour 3; exact subject not determined"
+    },
+    {
+      "id": "draw_gato1_12d0e",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato1_12d0e.png",
+      "sources": [
+        {"exe": "Gato1.exe", "file_offset": "0x12d0e", "ds_offset": "0x240e"},
+        {"exe": "DEMO.EXE", "file_offset": "0x0dad6", "ds_offset": "0x22d6"}
+      ],
+      "draw_string": "C1R1E1U2H1L1G1D2F1BR4R2L1U4G1BR4E1R1F1G3R3BR2BU1F1R1E1H1E1H1L1G1BR7D3U4G2D1R3BF1BR1R2E1H1L1H1U1R3BR4G2D1F1R1E1H1BE2BR1R3D1G2D1BR5R1E1H1E1H1L1G1F1G1F1BR5E2U1H1L1G1F1",
+      "colours_used": [1],
+      "size": {"w": 52, "h": 9},
+      "origin_in_image": {"x": 3, "y": 6},
+      "bounds_rel_origin": {"min_x": -1, "min_y": -4, "max_x": 46, "max_y": 0},
+      "pen_end": {"x": 44, "y": -2},
+      "purpose": "digit glyphs '0123456789' drawn side by side in colour 1 (green): a vector number font (visual inference)"
+    },
+    {
+      "id": "draw_gato1_133ec",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato1_133ec.png",
+      "sources": [
+        {"exe": "Gato1.exe", "file_offset": "0x133ec", "ds_offset": "0x2aec"},
+        {"exe": "DEMO.EXE", "file_offset": "0x0e2f8", "ds_offset": "0x2af8"}
+      ],
+      "draw_string": "L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3",
+      "colours_used": [3],
+      "size": {"w": 212, "h": 37},
+      "origin_in_image": {"x": 209, "y": 34},
+      "bounds_rel_origin": {"min_x": -207, "min_y": -32, "max_x": 0, "max_y": 0},
+      "pen_end": {"x": -204, "y": -10},
+      "purpose": "ship profile (hull line, masts, wake) in colour 3; Gato1/DEMO variant"
+    },
+    {
+      "id": "draw_gato1_13b84",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato1_13b84.png",
+      "sources": [
+        {"exe": "Gato1.exe", "file_offset": "0x13b84", "ds_offset": "0x3284"},
+        {"exe": "DEMO.EXE", "file_offset": "0x0ee74", "ds_offset": "0x3674"}
+      ],
+      "draw_string": "C3BR9BU1U3HUHU2E2UERF2RFE2U4H2LHLHL4GL4HL6G4D2G5LG2D6FD4GDGDGD2FDF4R3FR3FR4E2R6ER2E4U3ER3E2U2EHUHL4GLGL2HUEH2L3U2",
+      "colours_used": [3],
+      "size": {"w": 44, "h": 44},
+      "origin_in_image": {"x": 21, "y": 22},
+      "bounds_rel_origin": {"min_x": -19, "min_y": -20, "max_x": 20, "max_y": 19},
+      "pen_end": {"x": 4, "y": -5},
+      "purpose": "island outline, colour 3 (brown)"
+    },
+    {
+      "id": "draw_gato1_13bfa",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato1_13bfa.png",
+      "sources": [
+        {"exe": "Gato1.exe", "file_offset": "0x13bfa", "ds_offset": "0x32fa"},
+        {"exe": "DEMO.EXE", "file_offset": "0x0eeea", "ds_offset": "0x36ea"}
+      ],
+      "draw_string": "C3BR26R4U2H4LU2H4U4E2U4H3UL2H4U2EU3H2L7G3D2GDGD2G2L4G3LG3D5GD3GDGDG4L2G3D4F4D9GD2GD4GD3GD3F5R3FR6ER5ER5E5U4E3UERERERE7UE4UEUEUEU3",
+      "colours_used": [3],
+      "size": {"w": 60, "h": 82},
+      "origin_in_image": {"x": 26, "y": 40},
+      "bounds_rel_origin": {"min_x": -24, "min_y": -38, "max_x": 31, "max_y": 39},
+      "pen_end": {"x": 31, "y": 0},
+      "purpose": "island outline (largest), colour 3 (brown)"
+    },
+    {
+      "id": "draw_gato1_13c80",
+      "kind": "embedded_draw_string",
+      "image": "draw_gato1_13c80.png",
+      "sources": [
+        {"exe": "Gato1.exe", "file_offset": "0x13c80", "ds_offset": "0x3380"},
+        {"exe": "DEMO.EXE", "file_offset": "0x0ef70", "ds_offset": "0x3770"}
+      ],
+      "draw_string": "C3BR16BU2U2HUHL2HL2GL2H2U2H2LHUE2U3HLHL5GLG2LG2D3GD2G3LGD4F2RFD2FD2FD2G3D2FDF2R5ER2FR3ERE2R2ERE3U2EU3ER2EU2EU4",
+      "colours_used": [3],
+      "size": {"w": 40, "h": 44},
+      "origin_in_image": {"x": 21, "y": 24},
+      "bounds_rel_origin": {"min_x": -19, "min_y": -22, "max_x": 16, "max_y": 17},
+      "pen_end": {"x": 16, "y": -5},
+      "purpose": "island outline, colour 3 (brown)"
+    }
+  ]
+}

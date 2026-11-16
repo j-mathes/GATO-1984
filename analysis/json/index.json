@@ -20,9 +20,31 @@
         "speed row k belongs to waypoint k (stored after it); the file does not say whether it is the speed used to reach or to leave the waypoint",
         "trailer[0] objective_quadrant: 0 = none, 18 / 14 in scenarios 5 / 7 match the island quadrants named in ORDXX5 / ORDXX7"
       ],
+      "loader_verified": {
+        "source": "Gato1.exe 0xbeb1-0xc118 (compiled BASIC); see analysis/loader_verification.md",
+        "statement_order": [
+          "OPEN \"COURXX\" + n FOR INPUT AS #1",
+          "FOR k = 2 TO 8: INPUT #1, type(k)                    ' row 1 (array ds:0x1daa)",
+          "FOR k = 2 TO 8: INPUT #1, x0(k): x(k) = x0(k)        ' row 2 (ds:0x1cf6, copied to ds:0x1d3e)",
+          "FOR k = 2 TO 8: INPUT #1, y0(k): y(k) = y0(k): z(k) = 0   ' row 3 (ds:0x1d1a, copied to ds:0x1d62; ds:0x1cae cleared)",
+          "FOR w = 1 TO 7: FOR j = 1 TO 3: FOR k = 2 TO 8: INPUT #1, a(j, w, k)   ' rows 4-24, array ds:0x179e, index ((j*9 + w)*9 + k); j = 1 x, 2 y, 3 speed (loop limits 3 and 7 are inferred from the 21 rows)",
+          "INPUT #1, V1, V2, V3                                  ' trailer row: stored in ds:0x2246, 0x2242, 0x226a (assumed in file order)"
+        ],
+        "verified": [
+          "file columns map to ship slots 2..8 (slot 1, the player's own boat, is not read from the file)",
+          "rows 1-3 = type, start x, start y; start position is copied into a working position array",
+          "waypoint rows are stored waypoint-major: for each of 7 waypoints three rows x, y, speed",
+          "the speed row is stored together with (after) its waypoint, as parse_course assumes",
+          "every number is read with INPUT # (decimal text -> 4-byte single in memory)"
+        ],
+        "not_determined": [
+          "what the three trailer variables mean: the slice only stores them and no code in 0xbc00-0xc650 reads them",
+          "whether speed k is used to reach or to leave waypoint k"
+        ]
+      },
       "unknown": [
-        "trailer[1] flag_b (1 in scenarios 1-5, 0 in 6-10)",
-        "trailer[2] value_c (3..9; same in scenarios with identical routes)"
+        "trailer[1] flag_b (1 in scenarios 1-5, 0 in 6-10); stored in ds:0x2242, readers not located",
+        "trailer[2] value_c (3..9; same in scenarios with identical routes); stored in ds:0x226a, readers not located"
       ]
     },
     "ORDXX": "Order text; '@' prefix on line 1 is a marker before the classification. The game adds the date-time group when displaying.",
