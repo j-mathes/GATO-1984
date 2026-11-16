@@ -19,7 +19,7 @@ import {
 } from "../core/index.js";
 import type { LogStore } from "../app/logStore.js";
 import type { Snapshot } from "../app/runner.js";
-import { drawExplosion } from "./explosions.js";
+import { drawExplosion, SCOPE_HORIZON_Y } from "./explosions.js";
 import { COLORS, Gfx, LOGICAL_WIDTH } from "./gfx.js";
 import type { SpriteLibrary } from "./sprites.js";
 
@@ -51,7 +51,7 @@ export const COMPARTMENT_NAMES: Record<number, string> = Object.fromEntries(COMP
 // Live contact geometry from the interpolated snapshot (the simulation's own values are only updated at 10 Hz)
 // --------------------------------------------------------------------------------------------------------------------
 
-interface LiveContact {
+export interface LiveContact {
   slot: number;
   typeCode: number;
   distance: number;
@@ -63,7 +63,7 @@ interface LiveContact {
   y: number;
 }
 
-function liveContacts(view: PlayView): LiveContact[] {
+export function liveContacts(view: PlayView): LiveContact[] {
   const { sim, snap } = view;
   const out: LiveContact[] = [];
   for (const v of sim.vessels) {
@@ -162,9 +162,18 @@ function drawScope(g: Gfx, v: PlayView): void {
     g.rect(1, 1, LOGICAL_WIDTH - 2, 63, COLORS.cyan);
     g.rect(1, 64, LOGICAL_WIDTH - 2, 31, COLORS.blue);
   } else g.line(1, 64, LOGICAL_WIDTH - 1, 64, COLORS.grey);
+  drawScopeContacts(g, v, day, 68, SCOPE_HORIZON_Y);
+  g.unclip();
+}
+
+/** Ships in the scope window, then the explosions of core/explosion.ts (the sunk ship stays drawn until its spikes are erased). */
+export function drawScopeContacts(g: Gfx, v: PlayView, day: boolean, baseline: number, horizon: number, palette?: readonly string[]): void {
+  const { sim } = v;
+  const sub = sim.sub;
   const contacts = liveContacts(v)
     .filter((c) => c.size >= 0.5 && c.distance <= 4000 && inScopeWindow(c.relative, sub.scopeFacing))
     .sort((a, b) => b.distance - a.distance);
+  const outline = palette ? ((day ? palette[0] : palette[3]) as string) : undefined;
   for (const c of contacts) {
     const vessel = sim.vessels[c.slot];
     if (!vessel || vessel.sunk) continue;
@@ -172,20 +181,18 @@ function drawScope(g: Gfx, v: PlayView): void {
     while (a < 0) a += 6.2832;
     // screen x of the original (0x06ccd): 160 - SIN(a) * (227 + size * (0.5 + |SIN(frame*0.393)| * 1.5) * facingSign)
     const x = scopeScreenX(a, c.size, c.frame, sub.scopeFacing);
-    drawContact(g, v, c, x, 68, day);
+    drawContact(g, v, c, x, baseline, day, outline);
   }
-  // torpedo hits: the sunk ship stays drawn until its spikes are erased, then the plume/debris of core/explosion.ts
   for (const ex of sim.explosions) {
     if (ex.shipVisible && !ex.plan.survived) {
       const ghost: LiveContact = { slot: 0, typeCode: ex.plan.typeCode, distance: 0, relative: 0, size: ex.plan.drawnSize, frame: ex.plan.frame, x: 0, y: 0 };
-      drawContact(g, v, ghost, ex.plan.x, 68, day);
+      drawContact(g, v, ghost, ex.plan.x, baseline, day, outline);
     }
-    drawExplosion(g, ex, day);
+    drawExplosion(g, ex, day, horizon, palette);
   }
-  g.unclip();
 }
 
-function drawContact(g: Gfx, v: PlayView, c: LiveContact, x: number, y: number, day: boolean): void {
+export function drawContact(g: Gfx, v: PlayView, c: LiveContact, x: number, y: number, day: boolean, outline?: string): void {
   const scale = Math.max(c.size / 4, 0.1);
   if (c.slot === SLOT.island) {
     const shape = v.sim.scenario.islands[v.sim.currentQuadrant]?.shape ?? 1;
@@ -193,10 +200,12 @@ function drawContact(g: Gfx, v: PlayView, c: LiveContact, x: number, y: number, 
     if (img) g.image(img, 0, 0, img.width, img.height, x - (img.width * scale) / 2, y - img.height * scale, img.width * scale, img.height * scale);
     return;
   }
-  const sprite = v.sprites?.ship(c.typeCode, c.frame, !day);
+  // with a screen palette the ships are line art in the DRAW colour (colour 0 by day, as in the original screenshots)
+  const sprite = v.sprites?.ship(c.typeCode, c.frame, outline !== undefined || !day);
   if (sprite) {
     const f = sprite.frame;
-    g.image(sprite.img, f.cell.x, f.cell.y, f.cell.w, f.cell.h, x - (f.origin.x - f.cell.x) * scale, y - (f.origin.y - f.cell.y) * scale, f.cell.w * scale, f.cell.h * scale);
+    const src = outline !== undefined && v.sprites ? v.sprites.tint(sprite.img, outline) : sprite.img;
+    g.image(src, f.cell.x, f.cell.y, f.cell.w, f.cell.h, x - (f.origin.x - f.cell.x) * scale, y - (f.origin.y - f.cell.y) * scale, f.cell.w * scale, f.cell.h * scale);
   } else g.rect(x - 4, y - 4, 8, 4, day ? COLORS.black : COLORS.white);
 }
 

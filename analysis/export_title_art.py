@@ -156,6 +156,35 @@ class Screen:
                             stack.append((xx, ny))
                         run = free
 
+    def circle_a(self, cx, cy, r, aspect, c):
+        """CIRCLE (cx,cy),r,c,,,aspect: the runtime's integer circle (0x2134-0x219c, plotter 0x21fd, scaler 0x2284).
+
+        A Bresenham loop runs in unscaled integers (a = i/2 counts up, b = (bp+1)/2 counts down); the minor axis is scaled with the 8.8
+        fixed-point factor S = (v * S + 128) >> 8.  S = aspect * 256 for aspect < 1; for aspect >= 1 the roles of x and y swap with S = 256 / aspect.
+        Eight points are plotted per step: (+-b, +-s(a)) and (+-a, +-s(b)).  The fixed-point factor is read as the obvious rounding of the
+        aspect (the routine that derives it, 0x2938, was not traced).
+        """
+        swap = aspect >= 1
+        scale = int((256 / aspect if swap else aspect * 256) + 0.5)
+        sc = lambda v: (v * scale + 128) >> 8  # noqa: E731
+        bp, i, err = 2 * r, 0, 0
+        while True:
+            if i % 2 == 0:
+                a, b = (i + 1) >> 1, (bp + 1) >> 1
+                pairs = ((b, sc(a)), (a, sc(b))) if not swap else ((sc(b), a), (sc(a), b))
+                for px, py in pairs:
+                    for sx in (-1, 1):
+                        for sy in (-1, 1):
+                            self.plot(cx + sx * px, cy + sy * py, c)
+                if i >= bp:
+                    break
+            i += 1
+            err += 2 * i - 1
+            if err >= 0:
+                err -= 2 * bp - 1
+                bp -= 1
+        self.pen = (cx, cy)
+
     def circle(self, cx, cy, rx, ry, c):
         """Midpoint ellipse (the runtime's exact CIRCLE pixels were not decoded)."""
         x, y = 0, ry
@@ -315,7 +344,7 @@ def build(exe):
     s.locate_print(15, 12, exe.string(D_CLASS))
     s.locate_print(17, 6, exe.string(D_BY))
     s.locate_print(21, 10, exe.string(D_COPY))
-    s.circle(83, 163, 7, 6, 3)                      # 0xb7a  CIRCLE (83,163),7,3  (the (c) ring; y radius = 7 * 5/6)
+    s.circle_a(83, 163, 7, 5 / 6, 3)                # 0xb7a  CIRCLE (83,163),7,3  (the (c) ring; default aspect 5/6 assumed, runtime integer circle)
     s.locate_print(23, 9, exe.string(D_HOLO))
     frames.append(s.snapshot("title", "The held GATO title page: striped GATO lettering, CLASS SUBMARINE, authors, copyright "
                                       "(held for ~5000 empty loop passes before the letters dissolve)", "0xa3f-0xbd2"))

@@ -76,7 +76,7 @@ export function frameToRgba(frame: TitleFrame): Uint8ClampedArray {
   return out;
 }
 
-function documentCanvas(width: number, height: number): HTMLCanvasElement {
+export function documentCanvas(width: number, height: number): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;

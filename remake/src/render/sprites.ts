@@ -62,6 +62,29 @@ export class SpriteLibrary {
     const id = ISLAND_PICTURES[shape];
     return id ? (this.images.get(`${id}.png`) ?? null) : null;
   }
+
+  private readonly tinted = new Map<string, CanvasImageSource>();
+
+  /** The same line art in another colour (cached); without a DOM the original image is returned. */
+  tint(img: HTMLImageElement, color: string): CanvasImageSource {
+    if (typeof document === "undefined") return img;
+    const key = `${img.src}|${color}`;
+    let out = this.tinted.get(key);
+    if (!out) {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return img;
+      ctx.drawImage(img, 0, 0);
+      ctx.globalCompositeOperation = "source-in";
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      out = canvas;
+      this.tinted.set(key, out);
+    }
+    return out;
+  }
 }
 
 function loadImage(url: string): Promise<HTMLImageElement> {

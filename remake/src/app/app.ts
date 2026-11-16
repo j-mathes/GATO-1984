@@ -44,10 +44,21 @@ import {
   drawQuadrantMap,
   drawRadar,
   drawRadioMessage,
+  liveContacts,
   type PlayView,
 } from "../render/playScreens.js";
 import type { SpriteLibrary } from "../render/sprites.js";
 import type { TitleArt } from "../render/titleArt.js";
+import type { CockpitLayouts } from "../render/cockpitLayouts.js";
+import {
+  drawChartLayout,
+  drawControlRoomLayout,
+  drawDamageLayout,
+  drawGameControlLayout,
+  drawLogLayout,
+  drawQuadrantLayout,
+  drawRadarLayout,
+} from "../render/cockpitScreens.js";
 import { drawDemoNarration, drawHistory, drawLauncherMenu, drawOrders, drawTitle } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
@@ -111,6 +122,7 @@ export class App {
     storage: StorageLike | null = null,
     private readonly random: () => number = Math.random,
     private readonly titleArt: TitleArt | null = null,
+    private readonly cockpit: CockpitLayouts | null = null,
   ) {
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
@@ -535,27 +547,35 @@ export class App {
   private draw(timeMs: number, sim: Simulation, snap: Snapshot): void {
     const g = this.g;
     const view: PlayView = { sim, snap, settings: this.settings, sprites: this.sprites, log: this.log, timeMs };
+    const L = this.cockpit;
     switch (this.screen) {
       case "control":
-        drawControlRoom(g, view);
+        if (L) drawControlRoomLayout(g, view, L);
+        else drawControlRoom(g, view);
         break;
       case "radar":
-        drawRadar(g, view);
+        if (L) drawRadarLayout(g, view, L, liveContacts(view));
+        else drawRadar(g, view);
         break;
       case "chart":
-        drawChart(g, view);
+        if (L) drawChartLayout(g, view, L);
+        else drawChart(g, view);
         break;
       case "quadrant":
-        drawQuadrantMap(g, view);
+        if (L) drawQuadrantLayout(g, view, L);
+        else drawQuadrantMap(g, view);
         break;
       case "log":
-        drawCaptainsLog(g, view);
+        if (L) drawLogLayout(g, view, L);
+        else drawCaptainsLog(g, view);
         break;
       case "damage":
-        drawDamageReport(g, view);
+        if (L) drawDamageLayout(g, view, L);
+        else drawDamageReport(g, view);
         break;
       case "gameControl":
-        drawGameControl(g, this.settings, this.difficultyEditor ? "NEW DIFFICULTY LEVEL" : null, this.difficultyEditor?.value ?? "");
+        if (L) drawGameControlLayout(g, L, this.settings, this.difficultyEditor ? "NEW DIFFICULTY LEVEL" : null, this.difficultyEditor?.value ?? "");
+        else drawGameControl(g, this.settings, this.difficultyEditor ? "NEW DIFFICULTY LEVEL" : null, this.difficultyEditor?.value ?? "");
         break;
     }
     if (this.prompt) {

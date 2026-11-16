@@ -83,6 +83,7 @@ Details live in `../analysis/` (`loader_verification.md`, `exe_architecture.md`,
 - **DEMO.EXE** is a narration slide show, not the simulation. Page timings in the remake are estimates.
 - **HISTORY.EXE** is a pager. The encyclopedia text is in the data file `History`, not in the EXE.
 - **Graphics:** there are no raw CGA bitmaps. Sprites are BASIC `DRAW` strings (`OBX1`, `OBX3`–`OBX8` hold 16 view-angle frames each), exported as PNG atlases and JSON.
+- **Instrument screens:** the control room, damage report, radar, chart, quadrant map, captain's log and GAME CONTROL are drawn from layouts replayed out of GATO1's p-code (`analysis/export_cockpit_layouts.py` -> `public/assets/cockpit_layouts.json`, details in `../analysis/gato1_screens.md`). The damage report and the control-room panel match screenshots of the original pixel for pixel (`python analysis/verify_cockpit_layouts.py`); text is drawn with the remake's font on the original cells.
 - **Title screen:** also drawn at run time (`DRAW`/`PAINT`/`LINE`/`CIRCLE`), not stored. `analysis/export_title_art.py` replays the program's drawing statements into `public/assets/title_screen.json`; the striped GATO lettering, credits and the launcher's surfaced-submarine backdrop come from that. Details and what is inferred (palette, the (c) ring) are in `../analysis/title_art.md`. Regenerate with `python analysis/export_title_art.py` from the repository root (needs Pillow).
 - **Sound:** the runtime programs the PIT channel 2 speaker.
 

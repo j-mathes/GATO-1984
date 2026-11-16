@@ -13,6 +13,9 @@ import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameContro
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
 import { drawLauncherMenu, drawTitle } from "../render/textScreens.js";
+import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
+import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
+import type { PlayView } from "../render/playScreens.js";
 import { TitleArt, frameToRgba, parseTitleArt } from "../render/titleArt.js";
 
 const root = new URL("../../", import.meta.url);
@@ -471,5 +474,96 @@ describe("radio room and message overlay in the app", () => {
     app.keydown({ key: "x" });
     expect(app.mode).toBe("play");
     expect(app.radio.current).toBeNull();
+  });
+});
+
+describe("cockpit layouts extracted from GATO1.EXE", () => {
+  const raw = (): Record<string, any> => read<Record<string, any>>("public/assets/cockpit_layouts.json"); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const canvasFactory = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+  const recorder = () => {
+    const calls: [string, unknown[]][] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    return { g, calls };
+  };
+  const view = (sim: Simulation, settings = { difficulty: 0, sound: true, timeOfDay: 1 as const }): PlayView => ({
+    sim, snap: takeSnapshot(sim), settings, sprites: null, log: new LogStore(shipLog, null), timeMs: 0,
+  });
+
+  it("loads cleanly: six screens with 2-bit bitmaps, ten digit sprites and the glyphs", () => {
+    const doc = parseCockpitLayouts(raw());
+    expect(Object.keys(doc.screens).sort()).toEqual([...SCREEN_NAMES].sort());
+    for (const name of SCREEN_NAMES) expect(decodePacked(doc.screens[name].staticPacked)).toHaveLength(64000);
+    expect(doc.screens.control_room.palette).toEqual(["#555555", "#55ffff", "#ff55ff", "#ffffff"]); // COLOR 8,1
+    expect(doc.screens.chart.palette[0]).toBe("#00aa00"); // COLOR 18,1
+    expect(doc.screens.captains_log.palette[0]).toBe("#5555ff"); // COLOR 9,1
+    expect(doc.sprites.digits).toHaveLength(10);
+    expect(() => parseCockpitLayouts({ ...raw(), format: "x" })).toThrow(/format/);
+    const bad = raw();
+    bad.screens.radar.staticPacked = "AAAA";
+    expect(() => parseCockpitLayouts(bad)).toThrow(/packed bitmap/);
+  });
+
+  it("reproduces the original's pixels: frame lines, the runtime's integer CIRCLE and the hull DRAW", () => {
+    const L = new CockpitLayouts(parseCockpitLayouts(raw()), canvasFactory());
+    const px = (name: ScreenName, x: number, y: number): number => decodePacked(L.screen(name).staticPacked)[y * 320 + x] as number;
+    // control room: BOX (0,100)-(319,196), dial rim CIRCLE (36,135) r32 aspect .9 -> ry = (32 * 230 + 128) >> 8 = 29
+    expect([px("control_room", 0, 100), px("control_room", 319, 196), px("control_room", 160, 196), px("control_room", 160, 198)]).toEqual([3, 3, 3, 0]);
+    expect([px("control_room", 36 + 32, 135), px("control_room", 36, 135 - 29), px("control_room", 36, 135 - 30)]).toEqual([3, 3, 0]);
+    // damage report: CIRCLE (146,60) r115 aspect .07 -> ry 8, cyan; light rings are white
+    expect([px("damage_report", 146, 52), px("damage_report", 146, 51), px("damage_report", 146 + 115, 60)]).toEqual([1, 0, 1]);
+    expect(px("damage_report", 0, 100)).toBe(1);
+    expect(px("damage_report", 26, 119)).toBe(3);
+    // chart: BF colour 1 (cyan sea) with grid lines in colour 3
+    expect([px("chart", 100, 20), px("chart", 3, 50), px("chart", 65, 100)]).toEqual([1, 3, 3]);
+  });
+
+  it("LINE is the runtime's DDA (no anti-aliasing)", () => {
+    const { g, calls } = recorder();
+    drawLinePx(g, 0, 0, 4, 2, "#fff");
+    expect(calls.map(([, a]) => [a[0], a[1]])).toEqual([[0, 0], [1, 1], [2, 1], [3, 2], [4, 2]]);
+  });
+
+  it("control room: static layer, needles, values, lights, tubes and the scope colours follow the extracted layout", () => {
+    const L = new CockpitLayouts(parseCockpitLayouts(raw()), canvasFactory());
+    const sim = scenarioSim();
+    sim.sub.depth = 251;
+    sim.sub.speed = 0;
+    sim.sub.fuel = 36000;
+    sim.sub.battery = 1000;
+    sim.sub.torpedoes = 24;
+    sim.sub.engine = 0;
+    sim.sub.doorsOpen = true;
+    const { g, calls } = recorder();
+    drawControlRoomLayout(g, view(sim), L);
+    expect(calls.find(([n]) => n === "image")?.[1].slice(1, 5)).toEqual([0, 0, 320, 200]);
+    const rects = calls.filter(([n]) => n === "rect").map(([, a]) => a);
+    expect(rects[0]).toEqual([0, 0, 320, 98, "#ff55ff"]); // deep: horizon -1, all sea (colour 2) from row 0 to 97 over the scope
+    expect(rects.some((a) => a[0] === 103 && a[1] === 113 && a[2] === 1 && a[3] === 1)).toBe(true); // speed needle tip (103, 135 - 22)
+    const text = calls.filter(([n]) => n === "text").map(([, a]) => a.slice(0, 3));
+    expect(text).toContainEqual([32, 14, " 400"]);
+    expect(text).toContainEqual([32, 16, "1000"]);
+    expect(text).toContainEqual([30, 22, "24"]);
+    expect(text).toContainEqual([3, 24, "POWER"]);
+    expect(rects.some((a) => a[0] === 63 && a[1] === 183 && a[2] === 49 && a[3] === 9 && a[4] === "#ffffff")).toBe(true); // OFF is inverted
+    expect(scopeHorizon({ depth: 0, periscopeUp: false })).toBe(79);
+    expect(scopeHorizon({ depth: 10, periscopeUp: true })).toBe(79);
+    expect(scopeHorizon({ depth: 10, periscopeUp: false })).toBe(39);
+    expect(scopeHorizon({ depth: 30, periscopeUp: false })).toBe(-1);
+  });
+
+  it("damage report: magenta overlays and the filled light only for damaged compartments", () => {
+    const L = new CockpitLayouts(parseCockpitLayouts(raw()), canvasFactory());
+    const sim = scenarioSim();
+    const magenta = (): number => {
+      const { g, calls } = recorder();
+      drawDamageLayout(g, view(sim), L);
+      return calls.filter(([n, a]) => n === "rect" && a[4] === "#ff55ff").length;
+    };
+    expect(magenta()).toBe(0);
+    sim.sub.damage[1] = 1; // radio room
+    expect(magenta()).toBeGreaterThan(40);
+    const { g, calls } = recorder();
+    drawDamageLayout(g, view(sim), L);
+    expect(calls.filter(([n]) => n === "text").map(([, a]) => a[2])).toEqual(expect.arrayContaining(["CONTROL RM", "RADIO RM", "CONNING TOWER"]));
   });
 });

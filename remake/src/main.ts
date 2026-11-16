@@ -12,6 +12,7 @@ import { Gfx } from "./render/gfx.js";
 import { setupDisplay } from "./render/display.js";
 import { SpriteLibrary } from "./render/sprites.js";
 import { TitleArt } from "./render/titleArt.js";
+import { CockpitLayouts } from "./render/cockpitLayouts.js";
 
 /** Scenario number from a file name such as ".../COURXX7.json" or ".../ORDXX12.json". */
 function byNumber<T>(modules: Record<string, T>): Record<number, T> {
@@ -51,6 +52,12 @@ async function boot(): Promise<void> {
   } catch (err) {
     console.warn("title artwork unavailable, using the sprite layout", err);
   }
+  let cockpit: CockpitLayouts | null = null;
+  try {
+    cockpit = await CockpitLayouts.load();
+  } catch (err) {
+    console.warn("cockpit layouts unavailable, using the approximated screens", err);
+  }
 
   let storage: Storage | null = null;
   try {
@@ -59,7 +66,7 @@ async function boot(): Promise<void> {
     storage = null;
   }
 
-  const app = new App(gfx, data, sprites, new SoundEngine(), storage, Math.random, titleArt);
+  const app = new App(gfx, data, sprites, new SoundEngine(), storage, Math.random, titleArt, cockpit);
   const display = setupDisplay(canvas, document.getElementById("crt"), storage);
   attachKeyboard(window, (e) => {
     // V cycles authentic -> fit window -> fit window + CRT scanlines (not while typing into a prompt)
