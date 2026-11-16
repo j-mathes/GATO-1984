@@ -11,7 +11,8 @@ Formats (see also json/index.json, which repeats this documentation)
 --------------------------------------------------------------------
 ORDXXn / DEMORD  Mission order text. ORDXX line 1 is "@" + classification, then blank lines,
                  "TO: ...", "FROM: ...", and body lines separated by blank lines. DEMORD is
-                 free text. The game substitutes the scenario number n for "XX" (1..20).
+                 free text. The game appends the scenario number n to the base name "ORDXX"
+                 (BASIC string concatenation, see exe_architecture.md): ORDXX1 .. ORDXX20.
 COURXXn          Whitespace-separated number grid, 24 rows x 7 columns + a 3-value trailer.
                  Column 0 is the subtender, columns 1-6 are six enemy vessels.
                    row 1       ship type code (3 = subtender, 4..8 = enemy types)

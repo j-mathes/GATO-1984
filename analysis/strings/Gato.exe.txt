@@ -1,0 +1,233 @@
+Gato.exe.txt - printable ASCII strings (runs of >= 4 bytes in 0x20-0x7E)
+file size 27248 bytes; 193 strings; offsets are file offsets
+A string followed directly by a byte with bit 7 set shows that byte decoded in brackets (the runtime stores the last character of many messages that way).
+
+offset     decimal  len  text
+0x001016     4118   46  Licensed Material - Program Property of IBMUVW  [+0xCD -> "Licensed Material - Program Property of IBMUVWM"]
+0x001289     4745    6  *Break  [+0xAA -> "*Break*"]
+0x00142c     5164    4   QSP  [+0xE8 -> " QSPh"]
+0x001451     5201    8  tRPSQRVW
+0x00149f     5279    6  _^ZY[X  [+0xC3 -> "_^ZY[XC"]
+0x0014cb     5323    6  _^ZY[X  [+0xCB -> "_^ZY[XK"]
+0x00150d     5389    5  u=UVW  [+0xB4 -> "u=UVW4"]
+0x00155e     5470    4  RSQP
+0x0015b2     5554    4  XY[Z  [+0xC3 -> "XY[ZC"]
+0x001620     5664    4  ZXP<
+0x00176c     5996    4  F;7u
+0x001780     6016    4  F;7u
+0x00179f     6047    4  PSQR  [+0xE8 -> "PSQRh"]
+0x0017c3     6083    4  PSQR  [+0xB9 -> "PSQR9"]
+0x0017e2     6114    4  ZY[X  [+0xCB -> "ZY[XK"]
+0x001818     6168    6  PSQRVW
+0x001826     6182    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+0x001836     6198    6  PSQRVW
+0x001862     6242    4  SQWV
+0x00186f     6255    6  ^_Y[C:  [+0xDD -> "^_Y[C:]"]
+0x00199c     6556    6  PSQRVW  [+0xB6 -> "PSQRVW6"]
+0x0019c8     6600    6  _^ZY[X  [+0xC3 -> "_^ZY[XC"]
+0x001a51     6737    6  PSQRVW
+0x001a5f     6751    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+0x001a6f     6767    6  PSQRVW
+0x001b51     6993    5  PQRVW
+0x001b9a     7066    5  _^ZYX  [+0xCB -> "_^ZYXK"]
+0x001bde     7134    6  PSQRVW
+0x001bec     7148    6  PSQRVW  [+0xE8 -> "PSQRVWh"]
+0x001bfc     7164    6  PSQRVW
+0x001c27     7207    4  tA:6  [+0xCE -> "tA:6N"]
+0x001c47     7239    4   s R  [+0xA2 -> " s R""]
+0x001c85     7301   11  Syntax erro  [+0xF2 -> "Syntax error"]  <error table>
+0x001c92     7314   19  RETURN without GOSU  [+0xC2 -> "RETURN without GOSUB"]  <error table>
+0x001ca7     7335   10  Out of DAT  [+0xC1 -> "Out of DATA"]  <error table>
+0x001cb3     7347   20  Illegal function cal  [+0xEC -> "Illegal function call"]  <error table>
+0x001cc9     7369    7  Overflo  [+0xF7 -> "Overflow"]  <error table>
+0x001cd2     7378   12  Out of memor  [+0xF9 -> "Out of memory"]  <error table>
+0x001ce0     7392   21  Subscript out of rang  [+0xE5 -> "Subscript out of range"]  <error table>
+0x001cf7     7415   15  Division by zer  [+0xEF -> "Division by zero"]  <error table>
+0x001d08     7432   12  Type mismatc  [+0xE8 -> "Type mismatch"]  <error table>
+0x001d16     7446   18  Out of string spac  [+0xE5 -> "Out of string space"]  <error table>
+0x001d2a     7466   25  String formula too comple  [+0xF8 -> "String formula too complex"]  <error table>
+0x001d45     7493    8  No RESUM  [+0xC5 -> "No RESUME"]  <error table>
+0x001d4f     7503   19  RESUME without erro  [+0xF2 -> "RESUME without error"]  <error table>
+0x001d64     7524   13  Device Timeou  [+0xF4 -> "Device Timeout"]  <error table>
+0x001d73     7539   11  Device Faul  [+0xF4 -> "Device Fault"]  <error table>
+0x001d80     7552   11  Out of Pape  [+0xF2 -> "Out of Paper"]  <error table>
+0x001d8c     7564   14  2FIELD overflo  [+0xF7 -> "2FIELD overflow"]  <error table>
+0x001d9b     7579   14  3Internal erro  [+0xF2 -> "3Internal error"]  <error table>
+0x001daa     7594   15  4Bad file numbe  [+0xF2 -> "4Bad file number"]  <error table>
+0x001dba     7610   14  5File not foun  [+0xE4 -> "5File not found"]  <error table>
+0x001dc9     7625   13  6Bad file mod  [+0xE5 -> "6Bad file mode"]  <error table>
+0x001dd7     7639   17  7File already ope  [+0xEE -> "7File already open"]  <error table>
+0x001de9     7657   16  9Device I/O Erro  [+0xF2 -> "9Device I/O Error"]  <error table>
+0x001dfa     7674   19  :File already exist  [+0xF3 -> ":File already exists"]  <error table>
+0x001e0e     7694    9  =Disk ful  [+0xEC -> "=Disk full"]  <error table>
+0x001e18     7704   14  >Input past en  [+0xE4 -> ">Input past end"]  <error table>
+0x001e27     7719   17  ?Bad record numbe  [+0xF2 -> "?Bad record number"]  <error table>
+0x001e39     7737   13  @Bad file nam  [+0xE5 -> "@Bad file name"]  <error table>
+0x001e47     7751   14  CToo many file  [+0xF3 -> "CToo many files"]  <error table>
+0x001e56     7766   18  DDevice Unavailabl  [+0xE5 -> "DDevice Unavailable"]  <error table>
+0x001e69     7785   29  ECommunication buffer overflo  [+0xF7 -> "ECommunication buffer overflow"]  <error table>
+0x001e87     7815   18  FDisk Write Protec  [+0xF4 -> "FDisk Write Protect"]  <error table>
+0x001e9a     7834   14  GDisk not Read  [+0xF9 -> "GDisk not Ready"]  <error table>
+0x001ea9     7849   16  HDisk Media Erro  [+0xF2 -> "HDisk Media Error"]  <error table>
+0x001ebb     7867   16  Unprintable erro  [+0xF2 -> "Unprintable error"]  <error table>
+0x002116     8470    5  $'STO  [+0xD0 -> "$'STOP"]
+0x002144     8516    9  & in line  [+0xA0 -> "& in line "]
+0x00214e     8526    4  ]XZU  [+0xE8 -> "]XZUh"]
+0x00215d     8541   12  & at address  [+0xA0 -> "& at address "]
+0x00216a     8554    4  ]_ZU  [+0xE8 -> "]_ZUh"]
+0x0021d9     8665   32  a&Internal Error - No Line Numbe  [+0xF2 -> "a&Internal Error - No Line Number"]
+0x0024ec     9452    4  u;RS  [+0xBB -> "u;RS;"]
+0x002530     9520    5  PQRVW
+0x002541     9537    4  t?Jy
+0x002560     9568    5  u QVW
+0x002569     9577    4  _^Yu  [+0xEE -> "_^Yun"]
+0x002570     9584    5  _^YZX
+0x0025e6     9702    6  t>|AQP
+0x0026b8     9912    5  _^[VW
+0x00274e    10062    7  UVWPQRS
+0x002759    10073    7  [ZYX_^]  [+0xCB -> "[ZYX_^]K"]
+0x002809    10249    4  w9WS  [+0xE8 -> "w9WSh"]
+0x0028d1    10449   17  Error in EXE file
+0x00292b    10539    4  ZYQR
+0x0029b7    10679    4  PQRV
+0x0029cd    10701    4  ^ZYX  [+0xCB -> "^ZYXK"]
+0x002bf1    11249    4  QRVW
+0x002c0d    11277    5  [_^ZY  [+0xCB -> "[_^ZYK"]
+0x002cc0    11456    5  t8<,t  [+0xAB -> "t8<,t+"]
+0x002ccd    11469   15  ?Redo from star  [+0xF4 -> "?Redo from start"]
+0x002d0c    11532    7  Overflo  [+0xF7 -> "Overflow"]
+0x002f87    12167    5  s(PRS  [+0xE8 -> "s(PRSh"]
+0x00314a    12618    5  uCUP@  [+0xD1 -> "uCUP@Q"]
+0x0034b3    13491    4  r;t$
+0x003580    13696    4  QRS3  [+0xC9 -> "QRS3I"]
+0x0035bb    13755    4  QRS3  [+0xC9 -> "QRS3I"]
+0x00369c    13980    6  SQRVWU  [+0xA3 -> "SQRVWU#"]
+0x0036bd    14013    6  ]_^ZY[  [+0xE8 -> "]_^ZY[h"]
+0x003753    14163    7  <=tx<+t  [+0xF5 -> "<=tx<+tu"]
+0x003a3b    14907    4  GJx1  [+0xF9 -> "GJx1y"]
+0x003ee0    16096    4  t5H;  [+0xC3 -> "t5H;C"]
+0x003f55    16213    4  PSVW  [+0xB8 -> "PSVW8"]
+0x003f76    16246    4  u)@;  [+0xF7 -> "u)@;w"]
+0x003f9c    16284    4  _^[X  [+0xC3 -> "_^[XC"]
+0x003fa7    16295   11   during G.C  [+0xAE -> " during G.C."]
+0x003fbf    16319   36  Internal Error - String Space Corrup  [+0xF4 -> "Internal Error - String Space Corrupt"]
+0x003fee    16366    4  t$VS  [+0xE8 -> "t$VSh"]
+0x0040a5    16549    7  PQRVWQS
+0x0040c4    16580    5  _^ZYX  [+0xC3 -> "_^ZYXC"]
+0x00414e    16718    4  KYBD
+0x004153    16723    4  SCRN  [+0xFE -> "SCRN~"]
+0x004158    16728    4  CAS1  [+0xFD -> "CAS1}"]
+0x00415d    16733    4  COM1  [+0xFC -> "COM1|"]
+0x004162    16738    4  COM2  [+0xFB -> "COM2{"]
+0x004167    16743    4  LPT1  [+0xFA -> "LPT1z"]
+0x00416c    16748    4  LPT2  [+0xF9 -> "LPT2y"]
+0x004171    16753    4  LPT3  [+0xF8 -> "LPT3x"]
+0x004179    16761    5  AT%<%  [+0xF7 -> "AT%<%w"]
+0x004189    16777    5  ;l%l%  [+0xF7 -> ";l%l%w"]
+0x004199    16793    5  ;l%l%  [+0xFE -> ";l%l%~"]
+0x0041b5    16821    5  <#<#<  [+0xE8 -> "<#<#<h"]
+0x0042d0    17104    5  [ZYCt
+0x0042f2    17138    5  _[OOu  [+0xF5 -> "_[OOuu"]
+0x004449    17481    4  ^_Z2  [+0xC0 -> "^_Z2@"]
+0x00445e    17502    5  =1VRG  [+0xAC -> "=1VRG,"]
+0x00447d    17533    5  ^^^_Z  [+0xC3 -> "^^^_ZC"]
+0x0046e0    18144    5  PQRWS  [+0xBE -> "PQRWS>"]
+0x00471a    18202    5  [_ZYX  [+0xC3 -> "[_ZYXC"]
+0x004955    18773   15  <%t,<#t(<!t$<Dt
+0x004a61    19041    5  PWUSR  [+0xD1 -> "PWUSRQ"]
+0x004b2c    19244    6  PQRVWU  [+0xE8 -> "PQRVWUh"]
+0x004b3b    19259    6  ]_^ZYX
+0x004be8    19432    4  t<?<  [+0xEC -> "t<?<l"]
+0x004bf4    19444    6  C<k<p<  [+0xC6 -> "C<k<p<F"]
+0x004c38    19512    4  QRS3  [+0xC9 -> "QRS3I"]
+0x004d3f    19775    4  tHr#
+0x004df0    19952    5  v|Nty
+0x005112    20754    6  ?AoA|A
+0x00511b    20763    5  ABCBB
+0x005161    20833    4  8\*u
+0x0051d3    20947    5  \)*\*  [+0xFE -> "\)*\*~"]
+0x00540a    21514    4  PQRS
+0x00543d    21565    4  [ZYX  [+0xC3 -> "[ZYXC"]
+0x005443    21571    4  D'QW  [+0xB9 -> "D'QW9"]
+0x00550c    21772    4  VWFG  [+0xB9 -> "VWFG9"]
+0x00561e    22046  157  S2;L32U10R22U10L20U30R30D10L20D10R20D30;BR10;U30R22F4D11G4L13D12NL8;BU19;BR1;U6R8D6L8;BD19;BR24;U30R25D8L15D5R10D6L10D5R15D8NL25;BR10;U30R25D8L15D14R15D8NL25
+0x0056c0    22208  159  S2;BR18;U22L8U8R26D8L8D22NL9;BR18;U30R25F4D10G4L4D1F8D5L8H11U2D12NL8;BU19;BR1;U6R8D6L8;BD18;BR32;H4U27R9D22R12U22R9D27G4NL21;BR15;U30R8F8E8R8D30L8U20G8H8D20NL8
+0x005764    22372  168  S2;L12U20L14D20L12U50R12D20R14U20R12D50;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19;BR14;U30R10D20R15D10NL25;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19  [+0xB5 -> "S2;L12U20L14D20L12U50R12D20R14U20R12D50;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19;BR14;U30R10D20R15D10NL25;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL195"]
+0x005810    22544  181  S2;BR28;BU8;U12R8F2D8G2L8;BU24;U10R8F2D6G2L8;BL12;BD32;U50R27F6D13G6NL5R2F6D15G6NL28;BR24;U16H13U2R8F8E8R8D2G13D16NL8;BR30;U22L8U8R26D8L8D22NL9;BR18;U30R25D8L15D5R10D6L10D5R15D8NL25
+0x0058d8    22744   15  C1BD10R40H20G20
+0x005904    22788    8  PRESENTS
+0x005914    22804   67  S4C2BL81L29H10U40E10R30F10D10L12U4H4L18G4D28F4R18E4U4L5U7R17D16G10<
+0x00595a    22874   61  S4C2BL6L12U24L28D24L12U40E20R12F20D40BL12BU34L28U2E12R4F12D2 
+0x00599a    22938   33  S4C2BR22U48L20U12R52D12L20D48L12;
+0x0059be    22974   59  S4C2BR77R24E15U30H15L24G15D30F15BR4BU12R16E8U20H8L16G8D20F8
+0x005a12    23058   16  CLASS  SUBMARINE
+0x005a26    23078   28  by Paul Arlton and Ed Dawson
+0x005a46    23110   20   C Copyright 1984 by
+0x005a5e    23134   23  Spectrum HoloByte, Inc.
+0x005a8e    23182   16                  
+0x005aae    23214   39  C3S4BU13L27U1L47U1L47D1L2D1L1D1R1D1L1F6  [+0xC2 -> "C3S4BU13L27U1L47U1L47D1L2D1L1D1R1D1L1F6B"]
+0x005ada    23258  179  C3LUL2UL4UL6UL11RL20R5G2E4R4ND6R6ND6R4F4BU3BL24L10UR3DL13UR3DL35UL35UL20U4ERFND4R7DL7BL3L2UR2D4L30UL20U5R32BD5BLU4E2U2L4ND3L4ND3L6R2D3U12LNU10LD12L3U3NR2U11LNU8L2NU7L2FD8R3L10G2D3
+0x005b92    23442   50  C3BD5L21UL6U5E1R1F1ND4R2D1L2BL3L7U1R7BD5L41UL10U10
+0x005bd0    23504   28  [1]   NORMAL PLAY  (DEFAULT)
+0x005bf0    23536   19  [2]   DEMONSTRATION
+0x005c08    23560   32  [3]   HISTORY AND SPECIFICATIONS
+0x005c2c    23596   10  [4]   EXIT
+0x005c3a    23610   27  PLEASE ENTER AN ITEM NUMBER
+0x005c5a    23642   20  FROM THE MENU ABOVE:
+0x005c76    23670    4  DEMO
+0x005c7e    23678    7  HISTORY
+0x005c8a    23690    5  GATO1
+0x005c94    23700  183  C3S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1
+0x005d50    23888  191  C3L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3)
+0x005e12    24082   41  BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10
+0x005fab    24491    4  ]xEc
+0x0060c5    24773   82      !!!"""####$$$%%%&&&&'''((())))***+++,,,,---...////0001112222333444555566677788
+0x006146    24902    5  w-;uD  [+0xCD -> "w-;uDM"]
+0x006155    24917    4  mA4-  [+0xF7 -> "mA4-w"]
+0x0061c2    25026    4  6A_p
+0x0061ce    25038    4  +fCz  [+0xE5 -> "+fCze"]
+0x0061d6    25046    4  Vijl  [+0xAF -> "Vijl/"]
+0x006299    25241    4  @v:k
+0x0062d2    25298    4  @aQY
+0x006302    25346    5  E@|o|  [+0xE7 -> "E@|o|g"]
+0x00637b    25467    4  b/5`
+0x0067bb    26555   26  fail in 64k boundary fixup
+0x0067f2    26610   19  Insufficient memory
+0x0069b2    27058    5  PPPSQ
+0x0069b8    27064    4  VWUR
+0x0069f4    27124    4  Z]_^
+
+BASIC string-literal pool (32 constants; [len][ds offset][text]; includes strings shorter than 4 bytes)
+file off    ds off  len  text
+0x005618  0x08d8    2  C=
+0x00561e  0x08de  157  S2;L32U10R22U10L20U30R30D10L20D10R20D30;BR10;U30R22F4D11G4L13D12NL8;BU19;BR1;U6R8D6L8;BD19;BR24;U30R25D8L15D5R10D6L10D5R15D8NL25;BR10;U30R25D8L15D14R15D8NL25
+0x0056c0  0x0980  159  S2;BR18;U22L8U8R26D8L8D22NL9;BR18;U30R25F4D10G4L4D1F8D5L8H11U2D12NL8;BU19;BR1;U6R8D6L8;BD18;BR32;H4U27R9D22R12U22R9D27G4NL21;BR15;U30R8F8E8R8D30L8U20G8H8D20NL8
+0x005764  0x0a24  168  S2;L12U20L14D20L12U50R12D20R14U20R12D50;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19;BR14;U30R10D20R15D10NL25;BR18;BU9;U14R10D14L10;BL5;BD9;H4U23E4R19F4D23G4NL19
+0x005810  0x0ad0  181  S2;BR28;BU8;U12R8F2D8G2L8;BU24;U10R8F2D6G2L8;BL12;BD32;U50R27F6D13G6NL5R2F6D15G6NL28;BR24;U16H13U2R8F8E8R8D2G13D16NL8;BR30;U22L8U8R26D8L8D22NL9;BR18;U30R25D8L15D5R10D6L10D5R15D8NL25
+0x0058ca  0x0b8a    2  TM
+0x0058d8  0x0b98   15  C1BD10R40H20G20
+0x005904  0x0bc4    8  PRESENTS
+0x005914  0x0bd4   66  S4C2BL81L29H10U40E10R30F10D10L12U4H4L18G4D28F4R18E4U4L5U7R17D16G10
+0x00595a  0x0c1a   60  S4C2BL6L12U24L28D24L12U40E20R12F20D40BL12BU34L28U2E12R4F12D2
+0x00599a  0x0c5a   32  S4C2BR22U48L20U12R52D12L20D48L12
+0x0059be  0x0c7e   59  S4C2BR77R24E15U30H15L24G15D30F15BR4BU12R16E8U20H8L16G8D20F8
+0x005a12  0x0cd2   16  CLASS  SUBMARINE
+0x005a26  0x0ce6   28  by Paul Arlton and Ed Dawson
+0x005a46  0x0d06   20   C Copyright 1984 by
+0x005a5e  0x0d1e   23  Spectrum HoloByte, Inc.
+0x005a8e  0x0d4e   16                  
+0x005aae  0x0d6e   39  C3S4BU13L27U1L47U1L47D1L2D1L1D1R1D1L1F6
+0x005ada  0x0d9a  179  C3LUL2UL4UL6UL11RL20R5G2E4R4ND6R6ND6R4F4BU3BL24L10UR3DL13UR3DL35UL35UL20U4ERFND4R7DL7BL3L2UR2D4L30UL20U5R32BD5BLU4E2U2L4ND3L4ND3L6R2D3U12LNU10LD12L3U3NR2U11LNU8L2NU7L2FD8R3L10G2D3
+0x005b92  0x0e52   50  C3BD5L21UL6U5E1R1F1ND4R2D1L2BL3L7U1R7BD5L41UL10U10
+0x005bd0  0x0e90   28  [1]   NORMAL PLAY  (DEFAULT)
+0x005bf0  0x0eb0   19  [2]   DEMONSTRATION
+0x005c08  0x0ec8   32  [3]   HISTORY AND SPECIFICATIONS
+0x005c2c  0x0eec   10  [4]   EXIT
+0x005c3a  0x0efa   27  PLEASE ENTER AN ITEM NUMBER
+0x005c5a  0x0f1a   20  FROM THE MENU ABOVE:
+0x005c76  0x0f36    4  DEMO
+0x005c7e  0x0f3e    7  HISTORY
+0x005c8a  0x0f4a    5  GATO1
+0x005c94  0x0f54  183  C3S4BR2BU13L144D1L2D1L1D1R1D1L1F13R1D1R2D1R2D1R3D1R5L1D1R30D1R35D1R105U1R15U1R15U1R11U1R9U1R8U1R8U1R7L2R21NU3R4L1U2D4U2L23BU1R7U1R7U1R6U1R5U1R2D5F3R4U7L6U1R3U1R5U1R5U1R3U1R2U1R2U1R1U1
+0x005d50  0x1010  190  C3L1U1L2U1L4U1L6U1L11R1L20R5G2E4R4ND6R6ND6R4F4BU3BL24L10U1R3D1L13U1R3D1L13L85U4E1R1F1ND4R7D1L7BL3L2U1R2D4L50U5R32BD5BL1U4E2U2L4ND3L4ND3L6R2D3U12L1NU10L1D12L3U3NR2U11L1NU8L2NU7L2F1D8R3L10G2D3
+0x005e12  0x10d2   41  BD5L23U4E1R1F1ND4R2D1L2BL3L7U1R7BD4L60U10
