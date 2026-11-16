@@ -10,6 +10,8 @@ export type InputAction =
   | { type: "radioRoom" }
   /** W: persistent track dots on the radar, chart and quadrant map (the original's behaviour) or clean redraws. */
   | { type: "toggleTrails" }
+  /** [ and ]: slower / faster time compression (1x = 2.5 steps per second, 2x, 4x); remake addition. */
+  | { type: "timeScale"; direction: "slower" | "faster" }
   /** ? or H: controls quick-reference overlay (remake addition). */
   | { type: "help" }
   /** Z on the chart: PASSWORD? prompt of the hidden coordinate command (0x0b4d4). */
@@ -38,6 +40,7 @@ export interface KeyLike {
  *   Tab          GAME CONTROL                                    Z (on chart)     hidden coordinate command
  *   W            track dots on radar, chart and quadrant map on/off
  *   ? or H       controls quick-reference overlay (remake addition; pauses the world while shown)
+ *   [ / ]        time compression 1x / 2x / 4x (2.5 / 5 / 10 simulation steps per second; remake addition)
  */
 export function translatePlayKey(e: KeyLike): InputAction | null {
   if (e.ctrlKey || e.altKey || e.metaKey) return null;
@@ -111,6 +114,10 @@ export function translatePlayKey(e: KeyLike): InputAction | null {
     case "H":
     case "?":
       return { type: "help" };
+    case "[":
+      return { type: "timeScale", direction: "slower" };
+    case "]":
+      return { type: "timeScale", direction: "faster" };
     default:
       return null;
   }
@@ -124,11 +131,11 @@ export function shouldPreventDefault(e: KeyLike): boolean {
 
 /** GAME CONTROL screen (0x0aeea-0x0b165): item number typed at "NUMBER OF ITEM TO CHANGE", then an optional value. */
 export type GameControlAction =
-  | { type: "item"; item: 1 | 2 | 3 | 4 | 5 }
+  | { type: "item"; item: 1 | 2 | 3 | 4 | 5 | 6 }
   | { type: "leave" };
 
 export function translateGameControlKey(e: KeyLike): GameControlAction | null {
-  if (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4" || e.key === "5") return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 | 5 };
+  if (/^[1-6]$/.test(e.key)) return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 | 5 | 6 };
   if (e.key === "Enter" || e.key === "Escape" || e.key === "Tab") return { type: "leave" };
   return null;
 }

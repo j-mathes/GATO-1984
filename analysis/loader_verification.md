@@ -175,7 +175,7 @@ second step and above 20 loses the boat at such a step (0x06441-0x065b6). Depth 
 * **Faithful quirks kept on purpose**: the heading wraps to 0 / 6.28 instead of modulo 2 pi; `ds:0x23a6` is the runtime's expression temporary, not an unassigned variable (corrected in the third audit: `headingsAligned` in `physics.ts` makes the tender-alignment test of the resupply condition real, `turnsPositive` in `ai.ts` makes ships turn the short way round - see section 10); damaged ships are marked by speed 1.75;
   an animated hit can be survived with probability difficulty/12 and can destroy the own boat when the target is closer than about 22
   units; hits outside the visible scope sink the target directly.
-* **Remake choices (not in the original)**: the step rate (default 10 per second); durations of the resupply loops (their original
+* **Remake choices (not in the original)**: the step rate (2.5 per second at 1x, see the README's "Pacing"; core default for headless use 10); durations of the resupply loops (their original
   timing depended on the CPU); the damage alarm interval in steps; demo page durations (`demo_script.json`, estimated).
 * **Not decoded / not ported**: radio messages, quadrant map and chart drawing, log screens, the PLAY note frequencies and the
   explosion animation timing. DEMO.EXE is modelled as a narration script (it does not run the simulation).

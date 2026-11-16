@@ -1,4 +1,4 @@
-import { GAME_CONTROL } from "./constants.js";
+import { GAME_CONTROL, TIME_COMPRESSION, type TimeScale } from "./constants.js";
 import type { TimeOfDay } from "./types.js";
 
 /**
@@ -40,9 +40,11 @@ export interface GameSettings {
   timeOfDay: TimeOfDay;
   /** Remake addition: scenario 1..20 to play next, or null/absent for the original's random pick (1 + FIX(RND*20)). */
   mission?: number | null;
+  /** Remake addition: time compression, absent = 1x (the 1984 pace of 2.5 steps per second). */
+  timeScale?: TimeScale;
 }
 
-export const DEFAULT_SETTINGS: Readonly<GameSettings> = { difficulty: 0, sound: true, timeOfDay: 1, mission: null };
+export const DEFAULT_SETTINGS: Readonly<GameSettings> = { difficulty: 0, sound: true, timeOfDay: 1, mission: null, timeScale: 1 };
 
 export class Launcher {
   private state: LauncherState = { screen: "title" };
@@ -75,13 +77,14 @@ export class Launcher {
   }
 }
 
-export type GameControlItem = 1 | 2 | 3 | 4 | 5;
+export type GameControlItem = 1 | 2 | 3 | 4 | 5 | 6;
 
 /**
  * GAME CONTROL screen of GATO1 (0x0aeea-0x0b165):
  * [1] DIFFICULTY LEVEL, typed value clamped to 0..9; [2] SOUND toggles 1/0; [3] TIME OF DAY toggles 1/0;
  * [4] RESET CAPTAIN'S LOG. Any other input (or RETURN) leaves the screen.
  * [5] MISSION SELECT is a remake addition: 1..20 picks the next scenario, 0 (or anything else) goes back to the original's random pick.
+ * [6] TIME COMPRESSION is a remake addition: cycles 1x, 2x, 4x (2.5, 5, 10 steps per second).
  */
 export class GameControl {
   constructor(
@@ -107,6 +110,12 @@ export class GameControl {
       case 5: {
         const n = Math.round(value);
         this.settings.mission = n >= GAME_CONTROL.minMission && n <= GAME_CONTROL.maxMission ? n : null;
+        return true;
+      }
+      case 6: {
+        const scales: readonly TimeScale[] = TIME_COMPRESSION.scales;
+        const at = scales.indexOf(this.settings.timeScale ?? 1);
+        this.settings.timeScale = scales[(at + 1) % scales.length] as TimeScale;
         return true;
       }
       default:

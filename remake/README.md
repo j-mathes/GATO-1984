@@ -53,8 +53,9 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 | L | Captain's log |
 | R | Damage report |
 | M | Radio room, then the control room: with a damaged radio room (compartment 1) the "REPORTS HEAVY DAMAGE" message appears; otherwise the orders are shown again (the original requests a new mission here) |
-| Tab | GAME CONTROL (items 1–4 as in the original; difficulty takes a typed 0–9). Item 5 is a remake addition: NEXT MISSION, `1`–`20` or `R`/`0` for the original's random pick (the default); it applies when the next mission starts, not to the one running |
+| Tab | GAME CONTROL (items 1–4 as in the original; difficulty takes a typed 0–9). Items 5 and 6 are remake additions: 5 = NEXT MISSION, `1`–`20` or `R`/`0` for the original's random pick (the default), applied when the next mission starts, not to the one running; 6 = TIME COMPRESSION, cycles 1x / 2x / 4x |
 | ? or H | Controls quick-reference overlay (remake addition). The world pauses while it is shown; any key closes it and is not passed on |
+| [ / ] | Time compression slower / faster: 1x = 2.5 simulation steps a second (the 1984 pace, default), 2x = 5, 4x = 10. A line at the top confirms the change. Remembered in `localStorage` (`gato.timeScale`); also GAME CONTROL item 6 |
 | Z (on the chart) | Hidden debug command: type `PAED`, Enter, then `x,y`, Enter to teleport (only while no enemy is alerted) |
 | Any key | Skips the Morse order broadcast |
 | Esc | Quit to the launcher |
@@ -64,6 +65,14 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 The launcher menu is `1` play, `2` demo, `3` history, `4` exit.
 
 The log, damage report and GAME CONTROL pause the world; radar, chart and quadrant map do not.
+
+### Pacing: 2.5 Hz simulation, 60 FPS rendering
+
+The original does one pass of its main loop per step and runs it as fast as the CPU allows, so the speed of ships, turning, torpedoes, depth change and the fuel, battery and oxygen drain was whatever a 4.77 MHz IBM PC managed (a floating-point-heavy loop, roughly two and a half passes a second; an estimate, not recorded in the files). The simulation therefore steps 2.5 times a second (400 ms per step) at 1x, with exactly the original's per-step formulas.
+
+Rendering is independent of that: the page draws on every animation frame (60 FPS or whatever the display runs). Positions, headings, depth and speed on the screens are interpolated between the last two steps, so ships, torpedoes, the compass and the gauge needles glide instead of jumping every 400 ms (the picture therefore trails the simulation by one step). Everything the player sets directly (rudder, planes, throttle order, scope facing, doors, engine, screen switches) is applied to the simulation and drawn on the very next frame, with a one-line helm status at the top of the screen; the boat then answers at the step rate, like the original.
+
+`[` and `]` switch between 1x (2.5 steps a second), 2x (5) and 4x (10) to fast-forward empty ocean; the physics per step is identical at every setting. Remake timings that are in seconds rather than original loop passes (resupply speed, the damage alarm interval) keep their real duration at any rate.
 
 ### Wake trails
 
@@ -90,7 +99,7 @@ Test coverage (`src/app/web.test.ts`): every mission screen, GAME CONTROL and th
 ## Layout
 
 - `src/core/` pure simulation with no DOM or Canvas: `physics`, `ai`, `combat`, `simulation`, `launcher`, `demoPlayer`, `scenario`, `types`, `constants`, `rng`. Tests are in `src/core/__tests__/` (unit plus headless end-to-end missions).
-- `src/app/` the App shell, the 10 Hz fixed-timestep runner (with interpolation), orders, history viewer, log store.
+- `src/app/` the App shell, the fixed-timestep runner (2.5 simulation steps a second at 1x, rendered at the display's refresh rate with interpolation), orders, history viewer, log store.
 - `src/audio/` Web Audio synthesizer, Morse and `PLAY` string parsing.
 - `src/input/` keyboard mapping.
 - `src/render/` Canvas drawing, sprites, display modes and the CRT overlay.
@@ -124,5 +133,5 @@ Details live in `../analysis/` (`loader_verification.md`, `exe_architecture.md`,
 - Torpedo-hit explosions follow the original's stages and frame counts (`src/core/explosion.ts`), but the original is CPU bound, so their durations in seconds (about 1.5-5 s) are estimated from the empty-loop lengths. The original blocks the whole game while it plays; the remake keeps the world running.
 - Sound durations: the damage-alarm and sub-lost sweeps call `SOUND freq, duration` with the duration taken from `ds:0x23a6`, i.e. the temporary holding `0.05 * ds:0x09e2` (the sound flag), so they are mute with sound off; how the runtime rounds a duration that short was not determined, so the remake's alarm, sub-lost and mission-complete sounds are inferred. The original hit animation has no sound, the explosion boom is a remake addition.
 - Remake additions that are not in the original: the radio alert tone, the display modes and CRT overlay, wake-trail toggle (`W`), the controls overlay (`?`/`H`), GAME CONTROL item 5 (next mission) and the 2.5 s logo hold (the original's hold is an empty 2000-pass loop whose duration depended on the CPU).
-- The original runs unthrottled; the fixed 10 Hz tick, the display modes and the CRT overlay are remake choices.
+- The original runs unthrottled, one pass of its main loop per simulation step. The remake paces that loop like a 4.77 MHz IBM PC, 2.5 steps a second at 1x; that rate is an estimate, not something stored in the binaries (see "Pacing" above). The display modes and the CRT overlay are remake choices too.
 - Confirm the rights to the original history text before distributing it.

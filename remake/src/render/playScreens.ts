@@ -353,11 +353,13 @@ export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string |
   if (showMission) {
     g.text(6, 15, "[5] NEXT MISSION", COLORS.grey);
     g.text(35, 15, settings.mission ? String(settings.mission) : "RANDOM", COLORS.yellow);
+    g.text(6, 17, "[6] TIME COMPRESSION", COLORS.grey);
+    g.text(35, 17, `${settings.timeScale ?? 1}X`, COLORS.yellow);
   }
   if (prompt) {
-    g.text(7, 18, `${prompt} ${entry}_`, COLORS.white);
+    g.text(7, 20, `${prompt} ${entry}_`, COLORS.white);
   } else {
-    g.text(7, 18, "NUMBER OF ITEM TO CHANGE", COLORS.white);
+    g.text(7, 20, "NUMBER OF ITEM TO CHANGE", COLORS.white);
     g.text(9, 24, "(Press RETURN to continue)", COLORS.grey);
   }
 }

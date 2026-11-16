@@ -41,7 +41,7 @@ export interface SimulationConfig {
   rng: Rng;
   options: SimOptions;
   shipLog: ShipLogDocument;
-  /** Steps per second; only used to turn the original's "every second" checks into step counts. Remake choice, default 10. */
+  /** Steps per second; only used to turn the original's "every second" checks and the remake's wall-clock timings into step counts. Core default 10; the app runs 2.5 (see TIME_COMPRESSION). */
   ticksPerSecond?: number;
   /** Date stamped on sunk ships in the captain's log. */
   date?: string;
@@ -71,7 +71,7 @@ export class Simulation {
   objectiveDone = false;
 
   private readonly rng: Rng;
-  private readonly ticksPerSecond: number;
+  private ticksPerSecond: number;
   private readonly date: string;
   private island: IslandShape;
   private closeList: number[] = [];
@@ -113,6 +113,11 @@ export class Simulation {
 
   setInControlRoom(value: boolean): void {
     this.options.inControlRoom = value;
+  }
+
+  /** The step rate changed (time compression): wall-clock based remake timings (alarm interval, resupply speed) follow it. */
+  setTicksPerSecond(stepsPerSecond: number): void {
+    if (stepsPerSecond > 0) this.ticksPerSecond = stepsPerSecond;
   }
 
   /**
@@ -277,12 +282,12 @@ export class Simulation {
       return;
     }
     if (sub.fuel < RESUPPLY.fuelFullThreshold) {
-      sub.fuel = Math.min(sub.fuel + RESUPPLY.fuelPerStep * RESUPPLY.stepsPerTick, RESUPPLY.fuelCeiling);
+      sub.fuel = Math.min(sub.fuel + (RESUPPLY.fuelPerStep * RESUPPLY.innerStepsPerSecond) / this.ticksPerSecond, RESUPPLY.fuelCeiling);
       return;
     }
     if (sub.torpedoes < START.torpedoes) {
       sub.resupply.reloadTicks += 1;
-      if (sub.resupply.reloadTicks >= RESUPPLY.torpedoReloadTicks) {
+      if (sub.resupply.reloadTicks >= Math.round(RESUPPLY.torpedoReloadSeconds * this.ticksPerSecond)) {
         sub.resupply.reloadTicks = 0;
         sub.torpedoes += 1;
       }

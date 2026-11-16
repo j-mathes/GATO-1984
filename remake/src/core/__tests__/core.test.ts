@@ -312,6 +312,44 @@ describe("mission rules", () => {
     expect(sim.sub.damage[4]).toBe(0);
   });
 
+  it("resupply takes the same real time at any step rate: fuel per step and torpedo reload steps scale with ticksPerSecond", () => {
+    const refuel = (tps: number): { perStep: number; reloadSteps: number } => {
+      const sim = new Simulation({ scenario: scenario(1), rng: createRng(7), options: options(), shipLog, ticksPerSecond: tps });
+      const tender = sim.vessels[2];
+      if (!tender) throw new Error("missing");
+      const park = (): void => {
+        tender.x = sim.sub.x + 50;
+        tender.y = sim.sub.y;
+        tender.heading = sim.sub.heading;
+        tender.speed = 0;
+        tender.waypointIndex = 8;
+      };
+      sim.sub.fuel = 20000;
+      sim.sub.torpedoes = 23;
+      park();
+      sim.step(); // starts the resupply
+      park();
+      const before = sim.sub.fuel;
+      sim.step();
+      const perStep = sim.sub.fuel - before;
+      sim.sub.fuel = 36000;
+      let reloadSteps = 0;
+      while (sim.sub.torpedoes < 24 && reloadSteps < 500) {
+        park();
+        sim.step();
+        reloadSteps += 1;
+      }
+      return { perStep, reloadSteps };
+    };
+    expect(refuel(10)).toEqual({ perStep: 90, reloadSteps: 60 }); // the values of the 10 Hz port
+    expect(refuel(2.5)).toEqual({ perStep: 360, reloadSteps: 15 }); // 900 fuel a second and 6 s a torpedo, as before
+    expect(refuel(5)).toEqual({ perStep: 180, reloadSteps: 30 });
+    const sim = newSim();
+    sim.setTicksPerSecond(2.5);
+    sim.setTicksPerSecond(0); // ignored
+    expect(sim.tick).toBe(0);
+  });
+
   it("resupply only starts when the tender's heading is within 0.393 rad of the boat's (also across the wrap): ds:0x23a6 is the pushed ABS", () => {
     expect(headingsAligned(1, 1.3)).toBe(true);
     expect(headingsAligned(1, 1.5)).toBe(false);

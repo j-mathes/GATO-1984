@@ -147,6 +147,19 @@ export function drawDemoNarration(g: Gfx, page: DemoPage, soundOn: boolean): voi
   g.text(1, 1, `F1 EXIT  F2 SOUND ${soundOn ? "ON " : "OFF"}`, COLORS.grey);
 }
 
+/** One-line helm status for the toast shown right after a helm command (remake addition). */
+export function helmStatus(sub: { orderedSpeed: number; rudder: number; planes: number }): string {
+  const rudder = sub.rudder > 0 ? "LEFT" : sub.rudder < 0 ? "RIGHT" : "MID";
+  const planes = sub.planes < 0 ? "UP" : sub.planes > 0 ? "DOWN" : "LEVEL";
+  return `ORDER ${sub.orderedSpeed.toFixed(1)}  RUDDER ${rudder}  PLANES ${planes}`;
+}
+
+/** Brief status line over the top of the screen (helm orders, time compression). */
+export function drawToast(g: Gfx, text: string): void {
+  g.rect(0, 0, 320, 11, COLORS.black);
+  g.text(2, 1, text.slice(0, 38), COLORS.yellow);
+}
+
 /** Controls quick-reference (remake addition, key ? or H), one string per row of the 40-column text grid. */
 export const CONTROLS_HELP: readonly string[] = [
   "CONTROLS              (any key closes)",
@@ -163,6 +176,7 @@ export const CONTROLS_HELP: readonly string[] = [
   "             radio room",
   "TAB          GAME CONTROL",
   "W            wake trails on / off",
+  "[ / ]        time compression 1x 2x 4x",
   "V            display mode",
   "ESC          quit to the menu",
 ];

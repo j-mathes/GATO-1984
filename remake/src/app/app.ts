@@ -12,6 +12,9 @@ import {
   createRng,
   pickScenarioId,
   RadioInbox,
+  TIME_COMPRESSION,
+  isTimeScale,
+  simHz as stepsPerSecond,
   type CourseJson,
   type DemoScriptDocument,
   type GameSettings,
@@ -21,6 +24,7 @@ import {
   type Scenario,
   type ShipLogDocument,
   type SimEvent,
+  type TimeScale,
 } from "../core/index.js";
 import {
   DEBUG_PASSWORD,
@@ -60,7 +64,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { drawDemoNarration, drawHelpOverlay, drawHistory, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
+import { drawDemoNarration, drawHelpOverlay, drawHistory, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -78,8 +82,13 @@ export interface AppData {
 
 export type AppMode = "splash" | "title" | "menu" | "orders" | "play" | "demo" | "history";
 
-export const TICKS_PER_SECOND = 10;
+/** Simulation steps per second at 1x time compression: the pace of the 1984 PC (see TIME_COMPRESSION). Rendering is independent of it. */
+export const TICKS_PER_SECOND = TIME_COMPRESSION.baseHz;
 const TRAILS_KEY = "gato.trails";
+const TIME_SCALE_KEY = "gato.timeScale";
+const TOAST_MS = 1800;
+/** Commands that change the helm: a status line confirms them on the very next frame (the boat itself answers at the step rate). */
+const HELM_COMMANDS: ReadonlySet<string> = new Set(["speed", "rudder", "planes", "neutral", "engine", "doors"]);
 /**
  * How long the Spectrum HoloByte logo stays up. GATO.EXE holds it with an empty FOR loop of 2000 passes (limit at ds:0x0bcc), whose real
  * duration depended on the CPU, so the time is a remake choice in the 2.5-3 s range.
@@ -129,6 +138,8 @@ export class App {
   private readonly storage: StorageLike | null;
   private readonly trailBuffers = createTrails();
   private lastTrailTick = -1;
+  /** Short status line over the top of the screen (helm orders, time compression); drawn every frame until it expires. */
+  private toast: { text: string; until: number } | null = null;
 
   constructor(
     private readonly g: Gfx,
@@ -143,9 +154,42 @@ export class App {
     this.storage = storage;
     if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
+    const savedScale = Number(storage?.getItem(TIME_SCALE_KEY));
+    if (isTimeScale(savedScale)) this.settings.timeScale = savedScale;
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
     this.sound.enabled = this.settings.sound;
+  }
+
+  /** Time compression: 1x is the 1984 pace (2.5 simulation steps a second), 2x and 4x fast-forward. Keys [ and ], GAME CONTROL item 6; remembered in storage. */
+  get timeScale(): TimeScale {
+    return this.settings.timeScale ?? 1;
+  }
+
+  /** Simulation steps per second at the current time compression. */
+  get stepRate(): number {
+    return stepsPerSecond(this.timeScale);
+  }
+
+  setTimeScale(scale: TimeScale): void {
+    this.settings.timeScale = scale;
+    this.applyTimeScale();
+    this.showToast(`TIME x${scale}  (${stepsPerSecond(scale)} STEPS/S)`);
+  }
+
+  /** Push the current time compression into the running mission and remember it. */
+  private applyTimeScale(): void {
+    this.runner?.setHz(this.stepRate);
+    this.sim?.setTicksPerSecond(this.stepRate);
+    try {
+      this.storage?.setItem(TIME_SCALE_KEY, String(this.timeScale));
+    } catch {
+      // storage may be unavailable (private mode)
+    }
+  }
+
+  private showToast(text: string): void {
+    this.toast = { text, until: this.lastFrame + TOAST_MS };
   }
 
   /** Persistent track dots on the radar, chart and quadrant map (authentic) or clean redraws; key W, remembered in storage. */
@@ -287,6 +331,7 @@ export class App {
         else if (s.periscopeUp !== before.periscope) this.play("periscope");
         else if (s.scopeFacing !== before.facing) this.play("scopeSwitch");
         else if (s.doorsOpen !== before.doors) this.play("doors");
+        if (HELM_COMMANDS.has(action.command.type)) this.showToast(helmStatus(s));
         return;
       }
       case "screen":
@@ -301,6 +346,13 @@ export class App {
       case "help":
         this.helpOpen = true;
         return;
+      case "timeScale": {
+        const scales: readonly TimeScale[] = TIME_COMPRESSION.scales;
+        const at = scales.indexOf(this.timeScale);
+        const next = scales[Math.min(Math.max(at + (action.direction === "faster" ? 1 : -1), 0), scales.length - 1)] as TimeScale;
+        this.setTimeScale(next); // also at the ends, so the indicator confirms the limit
+        return;
+      }
       case "debugPrompt":
         // Hidden command (0x0b4d4): only on the chart and only while no enemy is alerted (ds:0x21aa = 0).
         if (this.screen === "chart" && sim.sub.alertTimer === 0) this.prompt = { kind: "password", editor: new LineEditor(12) };
@@ -368,6 +420,7 @@ export class App {
       this.sim.options.timeOfDay = this.settings.timeOfDay;
       this.sim.options.sound = this.settings.sound;
     }
+    this.applyTimeScale();
   }
 
   private promptKey(e: KeyLike): void {
@@ -402,15 +455,16 @@ export class App {
       rng: createRng(seed),
       options: { ...this.settings, inControlRoom: true },
       shipLog: this.log.document(),
-      ticksPerSecond: TICKS_PER_SECOND,
+      ticksPerSecond: this.stepRate,
       date: todayStamp(),
     });
     this.sim = sim;
-    this.runner = new FixedTimestepRunner(sim, TICKS_PER_SECOND);
+    this.runner = new FixedTimestepRunner(sim, this.stepRate);
     this.snapshot = takeSnapshot(sim);
     this.screen = "control";
     this.prompt = null;
     this.helpOpen = false;
+    this.toast = null;
     this.radio.clear();
     this.lastPlayMs = null;
     this.startOrders(orders);
@@ -640,6 +694,10 @@ export class App {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);
       if (this.helpOpen) drawHelpOverlay(g);
+    }
+    if (this.toast) {
+      if (timeMs < this.toast.until) drawToast(g, this.toast.text);
+      else this.toast = null;
     }
   }
 

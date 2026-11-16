@@ -156,8 +156,10 @@ export const RESUPPLY = {
   fuelFullThreshold: 35950, // ds:0x2790
   fuelPerStep: 9, // fuel = v231a*90 with v231a += 0.1
   fuelCeiling: 36000, // v231a stops at 400
-  stepsPerTick: 10, // not in the original (its loops are timing dependent); remake choice
-  torpedoReloadTicks: 60, // 600-iteration delay per torpedo in the original; remake choice
+  // The original's loops run as fast as the CPU allows, so the remake fixes their real duration instead of a step count; both values
+  // equal the former per-step constants (10 inner steps per tick, 60 ticks per torpedo) at 10 steps per second and scale with the step rate.
+  innerStepsPerSecond: 100, // refuel: fuelPerStep * 100 = 900 fuel per second
+  torpedoReloadSeconds: 6, // 600-iteration delay per torpedo in the original; remake choice
 } as const;
 
 /** Island collision, 0x067db-0x068e2. */
@@ -175,6 +177,27 @@ export const GAME_CONTROL = {
   minMission: 1, // remake addition: [5] MISSION SELECT
   maxMission: 20,
 } as const;
+
+/**
+ * Simulation step rate of the app. The original runs one pass of its main loop per step as fast as the CPU allows; on a 4.77 MHz IBM PC
+ * its floating-point-heavy loop managed roughly two and a half passes a second (remake estimate), hence 2.5 Hz at 1x. 2x and 4x
+ * (5 and 10 Hz) fast-forward empty ocean; the physics per step is identical.
+ */
+export const TIME_COMPRESSION = {
+  baseHz: 2.5,
+  scales: [1, 2, 4],
+} as const;
+
+export type TimeScale = (typeof TIME_COMPRESSION.scales)[number];
+
+export function isTimeScale(value: unknown): value is TimeScale {
+  return (TIME_COMPRESSION.scales as readonly unknown[]).includes(value);
+}
+
+/** Steps per second at a compression factor. */
+export function simHz(scale: TimeScale): number {
+  return TIME_COMPRESSION.baseHz * scale;
+}
 
 /** Display conversion, 0x0a183: compass degrees = CINT(450.0117 - radians*57.2958) MOD 360. */
 export const COMPASS = { offset: 450.0117, degreesPerRadian: 57.2958 } as const;

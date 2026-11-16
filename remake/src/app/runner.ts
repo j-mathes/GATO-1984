@@ -1,4 +1,4 @@
-import type { SimEvent, Simulation } from "../core/index.js";
+import { TIME_COMPRESSION, type SimEvent, type Simulation } from "../core/index.js";
 
 /** What the renderer needs from one simulation step; plain numbers so two of them can be interpolated. */
 export interface Snapshot {
@@ -65,11 +65,14 @@ export interface FrameResult {
 }
 
 /**
- * requestAnimationFrame accumulator: real elapsed time is turned into whole 10 Hz simulation steps; the remainder becomes the
- * interpolation factor so motion stays smooth at any display rate. Frames longer than `maxFrameMs` are clamped (tab switch).
+ * requestAnimationFrame accumulator: real elapsed time is turned into whole simulation steps (2.5 per second at 1x, the pace of the
+ * 1984 PC, see TIME_COMPRESSION); the remainder becomes the interpolation factor, so everything drawn from the snapshot glides at the
+ * display's refresh rate between two slow steps. Frames longer than `maxFrameMs` are clamped (tab switch).
+ * Rendering is not tied to the step rate: the caller draws every animation frame, and live state (controls, lights, text) is read from
+ * the simulation directly, not from the snapshot.
  */
 export class FixedTimestepRunner {
-  readonly stepMs: number;
+  private stepLengthMs: number;
   paused = false;
   private accumulator = 0;
   private lastTime: number | null = null;
@@ -78,12 +81,29 @@ export class FixedTimestepRunner {
 
   constructor(
     private sim: Simulation,
-    readonly hz = 10,
+    private rate: number = TIME_COMPRESSION.baseHz,
     private readonly maxFrameMs = 250,
   ) {
-    this.stepMs = 1000 / hz;
+    this.stepLengthMs = 1000 / rate;
     this.current = takeSnapshot(sim);
     this.previous = this.current;
+  }
+
+  get hz(): number {
+    return this.rate;
+  }
+
+  get stepMs(): number {
+    return this.stepLengthMs;
+  }
+
+  /** Change the step rate (time compression) without disturbing the interpolation: the fraction of a step already elapsed is kept. */
+  setHz(hz: number): void {
+    if (!(hz > 0) || hz === this.rate) return;
+    const fraction = this.accumulator / this.stepLengthMs;
+    this.rate = hz;
+    this.stepLengthMs = 1000 / hz;
+    this.accumulator = fraction * this.stepLengthMs;
   }
 
   /** Switch to another simulation (new mission) without a visual jump. */

@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { App, SPLASH_MS, type AppData } from "./app.js";
+import { App, SPLASH_MS, TICKS_PER_SECOND, type AppData } from "./app.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines } from "./orders.js";
@@ -286,7 +286,7 @@ describe("application shell", () => {
     app.frame(0);
     app.frame(250);
     app.frame(500);
-    expect(sim.tick).toBe(5);
+    expect(sim.tick).toBe(1); // 2.5 steps a second: one step in the first 500 ms
   });
 
   it("GAME CONTROL changes difficulty, sound and time of day; sound off silences effects", () => {
@@ -462,7 +462,7 @@ describe("radio room and message overlay in the app", () => {
     app.keydown({ key: "m" });
     expect(app.screen).toBe("control");
     expect(app.mode).toBe("play");
-    frames(app, 0, 2);
+    frames(app, 0, 3); // the queued report is emitted by the next simulation step, 400 ms away at 2.5 steps a second
     expect(app.radio.current?.message.id).toBe("radioDamaged");
     expect(app.radio.current?.lines.map((l) => l.text)).toEqual(["RADIO ROOM", "REPORTS HEAVY DAMAGE", "NO MESSAGES MAY BE RECEIVED"]);
     frames(app, 500, 6); // 1.5 s > the 10000-pass hold (about 1.1 s)
@@ -1040,5 +1040,216 @@ describe("controls overlay and mission select", () => {
     app.frame(100);
     expect(calls.some(([n, a]) => n === "text" && a[2] === "[4] RESET CAPTAIN'S LOG")).toBe(true);
     expect(calls.some(([n, a]) => n === "text" && a[2] === "[5] NEXT MISSION")).toBe(false);
+  });
+});
+
+describe("1984 pacing: 2.5 Hz simulation under 60 FPS rendering", () => {
+  const FRAME_MS = 1000 / 60;
+  type Call = [string, unknown[]];
+  type Storage = { getItem(k: string): string | null; setItem(k: string, v: string): void };
+  const memoryStorage = (): Storage & { map: Map<string, string> } => {
+    const map = new Map<string, string>();
+    return { map, getItem: (k) => map.get(k) ?? null, setItem: (k, v) => void map.set(k, v) };
+  };
+
+  function makeApp(storage: Storage | null = null): { app: App; calls: Call[]; sim: () => Simulation; runner: () => FixedTimestepRunner } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), storage, () => 0.5);
+    const priv = app as unknown as { sim: Simulation; runner: FixedTimestepRunner };
+    return { app, calls, sim: () => priv.sim, runner: () => priv.runner };
+  }
+  const press = (app: App, ...keys: string[]) => keys.forEach((key) => app.keydown({ key }));
+  function startPlay(storage: Storage | null = null) {
+    const h = makeApp(storage);
+    press(h.app, "x");
+    h.app.startMission(1, 1);
+    press(h.app, "x");
+    h.app.frame(0);
+    return h;
+  }
+  /** Run 60 FPS frames from `from` for `ms`; returns the time of the last frame. */
+  function run(app: App, from: number, ms: number): number {
+    let t = from;
+    for (let i = 0; i < Math.round(ms / FRAME_MS); i += 1) {
+      t += FRAME_MS;
+      app.frame(t);
+    }
+    return t;
+  }
+
+  it("the runner and the app default to 2.5 steps a second, a step every 400 ms", () => {
+    const sim = scenarioSim();
+    const runner = new FixedTimestepRunner(sim);
+    expect(runner.hz).toBe(2.5);
+    expect(runner.stepMs).toBe(400);
+    runner.frame(0);
+    expect(runner.frame(200).steps).toBe(0);
+    const r = runner.frame(400);
+    expect(r.steps).toBe(1);
+    expect(r.alpha).toBeCloseTo(0, 6);
+    expect(TICKS_PER_SECOND).toBe(2.5);
+    const { app, sim: appSim, runner: appRunner } = startPlay();
+    expect(app.timeScale).toBe(1);
+    expect(app.stepRate).toBe(2.5);
+    expect(appRunner().stepMs).toBe(400);
+    expect(appSim().tick).toBe(0);
+  });
+
+  it("60 FPS frames glide between 400 ms steps: position and heading change on every frame, with no jumps", () => {
+    const sim = scenarioSim();
+    sim.sub.speed = 8;
+    sim.sub.orderedSpeed = 8;
+    sim.sub.rudder = 0.005; // the boat is turning
+    const runner = new FixedTimestepRunner(sim);
+    let t = 0;
+    runner.frame(t);
+    const xs: number[] = [];
+    const headings: number[] = [];
+    let alphaDrops = 0;
+    let lastAlpha = 0;
+    let steps = 0;
+    for (let i = 0; i < 120; i += 1) {
+      t += FRAME_MS;
+      const r = runner.frame(t);
+      steps += r.steps;
+      if (r.alpha < lastAlpha) alphaDrops += 1; // only at a step boundary
+      lastAlpha = r.alpha;
+      xs.push(r.render.sub.x);
+      headings.push(r.render.sub.heading);
+    }
+    expect(steps).toBe(5); // two seconds at 2.5 Hz
+    expect(alphaDrops).toBe(steps); // alpha restarts once per step and rises in between
+    const dx = xs.slice(1).map((x, i) => Math.abs(x - (xs[i] as number)));
+    const dh = headings.slice(1).map((h, i) => Math.abs(h - (headings[i] as number)));
+    // 24 frames per step: after the first steps every frame moves the boat and turns it, by about the same small amount
+    expect(dx.slice(30).every((d) => d > 0)).toBe(true);
+    expect(dh.slice(60).every((d) => d > 0)).toBe(true); // the turn rate is computed at the end of a step, so the heading starts changing at step 2
+    const typical = (dx.slice(30).reduce((a, b) => a + b, 0) / dx.slice(30).length) || 1;
+    expect(Math.max(...dx.slice(30))).toBeLessThan(typical * 2.5);
+    expect(new Set(xs.map((x) => x.toFixed(6))).size).toBeGreaterThan(90); // not 5 jumps in 120 frames (only the first step's frames repeat)
+  });
+
+  it("changing the step rate keeps the interpolation phase", () => {
+    const runner = new FixedTimestepRunner(scenarioSim());
+    runner.frame(0);
+    expect(runner.frame(200).alpha).toBeCloseTo(0.5, 6);
+    runner.setHz(10);
+    expect(runner.stepMs).toBe(100);
+    expect(runner.frame(200).alpha).toBeCloseTo(0.5, 6);
+    expect(runner.frame(250).steps).toBe(1);
+  });
+
+  it("control inputs show on the very next frame, long before the boat answers at the next step", () => {
+    const { app, calls, sim } = startPlay();
+    let t = run(app, 0, 40);
+    const tick = sim().tick;
+    const frameOf = (): string => {
+      calls.length = 0;
+      t += FRAME_MS;
+      app.frame(t);
+      return JSON.stringify(calls);
+    };
+    const before = frameOf();
+    press(app, "F3");
+    expect(sim().sub.orderedSpeed).toBeGreaterThan(0); // the order is in the simulation at once
+    const after = frameOf();
+    expect(sim().tick).toBe(tick); // no simulation step in between
+    expect(after).not.toBe(before);
+    expect(calls.some(([n, a]) => n === "text" && /^ORDER \d/.test(String(a[2])))).toBe(true); // helm status line
+    expect(sim().sub.speed).toBeLessThan(sim().sub.orderedSpeed); // the boat itself still has to accelerate, one step at a time
+    press(app, "ArrowLeft", "ArrowDown");
+    frameOf();
+    expect(calls.some(([n, a]) => n === "text" && String(a[2]).includes("RUDDER LEFT") && String(a[2]).includes("PLANES DOWN"))).toBe(true);
+    const scope = frameOf();
+    press(app, "p");
+    expect(sim().sub.scopeFacing).toBe("P");
+    expect(frameOf()).not.toBe(scope);
+    const doors = frameOf();
+    press(app, "t");
+    expect(sim().sub.doorsOpen).toBe(true);
+    expect(frameOf()).not.toBe(doors);
+    const screen = frameOf();
+    press(app, "c");
+    expect(app.screen).toBe("chart");
+    expect(frameOf()).not.toBe(screen);
+    expect(sim().tick).toBe(tick);
+    t = run(app, t, 2000); // the toast fades
+    calls.length = 0;
+    run(app, t, 20);
+    expect(calls.some(([n, a]) => n === "text" && /^ORDER /.test(String(a[2])))).toBe(false);
+  });
+
+  it("[ and ] change the time compression 1x / 2x / 4x = 2.5 / 5 / 10 steps a second, with a brief indicator", () => {
+    expect(translatePlayKey({ key: "[" })).toEqual({ type: "timeScale", direction: "slower" });
+    expect(translatePlayKey({ key: "]" })).toEqual({ type: "timeScale", direction: "faster" });
+    const { app, calls, sim, runner } = startPlay();
+    const stepsIn = (ms: number, from: number): { steps: number; end: number } => {
+      const before = sim().tick;
+      const end = run(app, from, ms + 10); // a little over, so rounding of the frame times cannot lose a step
+      return { steps: sim().tick - before, end };
+    };
+    let t = 0;
+    let r = stepsIn(4000, t);
+    expect(r.steps).toBe(10);
+    t = r.end;
+    press(app, "]");
+    expect([app.timeScale, app.stepRate, runner().hz]).toEqual([2, 5, 5]);
+    calls.length = 0;
+    t = run(app, t, 20);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "TIME x2  (5 STEPS/S)")).toBe(true);
+    r = stepsIn(4000, t);
+    expect(r.steps).toBe(20);
+    t = r.end;
+    press(app, "]");
+    expect([app.timeScale, app.stepRate, runner().hz]).toEqual([4, 10, 10]);
+    r = stepsIn(4000, t);
+    expect(r.steps).toBe(40);
+    t = r.end;
+    press(app, "]");
+    expect(app.timeScale).toBe(4); // already the fastest
+    press(app, "[", "[", "[");
+    expect([app.timeScale, runner().hz]).toEqual([1, 2.5]);
+    t = run(app, t, 2500); // the indicator expires
+    calls.length = 0;
+    run(app, t, 20);
+    expect(calls.some(([n, a]) => n === "text" && String(a[2]).startsWith("TIME x"))).toBe(false);
+  });
+
+  it("time compression is remembered, validated, and shown on GAME CONTROL item 6", () => {
+    const storage = memoryStorage();
+    const first = startPlay(storage);
+    press(first.app, "Tab", "6");
+    expect(first.app.timeScale).toBe(2);
+    expect(first.runner().hz).toBe(5);
+    first.calls.length = 0;
+    first.app.frame(5000);
+    expect(first.calls.some(([n, a]) => n === "text" && a[2] === "[6] TIME COMPRESSION")).toBe(true);
+    expect(first.calls.some(([n, a]) => n === "text" && a[2] === "2X")).toBe(true);
+    press(first.app, "6");
+    expect(first.app.timeScale).toBe(4);
+    expect(storage.map.get("gato.timeScale")).toBe("4");
+    const second = makeApp(storage);
+    expect(second.app.timeScale).toBe(4); // restored
+    press(second.app, "x");
+    second.app.startMission(1, 1);
+    expect(second.runner().hz).toBe(10);
+    storage.map.set("gato.timeScale", "3");
+    expect(makeApp(storage).app.timeScale).toBe(1); // junk falls back to 1x
+    press(first.app, "6");
+    expect(first.app.timeScale).toBe(1);
+    const demo = makeApp();
+    press(demo.app, "x", "2");
+    (demo.app as unknown as { demo: { screen: string } }).demo.screen = "gameControl";
+    demo.calls.length = 0;
+    demo.app.frame(100);
+    expect(demo.calls.some(([n, a]) => n === "text" && a[2] === "[6] TIME COMPRESSION")).toBe(false);
   });
 });
