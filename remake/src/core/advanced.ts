@@ -20,6 +20,8 @@ export type AdvancedKey =
   | "radioReread"
   | "boomSound"
   | "radioAlert"
+  | "solidShips"
+  | "enhancedGraphics"
   | "pcPace"
   | "missionSelect"
   | "explosionsRun"
@@ -63,6 +65,8 @@ export const ADVANCED_FEATURES: readonly AdvancedFeature[] = [
   { key: "explosionsRun", row: 32, label: "WORLD RUNS DURING BLASTS", default: true, remake: "the world keeps running while an explosion plays", original: "the world waits while an explosion plays" },
   { key: "boomSound", row: 24, label: "EXPLOSION BOOM SOUND", default: true, remake: "explosions make a descending boom", original: "silent explosions" },
   { key: "radioAlert", row: 25, label: "RADIO ALERT TONE", default: true, remake: "radio messages sound an alert tone", original: "silent messages" },
+  { key: "solidShips", row: 43, label: "SOLID SHIPS IN THE SCOPE", default: true, remake: "ships in the original picture are filled in, so they show up better when small", original: "ships are the original's open line art, see-through" },
+  { key: "enhancedGraphics", row: 42, label: "ENHANCED GRAPHICS", default: false, remake: "the scope, ships, radar, chart and map are drawn sharply in natural colours, with typewriter text", original: "the 1984 320 x 200 four-colour picture" },
   { key: "customControls", row: 38, label: "CUSTOM CONTROLS", default: false, remake: "keys can be reassigned: press C on this screen to open the control assignments", original: "the original key assignments only" },
   { key: "simpleSpeed", row: 40, label: "SIMPLE SPEED KEYS", default: false, requires: "customControls", remake: "= and - step the speed up and down; 0 stops, Backspace reverses, E toggles diesel/electric", original: "a key per speed stage (F1 F3 F5 F7), F9 stop, F10 reverse, D and E engines" },
 ];

@@ -34,6 +34,11 @@ export class TrailBuffer {
     }
   }
 
+  /** Calls `visit(x, y, paletteIndex)` for every remembered dot pixel (the enhanced screens draw the tracks in their own style). */
+  forEach(visit: (x: number, y: number, index: number) => void): void {
+    for (const [key, index] of this.pixels) visit(key % LOGICAL_WIDTH, Math.floor(key / LOGICAL_WIDTH), index);
+  }
+
   draw(g: Gfx, palette: readonly string[]): void {
     for (const [key, index] of this.pixels) g.rect(key % LOGICAL_WIDTH, Math.floor(key / LOGICAL_WIDTH), 1, 1, palette[index] as string);
   }

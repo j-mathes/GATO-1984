@@ -2,6 +2,13 @@ import { describe, expect, it } from "vitest";
 import { MAX_BACKING_WIDTH, backingSize, computeDisplaySize, computeLayout, enhancedViewSize } from "./display.js";
 import { Gfx } from "./gfx.js";
 import { EnhancedRenderer } from "./enhanced/scene.js";
+import { darken, lighten, mix, rgba } from "./enhanced/colors.js";
+import { starField } from "./enhanced/scope.js";
+import { CHART_ISLANDS, RADAR_CX, RADAR_CY, RADAR_K, RADAR_R, circleRadii, radarBlip } from "./enhanced/scenes.js";
+import { enclosedPixels } from "./enhanced/shipArt.js";
+import { closeHull, thinPixels } from "./hull.js";
+import { centredColumn } from "./textScreens.js";
+import { SinkingAnimation, drawSegments } from "../core/index.js";
 import { drawGridText, textGrid } from "./enhanced/typography.js";
 
 function recordingGfx(): { g: Gfx; log: string[] } {
@@ -65,5 +72,107 @@ describe("enhanced scenes", () => {
     expect(r.scene("control")).toBe(scene);
     expect(r.scene("radar")).toBeUndefined();
     expect(r.screens).toEqual(["control"]);
+  });
+});
+
+describe("enhanced ship shapes", () => {
+  const grid = (rows: string[]): Uint8Array => Uint8Array.from(rows.flatMap((r) => [...r].map((c) => (c === "#" ? 1 : 0))));
+  const show = (m: Uint8Array, w: number): string[] => Array.from({ length: m.length / w }, (_, y) => [...m.slice(y * w, (y + 1) * w)].map((v) => (v ? "#" : ".")).join(""));
+
+  it("closes the open hull below the deck, following the slope of its bow and stern edges, and leaves what is above the deck alone", () => {
+    const open = grid([
+      "...#......", // a mast
+      "...#......",
+      "..########", // deck
+      ".#......#.", // the bow edge slopes out to the left, the stern edge in
+      "#......#..",
+      "..........",
+    ]);
+    expect(show(closeHull(open, 10, 6, 4), 10)).toEqual(["...#......", "...#......", "..########", ".########.", "########..", ".........."]);
+  });
+
+  it("does not fill a row that has no solid pixel, and never square off the ends", () => {
+    const open = grid(["#######", "#.....#", ".......", "..#.#.."]);
+    const closed = show(closeHull(open, 7, 4, 3), 7);
+    expect(closed[1]).toBe("#######"); // between the two edge pixels
+    expect(closed[2]).toBe("......."); // a row with nothing is left alone
+    expect(closed[3]).toBe("..###.."); // only as wide as its own outermost pixels
+  });
+
+  it("finds thin lines (rigging, stubs) as the solid pixels outside any 2 x 2 block", () => {
+    const m = grid(["###..", "###.#", "...#."]);
+    expect(show(thinPixels(m, 5, 3), 5)).toEqual([".....", "....#", "...#."]);
+  });
+});
+
+describe("DRAW segments", () => {
+  it("gives the lines of the string: blank moves leave none, N comes back to its start", () => {
+    expect(drawSegments(10, 10, "R5BD3NU2L1")).toEqual([
+      { x0: 10, y0: 10, x1: 15, y1: 10, color: 3 },
+      { x0: 15, y0: 13, x1: 15, y1: 11, color: 3 },
+      { x0: 15, y0: 13, x1: 14, y1: 13, color: 3 },
+    ]);
+  });
+});
+
+describe("the sinking in the enhanced graphics", () => {
+  it("keeps the cracks it has drawn, and says how far the water has risen", () => {
+    const s = new SinkingAnimation("cracks");
+    expect(s.drawnCracks).toHaveLength(2); // the two cracks before the loop
+    expect(s.progress).toBe(0);
+    s.advance(s.duration / 2);
+    expect(s.progress).toBeGreaterThan(0.4);
+    expect(s.progress).toBeLessThan(0.6);
+    expect(s.drawnCracks.length).toBeGreaterThan(2);
+    s.finish();
+    expect(s.progress).toBe(1);
+    expect(s.drawnCracks).toHaveLength(9);
+  });
+});
+
+describe("title page text", () => {
+  it("centres a line on the 40-column screen, on a half column for an odd length", () => {
+    expect(centredColumn("by Paul Arlton and Ed Dawson")).toBe(7);
+    expect(centredColumn("Enhancements by Jared Mathes")).toBe(7);
+    expect(centredColumn("CLASS  SUBMARINE")).toBe(13);
+    expect(centredColumn("Spectrum HoloByte, Inc.")).toBe(9.5);
+  });
+});
+
+describe("enhanced colours and geometry", () => {
+  it("mixes, lightens and darkens hex colours", () => {
+    expect(mix("#000000", "#ffffff", 0.5)).toBe("#808080");
+    expect(lighten("#000000", 1)).toBe("#ffffff");
+    expect(darken("#ff8000", 0.5)).toBe("#804000");
+    expect(rgba("#ff0000", 0.5)).toBe("rgba(255,0,0,0.5)");
+  });
+
+  it("finds the inside of a closed outline, and nothing when the outline has a gap", () => {
+    const ring = ["#####", "#...#", "#...#", "#####"];
+    const gap = ["#####", "#...#", "#....", "#####"];
+    const alpha = (rows: string[]): number[] => rows.flatMap((row) => [...row].flatMap((ch) => [0, 0, 0, ch === "#" ? 255 : 0]));
+    expect([...enclosedPixels(alpha(ring), 5, 4)].reduce((a, b) => a + b, 0)).toBe(6);
+    expect([...enclosedPixels(alpha(gap), 5, 4)].reduce((a, b) => a + b, 0)).toBe(0);
+  });
+
+  it("the night sky has a fixed star field", () => {
+    const stars = starField();
+    expect(stars).toEqual(starField());
+    expect(stars.every((s) => s.x >= 0 && s.x < 1 && s.y >= 0 && s.y < 1)).toBe(true);
+  });
+
+  it("the radar puts ahead at the top and port on the left, scaled to the ring (the original's 0.065 pixels per unit, enlarged)", () => {
+    expect(radarBlip(0, 0)).toEqual({ x: RADAR_CX, y: RADAR_CY });
+    const ahead = radarBlip(0, 1000);
+    expect(ahead.x).toBeCloseTo(RADAR_CX, 6);
+    expect(ahead.y).toBeCloseTo(RADAR_CY - 65 * RADAR_K, 6);
+    expect(radarBlip(Math.PI / 2, 1000).x).toBeCloseTo(RADAR_CX - 65 * RADAR_K, 6); // relative bearings run counter-clockwise: 90 degrees is port
+    expect(RADAR_R).toBeCloseTo(101 * RADAR_K, 6);
+  });
+
+  it("BASIC's CIRCLE aspect shrinks the vertical radius below 1 and the horizontal one above 1", () => {
+    expect(circleRadii(10, 0.9)).toEqual({ rx: 10, ry: 9 });
+    expect(circleRadii(13, 1.5)).toEqual({ rx: 13 / 1.5, ry: 13 });
+    expect(CHART_ISLANDS).toHaveLength(12);
   });
 });

@@ -48,6 +48,9 @@ import { CONTROL_DEFS, DEFAULT_KEYMAP, Keymap, controlGroup, controlLabel, isAss
 import { COLORS, Gfx, LOGICAL_HEIGHT, LOGICAL_WIDTH } from "../render/gfx.js";
 import { ENHANCED_HEIGHT, type Graphics } from "../render/display.js";
 import { EnhancedRenderer } from "../render/enhanced/scene.js";
+import { registerEnhancedScenes } from "../render/enhanced/scenes.js";
+import { OXYGEN_FADE_SECONDS, drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
+import { ShipArt } from "../render/enhanced/shipArt.js";
 import {
   drawCaptainsLog,
   drawChart,
@@ -152,6 +155,8 @@ export class App {
   private lastPlayMs: number | null = null;
   /** The lost-boat sequence (core/sinking.ts) from the moment the boat is lost; it stays (finished) as the flooded screen until the next mission. */
   private sinking: SinkingAnimation | null = null;
+  /** Enhanced graphics only: when the screen began to go dark because the air ran out (the original just shows the message). */
+  private oxygenFadeStart: number | null = null;
   private currentOrders: OrdersJson | null = null;
   /** Radio/status messages of the original (core/radio.ts), shown over the control room while the mission runs. */
   readonly radio = new RadioInbox();
@@ -205,6 +210,12 @@ export class App {
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
     this.sound.enabled = this.settings.sound;
+    if (cockpit) registerEnhancedScenes(this.enhanced, { art: new ShipArt(sprites), cockpit, trails: this.trailBuffers, trailsOn: () => this.trails });
+  }
+
+  /** The ENHANCED GRAPHICS switch decides the graphics; the page calls this once its canvas is wired, and the switch calls it on every change. */
+  syncGraphics(): void {
+    this.setGraphics(this.advanced.on("enhancedGraphics") ? "enhanced" : "original");
   }
 
   /** Time compression: 1x is the 1984 pace (2.5 simulation steps a second), 2x and 4x fast-forward. Keys [ and ], GAME CONTROL item 6; remembered in storage. */
@@ -254,6 +265,7 @@ export class App {
     }
     this.controls.setSimpleSpeed(this.advanced.effective("simpleSpeed")); // the speed keys follow SIMPLE SPEED KEYS (and CUSTOM CONTROLS)
     this.applyTimeScale();
+    this.syncGraphics();
     this.onAdvancedChange?.();
   }
 
@@ -603,7 +615,7 @@ export class App {
       return;
     }
     if (sim.status !== "running") {
-      if (this.sinking && !this.sinking.done) return; // the sequence blocks the program until it is over
+      if (this.endPending()) return; // the sequence blocks the program until it is over
       if (e.key.toUpperCase() === "Y") this.startMission();
       else if (e.key.toUpperCase() === "N" || e.key === "Escape") this.returnToMenu("simulation");
       return;
@@ -799,6 +811,7 @@ export class App {
     this.radio.clear();
     this.lastPlayMs = null;
     this.sinking = null;
+    this.oxygenFadeStart = null;
     this.startOrders(orders);
     this.mode = "orders";
   }
@@ -914,6 +927,7 @@ export class App {
     this.sound.enabled = this.settings.sound;
     this.sim = null;
     this.sinking = null;
+    this.oxygenFadeStart = null;
     this.runner = null;
     this.orders = null;
     this.helpOpen = false;
@@ -1101,6 +1115,7 @@ export class App {
       this.sinking = new SinkingAnimation(this.screen === "control" ? "cracks" : "bands"); // the original tests ds:0x21ce (0x0b5f0)
     }
     this.sinking?.advance(dt);
+    if (this.oxygenFadeStart === null && sim.status === "suffocated" && this.graphicsMode === "enhanced") this.oxygenFadeStart = timeMs;
     sim.advanceExplosions(dt);
     this.radio.advance(dt);
     this.snapshot = result.render;
@@ -1109,7 +1124,7 @@ export class App {
 
   private draw(timeMs: number, sim: Simulation, snap: Snapshot): void {
     const g = this.g;
-    const view: PlayView = { sim, snap, settings: this.settings, sprites: this.sprites, log: this.log, timeMs };
+    const view: PlayView = { sim, snap, settings: this.settings, sprites: this.sprites, log: this.log, timeMs, solidShips: this.advanced.on("solidShips") };
     // tracks are only remembered once per simulation step (the original plots once per pass of its loop)
     const record = sim.tick !== this.lastTrailTick;
     this.lastTrailTick = sim.tick;
@@ -1118,9 +1133,15 @@ export class App {
     if (this.prompt) {
       drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
     }
-    if (this.sinking) drawSinking(g, this.sinking, this.screenPalette());
+    if (this.sinking) {
+      if (this.graphicsMode === "enhanced") {
+        drawEnhancedSinking(g, this.sinking, this.enhancedView.width, this.enhancedView.height, timeMs);
+        g.view(LOGICAL_WIDTH, LOGICAL_HEIGHT);
+      } else drawSinking(g, this.sinking, this.screenPalette());
+    }
+    if (this.oxygenFadeStart !== null && sim.status === "suffocated") drawOxygenFade(g, (timeMs - this.oxygenFadeStart) / 1000);
     if (sim.status !== "running") {
-      if (!this.sinking || this.sinking.done) drawEnd(g, sim.status, this.advanced.on("endBox"));
+      if (!this.endPending()) drawEnd(g, sim.status, this.advanced.on("endBox"));
     } else {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);
@@ -1130,6 +1151,12 @@ export class App {
       if (timeMs < this.toast.until) drawToast(g, this.toast.text);
       else this.toast = null;
     }
+  }
+
+  /** The sinking sequence or the oxygen fade is still running: the end message waits and keys do nothing. */
+  private endPending(): boolean {
+    if (this.sinking && !this.sinking.done) return true;
+    return this.oxygenFadeStart !== null && (this.lastFrame - this.oxygenFadeStart) / 1000 < OXYGEN_FADE_SECONDS;
   }
 
   /** The four colours of the screen the sinking sequence paints over (colour 2 = water, 3 = cracks). */
@@ -1146,7 +1173,7 @@ export class App {
     const showTime = remakeExtras && this.advanced.on("gameControlExtras");
     const trail = trails && (screen === "radar" || screen === "chart" || screen === "quadrant") ? this.trailBuffers[screen] : undefined;
     const prompt = editor ? (this.editorItem === 5 ? "MISSION 1-20, R = RANDOM" : "NEW DIFFICULTY LEVEL") : null;
-    const scene = this.graphicsMode === "enhanced" ? this.enhanced.scene(screen) : undefined;
+    const scene = this.graphicsMode === "enhanced" && remakeExtras ? this.enhanced.scene(screen) : undefined; // the demo keeps the original pictures
     if (scene) {
       const { width, height } = this.enhancedView;
       g.view(width, height);

@@ -77,12 +77,19 @@ export class SinkingAnimation {
   private readonly passSeconds: number;
   private applied = 0;
   private elapsed = 0;
+  /** The cracks drawn so far, in order (the enhanced graphics draw them as lines instead of reading the pixels). */
+  readonly drawnCracks: Crack[] = [];
 
   constructor(readonly variant: SinkingVariant) {
     this.passes = sinkingPasses(variant);
     this.passSeconds = variant === "cracks" ? SINKING_TIMING.cracksPass : SINKING_TIMING.bandsPass;
     this.duration = this.passes.length * this.passSeconds;
     for (const c of CRACKS) if (variant === "cracks" && c.frame === null) this.crack(c);
+  }
+
+  /** How much of the loop has run, 0 to 1: the water has risen this far up the screen. */
+  get progress(): number {
+    return this.passes.length === 0 ? 1 : this.applied / this.passes.length;
   }
 
   get done(): boolean {
@@ -115,6 +122,7 @@ export class SinkingAnimation {
   }
 
   private crack(c: Crack): void {
+    this.drawnCracks.push(c);
     for (const p of drawPixels(c.x, c.y, c.draw, CRACK_COLOR)) {
       if (p.x >= 0 && p.x < SINKING_WIDTH && p.y >= 0 && p.y < SINKING_HEIGHT) this.overlay[p.y * SINKING_WIDTH + p.x] = p.color;
     }

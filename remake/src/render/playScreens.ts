@@ -33,6 +33,8 @@ export interface PlayView {
   settings: GameSettings;
   sprites: SpriteLibrary | null;
   log: LogStore;
+  /** SOLID SHIPS: the ships of the scope are drawn filled instead of as the original's open line art (not used by the demo). */
+  solidShips?: boolean;
   /** performance.now() in milliseconds, for animation only. */
   timeMs: number;
 }
@@ -203,12 +205,14 @@ export function drawContact(g: Gfx, v: PlayView, c: LiveContact, x: number, y: n
     if (img) g.image(img, 0, 0, img.width, img.height, x - (img.width * scale) / 2, y - img.height * scale, img.width * scale, img.height * scale);
     return;
   }
-  // with a screen palette the ships are line art in the DRAW colour (colour 0 by day, as in the original screenshots)
+  // with a screen palette the ships are line art in the DRAW colour (colour 0 by day, as in the original screenshots); SOLID SHIPS fills them
   const sprite = v.sprites?.ship(c.typeCode, c.frame, outline !== undefined || !day);
   if (sprite) {
     const f = sprite.frame;
-    const src = outline !== undefined && v.sprites ? v.sprites.tint(sprite.img, outline) : sprite.img;
-    g.image(src, f.cell.x, f.cell.y, f.cell.w, f.cell.h, x - (f.origin.x - f.cell.x) * scale, y - (f.origin.y - f.cell.y) * scale, f.cell.w * scale, f.cell.h * scale);
+    const solid = v.solidShips ? v.sprites?.solidShip(c.typeCode, c.frame, day ? COLORS.black : (outline ?? COLORS.white)) : null; // black by day (the palette's colour 0 is a dark grey), as the outline is white at night
+    const src = solid ?? (outline !== undefined && v.sprites ? v.sprites.tint(sprite.img, outline) : sprite.img);
+    const [sx, sy] = solid ? [0, 0] : [f.cell.x, f.cell.y];
+    g.image(src, sx, sy, f.cell.w, f.cell.h, x - (f.origin.x - f.cell.x) * scale, y - (f.origin.y - f.cell.y) * scale, f.cell.w * scale, f.cell.h * scale);
   } else g.rect(x - 4, y - 4, 8, 4, day ? COLORS.black : COLORS.white);
 }
 
@@ -363,9 +367,9 @@ export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string |
   }
   if (showAdvanced) g.text(6, 19, "[7] ADVANCED OPTIONS", COLORS.grey);
   if (prompt) {
-    g.text(7, 20, `${prompt} ${entry}_`, COLORS.white);
+    g.text(7, 21, `${prompt} ${entry}_`, COLORS.white);
   } else {
-    g.text(7, 20, "NUMBER OF ITEM TO CHANGE", COLORS.white);
+    g.text(7, 21, "NUMBER OF ITEM TO CHANGE", COLORS.white);
     g.text(9, 24, "(Press RETURN to continue)", COLORS.grey);
   }
 }
@@ -406,7 +410,7 @@ export function drawEnd(g: Gfx, status: Simulation["status"], framed = true): vo
   g.rect(24, 70, 272, 56, COLORS.white, false);
   const text = status === "suffocated" ? RADIO_MESSAGES.oxygenExhausted.lines.map((l) => l.text) : ["YOUR SUBMARINE HAS BEEN LOST"];
   text.forEach((t, i) => g.centered(10 + i, t, COLORS.red));
-  g.centered(13, "DO YOU WANT DO PLAY AGAIN? (Y/N)", COLORS.white);
+  g.centered(13, "DO YOU WANT TO PLAY AGAIN? (Y/N)", COLORS.white); // the original's text has a typo (DO for TO); kept in the 1984 variant above
 }
 
 /** A radio/status message over the control room: the original's black box (BF, colour 0) with the text on its LOCATE cells. */

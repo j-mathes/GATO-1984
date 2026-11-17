@@ -82,6 +82,7 @@ async function boot(): Promise<void> {
     }
     display.setGraphics(graphics);
   };
+  app.syncGraphics(); // a stored ENHANCED GRAPHICS switch takes effect at start
   app.onAdvancedChange = () => display.setModesEnabled(app.advanced.on("displayModes"));
   app.onAdvancedChange();
   attachKeyboard(window, (e) => {

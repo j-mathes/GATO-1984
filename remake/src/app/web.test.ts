@@ -9,10 +9,12 @@ import { FixedTimestepRunner, interpolate, lerpAngle, takeSnapshot } from "./run
 import { buildMorseSchedule, type MorseTables } from "../audio/morse.js";
 import { noteFrequency, parsePlay, totalSeconds } from "../audio/play.js";
 import { BIOS_TICK_SECONDS, EFFECTS, SoundEngine, type AudioContextLike, type OscillatorLike } from "../audio/soundEngine.js";
-import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Simulation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
+import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Simulation, SinkingAnimation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
+import { drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import { CONTROL_DEFS, CONTROL_GROUPS, Keymap, isLocked, type ControlId } from "../input/controls.js";
 import type { Gfx } from "../render/gfx.js";
+import { Gfx as RealGfx } from "../render/gfx.js";
 import { COLORS } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
 import { ENHANCEMENT_CREDIT, HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText, ADVANCED_PAGE_SIZE } from "../render/textScreens.js";
@@ -939,7 +941,7 @@ describe("title wipe (title_letters -> title)", () => {
     expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
     // the remake's credit sits between the authors (row 17) and the copyright (row 21), in the colour of the authors' line
     expect(calls.find(([n, a]) => n === "centered" && a[1] === ENHANCEMENT_CREDIT)?.[1]).toEqual([19, ENHANCEMENT_CREDIT, "#ffffff"]);
-    expect(calls.find(([n, a]) => n === "text" && String(a[2]).includes("Arlton"))?.[1].slice(0, 2)).toEqual([6, 17]);
+    expect(calls.find(([n, a]) => n === "text" && String(a[2]).includes("Arlton"))?.[1].slice(0, 2)).toEqual([7, 17]); // centred (the original's cell is column 6)
   });
 
   it("a key press during the wipe still leaves the title page", () => {
@@ -1964,13 +1966,13 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
   };
 
   it("offers the 18 requested rows plus the sinking scene, CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line, the sinking skip and the custom-controls pair", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 15, 2, 17, 20, 28, 32, 24, 25, 38, 40]);
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 15, 2, 17, 20, 28, 32, 24, 25, 43, 42, 38, 40]);
     const keys = ADVANCED_FEATURES.map((f) => f.key);
     const at = keys.indexOf("hotkeys");
     expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);
     expect(ADVANCED_FEATURES.every((f) => f.label.length <= 30)).toBe(true);
     const { app } = boot();
-    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(!["helmHud", "skipSinking", "customControls", "simpleSpeed"].includes(f.key));
+    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(!["helmHud", "skipSinking", "enhancedGraphics", "customControls", "simpleSpeed"].includes(f.key));
   });
 
   it("indented switches: the hotkey members, the next-mission pick and the time pop-up sit under the switch they depend on", () => {
@@ -2041,7 +2043,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(h.app.advanced.on("hotkeys")).toBe(false);
     expect(h.app.advanced.on("helpOverlay")).toBe(false);
     expect(JSON.parse(h.map.get("gato.advanced") ?? "{}").hotkeys).toBe(false);
-    press(h.app, "ArrowUp", "ArrowUp", "ArrowUp", " "); // wraps past CUSTOM CONTROLS to the radio alert tone
+    press(h.app, "ArrowUp", "ArrowUp", "ArrowUp", "ArrowUp", "ArrowUp", " "); // wraps past CUSTOM CONTROLS, ENHANCED GRAPHICS and SOLID SHIPS to the radio alert tone
     expect(h.app.advanced.on("radioAlert")).toBe(false);
     expect(boot({ map: h.map }).app.advanced.on("hotkeys")).toBe(false); // a new page load reads it back
     press(h.app, "r");
@@ -2089,6 +2091,9 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     const internals = h.app as unknown as { runner: FixedTimestepRunner; advancedCursor: number };
     press(h.app, "Tab");
     expect(textsOf(frameAfter(h, 20))).toContain("[7] ADVANCED OPTIONS");
+    const rowOf = (calls: Call[], text: string): unknown => calls.find(([n, a]) => n === "text" && a[2] === text)?.[1][1];
+    const shown = frameAfter(h, 25);
+    expect(rowOf(shown, "NUMBER OF ITEM TO CHANGE? _")).toBe((rowOf(shown, "[7] ADVANCED OPTIONS") as number) + 2); // a blank line between
     const tick = h.sim().tick;
     press(h.app, "7");
     expect(h.app.mode).toBe("settings");
@@ -2307,10 +2312,81 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     it("a screen without a scene is drawn by the original code, centred in the canvas", () => {
       const h = play();
       h.app.setGraphics("enhanced");
+      press(h.app, "r"); // the damage report has no enhanced scene yet
       const calls = frameAfter(h, 20);
       expect(calls[0]).toEqual(["view", [320, 200]]);
       expect(calls[1]).toEqual(["fillBacking", ["#000000"]]);
-      expect(textsOf(calls)).toContain("FUEL");
+      expect(calls.some(([n]) => n === "image")).toBe(true); // the original layout bitmap
+    });
+
+    it("the ENHANCED GRAPHICS switch (42) turns the graphics on and off, also from the stored value, and the demo keeps the original pictures", () => {
+      const h = play();
+      const changes: string[] = [];
+      h.app.onGraphicsChange = (m) => void changes.push(m);
+      expect(h.app.graphics).toBe("original");
+      h.app.advanced.set("enhancedGraphics", true);
+      expect(h.app.graphics).toBe("enhanced");
+      h.app.advanced.set("enhancedGraphics", false);
+      expect(changes).toEqual(["enhanced", "original"]);
+      const stored = boot({ map: new Map([["gato.advanced", JSON.stringify({ enhancedGraphics: true })]]) });
+      stored.app.syncGraphics();
+      expect(stored.app.graphics).toBe("enhanced");
+      expect(h.app.enhanced.screens.sort()).toEqual(["chart", "control", "quadrant", "radar"]);
+    });
+  });
+
+  describe("the enhanced scenes", () => {
+    /** A 2D context that accepts every call (gradients included) and notes which were made. */
+    function fullGfx(): { g: Gfx; calls: string[] } {
+      const calls: string[] = [];
+      const gradient = { addColorStop: (): void => undefined };
+      const ctx = new Proxy({}, {
+        get: (_t, name: string) => () => {
+          calls.push(name);
+          return name.startsWith("create") && name.endsWith("Gradient") ? gradient : undefined;
+        },
+        set: () => true,
+      });
+      const canvas = { width: 0, height: 0, getContext: () => ctx } as unknown as HTMLCanvasElement;
+      return { g: new RealGfx(canvas), calls };
+    }
+
+    const frameFor = (h: Harness, screen: "control" | "radar" | "chart" | "quadrant"): { view: PlayView; screen: typeof screen } => {
+      const sim = h.sim();
+      const internals = h.app as unknown as { snapshot: PlayView["snap"] };
+      return { view: { sim, snap: internals.snapshot, settings: h.app.settings, sprites: null, log: h.app.log, timeMs: 1500 }, screen };
+    };
+
+    it("the enhanced sinking draws glass cracks and a rising sea on a real context, without the original's palette", () => {
+      const { g, calls } = fullGfx();
+      g.resizeBacking(1280, 800);
+      const s = new SinkingAnimation("cracks");
+      s.advance(s.duration * 0.6);
+      drawEnhancedSinking(g, s, 1280, 800, 1200);
+      expect(calls).toContain("createLinearGradient");
+      expect(calls.filter((c) => c === "stroke").length).toBeGreaterThan(3); // two passes of cracks, the foam
+      const bands = new SinkingAnimation("bands");
+      bands.finish();
+      expect(() => drawEnhancedSinking(g, bands, 1422, 800, 0)).not.toThrow();
+      drawOxygenFade(g, 1.5);
+    });
+
+    it("each scene draws on a real context at 16:9 and at 8:5 without error, day and night, with the island in view", () => {
+      const h = play();
+      for (const width of [1280, 1422]) {
+        for (const timeOfDay of [1, 0] as const) {
+          h.app.settings.timeOfDay = timeOfDay;
+          for (const screen of ["control", "radar", "chart", "quadrant"] as const) {
+            const { g, calls } = fullGfx();
+            g.resizeBacking(Math.round(width * 1.8), 1440);
+            g.view(width, 800);
+            const scene = h.app.enhanced.scene(screen);
+            expect(scene, screen).toBeDefined();
+            scene?.({ g, ...frameFor(h, screen), width, height: 800 });
+            expect(calls.length, screen).toBeGreaterThan(20);
+          }
+        }
+      }
     });
   });
 
@@ -2354,11 +2430,42 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect((control.app as unknown as { sinking: { variant: string } }).sinking.variant).toBe("cracks");
     });
 
+    it("enhanced graphics: the oxygen loss fades to black first, and keys wait for it; the original shows the message at once", () => {
+      const air = play();
+      air.app.setGraphics("enhanced");
+      press(air.app, "r"); // a screen the harness can draw (the damage report has no enhanced scene)
+      (air.sim() as unknown as { status: string }).status = "suffocated";
+      air.app.frame(10);
+      press(air.app, "y");
+      expect(air.app.mode).toBe("play"); // keys wait while the screen goes dark
+      expect(textsOf(frameAfter(air, 1500))).not.toContain("DO YOU WANT TO PLAY AGAIN? (Y/N)");
+      const fading = frameAfter(air, 1600);
+      expect(fading.some(([n, a]) => n === "fillBacking" && String(a[0]).startsWith("rgba(0,0,0,"))).toBe(true);
+      expect(textsOf(frameAfter(air, 4200))).toContain("DO YOU WANT TO PLAY AGAIN? (Y/N)");
+    });
+
+    it("the original graphics have no fade: running out of air shows the message at once", () => {
+      const h = play();
+      (h.sim() as unknown as { status: string }).status = "suffocated";
+      h.app.frame(10);
+      expect(textsOf(frameAfter(h, 40))).toContain("DO YOU WANT TO PLAY AGAIN? (Y/N)");
+    });
+
     it("running out of air has no scene, as in the original", () => {
       const h = play();
       (h.sim() as unknown as { status: string }).status = "suffocated";
       h.app.frame(10);
       expect((h.app as unknown as { sinking: unknown }).sinking).toBeNull();
+      expect(textsOf(frameAfter(h, 40))).toContain("DO YOU WANT TO PLAY AGAIN? (Y/N)");
+    });
+
+    it("the end box corrects the original's typo (DO for TO); the 1984 variant (switch 11 off) keeps the original text", () => {
+      const h = play();
+      (h.sim() as unknown as { status: string }).status = "destroyed";
+      h.app.advanced.set("skipSinking", true);
+      h.app.frame(10);
+      expect(textsOf(frameAfter(h, 20))).toContain("DO YOU WANT TO PLAY AGAIN? (Y/N)");
+      h.app.advanced.set("endBox", false);
       expect(textsOf(frameAfter(h, 40))).toContain("DO YOU WANT DO PLAY AGAIN? (Y/N)");
     });
 

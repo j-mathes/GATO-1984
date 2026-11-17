@@ -50,9 +50,16 @@ function lineBetween(x0: number, y0: number, x1: number, y1: number, color: numb
   }
 }
 
-/** The pixels `PSET (x, y), colour : DRAW text` would set, in drawing order; they are not clipped to the screen. */
-export function drawPixels(startX: number, startY: number, text: string, startColor = 3): DrawnPixel[] {
-  const out: DrawnPixel[] = [{ x: startX, y: startY, color: startColor }];
+export interface DrawnSegment {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  color: number;
+}
+
+/** The moves of a DRAW string: every U/D/L/R/E/F/G/H step with its start, its end and colour; `blank` moves (B) draw nothing. */
+function* walkDraw(startX: number, startY: number, text: string, startColor: number): Generator<{ x0: number; y0: number; x1: number; y1: number; color: number; blank: boolean }> {
   let x = startX;
   let y = startY;
   let color = startColor;
@@ -78,7 +85,7 @@ export function drawPixels(startX: number, startY: number, text: string, startCo
       const n = num ?? 1;
       const nx = x + Math.trunc((rx * n * scale) / 4);
       const ny = y + Math.trunc((ry * n * scale) / 4);
-      if (!blank) lineBetween(x, y, nx, ny, color, out);
+      yield { x0: x, y0: y, x1: nx, y1: ny, color, blank };
       if (!keep) {
         x = nx;
         y = ny;
@@ -87,5 +94,18 @@ export function drawPixels(startX: number, startY: number, text: string, startCo
       keep = false;
     } else throw new Error(`unsupported DRAW command ${cmd}`);
   }
+}
+
+/** The lines `PSET (x, y), colour : DRAW text` draws, in drawing order (blank moves leave no line). */
+export function drawSegments(startX: number, startY: number, text: string, startColor = 3): DrawnSegment[] {
+  const out: DrawnSegment[] = [];
+  for (const m of walkDraw(startX, startY, text, startColor)) if (!m.blank) out.push({ x0: m.x0, y0: m.y0, x1: m.x1, y1: m.y1, color: m.color });
+  return out;
+}
+
+/** The pixels `PSET (x, y), colour : DRAW text` would set, in drawing order; they are not clipped to the screen. */
+export function drawPixels(startX: number, startY: number, text: string, startColor = 3): DrawnPixel[] {
+  const out: DrawnPixel[] = [{ x: startX, y: startY, color: startColor }];
+  for (const m of walkDraw(startX, startY, text, startColor)) if (!m.blank) lineBetween(m.x0, m.y0, m.x1, m.y1, m.color, out);
   return out;
 }

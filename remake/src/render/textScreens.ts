@@ -2,7 +2,7 @@ import type { DemoIntro, DemoPage, LauncherItem } from "../core/index.js";
 import type { Teletype } from "../app/teletype.js";
 import { LAUNCHER_MENU, LAUNCHER_PROMPT, TITLE_LINES } from "../core/index.js";
 import { CONTINUE_PROMPT, REREAD_PROMPT, RETURN_PROMPT, type HistoryView } from "../app/historyViewer.js";
-import { COLORS, Gfx } from "./gfx.js";
+import { COLORS, COLUMNS, Gfx } from "./gfx.js";
 import type { SpriteLibrary } from "./sprites.js";
 import { TITLE_ART_HEIGHT, TITLE_ART_WIDTH, type TitleArt } from "./titleArt.js";
 import { DEFAULT_KEYMAP, keyName, type ControlId } from "../input/controls.js";
@@ -54,6 +54,14 @@ export function titleWipeLines(sinceMs: number): number {
 export const ENHANCEMENT_CREDIT = "Enhancements by Jared Mathes";
 const ENHANCEMENT_ROW = 19;
 
+/** The (c) ring of the title picture (15 x 13 pixels around the C of the copyright line). */
+const COPYRIGHT_RING = { x: 76, y: 157, w: 15, h: 13 };
+
+/** First column that centres `text` on the 40-column screen (a half column for an odd length). */
+export function centredColumn(text: string): number {
+  return (COLUMNS - text.length) / 2 + 1;
+}
+
 /**
  * Title page of GATO.EXE. With the exported artwork it is the original picture (striped GATO lettering, credits and the (c) ring
  * as drawn by the BASIC program, text placed on the original LOCATE cells); the old sprite layout is only a fallback when the
@@ -75,7 +83,16 @@ export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary |
     }
     g.clear(frame.palette[0]);
     g.image(art.image(), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
-    for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
+    // the credit lines are centred on the screen (the original's LOCATE cells are a column off to the left); the (c) ring is part of the
+    // picture, so it is moved by as much as the copyright line
+    const credits = frame.text.map((t) => ({ t, col: t.row >= 10 ? centredColumn(t.text) : t.col }));
+    const copyright = credits.find((c) => c.t.text.includes("Copyright"));
+    const ringShift = copyright ? (copyright.col - copyright.t.col) * 8 : 0;
+    if (ringShift !== 0) {
+      g.rect(COPYRIGHT_RING.x, COPYRIGHT_RING.y, COPYRIGHT_RING.w, COPYRIGHT_RING.h, frame.palette[0] as string);
+      g.image(art.image(), COPYRIGHT_RING.x, COPYRIGHT_RING.y, COPYRIGHT_RING.w, COPYRIGHT_RING.h, COPYRIGHT_RING.x + ringShift, COPYRIGHT_RING.y, COPYRIGHT_RING.w, COPYRIGHT_RING.h);
+    }
+    for (const { t, col } of credits) g.text(col, t.row, t.text, frame.palette[t.colorIndex]);
     drawEnhancementCredit(g, frame);
     g.centered(25, "PRESS ANY KEY", frame.palette[3]);
     return;
@@ -370,7 +387,7 @@ export function wrapText(text: string, width = 38): string[] {
 }
 
 /** Switches per page of the ADVANCED OPTIONS screen. */
-export const ADVANCED_PAGE_SIZE = 11;
+export const ADVANCED_PAGE_SIZE = 12;
 
 /**
  * ADVANCED OPTIONS (remake): the switches of the remake-only features, `ON` = the remake feature, `OFF` = the 1984 behaviour.

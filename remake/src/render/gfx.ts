@@ -96,6 +96,12 @@ export class Gfx {
     return length * this.unit;
   }
 
+  /** Smooth scaling for images (the enhanced scenes); the original pictures are always drawn without it. */
+  smooth(on: boolean): void {
+    this.ctx.imageSmoothingEnabled = on;
+    if (on) this.ctx.imageSmoothingQuality = "high";
+  }
+
   /** The whole canvas, bars included, in one colour (a view that does not fill the canvas leaves them as they are otherwise). */
   fillBacking(color: string): void {
     this.ctx.fillStyle = color;
@@ -119,17 +125,17 @@ export class Gfx {
     }
   }
 
-  line(x1: number, y1: number, x2: number, y2: number, color: string): void {
+  line(x1: number, y1: number, x2: number, y2: number, color: string, width = 1): void {
     const c = this.ctx;
     c.strokeStyle = color;
-    c.lineWidth = this.unit;
+    c.lineWidth = this.unit * width;
     c.beginPath();
     c.moveTo(this.toX(x1), this.toY(y1));
     c.lineTo(this.toX(x2), this.toY(y2));
     c.stroke();
   }
 
-  circle(cx: number, cy: number, r: number, color: string, fill = false): void {
+  circle(cx: number, cy: number, r: number, color: string, fill = false, width = 1): void {
     const c = this.ctx;
     c.beginPath();
     c.arc(this.toX(cx), this.toY(cy), Math.max(r * this.unit, 0.5), 0, Math.PI * 2);
@@ -138,7 +144,7 @@ export class Gfx {
       c.fill();
     } else {
       c.strokeStyle = color;
-      c.lineWidth = this.unit;
+      c.lineWidth = this.unit * width;
       c.stroke();
     }
   }

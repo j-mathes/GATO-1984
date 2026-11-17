@@ -74,7 +74,8 @@ const pad = (n: number, width: number): string => String(Math.round(n)).padStart
 // Control room (0x042a8-0x05077)
 // --------------------------------------------------------------------------------------------------------------------
 
-export function drawControlRoomLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
+/** `withScope` false leaves the scope window to the caller (the enhanced control room draws its own). */
+export function drawControlRoomLayout(g: Gfx, v: PlayView, L: CockpitLayouts, withScope = true): void {
   const { sim, snap } = v;
   const sub = sim.sub;
   const pal = blit(g, L, "control_room");
@@ -83,7 +84,9 @@ export function drawControlRoomLayout(g: Gfx, v: PlayView, L: CockpitLayouts): v
   // scope picture: sky colour = time of day, sea colour 2, horizon from the depth; a damaged raised periscope shows a black frame (0x05187)
   const horizon = scopeHorizon(sub);
   const damagedScope = sub.periscopeUp && sub.depth < 46 && (sub.damage[COMPARTMENT.periscopes] ?? 0) !== 0;
-  if (damagedScope) {
+  if (!withScope) {
+    // drawn by the caller
+  } else if (damagedScope) {
     g.rect(1, 1, 318, 96, pal[0] as string);
     g.rect(0, 0, LOGICAL_WIDTH, 98, pal[3] as string, false);
   } else {
@@ -288,7 +291,7 @@ export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { dif
   if (showAdvanced) g.text(6, 12, "[7] ADVANCED OPTIONS", white);
   if (prompt) g.text(6, 16, `${prompt}? ${entry}_`, white);
   else {
-    g.text(6, 13, "NUMBER OF ITEM TO CHANGE? _", white);
+    g.text(6, showAdvanced ? 14 : 13, "NUMBER OF ITEM TO CHANGE? _", white); // the original's row 13; one row lower when item 7 fills row 12, to leave a blank line
     g.text(8, 23, "(Press RETURN to continue)", white);
   }
 }
