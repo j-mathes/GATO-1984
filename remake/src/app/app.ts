@@ -89,8 +89,9 @@ export type AppMode = "splash" | "title" | "menu" | "orders" | "play" | "demo" |
 export const TICKS_PER_SECOND = TIME_COMPRESSION.baseHz;
 const TRAILS_KEY = "gato.trails";
 const TIME_SCALE_KEY = "gato.timeScale";
+const CONTROL_HUD_KEY = "gato.controlHud";
 const TOAST_MS = 1800;
-/** Commands that change the helm: a status line confirms them on the very next frame (the boat itself answers at the step rate). */
+/** Commands that change the helm: with `showControlHud` on, a status line confirms them on the very next frame (the boat itself answers at the step rate). */
 const HELM_COMMANDS: ReadonlySet<string> = new Set(["speed", "rudder", "planes", "neutral", "engine", "doors"]);
 /**
  * How long the Spectrum HoloByte logo stays up. GATO.EXE holds it with an empty FOR loop of 2000 passes (limit at ds:0x0bcc), whose real
@@ -140,6 +141,12 @@ export class App {
   /** Radio/status messages of the original (core/radio.ts), shown over the control room while the mission runs. */
   readonly radio = new RadioInbox();
   private trailsOn = true;
+  /**
+   * Remake-only status line over the top of the screen after a helm command (`ORDER 8.0  RUDDER MID  PLANES LEVEL`). Off by default: the
+   * original keeps the scope picture clean and only lights the indicators of the dashboard. Set it to true (or store "1" under
+   * `gato.controlHud`, or `__gato.showControlHud = true` in the console) to bring the line back.
+   */
+  showControlHud = false;
   private readonly storage: StorageLike | null;
   private readonly trailBuffers = createTrails();
   private lastTrailTick = -1;
@@ -159,6 +166,7 @@ export class App {
     this.storage = storage;
     if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
+    this.showControlHud = storage?.getItem(CONTROL_HUD_KEY) === "1";
     const savedScale = Number(storage?.getItem(TIME_SCALE_KEY));
     if (isTimeScale(savedScale)) this.settings.timeScale = savedScale;
     this.log = new LogStore(data.shipLog, storage);
@@ -339,7 +347,7 @@ export class App {
         else if (s.periscopeUp !== before.periscope) this.play("periscope");
         else if (s.scopeFacing !== before.facing) this.play("scopeSwitch");
         else if (s.doorsOpen !== before.doors) this.play("doors");
-        if (HELM_COMMANDS.has(action.command.type)) this.showToast(helmStatus(s));
+        if (this.showControlHud && HELM_COMMANDS.has(action.command.type)) this.showToast(helmStatus(s));
         return;
       }
       case "screen":

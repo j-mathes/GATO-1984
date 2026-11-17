@@ -89,7 +89,7 @@ export const EFFECTS: Record<EffectName, EffectDef> = {
   damageAlarm: {
     steps: sweep(300, 470, 86, 0.1),
     provenance: "inferred",
-    source: "SOUND 300..470 step 2 at 0x0655c; the duration operand is a variable that is never assigned, so the 0.1-tick step is a remake choice",
+    source: "SOUND 300..470 step 2 at 0x0655c; the duration is the runtime temporary ds:0x23a6 = 0.05 * sound flag (loader_verification.md section 10), its conversion to ticks was not traced, so the 0.1-tick step is a remake choice",
   },
   resupply: { steps: [{ frequency: 1200, ticks: 9 }], provenance: "original", source: "SOUND 1200, 9*snd at 0x0cd8f (refuelling)" },
   resupplyDone: { steps: [{ frequency: 1500, ticks: 9 }], provenance: "original", source: "SOUND 1500, 9*snd at 0x0cda6 / 0x0ce0c" },
@@ -109,7 +109,7 @@ export const EFFECTS: Record<EffectName, EffectDef> = {
   subDestroyed: {
     steps: sweep(1400, 100, 40, 0.6),
     provenance: "inferred",
-    source: "0x0b656 sweeps SOUND from 1400 upward in steps of 300 with a 0.05-tick duration; the shape here is a remake approximation",
+    source: "0x0b656 sweeps SOUND from 1400 upward in steps of 300 with the duration 0.05 * sound flag (ds:0x23a6); the shape here is a remake approximation",
   },
   missionComplete: {
     steps: [

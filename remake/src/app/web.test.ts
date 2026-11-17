@@ -1154,8 +1154,9 @@ describe("1984 pacing: 2.5 Hz simulation under 60 FPS rendering", () => {
     expect(runner.frame(250).steps).toBe(1);
   });
 
-  it("control inputs show on the very next frame, long before the boat answers at the next step", () => {
+  it("control inputs show on the very next frame, long before the boat answers at the next step (with the helm status line switched on)", () => {
     const { app, calls, sim } = startPlay();
+    app.showControlHud = true;
     let t = run(app, 0, 40);
     const tick = sim().tick;
     const frameOf = (): string => {
@@ -1628,5 +1629,112 @@ describe("mission orders on the text screen (reference screenshot 2660312)", () 
     const greyRows = (t: Teletype): number => t.cells.filter((cells) => cells.some((c) => c.grey)).length;
     expect(greyRows(hidden)).toBe(3 + 2 * 3); // start line + two newlines for each of the three blank lines
     expect(greyRows(shown)).toBe(greyRows(hidden));
+  });
+});
+
+describe("control HUD flag (the helm status line is remake-only)", () => {
+  type Call = [string, unknown[]];
+  type Storage = { getItem(k: string): string | null; setItem(k: string, v: string): void };
+  const canvasFactory = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+
+  function startPlay(storage: Storage | null = null): { app: App; calls: Call[]; sim: () => Simulation; layouts: CockpitLayouts } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const layouts = new CockpitLayouts(parseCockpitLayouts(read("public/assets/cockpit_layouts.json")), canvasFactory());
+    const app = new App(g, data, null, new SoundEngine(() => ctx), storage, () => 0.5, null, layouts);
+    app.keydown({ key: "x" });
+    app.startMission(1, 1);
+    app.keydown({ key: "x" });
+    app.keydown({ key: "x" });
+    app.frame(0);
+    return { app, calls, sim: () => (app as unknown as { sim: Simulation }).sim, layouts };
+  }
+
+  /** The text drawn in the scope viewport (text rows 1-12 = y 0-96): the original draws none there. */
+  const viewportText = (calls: Call[]): string[] => calls.filter(([n, a]) => n === "text" && Number(a[1]) <= 12).map(([, a]) => String(a[2]));
+  const textsOf = (calls: Call[]): string[] => calls.filter(([n]) => n === "text").map(([, a]) => String(a[2]));
+
+  it("is off by default: pressing T, the throttle, rudder and planes draws no text over the scope", () => {
+    const { app, calls } = startPlay();
+    expect(app.showControlHud).toBe(false);
+    let t = 100;
+    for (const key of ["t", "F3", "ArrowLeft", "ArrowDown", "5", "t"]) {
+      app.keydown({ key });
+      calls.length = 0;
+      t += 17;
+      app.frame(t);
+      expect(viewportText(calls), key).toEqual([]);
+      expect(textsOf(calls).some((s) => /^ORDER |RUDDER|PLANES/.test(s)), key).toBe(false);
+    }
+  });
+
+  it("T lights the torpedo-door circle on the dashboard on the very next frame and the second T clears it", () => {
+    const { app, calls, sim, layouts } = startPlay();
+    const light = layouts.doc.sprites.lightOn;
+    const lit = (): number =>
+      calls.filter(([n, a]) => n === "rect" && Number(a[0]) >= 213 && Number(a[0]) < 213 + (light[0]?.length ?? 0) && Number(a[1]) >= 165 && Number(a[1]) < 165 + light.length).length;
+    calls.length = 0;
+    app.frame(200);
+    expect(sim().sub.doorsOpen).toBe(false);
+    expect(lit()).toBe(0);
+    const tick = sim().tick;
+    app.keydown({ key: "t" });
+    calls.length = 0;
+    app.frame(217); // the next frame: no simulation step in between
+    expect(sim().tick).toBe(tick);
+    expect(sim().sub.doorsOpen).toBe(true);
+    expect(lit()).toBeGreaterThan(5);
+    expect(viewportText(calls)).toEqual([]);
+    app.keydown({ key: "t" });
+    calls.length = 0;
+    app.frame(234);
+    expect(sim().sub.doorsOpen).toBe(false);
+    expect(lit()).toBe(0);
+    expect(viewportText(calls)).toEqual([]);
+  });
+
+  it("with showControlHud on, the same keys bring the status line back (code kept behind the flag)", () => {
+    const { app, calls } = startPlay();
+    app.showControlHud = true;
+    app.keydown({ key: "F3" });
+    app.keydown({ key: "ArrowLeft" });
+    calls.length = 0;
+    app.frame(300);
+    expect(textsOf(calls).some((s) => /^ORDER \d+\.\d {2}RUDDER LEFT {2}PLANES LEVEL$/.test(s))).toBe(true);
+    expect(calls.some(([n, a]) => n === "rect" && a[0] === 0 && a[1] === 0 && a[2] === 320 && a[3] === 11)).toBe(true); // the black bar of the toast
+    app.showControlHud = false;
+    app.keydown({ key: "ArrowRight" });
+    calls.length = 0;
+    app.frame(320);
+    expect(textsOf(calls).some((s) => /^ORDER /.test(s))).toBe(true); // an earlier line is still fading; no new one is made
+    app.frame(300 + 2000);
+    calls.length = 0;
+    app.keydown({ key: "ArrowLeft" });
+    app.frame(2400);
+    expect(textsOf(calls).some((s) => /^ORDER /.test(s))).toBe(false);
+  });
+
+  it("the flag can be switched on from storage (gato.controlHud = 1) and defaults to off otherwise", () => {
+    const store = new Map<string, string>([["gato.controlHud", "1"]]);
+    const storage = { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => void store.set(k, v) };
+    expect(startPlay(storage).app.showControlHud).toBe(true);
+    store.set("gato.controlHud", "0");
+    expect(startPlay(storage).app.showControlHud).toBe(false);
+    expect(startPlay(null).app.showControlHud).toBe(false);
+  });
+
+  it("the time-compression indicator is a different overlay and still shows (see analysis/remake_additions.md)", () => {
+    const { app, calls } = startPlay();
+    app.keydown({ key: "]" });
+    calls.length = 0;
+    app.frame(100);
+    expect(textsOf(calls)).toContain("TIME x2  (5 STEPS/S)");
   });
 });
