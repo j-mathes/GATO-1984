@@ -216,10 +216,52 @@ describe("history viewer and captain's log", () => {
     expect(v.view).toMatchObject({ phase: "page", index: 0 });
     for (let i = 0; i < doc.pages.length - 1; i += 1) v.press("x");
     expect(v.view).toMatchObject({ phase: "page", index: doc.pages.length - 1 });
-    expect(v.press("x")).toEqual({ phase: "end" });
+    expect(v.press("x")).toEqual({ phase: "end", paging: false });
     expect(v.press("R")).toMatchObject({ phase: "page", index: 0 });
     for (let i = 0; i < doc.pages.length; i += 1) v.press("x");
     expect(v.press("r")).toEqual({ phase: "done" }); // only an exact capital R rereads
+  });
+
+  it("with paging keys the history can go back, jump to the ends and be left with Esc, and every other key still goes on", () => {
+    const doc = read<HistoryPagesDocument>("src/data/history_pages.json");
+    const last = doc.pages.length - 1;
+    const v = new HistoryViewer(doc, true);
+    expect(v.view).toMatchObject({ phase: "page", index: 0, paging: true });
+    v.press("ArrowLeft");
+    expect(v.view).toMatchObject({ index: 0 }); // no page before the first
+    v.press(" ");
+    v.press("Enter");
+    expect(v.view).toMatchObject({ index: 2 });
+    v.press("PageUp");
+    expect(v.view).toMatchObject({ index: 1 });
+    v.press("End");
+    expect(v.view).toMatchObject({ index: last });
+    v.press("Home");
+    expect(v.view).toMatchObject({ index: 0 });
+    v.press("End");
+    expect(v.press("ArrowRight")).toEqual({ phase: "end", paging: true });
+    expect(v.press("ArrowUp")).toMatchObject({ phase: "page", index: last }); // back from the end prompt
+    v.press("x");
+    expect(v.press("Home")).toMatchObject({ phase: "page", index: 0 });
+    v.press("PageDown");
+    expect(v.press("Escape")).toEqual({ phase: "done" });
+    expect(v.resumePage).toBe(1);
+    expect(new HistoryViewer(doc, true, 1).view).toMatchObject({ index: 1 });
+    expect(new HistoryViewer(doc, true, 99).view).toMatchObject({ index: last });
+    const end = new HistoryViewer(doc, true, last);
+    end.press("x");
+    end.press("Escape");
+    expect(end.resumePage).toBeNull(); // read to the end: the next visit starts at the first page
+  });
+
+  it("without paging keys (switch off) the arrow keys, Home and Esc just go on, as in the original", () => {
+    const doc = read<HistoryPagesDocument>("src/data/history_pages.json");
+    const v = new HistoryViewer(doc);
+    v.press("ArrowRight");
+    v.press("ArrowLeft");
+    expect(v.view).toMatchObject({ phase: "page", index: 2, paging: false });
+    for (let i = 0; i < doc.pages.length; i += 1) v.press("Escape");
+    expect(v.view).toEqual({ phase: "done" });
   });
 
   it("persists sunk ships and mission count, and resets", () => {
@@ -278,6 +320,26 @@ describe("application shell", () => {
     expect(app.mode).toBe("history");
     for (let i = 0; i < 20; i += 1) press(app, "x");
     expect(app.mode).toBe("menu");
+  });
+
+  it("the history in the app: arrows turn pages, a modifier key does not, Esc returns to the menu and the history reopens on that page; the switch turns it off", () => {
+    const { app } = makeApp();
+    const page = (): number => ((app as unknown as { history: { view: { index: number } } }).history.view.index);
+    press(app, "x", "3");
+    press(app, "ArrowRight", "ArrowRight", "ArrowLeft");
+    expect(page()).toBe(1);
+    press(app, "Shift");
+    expect(page()).toBe(1);
+    press(app, "Escape");
+    expect(app.mode).toBe("menu");
+    press(app, "3");
+    expect(page()).toBe(1); // resumed
+    press(app, "Escape");
+    app.advanced.set("historyPaging", false);
+    press(app, "3");
+    expect(page()).toBe(0); // the original always starts at the first page
+    press(app, "Escape");
+    expect(page()).toBe(1); // and any key, Esc included, goes on
   });
 
   it("starts a mission with Morse orders; the first key stops the Morse and shows the whole message, the second enters the control room", () => {
@@ -1970,7 +2032,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
   };
 
   it("offers the 18 requested rows plus the sinking scene, CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line, the sinking skip and the custom-controls pair", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 15, 2, 17, 20, 28, 32, 24, 25, 43, 42, 38, 40]);
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 45, 15, 2, 17, 20, 28, 32, 24, 25, 43, 42, 38, 40]);
     const keys = ADVANCED_FEATURES.map((f) => f.key);
     const at = keys.indexOf("hotkeys");
     expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);

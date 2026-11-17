@@ -64,7 +64,7 @@ export function isPlainKey(e: KeyLike): boolean {
 /** Keys the page must not handle itself (scrolling, focus change, browser function keys). */
 export function shouldPreventDefault(e: KeyLike): boolean {
   if (e.ctrlKey || e.altKey || e.metaKey) return false;
-  return /^F([1-9]|10)$/.test(e.key) || e.key.startsWith("Arrow") || e.key === "PageUp" || e.key === "PageDown" || e.key === "Tab" || e.key === " " || e.key === "Backspace";
+  return /^F([1-9]|10)$/.test(e.key) || e.key.startsWith("Arrow") || e.key === "PageUp" || e.key === "PageDown" || e.key === "Home" || e.key === "End" || e.key === "Tab" || e.key === " " || e.key === "Backspace";
 }
 
 /** GAME CONTROL screen (0x0aeea-0x0b165): item number typed at "NUMBER OF ITEM TO CHANGE", then an optional value. */

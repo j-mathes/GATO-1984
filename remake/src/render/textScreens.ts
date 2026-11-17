@@ -163,10 +163,15 @@ export function drawHistory(g: Gfx, view: HistoryView): void {
   if (view.phase === "page") {
     view.lines.forEach((l, i) => g.text80(1, 1 + i, l.slice(0, 80), COLORS.grey));
     g.text80(25, 23, CONTINUE_PROMPT, COLORS.white);
+    if (view.paging) {
+      g.text80(7, 25, `PAGE ${view.index + 1} OF ${view.count}`, COLORS.cyan);
+      g.text80(25, 25, "LEFT/RIGHT=PAGE  HOME/END  SPACE=NEXT  ESC=BACK", COLORS.grey);
+    }
   } else if (view.phase === "end") {
     g.text80(1, 21, "", COLORS.grey);
     g.text80(7, 22, REREAD_PROMPT, COLORS.white);
     g.text80(7, 23, RETURN_PROMPT, COLORS.white);
+    if (view.paging) g.text80(7, 25, "LEFT=LAST PAGE  HOME=FIRST PAGE  ESC=BACK", COLORS.grey);
   }
 }
 

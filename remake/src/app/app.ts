@@ -149,6 +149,8 @@ export class App {
   private helpPage = 0;
   private prompt: { kind: "password" | "coords"; editor: LineEditor } | null = null;
   private history: HistoryViewer | null = null;
+  /** The history page Esc left from (the history opens there again). */
+  private historyResume = 0;
   private demo: { player: DemoPlayer; sim: Simulation; runner: FixedTimestepRunner; page: number; screen: string } | null = null;
   /** The orders example of the demo while it is typed out: its text, Morse timeline and sound. */
   private demoMorse: { start: number; lines: string[]; timeline: OrdersTimeline; handle: MorseHandle | null } | null = null;
@@ -575,7 +577,7 @@ export class App {
         this.startDemo();
         break;
       case "history":
-        this.history = new HistoryViewer(this.data.history);
+        this.history = new HistoryViewer(this.data.history, this.advanced.on("historyPaging"), this.advanced.on("historyPaging") ? this.historyResume : 0);
         this.mode = "history";
         break;
       case "exit":
@@ -587,8 +589,10 @@ export class App {
 
   private historyKey(e: KeyLike): void {
     if (!this.history) return;
+    if (this.advanced.on("historyPaging") && !isPlainKey(e)) return; // a modifier or a browser shortcut does not turn the page
     const view = this.history.press(e.key);
     if (view.phase === "done") {
+      this.historyResume = this.history.resumePage ?? 0;
       this.history = null;
       this.returnToMenu("history");
     }
@@ -1095,7 +1099,10 @@ export class App {
         this.frameDemo(timeMs);
         return;
       case "history":
-        if (this.history) drawHistory(g, this.history.view);
+        if (this.history) {
+          const viewer = this.history;
+          this.withSkin(() => drawHistory(g, viewer.view));
+        }
         return;
     }
   }
