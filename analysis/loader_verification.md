@@ -213,6 +213,6 @@ charges: with the short-way turns the destroyers need fewer passes, and the boat
 4 fuel `0x071d1`; 5 engine `0x054c5`-`0x055c9` (ordered speed x (1 - 0.5 d)); 6 periscopes `0x0515e` (and set to 1 at `0x06f79` when a ship within 20 units meets a raised scope at depth < 61, which is the remake's scope-ram rule). Cells 7
 (`0x1796`) and 8 (`0x179a`) are read only by the damage report (`0x0a428`, `0x0a75a`, `0x0a77e`) and by the two loops over all eight cells: the damaged
 count at `0x05b80` (more than 5 destroys the boat) and the index sum at `0x06459` (above 14 an alarm, above 20 the boat is lost). Depth charges write a random cell 1..8
-(`0x0d226`). So 7 and 8 never change a control; they only raise the two totals. `physics.ts` already summed all eight cells, so nothing changed there; a test now pins this.
+(`0x0d226`). So 7 and 8 never change a control; they only raise the two totals. `physics.ts` sums all eight cells, and a test pins this.
 
-**`GAME CONTROL` item 5 and the title wipe** are remake additions: see `remake/README.md` and `title_art.md`.
+**`GAME CONTROL` items 5 to 7 and the title wipe** are remake additions: see `remake_additions.md` and `title_art.md`.

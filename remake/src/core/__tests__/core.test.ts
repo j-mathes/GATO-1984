@@ -26,6 +26,7 @@ import {
   sequenceRng,
   stepDepth,
   stepHeading,
+  stepEngineChecks,
   stepSpeed,
   torpedoHits,
   turnsPositive,
@@ -116,6 +117,32 @@ describe("helm and engines", () => {
     applyHelmCommand(sub, { type: "engine", mode: "toggle" }); // to electric
     applyHelmCommand(sub, { type: "engine", mode: "toggle" }); // diesel has no fuel: stays electric
     expect(sub.engine).toBe(ENGINE.electric);
+  });
+
+  it("cuts the diesel out below 20 m or without fuel and the electric motor on a flat battery (the D key itself has no depth test)", () => {
+    const sim = newSim();
+    const sub = sim.sub;
+    const run = (): SimEvent[] => {
+      const events: SimEvent[] = [];
+      stepEngineChecks(sub, events);
+      return events;
+    };
+    sub.orderedSpeed = 8;
+    sub.depth = 20;
+    expect(run()).toEqual([]); // 20 is still allowed
+    expect([sub.engine, sub.orderedSpeed]).toEqual([ENGINE.diesel, 8]);
+    sub.depth = 21;
+    expect(run()).toContainEqual({ type: "engineCutOut", mode: ENGINE.diesel });
+    expect([sub.engine, sub.orderedSpeed]).toEqual([ENGINE.off, 0]);
+    sub.depth = 0;
+    applyHelmCommand(sub, { type: "engine", mode: "diesel" }); // restarting at the surface works
+    expect(sub.engine).toBe(ENGINE.diesel);
+    sub.fuel = 0.5;
+    expect(run()).toContainEqual({ type: "engineCutOut", mode: ENGINE.diesel });
+    sub.engine = ENGINE.electric;
+    sub.battery = 0.5;
+    expect(run()).toContainEqual({ type: "engineCutOut", mode: ENGINE.electric });
+    expect(sub.battery).toBe(0);
   });
 
   it("accelerates by 0.25 and brakes by 1 per step", () => {

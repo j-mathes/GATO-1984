@@ -1,0 +1,122 @@
+# GATO
+
+A browser remake of **GATO**, the 1984 submarine simulation by Paul Arlton and Ed Dawson (Spectrum HoloByte). You command a WWII US submarine in the Pacific: read your orders (sent in Morse code), find the enemy convoy on the chart and radar, and sink it with torpedoes without being sunk yourself.
+
+The rules, numbers and screens come from the original DOS programs, which were taken apart to build this. Enhancements by Jared Mathes.
+
+## Play
+
+- **Online:** open the GitHub Pages site of this repository (`https://<user>.github.io/<repository>/`; see [remake/README.md](remake/README.md#publishing-on-github-pages) to publish it).
+- **On Windows:** double-click [`Play_GATO.bat`](Play_GATO.bat). It needs [Node.js](https://nodejs.org/), builds the game on the first run and opens it in Chrome (or your default browser).
+- **From a terminal:** `cd remake`, then `npm install` and `npm run play`.
+
+Click the game or press a key once so the browser allows sound. The game is played with the keyboard (a click also skips the logo and title page).
+
+## First minutes
+
+1. The Spectrum HoloByte logo gives way to the title page. Press a key for the menu.
+2. At the menu press **1** (or Enter) to play, **2** for the demonstration, **3** for the history and specifications, **4** to exit, **5** for the advanced options.
+3. Your orders are typed out on a grey band while they are sent in Morse code. Press a key to stop the Morse and show the whole message, then a key again to take the helm. (At difficulty 8 and 9 the text is not printed: you must read the Morse by ear.)
+4. You start in quadrant 7 on the surface, running on diesel. Order a speed with **F1**–**F7**, open the chart with **C** and head for the area in your orders.
+
+## Your mission
+
+Each mission gives you a convoy to find: where it was seen, its heading and speed, and where it is probably going. The map is 5 × 4 quadrants (numbered 1 to 20). You complete a mission by **sinking the convoy**, or, in some missions, by **stopping close to the target island** in its quadrant at the right time of day (see GAME CONTROL, item 3). A box announces it, the Captain's Log is updated, and the game goes on: you can keep patrolling, hunt the remaining ships or resupply. Press **Esc** when you want to leave, or **M** for a new mission.
+
+Things to keep an eye on:
+
+- **Contacts.** Use the periscope (**F2**, only at depth 45 or less) and point it with **F / P / A / S** (forward, port, aft, starboard). The radar (**F6**), the chart (**C**) and the quadrant map (**Q**) show where ships and islands are.
+- **Torpedoes.** You carry 24, fired from four tubes with **F8**. The doors must be open (**T**), and a torpedo runs straight ahead of the bow, so you aim by steering the boat. Open doors slow the boat a little.
+- **Fuel, battery and air.** Diesel gives speed and charges the battery, but it **cuts out when you are deeper than 20 or out of fuel**, so surface or come up to snorkel depth to run it. Electric is quiet but drains the battery and cuts out when it is flat. Oxygen runs down while you are submerged and is restored by running on diesel. Warning tones sound when fuel or battery run low.
+- **Damage.** The damage report (**R**) shows the eight compartments. A damaged torpedo room cannot fire, a damaged engine room halves your speed and a damaged radio room cannot take messages. Too many damaged compartments lose the boat. Depth charges from escorts that have spotted you damage the boat, and ramming a ship can destroy it.
+- **The sub tender.** Come alongside it, on about the same heading, to refuel, reload torpedoes and repair.
+
+## Controls
+
+| Key | Action |
+| --- | --- |
+| F1 / F3 / F5 / F7 | Ahead: flank / full / standard / slow |
+| F9 / F10 | All stop / reverse |
+| ← / → | Rudder left / right |
+| ↑ / ↓ | Rise / dive |
+| 5 (or keypad 5) | Centre rudder and planes |
+| D / E | Diesel / electric engine |
+| F2 / F4 | Raise / lower periscope |
+| F / P / A / S | Periscope facing: forward / port / aft / starboard |
+| T | Open / close torpedo doors |
+| F8 | Fire a torpedo |
+| F6 | Radar |
+| C | Chart |
+| Q | Quadrant map |
+| L | Captain's Log (ships sunk, tonnage, missions completed) |
+| R | Damage report |
+| M | Radio room, then back to the control room. With a working radio this shows your orders again |
+| Tab | GAME CONTROL |
+| ? or H | Controls help (pages through the keys; arrow keys turn pages, any other key closes) |
+| W | Turn the persistent position dots on the chart, map and radar on or off |
+| [ / ] | Slower / faster time: 1× is the pace of a 1984 PC, 2× and 4× fast-forward |
+| V | Display mode (below) |
+| Esc | Leave the mission and return to the menu |
+
+The Captain's Log, the damage report and GAME CONTROL pause the game; the radar, chart and quadrant map do not. When a message box is on screen (mission completed, radio room report), the first key only closes it.
+
+When the boat is lost or the air runs out you are asked whether to play again (**Y** / **N**).
+
+### GAME CONTROL (Tab)
+
+Press the number of an item to change it; difficulty and next mission ask for a value, which you type and confirm with Enter. Enter, Esc or Tab takes you back to the mission.
+
+| Item | What it does |
+| --- | --- |
+| 1 Difficulty | 0 to 9. Higher levels make enemies spot you sooner and stay alert longer; at 8 and 9 the orders are Morse only |
+| 2 Sound | On / off |
+| 3 Time of day | 1 = day, 0 = night. Enemies see you less well at night, and some island objectives only count at a given time |
+| 4 Reset Captain's Log | Erases the log |
+| 5 Next mission | `1`–`20`, or `R` for a random mission (the original's choice). Takes effect when the next mission starts |
+| 6 Time compression | Cycles 1× / 2× / 4× |
+| 7 Advanced options | Opens the advanced options (below) without leaving the mission |
+
+Items 5, 6 and 7 are additions to the original, which has items 1 to 4.
+
+## The demonstration and history
+
+**2** at the menu plays a guided tour of the screens. **F1** leaves it and **F2** turns its sound off; any other key skips the opening page and the Morse example. **3** opens the history and specifications pages: any key turns the page, and **R** at the end rereads them.
+
+## Display
+
+**V** switches between three views of the 320 × 200 picture:
+
+1. **Authentic** (default): whole-number scaling, sharp pixels, black borders.
+2. **Fit**: fills the window and keeps the 8:5 shape.
+3. **CRT**: Fit plus faint scanlines and a soft vignette.
+
+## Advanced options
+
+Menu item **5** (or item 7 in GAME CONTROL during a mission) opens a settings screen where the additions this remake makes to the 1984 game can be switched back to the original's behaviour, one by one. Up/Down select, Enter or Space switch, Left/Right change page, **R** restores the defaults, Esc goes back. The text under the list says what each switch does when it is on and when it is off.
+
+The defaults keep the additions (key help, display modes, wake-dot toggle, time compression, the 2.5 steps a second pace, message boxes that wait for a key, and so on), except for the helm status line, custom controls and simple speed keys, which are off.
+
+**Custom controls.** With this switch on, press **C** on the advanced options screen to open *Control assignments*: pick an action, press Enter, then press the new key. If the key is already used you are warned and can override it (the other action is left without a key) or cancel. **Delete** clears an action, **R** restores the defaults. Tab and Esc are fixed. Only the mission keys can be changed.
+
+**Simple speed keys** (listed only while custom controls is on) replaces the four speed keys and the two engine keys by `=` (speed up one step), `-` (speed down one step), `0` (all stop), `Backspace` (reverse) and `E` (switch between diesel and electric).
+
+## Your saved data
+
+Everything is kept in the browser's local storage for the site's address, so it is separate for each browser and for each address (for example `localhost` and your Pages site). Clearing the site's data resets it. Nothing is sent anywhere.
+
+| What | Key |
+| --- | --- |
+| Captain's Log | `gato.captains-log.v1` |
+| Advanced options and key assignments | `gato.advanced`, `gato.controls` |
+| Display mode, wake dots, time speed | `gato.display`, `gato.trails`, `gato.timeScale` |
+
+## Credits and license
+
+*GATO* was written by **Paul Arlton** and **Ed Dawson** and is © 1984 Spectrum HoloByte, Inc. This is an unofficial fan remake, with enhancements by Jared Mathes.
+
+The remake's own code, tools, documentation and additions are licensed under [CC BY-NC-SA 4.0](LICENSE.md): you may share and adapt them for non-commercial purposes, with credit, under the same license. That license does **not** cover the original game or anything extracted from it (the game's data, text and artwork in `remake/src/data/` and `remake/public/assets/`, the files in `Original/`, and the disassembly in `analysis/`). Those belong to their owners, so check that you have the right to publish them before you do (see [Publishing](remake/README.md#publishing-on-github-pages)). [LICENSE.md](LICENSE.md) has the details.
+
+## For developers
+
+- [remake/README.md](remake/README.md): building, testing, how the code is organised, publishing.
+- [analysis/README.md](analysis/README.md): how the original was reverse-engineered, with the findings.

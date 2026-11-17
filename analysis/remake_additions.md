@@ -1,6 +1,8 @@
 # Remake-only additions
 
-What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Eighteen of these (rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32) have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour; the rest are always on. Row 38 (custom controls) is a switch itself. Off by default: the helm status line (row 1), custom controls (row 38) and simple speed keys (row 40).
+What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, found by reading `remake/src/` and the other notes in this folder. "Default" is what a player sees with a fresh browser profile.
+
+Eighteen of the additions have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32. Rows 38 and 40 are switches themselves. Everything else is always on. Off by default: the helm status line (row 1), custom controls (row 38) and simple speed keys (row 40).
 
 Legend: **ON** = active in normal play, **key** = off until the player asks, **fallback** = only used when an asset is missing.
 
@@ -15,7 +17,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | 5 | **`PRESS ANY KEY` on the title page** | `render/textScreens.ts` `drawTitle` | **ON** | | The title advances by itself (an empty 5000-pass loop) |
 | 6 | **Spectrum HoloByte splash hold + key/click skip** | `app/app.ts` `SPLASH_MS`, `tap()`; `main.ts` `pointerdown` | **ON** (2.5 s) | | A 2000-pass empty loop, no key; the logo scene itself is original |
 | 7 | **Title wipe timing** (hold 0.4 s, wipe 0.9 s) | `render/textScreens.ts` `TITLE_HOLD_MS`, `TITLE_WIPE_MS` | **ON** | | The 43 erase lines are original; their speed was CPU-bound |
-| 8 | **GAME CONTROL rows `[5] NEXT MISSION`, `[6] TIME COMPRESSION`** | `render/cockpitScreens.ts` `drawGameControlLayout`, `render/playScreens.ts` `drawGameControl`; `core/launcher.ts` `GameControl` | **ON** (hidden in the demo's copy of the screen) | | Items 1-4 only |
+| 8 | **GAME CONTROL rows `[5] NEXT MISSION`, `[6] TIME COMPRESSION`** | `render/cockpitScreens.ts` `drawGameControlLayout`, `render/playScreens.ts` `drawGameControl`; `core/launcher.ts` `GameControl` | **ON** (not in the demo's copy of the screen) | switch 8 (item 5 also needs switch 30) | Items 1-4 only |
 | 9 | **Display modes** `V`: Authentic / Fit / CRT scanlines | `render/display.ts`, `index.html` `#crt`, `main.ts` | **ON** (Authentic, remembered in `gato.display`) | `V` | A fixed CGA monitor |
 | 10 | **Wake-trail toggle** `W` | `render/trails.ts`, `app/app.ts` `setTrails` | **ON** = the original's persistent dots; `W` gives clean redraws (remembered in `gato.trails`) | `W` | The dots always persist; the toggle is the addition |
 | 11 | **End box text `YOUR SUBMARINE HAS BEEN LOST`** and the framed end box (shown for a lost boat or no oxygen) | `render/playScreens.ts` `drawEnd` | **ON** | | `CONTACT MADE`, `MISSION COMPLETED`, the oxygen message and `DO YOU WANT DO PLAY AGAIN? (Y/N)` are strings of GATO1; the text `YOUR SUBMARINE HAS BEEN LOST` and the box geometry are not found in the binary |
@@ -31,7 +33,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | 16 | `?` / `H` help, `W` trails, `V` display (rows 3, 9, 10) | `input/keyboard.ts`, `main.ts` | key | none |
 | 17 | `Esc` returns to the launcher | `input/keyboard.ts` `quit`, `app/app.ts` | **ON** | ends the program (`0x0d17e`) |
 | 18 | Mouse click / touch skips the splash and the title | `main.ts`, `app/app.ts` `tap` | **ON** | none |
-| 19 | Launcher accepts `1`-`4` at once (typed digits plus Enter also work) | `app/app.ts` `menuKey` | **ON** | an `INPUT` line |
+| 19 | Launcher accepts `1`-`5` at once (typed digits plus Enter also work; item 5 is the remake's ADVANCED OPTIONS, row 37) | `app/app.ts` `menuKey` | **ON** | an `INPUT` line, items 1-4 |
 | 20 | `M` with a working radio re-shows the orders (text at once from difficulty 0-7) | `app/app.ts` `radioRoom` | **ON** | asks for a new mission |
 
 ## 3. Orders screen flow
@@ -113,14 +115,14 @@ With CUSTOM CONTROLS on, `C` on the ADVANCED OPTIONS screen opens CONTROL ASSIGN
 
 ## 6. Tooling (not part of the game)
 
-`Play_GATO.bat`, `npm run play`, the Vite/Vitest setup, `window.__gato`, the `analysis/` extractors and `remake/public/assets/*.json`.
+`Play_GATO.bat`, `npm run play`, the GitHub Pages workflow (`.github/workflows/pages.yml`), the Vite/Vitest setup, `window.__gato`, the `analysis/` extractors and `remake/public/assets/*.json`.
 
 ## 7. Approximations that are not additions
 
-Drawn or timed from evidence but not byte-exact: the text font (the remake's own, on the original `LOCATE` cells; the BIOS ROM font is not in the executables), the bitmaps of the control-room marker and arrows (from screenshots), the CRT/aspect scaling, all delay-loop durations (intro, demo pages, orders typing delay, the 2 s closing hold), and the radio-room damaged-branch handling in the demo (dropped because `ds:0x175e` is never set there).
+Drawn or timed from evidence but not byte-exact: the text font (the remake's own, on the original `LOCATE` cells; the BIOS ROM font is not in the executables), the bitmaps of the control-room marker and arrows (from screenshots), the CRT/aspect scaling, all delay-loop durations (intro, demo pages, orders typing delay, the 2 s closing hold), and the radio-room damaged-branch handling in the demo (dropped because `ds:0x175e` is never set there). See [findings.md](findings.md).
 
-## 8. Suggested decisions
+## 8. Where to look
 
 * Hidden by default: rows 1, 38 and 40. Switchable on the ADVANCED OPTIONS screen: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32, 38, 40 (section 5a).
-* Easiest to drop without touching rules: rows 2, 4, 5, 7, 11, 12, 13, 21-23, 24, 25 (a remake choice each, no state depends on them).
-* Behaviour changes that alter play: rows 28 (pace), 31 (message boxes wait for a key, world keeps running), 32 (explosions do not block), 33; each is a constant or one branch in `core/` or `app/app.ts`.
+* Behaviour that alters play: rows 28 (pace), 31 (message boxes wait for a key, world keeps running), 32 (explosions do not block) and 33; each is a constant or one branch in `core/` or `app/app.ts`.
+* Remake choices with no state depending on them, easiest to remove in code: rows 2, 4, 5, 7, 11, 12, 13, 21 to 23, 24, 25.
