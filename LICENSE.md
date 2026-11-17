@@ -56,7 +56,7 @@ own licenses. The Creative Commons license also does not grant any patent or tra
 
 When you share this project or something based on it, keep this file and say so. A reasonable credit reads:
 
-> Based on the GATO remake by Jared Mathes (<https://github.com/OWNER/REPOSITORY>), licensed under CC BY-NC-SA 4.0. GATO © 1984 Spectrum
+> Based on the GATO remake by Jared Mathes (<https://github.com/j-mathes/GATO-1984>), licensed under CC BY-NC-SA 4.0. GATO © 1984 Spectrum
 > HoloByte, Inc., by Paul Arlton and Ed Dawson.
 
 Replace the link with the address of the repository you got it from. If you changed it, add that you did. You may not suggest that the

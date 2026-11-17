@@ -6,7 +6,7 @@ The rules, numbers and screens come from the original DOS programs, which were t
 
 ## Play
 
-- **Online:** open the GitHub Pages site of this repository (`https://<user>.github.io/<repository>/`; see [remake/README.md](remake/README.md#publishing-on-github-pages) to publish it).
+- **Online:** <https://j-mathes.github.io/GATO-1984/> (published from this repository by GitHub Pages; see [remake/README.md](remake/README.md#publishing-on-github-pages)).
 - **On Windows:** double-click [`Play_GATO.bat`](Play_GATO.bat). It needs [Node.js](https://nodejs.org/), builds the game on the first run and opens it in Chrome (or your default browser).
 - **From a terminal:** `cd remake`, then `npm install` and `npm run play`.
 
