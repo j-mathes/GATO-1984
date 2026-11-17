@@ -62,9 +62,13 @@ The choice is saved in `localStorage` (`gato.display`). V is ignored while typin
 | V | Display mode |
 | W | Wake trails on/off: persistent track dots on the radar, chart and quadrant map (the original's behaviour, default) or clean redraws. Remembered in `localStorage` (`gato.trails`) |
 
-The launcher menu is `1` play, `2` demo, `3` history, `4` exit. In the demo, `F1` exits to the launcher and `F2` turns the sound off, exactly as the opening page says; as a remake convenience any other key skips the opening page and then the Morse example (the original has no key wait on the opening page).
+The launcher menu is `1` play, `2` demo, `3` history, `4` exit, and `5` ADVANCED OPTIONS (a remake item, see below). In the demo, `F1` exits to the launcher and `F2` turns the sound off, exactly as the opening page says; as a remake convenience any other key skips the opening page and then the Morse example (the original has no key wait on the opening page).
 
 The log, damage report and GAME CONTROL pause the world; radar, chart and quadrant map do not.
+
+### Advanced options (menu item 5)
+
+Eighteen remake-only additions can be switched back to the 1984 behaviour on a settings screen opened with menu item `5`: Up/Down select a row, Enter or Space switch it (`ON` = remake feature, `OFF` = original), `R` restores the defaults and Esc returns to the menu. The line under the list describes what the selected switch would give if it were changed (`OFF: ...` while it is on, `ON: ...` while it is off). Changes apply at once, also to a mission in progress, and are saved in `localStorage` (`gato.advanced`). Everything is ON by default except the helm status line, which keeps its current default (off). The switches cover the helm status line, the time-speed pop-up, the `?`/`H` overlay, skipping the logo, GAME CONTROL items 5 and 6, the display modes, the wake-trail toggle, the lost-boat box, skipping the demo intro, `[`/`]`, the `? H W V` hotkeys (a group switch: it sets the help overlay, display modes and wake-trail rows together and turns off by itself when all three are off), Esc, `M` re-reading the orders, the explosion and radio-alert sounds, the 2.5 Hz pace, mission select and the world running during explosions. Rows and what each gives when off are listed in `../analysis/remake_additions.md` (section 5a). Without Esc (row 17) a mission can only end by losing the boat or reloading the page, because a web page cannot end the program as the original does.
 
 ### Pacing: 2.5 Hz simulation, 60 FPS rendering
 

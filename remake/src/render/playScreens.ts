@@ -340,7 +340,7 @@ export function drawCaptainsLog(g: Gfx, v: PlayView): void {
 // GAME CONTROL, prompts, end of mission
 // --------------------------------------------------------------------------------------------------------------------
 
-export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string | null, entry: string, showMission = true): void {
+export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string | null, entry: string, showMission = true, showTime = showMission): void {
   g.clear();
   g.centered(3, "GAME CONTROL", COLORS.white);
   g.text(6, 7, "[1] DIFFICULTY LEVEL", COLORS.grey);
@@ -353,6 +353,8 @@ export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string |
   if (showMission) {
     g.text(6, 15, "[5] NEXT MISSION", COLORS.grey);
     g.text(35, 15, settings.mission ? String(settings.mission) : "RANDOM", COLORS.yellow);
+  }
+  if (showTime) {
     g.text(6, 17, "[6] TIME COMPRESSION", COLORS.grey);
     g.text(35, 17, `${settings.timeScale ?? 1}X`, COLORS.yellow);
   }
@@ -371,7 +373,14 @@ export function drawPrompt(g: Gfx, lines: string[], entry: string): void {
   g.text(4, 10 + lines.length, `${entry}_`, COLORS.yellow);
 }
 
-export function drawEnd(g: Gfx, status: Simulation["status"]): void {
+export function drawEnd(g: Gfx, status: Simulation["status"], framed = true): void {
+  if (!framed) {
+    // the original: the play-again question alone on a cleared screen (LOCATE 4,2), plus the oxygen message when the air ran out
+    g.clear();
+    if (status === "suffocated") RADIO_MESSAGES.oxygenExhausted.lines.forEach((l, i) => g.centered(10 + i, l.text, COLORS.red));
+    g.text(2, 4, "DO YOU WANT DO PLAY AGAIN? (Y/N)", COLORS.white);
+    return;
+  }
   g.rect(24, 70, 272, 56, COLORS.black);
   g.rect(24, 70, 272, 56, COLORS.white, false);
   const text = status === "suffocated" ? RADIO_MESSAGES.oxygenExhausted.lines.map((l) => l.text) : ["YOUR SUBMARINE HAS BEEN LOST"];

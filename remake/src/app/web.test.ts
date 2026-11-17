@@ -9,11 +9,11 @@ import { FixedTimestepRunner, interpolate, lerpAngle, takeSnapshot } from "./run
 import { buildMorseSchedule, type MorseTables } from "../audio/morse.js";
 import { noteFrequency, parsePlay, totalSeconds } from "../audio/play.js";
 import { BIOS_TICK_SECONDS, EFFECTS, SoundEngine, type AudioContextLike, type OscillatorLike } from "../audio/soundEngine.js";
-import { Simulation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
+import { ADVANCED_FEATURES, RADIO_MESSAGES, Simulation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
-import { CONTROLS_HELP, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, drawLauncherMenu, drawTitle, titleWipeLines } from "../render/textScreens.js";
+import { CONTROLS_HELP, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, drawLauncherMenu, drawTitle, titleWipeLines, wrapText } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
 import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
 import type { PlayView } from "../render/playScreens.js";
@@ -1845,3 +1845,324 @@ describe("mission completion keeps the game running (as in GATO1.EXE)", () => {
     expect(app.log.missionsCompleted).toBe(1);
   });
 });
+
+describe("advanced options (remake additions that can go back to the 1984 behaviour)", () => {
+  type Call = [string, unknown[]];
+  type Store = { getItem(k: string): string | null; setItem(k: string, v: string): void };
+  const memory = (): { storage: Store; map: Map<string, string> } => {
+    const map = new Map<string, string>();
+    return { map, storage: { getItem: (k) => map.get(k) ?? null, setItem: (k, v) => void map.set(k, v) } };
+  };
+  const canvasFactory = () => () => ({ getContext: () => ({ createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }), putImageData: () => undefined }) }) as unknown as HTMLCanvasElement;
+  const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+  const press = (app: App, ...keys: string[]) => keys.forEach((key) => app.keydown({ key }));
+  const textsOf = (calls: Call[]): string[] => calls.filter(([n]) => n === "text" || n === "centered").map(([n, a]) => String(a[n === "text" ? 2 : 1]));
+
+  interface Harness {
+    app: App;
+    calls: Call[];
+    data: AppData;
+    effects: string[];
+    storage: Store;
+    map: Map<string, string>;
+    sim: () => Simulation;
+  }
+
+  function boot(opts: { map?: Map<string, string>; art?: TitleArt | null } = {}): Harness {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const layouts = new CockpitLayouts(parseCockpitLayouts(read("public/assets/cockpit_layouts.json")), canvasFactory());
+    const { storage, map } = memory();
+    for (const [k, v] of opts.map ?? []) map.set(k, v);
+    const app = new App(g, data, null, new SoundEngine(() => ctx), storage, () => 0.5, opts.art ?? null, layouts);
+    const effects: string[] = [];
+    app.sound.effect = ((name: string) => void effects.push(name)) as unknown as typeof app.sound.effect;
+    return { app, calls, data, effects, storage, map, sim: () => (app as unknown as { sim: Simulation }).sim };
+  }
+
+  /** In the control room of mission 1 (two keys get past the Morse orders). */
+  function play(opts: { map?: Map<string, string> } = {}): Harness {
+    const h = boot(opts);
+    press(h.app, "x");
+    h.app.startMission(1, 1);
+    press(h.app, "x", "x");
+    h.app.frame(0);
+    return h;
+  }
+
+  const frameAfter = (h: Harness, t: number): Call[] => {
+    h.calls.length = 0;
+    h.app.frame(t);
+    return h.calls.slice();
+  };
+
+  it("offers exactly the 18 requested rows; everything but the helm line is on by default", () => {
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32]);
+    expect(ADVANCED_FEATURES.every((f) => f.label.length <= 30)).toBe(true);
+    const { app } = boot();
+    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(f.key !== "helmHud");
+  });
+
+  it("the hint under the list names the state a switch is not in: OFF text while on, ON text while off, always within three lines", () => {
+    const h = boot();
+    press(h.app, "x", "5");
+    for (const f of ADVANCED_FEATURES) {
+      for (const on of [true, false]) {
+        h.app.advanced.set(f.key, on);
+        const hint = (h.app as unknown as { advancedHint(): string }).advancedHint();
+        expect(hint, f.key).toBe(on ? `OFF: ${f.original}` : `ON: ${f.remake}`);
+        expect(wrapText(hint.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
+      }
+      h.app.advanced.set(f.key, f.default);
+      press(h.app, "ArrowDown");
+    }
+  });
+
+  it("menu item 5 opens the screen; Up/Down/Enter switch a row, which is remembered; Esc returns to the menu", () => {
+    const h = boot();
+    press(h.app, "x");
+    expect(textsOf(frameAfter(h, 10))).toContain("[5]   ADVANCED OPTIONS");
+    press(h.app, "5");
+    expect(h.app.mode).toBe("settings");
+    const drawn = textsOf(frameAfter(h, 20));
+    expect(drawn).toContain("HELM STATUS LINE");
+    expect(drawn).toContain("ADVANCED OPTIONS");
+    press(h.app, "ArrowDown", "Enter"); // row 2, the time pop-up
+    expect(h.app.advanced.on("timeToast")).toBe(false);
+    expect(JSON.parse(h.map.get("gato.advanced") ?? "{}").timeToast).toBe(false);
+    press(h.app, "ArrowUp", "ArrowUp", " "); // wraps to the last row (32)
+    expect(h.app.advanced.on("explosionsRun")).toBe(false);
+    expect(boot({ map: h.map }).app.advanced.on("timeToast")).toBe(false); // a new page load reads it back
+    press(h.app, "r");
+    expect(h.app.advanced.snapshot()).toEqual(boot().app.advanced.snapshot());
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("menu");
+    press(h.app, "5");
+    expect(h.app.mode).toBe("settings"); // the launcher is usable again after coming back
+    press(h.app, "Escape", "1");
+    expect(h.app.mode).toBe("orders");
+  });
+
+  it("a damaged or unknown stored value falls back to the defaults", () => {
+    expect(boot({ map: new Map([["gato.advanced", "{oops"]]) }).app.advanced.on("helpOverlay")).toBe(true);
+    expect(boot({ map: new Map([["gato.advanced", '{"helpOverlay":"no","nothing":false}']]) }).app.advanced.on("helpOverlay")).toBe(true);
+  });
+
+  it("calls the page hook when a switch changes (display modes follow it)", () => {
+    const h = boot();
+    let calls = 0;
+    h.app.onAdvancedChange = () => (calls += 1);
+    h.app.advanced.toggle("displayModes");
+    h.app.advanced.set("displayModes", false); // no change, no call
+    expect(calls).toBe(1);
+  });
+
+  it("helm line (1) and time pop-up (2): the line follows its switch, the pop-up goes away when off", () => {
+    const h = play();
+    press(h.app, "F3");
+    expect(textsOf(frameAfter(h, 20)).some((s) => /^ORDER /.test(s))).toBe(false);
+    h.app.advanced.set("helmHud", true);
+    press(h.app, "F5");
+    expect(textsOf(frameAfter(h, 40)).some((s) => /^ORDER /.test(s))).toBe(true);
+    h.app.advanced.set("timeToast", false);
+    press(h.app, "]");
+    expect(h.app.timeScale).toBe(2);
+    expect(textsOf(frameAfter(h, 60)).some((s) => /^TIME x/.test(s))).toBe(false);
+  });
+
+  it("help overlay (3), wake-trail toggle (10) and the hotkey group (16)", () => {
+    const h = play();
+    h.app.advanced.set("helpOverlay", false);
+    press(h.app, "?");
+    expect(h.app.helpVisible).toBe(false);
+    h.app.advanced.set("helpOverlay", true);
+    press(h.app, "h");
+    expect(h.app.helpVisible).toBe(true);
+    press(h.app, "x");
+    h.app.advanced.set("trailToggle", false);
+    press(h.app, "w");
+    expect(h.app.trails).toBe(true); // always persistent
+    h.app.advanced.set("trailToggle", true);
+    press(h.app, "w");
+    expect(h.app.trails).toBe(false);
+    press(h.app, "w");
+    h.app.advanced.set("hotkeys", false);
+    press(h.app, "w", "?");
+    expect(h.app.trails).toBe(true);
+    expect(h.app.helpVisible).toBe(false);
+  });
+
+  it("row 16 is a group switch: it sets rows 3, 9 and 10, and follows them", () => {
+    const h = boot();
+    const a = h.app.advanced;
+    let changes = 0;
+    h.app.onAdvancedChange = () => (changes += 1);
+    a.set("hotkeys", false);
+    expect([a.on("helpOverlay"), a.on("displayModes"), a.on("trailToggle"), a.on("hotkeys")]).toEqual([false, false, false, false]);
+    expect(changes).toBe(1);
+    a.set("hotkeys", true);
+    expect([a.on("helpOverlay"), a.on("displayModes"), a.on("trailToggle"), a.on("hotkeys")]).toEqual([true, true, true, true]);
+    a.set("helpOverlay", false); // one of three off: the group stays on
+    expect(a.on("hotkeys")).toBe(true);
+    a.set("displayModes", false);
+    expect(a.on("hotkeys")).toBe(true);
+    a.set("trailToggle", false); // all three off: the group turns off
+    expect(a.on("hotkeys")).toBe(false);
+    a.set("displayModes", true); // any one back on: the group is on again
+    expect(a.on("hotkeys")).toBe(true);
+    expect(a.toggle("hotkeys")).toBe(false);
+    expect(a.on("displayModes")).toBe(false);
+    // stored values are brought in line when read
+    const stored = JSON.stringify({ ...a.snapshot(), hotkeys: true });
+    expect(boot({ map: new Map([["gato.advanced", stored]]) }).app.advanced.on("hotkeys")).toBe(false);
+  });
+
+  it("time keys (15) and Esc (17)", () => {
+    const h = play();
+    h.app.advanced.set("timeKeys", false);
+    press(h.app, "]", "[");
+    expect(h.app.timeScale).toBe(1);
+    h.app.advanced.set("escQuit", false);
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("play");
+    h.app.advanced.set("escQuit", true);
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("menu");
+  });
+
+  it("1984 PC pace (28): off means 10 steps a second at 1x, and it applies to the running mission", () => {
+    const h = play();
+    const runner = (h.app as unknown as { runner: FixedTimestepRunner }).runner;
+    expect(runner.hz).toBe(2.5);
+    h.app.advanced.set("pcPace", false);
+    expect(h.app.stepRate).toBe(10);
+    expect(runner.hz).toBe(10);
+    press(h.app, "]");
+    expect(h.app.stepRate).toBe(20);
+    h.app.advanced.set("pcPace", true);
+    expect(runner.hz).toBe(5);
+  });
+
+  it("mission select (30) and GAME CONTROL items 5 and 6 (8)", () => {
+    const h = play();
+    press(h.app, "Tab");
+    const shown = textsOf(frameAfter(h, 30));
+    expect(shown).toContain("[5] NEXT MISSION");
+    expect(shown).toContain("[6] TIME COMPRESSION");
+    press(h.app, "6");
+    expect(h.app.timeScale).toBe(2);
+    h.app.settings.mission = 5;
+    h.app.advanced.set("missionSelect", false);
+    expect(textsOf(frameAfter(h, 50))).not.toContain("[5] NEXT MISSION");
+    press(h.app, "5", "9", "Enter"); // item 5 does nothing, so "9" and Enter are ordinary keys here
+    h.app.startMission(); // random pick: with the 0.5 test generator scenario 11
+    expect((h.app as unknown as { currentOrders: unknown }).currentOrders).toBe(h.data.orders[11]);
+    h.app.advanced.set("missionSelect", true);
+    h.app.startMission();
+    expect((h.app as unknown as { currentOrders: unknown }).currentOrders).toBe(h.data.orders[5]);
+    h.app.advanced.set("gameControlExtras", false);
+    press(h.app, "x", "x", "Tab");
+    const scale = h.app.timeScale;
+    expect(textsOf(frameAfter(h, 80))).not.toContain("[6] TIME COMPRESSION");
+    press(h.app, "6");
+    expect(h.app.timeScale).toBe(scale);
+  });
+
+  it("lost-boat box (11): off gives the cleared screen with the play-again question alone", () => {
+    const h = play();
+    (h.sim() as unknown as { status: string }).status = "destroyed";
+    const framed = frameAfter(h, 20);
+    expect(textsOf(framed)).toContain("YOUR SUBMARINE HAS BEEN LOST");
+    h.app.advanced.set("endBox", false);
+    const plain = frameAfter(h, 40);
+    expect(textsOf(plain)).not.toContain("YOUR SUBMARINE HAS BEEN LOST");
+    expect(plain.filter(([n]) => n === "clear").length).toBeGreaterThan(0);
+    expect(plain.some(([n, a]) => n === "text" && a[0] === 2 && a[1] === 4 && a[2] === "DO YOU WANT DO PLAY AGAIN? (Y/N)")).toBe(true);
+  });
+
+  it("M (20): off asks for a new mission instead of re-reading the orders", () => {
+    const h = play();
+    const before = h.sim();
+    press(h.app, "m");
+    expect(h.sim()).toBe(before); // re-read: same world
+    press(h.app, "x", "x");
+    h.app.advanced.set("radioReread", false);
+    press(h.app, "m");
+    expect(h.sim()).not.toBe(before);
+    expect(h.app.mode).toBe("orders");
+  });
+
+  it("explosion boom (24) and radio alert tone (25) are silent when off", () => {
+    const h = play();
+    const events = (): never[] => [{ type: "collision" }, { type: "radio", message: RADIO_MESSAGES.contactMade }] as never[];
+    const handle = (app: App): void => (app as unknown as { handleEvents(e: never[]): void }).handleEvents(events());
+    handle(h.app);
+    expect(h.effects).toEqual(expect.arrayContaining(["explosion", "radioAlert"]));
+    h.effects.length = 0;
+    h.app.advanced.set("boomSound", false);
+    h.app.advanced.set("radioAlert", false);
+    handle(h.app);
+    expect(h.effects).not.toContain("explosion");
+    expect(h.effects).not.toContain("radioAlert");
+  });
+
+  it("world during explosions (32): off holds the world while a blast plays", () => {
+    const blast = { advance: () => undefined, finished: true };
+    const advanceBy = (h: Harness): number => {
+      const sim = h.sim();
+      const tick = sim.tick;
+      (sim.explosions as unknown[]).push(blast);
+      h.app.frame(5000);
+      h.app.frame(6000);
+      return sim.tick - tick;
+    };
+    expect(advanceBy(play())).toBeGreaterThan(0);
+    const off = play();
+    off.app.advanced.set("explosionsRun", false);
+    expect(advanceBy(off)).toBe(0);
+  });
+
+  it("logo skip (6): off keeps the logo for its time and ignores keys and clicks", () => {
+    const raw = read<Record<string, any>>("public/assets/title_screen.json");
+    const art = new TitleArt(parseTitleArt(raw), canvasFactory());
+    const h = boot({ art });
+    h.app.advanced.set("splashSkip", false);
+    h.app.frame(0);
+    press(h.app, "x");
+    h.app.tap();
+    expect(h.app.mode).toBe("splash");
+    h.app.frame(SPLASH_MS);
+    expect(h.app.mode).toBe("title");
+    const on = boot({ art });
+    on.app.frame(0);
+    on.app.tap();
+    expect(on.app.mode).toBe("title");
+  });
+
+  it("demo intro skip (12): off leaves only F1 and F2 at the intro; the Morse example still ends on any key", () => {
+    const stage = (h: Harness): string => (h.app as unknown as { demo: { player: { stage: string } } }).demo.player.stage;
+    const h = boot();
+    h.app.advanced.set("demoSkip", false);
+    press(h.app, "x", "2");
+    h.app.frame(10);
+    press(h.app, "x");
+    expect(stage(h)).toBe("intro");
+    press(h.app, "F2");
+    expect(stage(h)).toBe("intro");
+    const on = boot();
+    press(on.app, "x", "2", "x");
+    expect(stage(on)).toBe("morse");
+    press(on.app, "x");
+    expect(stage(on)).toBe("pages");
+    press(h.app, "F1");
+    expect(h.app.mode).toBe("menu");
+  });
+});
+
+// __APPEND_MARK__

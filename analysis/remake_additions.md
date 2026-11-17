@@ -1,6 +1,6 @@
 # Remake-only additions
 
-What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Nothing here has been switched off except the helm status line (row 1 below).
+What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Eighteen of these (rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32) have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour; the rest are always on. Only the helm status line (row 1) is off by default.
 
 Legend: **ON** = active in normal play, **key** = off until the player asks, **fallback** = only used when an asset is missing.
 
@@ -9,7 +9,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | # | Feature | Where | Default | How to change | Original |
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Helm status line** at the top of the screen after a helm command (`ORDER 8.0  RUDDER MID  PLANES LEVEL`) | `render/textScreens.ts` `helmStatus`/`drawToast`; `app/app.ts` `perform`, `HELM_COMMANDS`, `showControlHud` | **OFF** (flag `showControlHud = false`) | `__gato.showControlHud = true` in the console, or `localStorage["gato.controlHud"] = "1"` | None. The scope stays clean; only the dashboard lights/arrows change (door circle, engine text, scope arrow) |
-| 2 | **Time-compression toast** (`TIME x2  (5 STEPS/S)`, 1.8 s) | `app/app.ts` `setTimeScale`/`showToast`; `drawToast` | key (only after `[` / `]`) | no flag yet (shares `drawToast` with row 1) | None |
+| 2 | **Time-compression toast** (`TIME x2  (5 STEPS/S)`, 1.8 s) | `app/app.ts` `setTimeScale`/`showToast`; `drawToast` | key (only after `[` / `]`) | switch 2 (ADVANCED OPTIONS) | None |
 | 3 | **Controls quick-reference overlay**, pauses the world | `render/textScreens.ts` `CONTROLS_HELP`/`drawHelpOverlay`; `app/app.ts` `helpOpen`; key `?` or `H` | key | closes on any key | None |
 | 4 | **Row 25 hint on the orders screen** (`PRESS ANY KEY TO SKIP`, `...TO CONTINUE`, `ORDERS IN MORSE ONLY - ANY KEY SKIPS`) | `render/textScreens.ts` `drawOrders` | **ON** | delete the `g.text(1, 25, ...)` line | Row 25 is never written |
 | 5 | **`PRESS ANY KEY` on the title page** | `render/textScreens.ts` `drawTitle` | **ON** | | The title advances by itself (an empty 5000-pass loop) |
@@ -64,6 +64,32 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | 34 | **Explosion durations in seconds** (about 1.5-5 s) | `core/explosion.ts`, `render/explosions.ts` | **ON** | CPU-bound loops |
 | 35 | **Demo runs a throw-away simulation** behind the narration (ships move) | `app/app.ts` `startDemo` | **ON** | canned data |
 | 36 | **Captain's log in `localStorage`** instead of the `LOG1` file | `app/logStore.ts` (`gato.captains-log.v1`) | **ON** | `LOG1` (92 x 32-byte records) |
+| 37 | **Menu item 5, ADVANCED OPTIONS**, and its settings screen (section 5a) | `core/launcher.ts` `LAUNCHER_MENU`, `core/advanced.ts`, `app/app.ts` `settingsKey`, `render/textScreens.ts` `drawAdvancedOptions`, `drawLauncherMenu` | **ON** (settings in `localStorage` `gato.advanced`) | The menu has items 1-4 only |
+
+## 5a. Advanced options switches
+
+Menu item 5 opens the screen: Up/Down select a row, Enter or Space switch it, `R` restores the defaults, Esc returns to the menu. The screen shows `ON` (the remake feature) or `OFF` (the 1984 behaviour) for each row, and the line under the list describes the other state: `OFF: ...` while the switch is on, `ON: ...` while it is off. The choices are saved in `localStorage` under `gato.advanced` and apply at once, also to a mission in progress. "Row" is the row number above. All switches default to ON except row 1.
+
+| Row | Switch (screen label) | OFF gives |
+| --- | --- | --- |
+| 1 | HELM STATUS LINE (default OFF) | no text over the scope; only the dashboard lights change (`__gato.showControlHud = true` or `gato.controlHud = 1` still forces the line on) |
+| 2 | TIME SPEED POP-UP | no pop-up when `[` / `]` or GAME CONTROL item 6 changes the speed of time |
+| 3 | CONTROLS HELP OVERLAY | `?` and `H` do nothing |
+| 6 | SKIP LOGO WITH KEY / CLICK | the Spectrum HoloByte logo stays for its 2.5 s and ignores keys and clicks |
+| 8 | GAME CONTROL ITEMS 5 AND 6 | GAME CONTROL shows items 1-4 only; keys `5` and `6` do nothing there |
+| 9 | DISPLAY MODES (FIT, CRT) | the picture is always the Authentic whole-number scale; the chosen mode is kept for later |
+| 10 | WAKE TRAILS ON/OFF | track dots always persist; `W` does nothing |
+| 11 | LOST-BOAT BOX AND TEXT | a cleared screen with only `DO YOU WANT DO PLAY AGAIN? (Y/N)` (and the oxygen message when the air ran out) |
+| 12 | DEMO: ANY KEY SKIPS INTRO | the demo intro waits its time (the original shows it while it loads); only F1 (exit) and F2 (sound off) act there. Any key still ends the Morse example, as in the original |
+| 15 | TIME COMPRESSION KEYS [ ] | `[` and `]` do nothing (GAME CONTROL item 6 is row 8) |
+| 16 | HOTKEYS ? H W V | a group switch over rows 3, 9 and 10: switching it sets all three (OFF: `?`/`H`, `V` and `W` do nothing), and it follows them: it is ON while any of the three is ON and turns OFF when all three are OFF |
+| 17 | ESC RETURNS TO MENU | Esc does nothing during a mission (the original ends the program; the page cannot, so a mission then ends by losing the boat or reloading the page) |
+| 20 | M REREADS THE ORDERS | `M` with a working radio room asks for a new mission: a fresh world with new orders (a random pick, or the GAME CONTROL item 5 pick while row 30 is on) |
+| 24 | EXPLOSION BOOM SOUND | explosions are silent |
+| 25 | RADIO ALERT TONE | radio messages are silent |
+| 28 | SLOW 1984 PC PACE (2.5 HZ) | 10 simulation steps a second at 1x (2x = 20, 4x = 40). The original has no fixed rate (one pass of its loop as fast as the CPU allows), so there is no exact equivalent |
+| 30 | CHOOSE THE NEXT MISSION | the next mission is always the original's random pick; GAME CONTROL item 5 is hidden (the pick is kept but unused) |
+| 32 | WORLD RUNS DURING BLASTS | the world is held while an explosion plays, as the original blocks in its animation |
 
 ## 6. Tooling (not part of the game)
 
@@ -75,6 +101,6 @@ Drawn or timed from evidence but not byte-exact: the text font (the remake's own
 
 ## 8. Suggested decisions
 
-* Already hidden: row 1.
+* Hidden by default: row 1. Switchable on the ADVANCED OPTIONS screen: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32 (section 5a).
 * Easiest to drop without touching rules: rows 2, 4, 5, 7, 11, 12, 13, 21-23, 24, 25 (a remake choice each, no state depends on them).
 * Behaviour changes that alter play: rows 28 (pace), 31 (message boxes wait for a key, world keeps running), 32 (explosions do not block), 33; each is a constant or one branch in `core/` or `app/app.ts`.

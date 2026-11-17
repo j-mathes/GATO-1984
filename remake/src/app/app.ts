@@ -2,7 +2,10 @@ import type { MorseHandle } from "../audio/soundEngine.js";
 import type { MorseTables } from "../audio/morse.js";
 import { SoundEngine, type EffectName } from "../audio/soundEngine.js";
 import {
+  ADVANCED_FEATURES,
+  AdvancedOptions,
   DEFAULT_SETTINGS,
+  DEFAULT_TICKS_PER_SECOND,
   DemoPlayer,
   type DemoEvent,
   type DemoMorseExample,
@@ -16,7 +19,6 @@ import {
   RadioInbox,
   TIME_COMPRESSION,
   isTimeScale,
-  simHz as stepsPerSecond,
   type CourseJson,
   type DemoScriptDocument,
   type GameSettings,
@@ -66,7 +68,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { cursorBlink, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
+import { cursorBlink, drawAdvancedOptions, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -83,13 +85,14 @@ export interface AppData {
   morse: MorseTables;
 }
 
-export type AppMode = "splash" | "title" | "menu" | "orders" | "play" | "demo" | "history";
+export type AppMode = "splash" | "title" | "menu" | "settings" | "orders" | "play" | "demo" | "history";
 
 /** Simulation steps per second at 1x time compression: the pace of the 1984 PC (see TIME_COMPRESSION). Rendering is independent of it. */
 export const TICKS_PER_SECOND = TIME_COMPRESSION.baseHz;
 const TRAILS_KEY = "gato.trails";
 const TIME_SCALE_KEY = "gato.timeScale";
 const CONTROL_HUD_KEY = "gato.controlHud";
+const ADVANCED_KEY = "gato.advanced";
 const TOAST_MS = 1800;
 /** Commands that change the helm: with `showControlHud` on, a status line confirms them on the very next frame (the boat itself answers at the step rate). */
 const HELM_COMMANDS: ReadonlySet<string> = new Set(["speed", "rudder", "planes", "neutral", "engine", "doors"]);
@@ -147,6 +150,11 @@ export class App {
    * `gato.controlHud`, or `__gato.showControlHud = true` in the console) to bring the line back.
    */
   showControlHud = false;
+  /** The switches of the ADVANCED OPTIONS screen (launcher item 5): remake-only features that can be turned back to the 1984 behaviour. */
+  readonly advanced: AdvancedOptions;
+  /** Called after any switch changed (the page uses it for the display modes). */
+  onAdvancedChange: (() => void) | null = null;
+  private advancedCursor = 0;
   private readonly storage: StorageLike | null;
   private readonly trailBuffers = createTrails();
   private lastTrailTick = -1;
@@ -164,6 +172,7 @@ export class App {
     private readonly cockpit: CockpitLayouts | null = null,
   ) {
     this.storage = storage;
+    this.advanced = new AdvancedOptions(() => this.advancedChanged(), storage?.getItem(ADVANCED_KEY) ?? null);
     if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
     this.showControlHud = storage?.getItem(CONTROL_HUD_KEY) === "1";
@@ -179,15 +188,30 @@ export class App {
     return this.settings.timeScale ?? 1;
   }
 
+  /** Steps per second at 1x: the 1984 PC pace, or (switch SLOW 1984 PC PACE off) the unpaced 10 steps a second. */
+  get baseHz(): number {
+    return this.advanced.on("pcPace") ? TIME_COMPRESSION.baseHz : DEFAULT_TICKS_PER_SECOND;
+  }
+
   /** Simulation steps per second at the current time compression. */
   get stepRate(): number {
-    return stepsPerSecond(this.timeScale);
+    return this.baseHz * this.timeScale;
   }
 
   setTimeScale(scale: TimeScale): void {
     this.settings.timeScale = scale;
     this.applyTimeScale();
-    this.showToast(`TIME x${scale}  (${stepsPerSecond(scale)} STEPS/S)`);
+    if (this.advanced.on("timeToast")) this.showToast(`TIME x${scale}  (${this.stepRate} STEPS/S)`);
+  }
+
+  private advancedChanged(): void {
+    try {
+      this.storage?.setItem(ADVANCED_KEY, this.advanced.serialize());
+    } catch {
+      // storage may be unavailable (private mode)
+    }
+    this.applyTimeScale();
+    this.onAdvancedChange?.();
   }
 
   /** Push the current time compression into the running mission and remember it. */
@@ -205,9 +229,9 @@ export class App {
     this.toast = { text, until: this.lastFrame + TOAST_MS };
   }
 
-  /** Persistent track dots on the radar, chart and quadrant map (authentic) or clean redraws; key W, remembered in storage. */
+  /** Persistent track dots on the radar, chart and quadrant map (authentic) or clean redraws; key W, remembered in storage. Always persistent while WAKE TRAILS ON/OFF is off. */
   get trails(): boolean {
-    return this.trailsOn;
+    return this.advanced.on("trailToggle") ? this.trailsOn : true;
   }
 
   setTrails(on: boolean): void {
@@ -233,7 +257,7 @@ export class App {
     void this.sound.unlock();
     switch (this.mode) {
       case "splash":
-        this.mode = "title";
+        if (this.advanced.on("splashSkip")) this.mode = "title";
         return;
       case "title":
         this.mode = "menu";
@@ -241,6 +265,9 @@ export class App {
         return;
       case "menu":
         this.menuKey(e);
+        return;
+      case "settings":
+        this.settingsKey(e);
         return;
       case "orders":
         this.finishOrders();
@@ -259,15 +286,45 @@ export class App {
 
   /** A mouse click or touch: skips the splash and leaves the title page, like a key press; ignored everywhere else. */
   tap(): void {
-    if (this.mode === "splash" || this.mode === "title") this.keydown({ key: "Enter" });
+    if (this.mode === "title" || (this.mode === "splash" && this.advanced.on("splashSkip"))) this.keydown({ key: "Enter" });
   }
 
   private menuKey(e: KeyLike): void {
     if (e.key === "Enter") {
       this.choose(this.menuEntry === "" ? "1" : this.menuEntry);
     } else if (e.key === "Backspace") this.menuEntry = this.menuEntry.slice(0, -1);
-    else if (/^[1-4]$/.test(e.key)) this.choose(e.key);
+    else if (/^[1-5]$/.test(e.key)) this.choose(e.key);
     else if (e.key.length === 1 && this.menuEntry.length < 3) this.menuEntry += e.key;
+  }
+
+  /** The line under the list: what the selected switch gives in the state it is not in now (ON: the remake feature, OFF: the 1984 behaviour). */
+  private advancedHint(): string {
+    const f = ADVANCED_FEATURES[this.advancedCursor];
+    if (!f) return "";
+    return this.advanced.on(f.key) ? `OFF: ${f.original}` : `ON: ${f.remake}`;
+  }
+
+  /** ADVANCED OPTIONS: Up/Down select, Enter or Space switch, R back to the defaults, Esc leaves for the menu. */
+  private settingsKey(e: KeyLike): void {
+    const last = ADVANCED_FEATURES.length - 1;
+    const feature = ADVANCED_FEATURES[this.advancedCursor];
+    switch (e.key) {
+      case "ArrowUp":
+        this.advancedCursor = this.advancedCursor === 0 ? last : this.advancedCursor - 1;
+        return;
+      case "ArrowDown":
+        this.advancedCursor = this.advancedCursor === last ? 0 : this.advancedCursor + 1;
+        return;
+      case "Enter":
+      case " ":
+        if (feature) this.advanced.toggle(feature.key);
+        return;
+      case "Escape":
+        this.mode = "menu";
+        return;
+      default:
+        if (e.key === "r" || e.key === "R") this.advanced.reset();
+    }
   }
 
   private choose(input: string): void {
@@ -275,6 +332,10 @@ export class App {
     const state = this.launcher.choose(input);
     if (state.screen !== "done") return;
     switch (state.target) {
+      case "advanced":
+        this.launcher.returnFrom("advanced"); // back to the menu state for when the screen is left
+        this.mode = "settings";
+        break;
       case "simulation":
         this.startMission();
         break;
@@ -348,7 +409,9 @@ export class App {
         else if (s.periscopeUp !== before.periscope) this.play("periscope");
         else if (s.scopeFacing !== before.facing) this.play("scopeSwitch");
         else if (s.doorsOpen !== before.doors) this.play("doors");
-        if (this.showControlHud && HELM_COMMANDS.has(action.command.type)) this.showToast(helmStatus(s));
+        if (this.showControlHud || this.advanced.on("helmHud")) {
+          if (HELM_COMMANDS.has(action.command.type)) this.showToast(helmStatus(s));
+        }
         return;
       }
       case "screen":
@@ -358,12 +421,13 @@ export class App {
         this.radioRoom();
         return;
       case "toggleTrails":
-        this.setTrails(!this.trails);
+        if (this.advanced.on("trailToggle")) this.setTrails(!this.trailsOn);
         return;
       case "help":
-        this.helpOpen = true;
+        if (this.advanced.on("helpOverlay")) this.helpOpen = true;
         return;
       case "timeScale": {
+        if (!this.advanced.on("timeKeys")) return;
         const scales: readonly TimeScale[] = TIME_COMPRESSION.scales;
         const at = scales.indexOf(this.timeScale);
         const next = scales[Math.min(Math.max(at + (action.direction === "faster" ? 1 : -1), 0), scales.length - 1)] as TimeScale;
@@ -375,7 +439,7 @@ export class App {
         if (this.screen === "chart" && sim.sub.alertTimer === 0) this.prompt = { kind: "password", editor: new LineEditor(12) };
         return;
       case "quit":
-        this.returnToMenu("simulation");
+        if (this.advanced.on("escQuit")) this.returnToMenu("simulation");
         return;
     }
   }
@@ -419,6 +483,7 @@ export class App {
       this.setScreen("control");
       return;
     }
+    if ((action.item === 5 && !this.missionItemOn) || (action.item === 6 && !this.advanced.on("gameControlExtras"))) return;
     if (action.item === 1 || action.item === 5) {
       this.editorItem = action.item;
       this.difficultyEditor = new LineEditor(3);
@@ -426,6 +491,11 @@ export class App {
       this.gameControl.apply(action.item);
       this.applySettings();
     }
+  }
+
+  /** GAME CONTROL item 5 exists only with both GAME CONTROL ITEMS 5 AND 6 and CHOOSE THE NEXT MISSION on. */
+  private get missionItemOn(): boolean {
+    return this.advanced.on("gameControlExtras") && this.advanced.on("missionSelect");
   }
 
   /** GAME CONTROL changes take effect immediately: sound flag, difficulty and time of day of the running mission. */
@@ -462,7 +532,7 @@ export class App {
   // ---------------------------------------------------------------------------------------------------------------
 
   /** Pick a random scenario (1..20 like 0x0bb10), build the simulation and show the orders. */
-  startMission(scenarioId: number = this.settings.mission ?? pickScenarioId(this.random()), seed: number = Math.floor(this.random() * 2 ** 31)): void {
+  startMission(scenarioId: number = (this.advanced.on("missionSelect") ? this.settings.mission : undefined) ?? pickScenarioId(this.random()), seed: number = Math.floor(this.random() * 2 ** 31)): void {
     const course = this.data.courses[scenarioId];
     const orders = this.data.orders[scenarioId];
     if (!course || !orders) throw new Error(`scenario ${scenarioId} is missing`);
@@ -508,6 +578,10 @@ export class App {
     if (!sim) return;
     this.setScreen("control");
     if (sim.requestRadioRoom()) return;
+    if (!this.advanced.on("radioReread")) {
+      this.startMission(); // the original asks for a new mission
+      return;
+    }
     if (this.currentOrders) {
       this.startOrders(this.currentOrders, this.settings.difficulty < 8);
       this.mode = "orders";
@@ -535,6 +609,8 @@ export class App {
   }
 
   private play(effect: EffectName): void {
+    if (effect === "explosion" && !this.advanced.on("boomSound")) return;
+    if (effect === "radioAlert" && !this.advanced.on("radioAlert")) return;
     this.sound.effect(effect);
   }
 
@@ -615,12 +691,12 @@ export class App {
       rng: createRng(1984),
       options: { difficulty: 0, sound: false, timeOfDay: 1, inControlRoom: true },
       shipLog: this.data.shipLog,
-      ticksPerSecond: TICKS_PER_SECOND,
+      ticksPerSecond: this.baseHz,
     });
     sim.command({ type: "speed", level: "F5" });
     sim.command({ type: "periscope", direction: "raise" });
-    const runner = new FixedTimestepRunner(sim, TICKS_PER_SECOND);
-    const player = new DemoPlayer(this.data.demo);
+    const runner = new FixedTimestepRunner(sim, this.baseHz);
+    const player = new DemoPlayer(this.data.demo, { anyKeySkips: this.advanced.on("demoSkip") });
     const events = player.start();
     this.demo = { player, sim, runner, page: 0, screen: "intro" };
     this.demoMorse = null;
@@ -708,6 +784,13 @@ export class App {
       case "menu":
         drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
         return;
+      case "settings":
+        drawAdvancedOptions(g, {
+          rows: ADVANCED_FEATURES.map((f) => ({ label: f.label, on: this.advanced.on(f.key) })),
+          cursor: this.advancedCursor,
+          hint: this.advancedHint(),
+        });
+        return;
       case "orders":
         this.frameOrders(timeMs);
         return;
@@ -738,7 +821,8 @@ export class App {
     if (!sim || !runner) return;
     const dt = this.lastPlayMs === null ? 0 : Math.min((timeMs - this.lastPlayMs) / 1000, 0.25);
     this.lastPlayMs = timeMs;
-    const paused = this.screen === "log" || this.screen === "damage" || this.screen === "gameControl" || this.prompt !== null || this.helpOpen;
+    const blasting = !this.advanced.on("explosionsRun") && sim.explosions.length > 0; // the original blocks while an explosion plays
+    const paused = this.screen === "log" || this.screen === "damage" || this.screen === "gameControl" || this.prompt !== null || this.helpOpen || blasting;
     runner.paused = paused;
     const result = runner.frame(timeMs);
     this.handleEvents(result.events);
@@ -754,12 +838,12 @@ export class App {
     // tracks are only remembered once per simulation step (the original plots once per pass of its loop)
     const record = sim.tick !== this.lastTrailTick;
     this.lastTrailTick = sim.tick;
-    for (const b of Object.values(this.trailBuffers)) b.recording = this.trailsOn && record;
-    this.drawPlayScreen(this.screen, view, this.trailsOn, this.difficultyEditor, true);
+    for (const b of Object.values(this.trailBuffers)) b.recording = this.trails && record;
+    this.drawPlayScreen(this.screen, view, this.trails, this.difficultyEditor, true);
     if (this.prompt) {
       drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
     }
-    if (sim.status !== "running") drawEnd(g, sim.status);
+    if (sim.status !== "running") drawEnd(g, sim.status, this.advanced.on("endBox"));
     else {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);
@@ -775,6 +859,8 @@ export class App {
   private drawPlayScreen(screen: PlayScreen, view: PlayView, trails: boolean, editor: LineEditor | null, remakeExtras = true): void {
     const g = this.g;
     const L = this.cockpit;
+    const showMission = remakeExtras && this.missionItemOn;
+    const showTime = remakeExtras && this.advanced.on("gameControlExtras");
     const trail = trails && (screen === "radar" || screen === "chart" || screen === "quadrant") ? this.trailBuffers[screen] : undefined;
     const prompt = editor ? (this.editorItem === 5 ? "MISSION 1-20, R = RANDOM" : "NEW DIFFICULTY LEVEL") : null;
     switch (screen) {
@@ -803,8 +889,8 @@ export class App {
         else drawDamageReport(g, view);
         break;
       case "gameControl":
-        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", remakeExtras);
-        else drawGameControl(g, view.settings, prompt, editor?.value ?? "", remakeExtras);
+        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", showMission, showTime);
+        else drawGameControl(g, view.settings, prompt, editor?.value ?? "", showMission, showTime);
         break;
     }
   }

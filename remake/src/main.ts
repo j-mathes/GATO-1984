@@ -68,9 +68,11 @@ async function boot(): Promise<void> {
 
   const app = new App(gfx, data, sprites, new SoundEngine(), storage, Math.random, titleArt, cockpit);
   const display = setupDisplay(canvas, document.getElementById("crt"), storage);
+  app.onAdvancedChange = () => display.setModesEnabled(app.advanced.on("displayModes"));
+  app.onAdvancedChange();
   attachKeyboard(window, (e) => {
     // V cycles authentic -> fit window -> fit window + CRT scanlines (not while typing into a prompt)
-    if ((e.key === "v" || e.key === "V") && !e.ctrlKey && !e.altKey && !e.metaKey && !app.textEntryActive) {
+    if ((e.key === "v" || e.key === "V") && !e.ctrlKey && !e.altKey && !e.metaKey && !app.textEntryActive && app.advanced.on("displayModes")) {
       display.cycle();
       return;
     }

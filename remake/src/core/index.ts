@@ -9,4 +9,5 @@ export * from "./explosion.js";
 export * from "./radio.js";
 export * from "./simulation.js";
 export * from "./launcher.js";
+export * from "./advanced.js";
 export * from "./demoPlayer.js";

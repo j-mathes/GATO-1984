@@ -98,6 +98,7 @@ export function drawLauncherMenu(g: Gfx, entry: string, items: readonly Launcher
     g.clear(frame.palette[0]);
     g.image(art.image(MENU_FRAME_ID), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
     for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
+    for (const item of items.filter((i) => i.number > 4)) g.text(4, 14 + item.number, `[${item.number}]   ${item.label}`, frame.palette[3]); // remake items, rows 19 and below
     g.text(24, 22, `${entry}_`, frame.palette[3]);
     return;
   }
@@ -233,4 +234,52 @@ export function drawHelpOverlay(g: Gfx): void {
   g.rect(8, (top - 1) * 8 - 4, 304, height, COLORS.black);
   g.rect(8, (top - 1) * 8 - 4, 304, height, COLORS.cyan, false);
   CONTROLS_HELP.forEach((line, i) => g.text(2, top + i, line, i === 0 ? COLORS.yellow : COLORS.white));
+}
+
+export interface AdvancedRow {
+  label: string;
+  on: boolean;
+}
+
+export interface AdvancedView {
+  rows: readonly AdvancedRow[];
+  cursor: number;
+  /** What the selected switch would give if it were changed, e.g. `ON: ...` while it is off. */
+  hint: string;
+}
+
+/** Word wrap for the 38 usable columns of the text screen. */
+export function wrapText(text: string, width = 38): string[] {
+  const lines: string[] = [];
+  let line = "";
+  for (const word of text.split(" ")) {
+    if (line && line.length + 1 + word.length > width) {
+      lines.push(line);
+      line = word;
+    } else line = line ? `${line} ${word}` : word;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+/**
+ * ADVANCED OPTIONS (remake): the switches of the remake-only features, `ON` = the remake feature, `OFF` = the 1984 behaviour.
+ * The selected row is inverted; the text under the list says what OFF gives for it.
+ */
+export function drawAdvancedOptions(g: Gfx, view: AdvancedView): void {
+  g.clear(COLORS.blue);
+  g.centered(1, "ADVANCED OPTIONS", COLORS.yellow);
+  g.centered(2, "ON = REMAKE   OFF = 1984 ORIGINAL", COLORS.grey);
+  view.rows.forEach((r, i) => {
+    const y = 3 + i;
+    const selected = i === view.cursor;
+    if (selected) g.rect(0, (y - 1) * 8, 320, 8, COLORS.white);
+    const color = selected ? COLORS.blue : COLORS.white;
+    g.text(1, y, selected ? ">" : " ", color);
+    g.text(3, y, r.label, color);
+    g.text(36, y, r.on ? "ON " : "OFF", selected ? COLORS.blue : r.on ? COLORS.green : COLORS.grey);
+  });
+  const note = wrapText(view.hint.toUpperCase());
+  note.slice(0, 3).forEach((l, i) => g.text(2, 22 + i, l, COLORS.yellow));
+  g.text(2, 25, "UP/DOWN ENTER=CHANGE R=RESET ESC=BACK", COLORS.white);
 }

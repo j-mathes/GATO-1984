@@ -11,21 +11,23 @@ import type { TimeOfDay } from "./types.js";
  * difficulty, sound and time of day in its own GAME CONTROL screen, reproduced by {@link GameControl}.
  */
 
-export type LauncherTarget = "simulation" | "demo" | "history" | "exit";
+export type LauncherTarget = "simulation" | "demo" | "history" | "exit" | "advanced";
 
 export interface LauncherItem {
-  number: 1 | 2 | 3 | 4;
+  number: 1 | 2 | 3 | 4 | 5;
   label: string;
   target: LauncherTarget;
-  /** Original executable chained to. */
-  program: "GATO1" | "DEMO" | "HISTORY" | "END";
+  /** Original executable chained to ("-" for the remake's own item 5). */
+  program: "GATO1" | "DEMO" | "HISTORY" | "END" | "-";
 }
 
+/** Items 1-4 are GATO.EXE's; item 5 (ADVANCED OPTIONS) is a remake addition that opens the settings screen. */
 export const LAUNCHER_MENU: readonly LauncherItem[] = [
   { number: 1, label: "NORMAL PLAY  (DEFAULT)", target: "simulation", program: "GATO1" },
   { number: 2, label: "DEMONSTRATION", target: "demo", program: "DEMO" },
   { number: 3, label: "HISTORY AND SPECIFICATIONS", target: "history", program: "HISTORY" },
   { number: 4, label: "EXIT", target: "exit", program: "END" },
+  { number: 5, label: "ADVANCED OPTIONS", target: "advanced", program: "-" },
 ];
 
 export const LAUNCHER_PROMPT = ["PLEASE ENTER AN ITEM NUMBER", "FROM THE MENU ABOVE:"] as const;
@@ -72,7 +74,7 @@ export class Launcher {
 
   /** DEMO and HISTORY chain back to GATO, which shows the menu again; GATO1 and EXIT end the session. */
   returnFrom(target: LauncherTarget): LauncherState {
-    this.state = target === "demo" || target === "history" ? { screen: "menu" } : { screen: "done", target };
+    this.state = target === "demo" || target === "history" || target === "advanced" ? { screen: "menu" } : { screen: "done", target };
     return this.state;
   }
 }

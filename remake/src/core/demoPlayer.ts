@@ -55,6 +55,8 @@ export type DemoEvent =
   | { type: "finished"; reason: "completed" | "exit" };
 
 export interface DemoOptions {
+  /** Whether any key ends the intro early (a remake addition: the original shows the intro while it loads and reacts to F1 and F2 only; any key ends the Morse example in both). Default true. */
+  anyKeySkips?: boolean;
   /** Seconds to hold a page whose delay loop was not recovered: base + perChar * characters. */
   fallbackBaseSeconds?: number;
   fallbackSecondsPerChar?: number;
@@ -109,7 +111,7 @@ export class DemoPlayer {
     this.morseSeconds = Math.max(seconds, 0);
   }
 
-  /** F1 ends the demo at any time; F2 switches the sound off; any other key ends the intro or the Morse example early. */
+  /** F1 ends the demo at any time; F2 switches the sound off; any other key ends the Morse example (and, unless `anyKeySkips` is off, the intro) early. */
   pressKey(key: "F1" | "F2" | string): DemoEvent[] {
     if (this.done) return [];
     if (key === "F1") {
@@ -120,7 +122,7 @@ export class DemoPlayer {
       this.soundOn = false;
       return [];
     }
-    if (this.step === "intro") return this.enter("morse");
+    if (this.step === "intro") return this.options.anyKeySkips === false ? [] : this.enter("morse");
     if (this.step === "morse") return this.enter("pages");
     return [];
   }

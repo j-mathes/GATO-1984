@@ -32,6 +32,9 @@ export interface DisplayHandle {
   readonly mode: DisplayMode;
   cycle(): DisplayMode;
   set(mode: DisplayMode): void;
+  /** Without the remake's display modes the picture is always the authentic whole-number scale; the chosen mode is kept for later. */
+  setModesEnabled(on: boolean): void;
+  readonly modesEnabled: boolean;
 }
 
 /** Wire the canvas and the scanline overlay element to the window size; the choice is remembered in localStorage. */
@@ -43,18 +46,20 @@ export function setupDisplay(canvas: HTMLCanvasElement, overlay: HTMLElement | n
     stored = null;
   }
   let mode: DisplayMode = isDisplayMode(stored) ? stored : "authentic";
+  let enabled = true;
 
   const apply = (): void => {
-    const { width, height } = computeDisplaySize(mode, window.innerWidth, window.innerHeight);
+    const shown: DisplayMode = enabled ? mode : "authentic";
+    const { width, height } = computeDisplaySize(shown, window.innerWidth, window.innerHeight);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     canvas.style.imageRendering = "pixelated";
     if (overlay) {
       overlay.style.width = `${width}px`;
       overlay.style.height = `${height}px`;
-      overlay.style.display = mode === "crt" ? "block" : "none";
+      overlay.style.display = shown === "crt" ? "block" : "none";
     }
-    document.body.dataset.display = mode;
+    document.body.dataset.display = shown;
     try {
       storage?.setItem(STORAGE_KEY, mode);
     } catch {
@@ -67,13 +72,21 @@ export function setupDisplay(canvas: HTMLCanvasElement, overlay: HTMLElement | n
     get mode() {
       return mode;
     },
+    get modesEnabled() {
+      return enabled;
+    },
     cycle() {
+      if (!enabled) return "authentic";
       mode = nextDisplayMode(mode);
       apply();
       return mode;
     },
     set(m: DisplayMode) {
       mode = m;
+      apply();
+    },
+    setModesEnabled(on: boolean) {
+      enabled = on;
       apply();
     },
   };
