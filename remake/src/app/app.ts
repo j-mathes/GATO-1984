@@ -15,6 +15,7 @@ import {
   GameControl,
   Launcher,
   Simulation,
+  SinkingAnimation,
   WORLD,
   buildScenario,
   createRng,
@@ -56,6 +57,7 @@ import {
   drawQuadrantMap,
   drawRadar,
   drawRadioMessage,
+  drawSinking,
   liveContacts,
   type PlayView,
 } from "../render/playScreens.js";
@@ -146,6 +148,8 @@ export class App {
   private demoLog: LogStore | null = null;
   private lastFrame = 0;
   private lastPlayMs: number | null = null;
+  /** The lost-boat sequence (core/sinking.ts) from the moment the boat is lost; it stays (finished) as the flooded screen until the next mission. */
+  private sinking: SinkingAnimation | null = null;
   private currentOrders: OrdersJson | null = null;
   /** Radio/status messages of the original (core/radio.ts), shown over the control room while the mission runs. */
   readonly radio = new RadioInbox();
@@ -591,6 +595,7 @@ export class App {
       return;
     }
     if (sim.status !== "running") {
+      if (this.sinking && !this.sinking.done) return; // the sequence blocks the program until it is over
       if (e.key.toUpperCase() === "Y") this.startMission();
       else if (e.key.toUpperCase() === "N" || e.key === "Escape") this.returnToMenu("simulation");
       return;
@@ -785,6 +790,7 @@ export class App {
     this.toast = null;
     this.radio.clear();
     this.lastPlayMs = null;
+    this.sinking = null;
     this.startOrders(orders);
     this.mode = "orders";
   }
@@ -899,6 +905,7 @@ export class App {
     this.sound.stopAll();
     this.sound.enabled = this.settings.sound;
     this.sim = null;
+    this.sinking = null;
     this.runner = null;
     this.orders = null;
     this.helpOpen = false;
@@ -1061,6 +1068,10 @@ export class App {
     runner.paused = paused;
     const result = runner.frame(timeMs);
     this.handleEvents(result.events);
+    if (!this.sinking && sim.status === "destroyed" && !this.advanced.on("skipSinking")) {
+      this.sinking = new SinkingAnimation(this.screen === "control" ? "cracks" : "bands"); // the original tests ds:0x21ce (0x0b5f0)
+    }
+    this.sinking?.advance(dt);
     sim.advanceExplosions(dt);
     this.radio.advance(dt);
     this.snapshot = result.render;
@@ -1078,8 +1089,10 @@ export class App {
     if (this.prompt) {
       drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
     }
-    if (sim.status !== "running") drawEnd(g, sim.status, this.advanced.on("endBox"));
-    else {
+    if (this.sinking) drawSinking(g, this.sinking, this.screenPalette());
+    if (sim.status !== "running") {
+      if (!this.sinking || this.sinking.done) drawEnd(g, sim.status, this.advanced.on("endBox"));
+    } else {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);
       if (this.helpOpen) drawHelpOverlay(g, this.helpPage, this.helpPages());
@@ -1088,6 +1101,12 @@ export class App {
       if (timeMs < this.toast.until) drawToast(g, this.toast.text);
       else this.toast = null;
     }
+  }
+
+  /** The four colours of the screen the sinking sequence paints over (colour 2 = water, 3 = cracks). */
+  private screenPalette(): readonly string[] {
+    const names = { control: "control_room", gameControl: "control_room", damage: "damage_report", radar: "radar", chart: "chart", quadrant: "quadrant_map", log: "captains_log" } as const;
+    return this.cockpit?.palette(names[this.screen]) ?? ["#000000", "#55ffff", "#ff55ff", "#ffffff"];
   }
 
   /** One mission screen, from the extracted GATO1 layouts when they are loaded, otherwise the approximated drawing. Shared with the demo. */

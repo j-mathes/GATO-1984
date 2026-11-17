@@ -1,16 +1,21 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
+  CRACKS,
   EXPLOSION,
   Explosion,
   PLUME_COLUMNS,
   PLUME_FRAME_SECONDS,
   RADIO_MESSAGES,
   RadioInbox,
+  SINKING_HEIGHT,
+  SINKING_WIDTH,
   Simulation,
+  SinkingAnimation,
   buildScenario,
   cosmeticRng,
   debrisCount,
+  drawPixels,
   explosionShapes,
   holdSeconds,
   planExplosion,
@@ -260,5 +265,56 @@ describe("explosion plan and lifecycle (GATO1 0x086dd-0x09c24)", () => {
     run(sim, 40, () => sim.vessels[3]?.sunk === true);
     expect(sim.vessels[3]?.sunk).toBe(true);
     expect(sim.explosions).toHaveLength(0);
+  });
+});
+
+describe("DRAW strings", () => {
+  const at = (pixels: { x: number; y: number }[]): string => pixels.map((p) => `${p.x},${p.y}`).join(" ");
+
+  it("moves, blank moves (B), come-back moves (N), scale (S) and quarter turns (A)", () => {
+    expect(at(drawPixels(10, 10, "R2"))).toBe("10,10 10,10 11,10 12,10");
+    expect(at(drawPixels(10, 10, "A2R2"))).toBe("10,10 10,10 9,10 8,10"); // 180 degrees: right becomes left
+    expect(at(drawPixels(10, 10, "A1R1"))).toBe("10,10 10,10 10,9"); // 90 degrees counter-clockwise: right becomes up
+    expect(at(drawPixels(10, 10, "BR5R1"))).toBe("10,10 15,10 16,10");
+    expect(at(drawPixels(10, 10, "NR2D1"))).toBe("10,10 10,10 11,10 12,10 10,10 10,11");
+    expect(drawPixels(0, 0, "S8R2").at(-1)).toMatchObject({ x: 4, y: 0 });
+    expect(drawPixels(0, 0, "C2R1").at(-1)?.color).toBe(2);
+  });
+});
+
+describe("the lost-boat sinking sequence (Gato1 0x0b5cd-0x0b923)", () => {
+  const rowColors = (s: SinkingAnimation, y: number): Set<number> => new Set(Array.from({ length: SINKING_WIDTH }, (_, x) => s.colorAt(x, y)));
+
+  it("draws every crack string of the program on the screen", () => {
+    expect(CRACKS).toHaveLength(9);
+    for (const c of CRACKS) expect(drawPixels(c.x, c.y, c.draw).filter((p) => p.x >= 0 && p.x < SINKING_WIDTH && p.y >= 0 && p.y < SINKING_HEIGHT).length, c.draw).toBeGreaterThan(30);
+  });
+
+  it("control room: two cracks first, then a water line per row from the bottom; water covers the cracks drawn before it", () => {
+    const s = new SinkingAnimation("cracks");
+    expect(s.colorAt(293, 0)).toBe(3); // the first crack starts at the top right corner, before the loop
+    expect(s.colorAt(32, 140)).toBe(3);
+    s.advance(0); // y = 199
+    expect(rowColors(s, 199)).toEqual(new Set([2]));
+    expect(rowColors(s, 198)).not.toContain(2);
+    s.advance(s.duration / 2);
+    expect(rowColors(s, 140)).toEqual(new Set([2])); // the crack at (32,140) is under the water now
+    expect(s.colorAt(293, 0)).toBe(3);
+    expect(s.done).toBe(false);
+    s.advance(s.duration);
+    expect(s.done).toBe(true);
+    for (let y = 0; y < SINKING_HEIGHT; y += 1) expect(rowColors(s, y)).toEqual(new Set([2]));
+  });
+
+  it("other screens: filled bands of five rows in steps of three, from y = 199 to 4, covering the screen", () => {
+    const s = new SinkingAnimation("bands");
+    s.advance(0);
+    expect([195, 199].map((y) => s.colorAt(0, y))).toEqual([2, 2]);
+    expect(s.colorAt(0, 194)).toBe(0);
+    s.finish();
+    expect(s.done).toBe(true);
+    for (let y = 0; y < SINKING_HEIGHT; y += 1) expect(s.colorAt(0, y)).toBe(2);
+    expect(s.duration).toBeGreaterThan(2);
+    expect(s.duration).toBeLessThan(3);
   });
 });

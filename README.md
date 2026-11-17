@@ -62,7 +62,7 @@ These are the original game's keys. Because some of them (the function keys, `5`
 
 The Captain's Log, the damage report and GAME CONTROL pause the game; the radar, chart and quadrant map do not. When a message box is on screen (mission completed, radio room report), the first key only closes it.
 
-When the boat is lost or the air runs out you are asked whether to play again (**Y** / **N**).
+When the boat is lost the glass cracks and the sea floods the screen, as in the original (about two and a half seconds; **Skip the sinking scene** in the advanced options turns it off). Then, or at once when the air runs out, you are asked whether to play again (**Y** / **N**).
 
 ### GAME CONTROL (Tab)
 
@@ -96,7 +96,7 @@ Items 5, 6 and 7 are additions to the original, which has items 1 to 4.
 
 Menu item **5** (or item 7 in GAME CONTROL during a mission) opens a settings screen where the additions this remake makes to the 1984 game can be switched back to the original's behaviour, one by one. Up/Down select, Enter or Space switch, Left/Right change page, **R** restores the defaults, Esc goes back. The text under the list says what each switch does when it is on and when it is off.
 
-The defaults keep the additions (key help, display modes, wake-dot toggle, time compression, the 2.5 steps a second pace, message boxes that wait for a key, and so on), except for the helm status line, custom controls and simple speed keys, which are off.
+The defaults keep the additions (key help, display modes, wake-dot toggle, time compression, the 2.5 steps a second pace, message boxes that wait for a key, and so on), except for the helm status line, skipping the sinking scene, custom controls and simple speed keys, which are off.
 
 **Custom controls.** With this switch on, the game uses a second layout built for a modern keyboard (the right-hand column of the controls table), which you can then change key by key. Press **C** on the advanced options screen to open *Control assignments*: pick an action, press Enter, then press the new key. If the key is already used you are warned and can override it (the other action is left without a key) or cancel. **Delete** clears an action, **R** restores the custom layout. Tab and Esc are fixed. Only the mission keys can be changed, and the controls help shows the keys in force. With the switch off you get the original keys, and your assignments are kept for later.
 

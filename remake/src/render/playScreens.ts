@@ -13,9 +13,12 @@ import {
   scopeScreenX,
   scopeUsable,
   RADIO_MESSAGES,
+  SINKING_HEIGHT,
+  SINKING_WIDTH,
   type GameSettings,
   type RadioView,
   type Simulation,
+  type SinkingAnimation,
 } from "../core/index.js";
 import type { LogStore } from "../app/logStore.js";
 import type { Snapshot } from "../app/runner.js";
@@ -372,6 +375,23 @@ export function drawPrompt(g: Gfx, lines: string[], entry: string): void {
   g.rect(16, 70, 288, 24 + lines.length * 8, COLORS.white, false);
   lines.forEach((l, i) => g.text(4, 10 + i, l, COLORS.white));
   g.text(4, 10 + lines.length, `${entry}_`, COLORS.yellow);
+}
+
+/**
+ * The lost-boat sequence over the screen that was showing: colour 2 (the water) and colour 3 (the cracks) of that screen's palette, as the
+ * original's `LINE ...,2` and `DRAW "C3"` take them. Drawn as horizontal runs of one colour.
+ */
+export function drawSinking(g: Gfx, sinking: SinkingAnimation, palette: readonly string[]): void {
+  for (let y = 0; y < SINKING_HEIGHT; y += 1) {
+    let x = 0;
+    while (x < SINKING_WIDTH) {
+      const color = sinking.colorAt(x, y);
+      let end = x + 1;
+      while (end < SINKING_WIDTH && sinking.colorAt(end, y) === color) end += 1;
+      if (color !== 0) g.rect(x, y, end - x, 1, palette[color] ?? COLORS.white);
+      x = end;
+    }
+  }
 }
 
 export function drawEnd(g: Gfx, status: Simulation["status"], framed = true): void {

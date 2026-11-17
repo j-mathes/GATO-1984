@@ -12,6 +12,7 @@ export type AdvancedKey =
   | "displayModes"
   | "trailToggle"
   | "endBox"
+  | "skipSinking"
   | "demoSkip"
   | "timeKeys"
   | "hotkeys"
@@ -52,6 +53,7 @@ export const ADVANCED_FEATURES: readonly AdvancedFeature[] = [
   { key: "gameControlExtras", row: 8, label: "GAME CONTROL ITEMS 5 AND 6", default: true, remake: "GAME CONTROL gets item 5 (next mission) and item 6 (time compression)", original: "GAME CONTROL has items 1 to 4 only" },
   { key: "missionSelect", row: 30, label: "CHOOSE THE NEXT MISSION", default: true, remake: "GAME CONTROL item 5 picks the next mission, 1 to 20", original: "always a random mission" },
   { key: "endBox", row: 11, label: "LOST-BOAT BOX AND TEXT", default: true, remake: "a lost boat shows a framed box saying YOUR SUBMARINE HAS BEEN LOST", original: "black screen with only the play-again prompt" },
+  { key: "skipSinking", row: 41, label: "SKIP THE SINKING SCENE", default: false, remake: "a lost boat goes straight to the end message", original: "a lost boat cracks the glass and the sea floods the screen, as in 1984" },
   { key: "demoSkip", row: 12, label: "DEMO: ANY KEY SKIPS INTRO", default: true, remake: "any key skips the demo's opening page (F1 exits, F2 sound off)", original: "only F1 and F2 act in the demo" },
   { key: "timeKeys", row: 15, label: "TIME COMPRESSION KEYS [ AND ]", default: true, remake: "[ and ] change the speed of time: 1x, 2x, 4x", original: "the pace cannot be changed" },
   { key: "timeToast", row: 2, label: "TIME SPEED POP-UP", default: true, remake: "a short pop-up confirms the speed of time when it changes", original: "no pop-up when the speed of time changes" },

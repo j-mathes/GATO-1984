@@ -1963,14 +1963,14 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     return h.calls.slice();
   };
 
-  it("offers the 18 requested rows plus CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line and the custom-controls pair", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 12, 15, 2, 17, 20, 28, 32, 24, 25, 38, 40]);
+  it("offers the 18 requested rows plus the sinking scene, CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line, the sinking skip and the custom-controls pair", () => {
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 15, 2, 17, 20, 28, 32, 24, 25, 38, 40]);
     const keys = ADVANCED_FEATURES.map((f) => f.key);
     const at = keys.indexOf("hotkeys");
     expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);
     expect(ADVANCED_FEATURES.every((f) => f.label.length <= 30)).toBe(true);
     const { app } = boot();
-    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(f.key !== "helmHud" && f.key !== "customControls" && f.key !== "simpleSpeed");
+    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(!["helmHud", "skipSinking", "customControls", "simpleSpeed"].includes(f.key));
   });
 
   it("indented switches: the hotkey members, the next-mission pick and the time pop-up sit under the switch they depend on", () => {
@@ -2258,7 +2258,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
   });
 
   it("lost-boat box (11): off gives the cleared screen with the play-again question alone", () => {
-    const h = play();
+    const h = play({ map: new Map([["gato.advanced", JSON.stringify({ skipSinking: true })]]) });
     (h.sim() as unknown as { status: string }).status = "destroyed";
     const framed = frameAfter(h, 20);
     expect(textsOf(framed)).toContain("YOUR SUBMARINE HAS BEEN LOST");
@@ -2267,6 +2267,73 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(textsOf(plain)).not.toContain("YOUR SUBMARINE HAS BEEN LOST");
     expect(plain.filter(([n]) => n === "clear").length).toBeGreaterThan(0);
     expect(plain.some(([n, a]) => n === "text" && a[0] === 2 && a[1] === 4 && a[2] === "DO YOU WANT DO PLAY AGAIN? (Y/N)")).toBe(true);
+  });
+
+  describe("the sinking scene (41)", () => {
+    const WATER = "#ff55ff";
+    const lose = (h: Harness): void => {
+      (h.sim() as unknown as { status: string }).status = "destroyed";
+      h.app.frame(10);
+    };
+    /** Frames of 0.2 s until the scene is over (at most 5 s). */
+    const runOut = (h: Harness, from = 10): Call[] => {
+      let calls: Call[] = [];
+      for (let t = from + 200; t < from + 5000; t += 200) calls = frameAfter(h, t);
+      return calls;
+    };
+    const waterRows = (calls: Call[]): number => calls.filter(([n, a]) => n === "rect" && a[4] === WATER && a[2] === 320 && a[3] === 1).length;
+
+    it("a lost boat floods the screen first, then shows the end message; keys wait until it is over", () => {
+      const h = play();
+      lose(h);
+      const early = frameAfter(h, 300);
+      expect(waterRows(early)).toBeGreaterThan(0);
+      expect(textsOf(early)).not.toContain("YOUR SUBMARINE HAS BEEN LOST");
+      press(h.app, "y");
+      expect(h.app.mode).toBe("play"); // a key during the scene does nothing
+      const last = runOut(h);
+      expect(waterRows(last)).toBe(200); // every row is water
+      expect(textsOf(last)).toContain("YOUR SUBMARINE HAS BEEN LOST");
+      press(h.app, "y");
+      expect(h.app.mode).toBe("orders");
+    });
+
+    it("the original's second variant paints bands over the other screens (ds:0x21ce = 1)", () => {
+      const h = play();
+      press(h.app, "F6"); // radar
+      lose(h);
+      const scene = (h.app as unknown as { sinking: { variant: string } }).sinking;
+      expect(scene.variant).toBe("bands");
+      const control = play();
+      lose(control);
+      expect((control.app as unknown as { sinking: { variant: string } }).sinking.variant).toBe("cracks");
+    });
+
+    it("running out of air has no scene, as in the original", () => {
+      const h = play();
+      (h.sim() as unknown as { status: string }).status = "suffocated";
+      h.app.frame(10);
+      expect((h.app as unknown as { sinking: unknown }).sinking).toBeNull();
+      expect(textsOf(frameAfter(h, 40))).toContain("DO YOU WANT DO PLAY AGAIN? (Y/N)");
+    });
+
+    it("the switch skips the scene", () => {
+      const h = play();
+      h.app.advanced.set("skipSinking", true);
+      lose(h);
+      const calls = frameAfter(h, 40);
+      expect(waterRows(calls)).toBe(0);
+      expect(textsOf(calls)).toContain("YOUR SUBMARINE HAS BEEN LOST");
+    });
+
+    it("the original (endBox off) clears the screen once the water has covered it", () => {
+      const h = play();
+      h.app.advanced.set("endBox", false);
+      lose(h);
+      const last = runOut(h);
+      expect(last.filter(([n]) => n === "clear").length).toBeGreaterThan(0);
+      expect(textsOf(last)).toContain("DO YOU WANT DO PLAY AGAIN? (Y/N)");
+    });
   });
 
   it("M (20): off asks for a new mission instead of re-reading the orders", () => {

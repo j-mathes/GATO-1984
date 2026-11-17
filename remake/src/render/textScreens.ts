@@ -370,7 +370,7 @@ export function wrapText(text: string, width = 38): string[] {
 }
 
 /** Switches per page of the ADVANCED OPTIONS screen. */
-export const ADVANCED_PAGE_SIZE = 10;
+export const ADVANCED_PAGE_SIZE = 11;
 
 /**
  * ADVANCED OPTIONS (remake): the switches of the remake-only features, `ON` = the remake feature, `OFF` = the 1984 behaviour.
@@ -385,7 +385,7 @@ export function drawAdvancedOptions(g: Gfx, view: AdvancedView): void {
   const page = Math.floor(view.cursor / ADVANCED_PAGE_SIZE);
   g.text(2, 3, `PAGE ${page + 1} OF ${pages}`, COLORS.cyan);
   view.rows.slice(page * ADVANCED_PAGE_SIZE, (page + 1) * ADVANCED_PAGE_SIZE).forEach((r, i) => {
-    const y = 5 + i;
+    const y = 4 + i;
     const selected = page * ADVANCED_PAGE_SIZE + i === view.cursor;
     if (selected) g.rect(0, (y - 1) * 8, 320, 8, COLORS.white);
     const color = selected ? COLORS.blue : COLORS.white;
