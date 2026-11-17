@@ -349,7 +349,7 @@ export function drawCaptainsLog(g: Gfx, v: PlayView): void {
 
 export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string | null, entry: string, showMission = true, showTime = showMission, showAdvanced = showMission): void {
   g.clear();
-  g.centered(3, "GAME CONTROL", COLORS.white);
+  g.centered(3, "GAME CONTROL", COLORS.white, true);
   g.text(6, 7, "[1] DIFFICULTY LEVEL", COLORS.grey);
   g.text(35, 7, String(settings.difficulty), COLORS.yellow);
   g.text(6, 9, "[2] SOUND", COLORS.grey);
@@ -359,7 +359,7 @@ export function drawGameControl(g: Gfx, settings: GameSettings, prompt: string |
   g.text(6, 13, "[4] RESET CAPTAIN'S LOG", COLORS.grey);
   if (showMission) {
     g.text(6, 15, "[5] NEXT MISSION", COLORS.grey);
-    g.text(35, 15, settings.mission ? String(settings.mission) : "RANDOM", COLORS.yellow);
+    g.text(35, 15, settings.mission ? String(settings.mission) : "RND", COLORS.yellow);
   }
   if (showTime) {
     g.text(6, 17, "[6] TIME COMPRESSION", COLORS.grey);

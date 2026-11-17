@@ -1,3 +1,4 @@
+import { glassCracks } from "./cracks.js";
 import { COMPARTMENT, SCOPE_OFFSET, SLOT, scopeScreenX, scopeUsable, inScopeWindow } from "../../core/index.js";
 import { scopeHorizon } from "../cockpitScreens.js";
 import { drawExplosion } from "../explosions.js";
@@ -154,7 +155,8 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
     g.rect(area.x, area.y, area.w, area.h, "#05090c");
     g.rect(area.x + 3, area.y + 3, area.w - 6, area.h - 6, "#3a4650", false);
     const damaged = sub.periscopeUp && (sub.damage[COMPARTMENT.periscopes] ?? 0) !== 0;
-    drawText(g, area.x + area.w / 2, area.y + area.h / 2, damaged ? "PERISCOPE DAMAGED" : "NO VIEW - PERISCOPE DOWN", "#8a97a2", 40, { role: "title", align: "center" });
+    if (damaged) drawCrackedGlass(g, area);
+    drawText(g, area.x + area.w / 2, area.y + area.h / 2, damaged ? "PERISCOPE DAMAGED" : "NO VIEW - PERISCOPE DOWN", damaged ? "#d9e4ea" : "#8a97a2", 40, { role: "title", align: "center" });
     return;
   }
   const horizon = scopeHorizon(sub);
@@ -209,6 +211,30 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
   c.fillStyle = rim;
   c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
   g.rect(area.x, area.y, area.w, area.h, darken(mix(SCOPE.day.seaNear, "#888888", 0.5), 0.2), false);
+}
+
+/** The broken periscope glass: a dark pane with a glow at the point of impact and cracks running out from it, thin and bright with a soft halo. */
+function drawCrackedGlass(g: Gfx, area: ScopeArea): void {
+  const c = g.ctx;
+  const glow = c.createRadialGradient(g.toX(area.x + area.w * 0.58), g.toY(area.y + area.h * 0.4), 0, g.toX(area.x + area.w * 0.58), g.toY(area.y + area.h * 0.4), g.toLength(area.w * 0.4));
+  glow.addColorStop(0, "rgba(120,150,170,0.28)");
+  glow.addColorStop(1, "rgba(120,150,170,0)");
+  c.fillStyle = glow;
+  c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
+  g.clip(area.x, area.y, area.w, area.h);
+  const cracks = glassCracks(area.w, area.h, 0.58, 0.4);
+  c.lineCap = "round";
+  c.lineJoin = "round";
+  for (const pass of [{ w: 5, a: 0.12 }, { w: 1.6, a: 0.85 }]) {
+    for (const k of cracks) {
+      c.strokeStyle = `rgba(225,238,245,${(pass.a * Math.min(1, k.weight + 0.2)).toFixed(3)})`;
+      c.lineWidth = g.toLength(pass.w * k.weight);
+      c.beginPath();
+      k.points.forEach(([x, y], i) => (i === 0 ? c.moveTo(g.toX(area.x + x), g.toY(area.y + y)) : c.lineTo(g.toX(area.x + x), g.toY(area.y + y))));
+      c.stroke();
+    }
+  }
+  g.unclip();
 }
 
 /** The periscope's lens: the corners fall off into shadow, with a fine crosshair and range ticks in the middle. */

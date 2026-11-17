@@ -13,6 +13,7 @@ import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Sim
 import { drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
 import { drawControlPanel } from "../render/enhanced/panel.js";
 import { drawEnhancedScope } from "../render/enhanced/scope.js";
+import { damageHullMask } from "../render/enhanced/damage.js";
 import { PANEL, levelColor } from "../render/enhanced/colors.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import { CONTROL_DEFS, CONTROL_GROUPS, Keymap, isLocked, type ControlId } from "../input/controls.js";
@@ -1091,7 +1092,7 @@ describe("controls overlay and mission select", () => {
     press(app, "x", "x", "Tab");
     expect(app.settings.mission ?? null).toBeNull();
     app.frame(0);
-    expect(calls.some(([n, a]) => n === "text" && a[2] === "RANDOM")).toBe(true);
+    expect(calls.some(([n, a]) => n === "text" && a[2] === "RND")).toBe(true);
     expect(calls.some(([n, a]) => n === "text" && a[2] === "[5] NEXT MISSION")).toBe(true);
     press(app, "5", "1", "2", "Enter");
     expect(app.settings.mission).toBe(12);
@@ -2348,11 +2349,21 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     it("a screen without a scene is drawn by the original code, centred in the canvas", () => {
       const h = play();
       h.app.setGraphics("enhanced");
-      press(h.app, "r"); // the damage report has no enhanced scene yet
+      press(h.app, "Tab"); // GAME CONTROL has no enhanced scene: it gets the typewriter skin instead
       const calls = frameAfter(h, 20);
       expect(calls[0]).toEqual(["view", [320, 200]]);
       expect(calls[1]).toEqual(["fillBacking", ["#000000"]]);
-      expect(calls.some(([n]) => n === "image")).toBe(true); // the original layout bitmap
+      expect(calls.some(([n, a]) => n === "text" && a[2] === "GAME CONTROL")).toBe(true); // the original screen, drawn by the original code
+    });
+
+    it("the damage report's hull is solid under the deck and in the tower, but not under the wire from the bow mast to the tower", () => {
+      const L = new CockpitLayouts(parseCockpitLayouts(read("public/assets/cockpit_layouts.json")), canvasFactory());
+      const hull = damageHullMask(L);
+      const at = (x: number, y: number): number => hull[y * 320 + x] as number;
+      expect(at(60, 43)).toBe(0); // between the wire and the deck: open air
+      expect(at(100, 42)).toBe(0);
+      expect(at(60, 55)).toBe(1); // inside the hull
+      expect(at(130, 40)).toBe(1); // inside the conning tower
     });
 
     it("the ENHANCED GRAPHICS switch (42) turns the graphics on and off, also from the stored value, and the demo keeps the original pictures", () => {
@@ -2367,7 +2378,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       const stored = boot({ map: new Map([["gato.advanced", JSON.stringify({ enhancedGraphics: true })]]) });
       stored.app.syncGraphics();
       expect(stored.app.graphics).toBe("enhanced");
-      expect(h.app.enhanced.screens.sort()).toEqual(["chart", "control", "quadrant", "radar"]);
+      expect(h.app.enhanced.screens.sort()).toEqual(["chart", "control", "damage", "log", "quadrant", "radar"]);
     });
   });
 
@@ -2387,7 +2398,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       return { g: new RealGfx(canvas), calls };
     }
 
-    const frameFor = (h: Harness, screen: "control" | "radar" | "chart" | "quadrant"): { view: PlayView; screen: typeof screen } => {
+    const frameFor = (h: Harness, screen: "control" | "radar" | "chart" | "quadrant" | "damage" | "log"): { view: PlayView; screen: typeof screen } => {
       const sim = h.sim();
       const internals = h.app as unknown as { snapshot: PlayView["snap"] };
       return { view: { sim, snap: internals.snapshot, settings: h.app.settings, sprites: null, log: h.app.log, timeMs: 1500 }, screen };
@@ -2453,7 +2464,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       for (const width of [1280, 1422]) {
         for (const timeOfDay of [1, 0] as const) {
           h.app.settings.timeOfDay = timeOfDay;
-          for (const screen of ["control", "radar", "chart", "quadrant"] as const) {
+          for (const screen of ["control", "radar", "chart", "quadrant", "damage", "log"] as const) {
             const { g, calls } = fullGfx();
             g.resizeBacking(Math.round(width * 1.8), 1440);
             g.view(width, 800);
@@ -2510,7 +2521,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     it("enhanced graphics: the oxygen loss fades to black first, and keys wait for it; the original shows the message at once", () => {
       const air = play();
       air.app.setGraphics("enhanced");
-      press(air.app, "r"); // a screen the harness can draw (the damage report has no enhanced scene)
+      press(air.app, "Tab"); // a screen the harness can draw without gradients (GAME CONTROL has no scene)
       (air.sim() as unknown as { status: string }).status = "suffocated";
       air.app.frame(10);
       press(air.app, "y");

@@ -20,18 +20,23 @@ const SCOPE_DEPTH = 45;
 const FULL_SPEED = 8;
 const FLANK_SPEED = 10;
 
-interface Ctx {
+export interface Ctx {
   g: Gfx;
   xo: number;
   p: PanelColors;
   night: boolean;
 }
 
+/** A drawing context for the panel components: `xo` is where the 1280 x 800 picture starts in the view. */
+export function panelContext(g: Gfx, xo: number, night: boolean): Ctx {
+  return { g, xo, p: night ? PANEL.night : PANEL.day, night };
+}
+
 const px = (c: Ctx, x: number): number => c.xo + x * U;
 const py = (y: number): number => y * U;
 
 /** A brass-framed dark window (the original's BOX), `(x0,y0)-(x1,y1)` in original pixels; `fill` null gives just the frame, around other parts. */
-function bezelBox(c: Ctx, x0: number, y0: number, x1: number, y1: number, fill: string | null = c.p.glass): void {
+export function bezelBox(c: Ctx, x0: number, y0: number, x1: number, y1: number, fill: string | null = c.p.glass): void {
   const { g, p } = c;
   const ctx = g.ctx;
   const x = px(c, x0);
@@ -52,7 +57,7 @@ function bezelBox(c: Ctx, x0: number, y0: number, x1: number, y1: number, fill: 
 }
 
 /** A glowing lamp: dark glass when off, a lit colour with a halo when on. */
-function lamp(c: Ctx, cx: number, cy: number, r: number, color: string | null): void {
+export function lamp(c: Ctx, cx: number, cy: number, r: number, color: string | null): void {
   const { g, p } = c;
   const ctx = g.ctx;
   const x = px(c, cx);
@@ -261,13 +266,13 @@ function drawScopeArrow(c: Ctx, facing: string): void {
 }
 
 /** Brushed gunmetal with a few rivets: the whole picture below the scope and a thin strip of it around. */
-function drawMetal(c: Ctx): void {
+export function drawMetal(c: Ctx, top = 98, height = 102): void {
   const { g, p } = c;
   const ctx = g.ctx;
   const x = px(c, 0);
-  const y = py(98);
+  const y = py(top);
   const w = 320 * U;
-  const h = 102 * U;
+  const h = height * U;
   const metal = ctx.createLinearGradient(0, g.toY(y), 0, g.toY(y + h));
   metal.addColorStop(0, p.metalTop);
   metal.addColorStop(1, p.metalBottom);

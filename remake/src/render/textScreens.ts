@@ -396,7 +396,7 @@ export const ADVANCED_PAGE_SIZE = 12;
  */
 export function drawAdvancedOptions(g: Gfx, view: AdvancedView): void {
   g.clear(COLORS.blue);
-  g.centered(1, "ADVANCED OPTIONS", COLORS.yellow);
+  g.centered(1, "ADVANCED OPTIONS", COLORS.yellow, true);
   g.centered(2, "ON = REMAKE   OFF = 1984 ORIGINAL", COLORS.grey);
   const pages = Math.max(Math.ceil(view.rows.length / ADVANCED_PAGE_SIZE), 1);
   const page = Math.floor(view.cursor / ADVANCED_PAGE_SIZE);
@@ -469,7 +469,7 @@ export function controlsEditorScroll(cursorEntry: number, total: number): number
 /** CONTROL ASSIGNMENTS (remake, CUSTOM CONTROLS on): sections of actions with their keys, the selected row inverted, messages under the list. */
 export function drawControlsEditor(g: Gfx, view: ControlsEditorView): void {
   g.clear(COLORS.blue);
-  g.centered(1, "CONTROL ASSIGNMENTS", COLORS.yellow);
+  g.centered(1, "CONTROL ASSIGNMENTS", COLORS.yellow, true);
   g.text(2, 2, "ONE KEY PER ACTION", COLORS.grey);
   g.text(34, 2, `${view.cursor + 1}/${view.rows.length}`, COLORS.grey);
   const entries = controlsEditorEntries(view.rows);

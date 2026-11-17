@@ -19,6 +19,18 @@ export const COLUMNS = 40;
 export const ROWS = 25;
 
 /**
+ * A look for the text screens of the enhanced graphics: while a skin is set, `clear()` paints its backdrop, the CGA colours are mapped to its
+ * own (cream, amber...) and `text()` is set in a typewriter face. The screens themselves are not touched; they draw as they always do.
+ */
+export interface TextSkin {
+  backdrop(g: Gfx): void;
+  colors: Readonly<Record<string, string>>;
+  bodyFont: string;
+  titleFont: string;
+}
+
+
+/**
  * Thin wrapper around a 2D canvas context. All drawing goes through here so screens stay free of canvas details.
  *
  * Screens draw in a *view*: a logical space (the original's 320 x 200 with its 40 x 25 text grid, or the enhanced renderer's larger space)
@@ -34,6 +46,8 @@ export class Gfx {
   private unit = ORIGINAL_SCALE;
   private ox = 0;
   private oy = 0;
+  /** The look of the text screens (see {@link TextSkin}); null draws the original's. */
+  skin: TextSkin | null = null;
 
   constructor(readonly canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
@@ -108,18 +122,24 @@ export class Gfx {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  /** A colour as the current skin shows it (the CGA colours the screens ask for become the skin's); unchanged without a skin. */
+  private tone(color: string): string {
+    return this.skin?.colors[color] ?? color;
+  }
+
   clear(color: string = COLORS.black): void {
-    this.rect(0, 0, this.viewW, this.viewH, color);
+    if (this.skin) this.skin.backdrop(this);
+    else this.rect(0, 0, this.viewW, this.viewH, color);
   }
 
   rect(x: number, y: number, w: number, h: number, color: string, fill = true): void {
     const c = this.ctx;
     const u = this.unit;
     if (fill) {
-      c.fillStyle = color;
+      c.fillStyle = this.tone(color);
       c.fillRect(x * u + this.ox, y * u + this.oy, w * u, h * u);
     } else {
-      c.strokeStyle = color;
+      c.strokeStyle = this.tone(color);
       c.lineWidth = u;
       c.strokeRect(x * u + this.ox + 1, y * u + this.oy + 1, w * u - 2, h * u - 2);
     }
@@ -127,7 +147,7 @@ export class Gfx {
 
   line(x1: number, y1: number, x2: number, y2: number, color: string, width = 1): void {
     const c = this.ctx;
-    c.strokeStyle = color;
+    c.strokeStyle = this.tone(color);
     c.lineWidth = this.unit * width;
     c.beginPath();
     c.moveTo(this.toX(x1), this.toY(y1));
@@ -140,10 +160,10 @@ export class Gfx {
     c.beginPath();
     c.arc(this.toX(cx), this.toY(cy), Math.max(r * this.unit, 0.5), 0, Math.PI * 2);
     if (fill) {
-      c.fillStyle = color;
+      c.fillStyle = this.tone(color);
       c.fill();
     } else {
-      c.strokeStyle = color;
+      c.strokeStyle = this.tone(color);
       c.lineWidth = this.unit * width;
       c.stroke();
     }
@@ -154,29 +174,35 @@ export class Gfx {
     const u = this.unit;
     c.beginPath();
     c.ellipse(this.toX(cx), this.toY(cy), Math.max(rx * u, 0.5), Math.max(ry * u, 0.5), 0, 0, Math.PI * 2);
-    c.strokeStyle = color;
+    c.strokeStyle = this.tone(color);
     c.lineWidth = u;
     c.setLineDash(dashed ? [3 * u, 3 * u] : []);
     c.stroke();
     c.setLineDash([]);
   }
 
-  /** Text on the 40x25 grid (1-based column/row like BASIC LOCATE). One glyph per cell so columns stay aligned. */
-  text(col: number, row: number, s: string, color: string = COLORS.grey): void {
+  /** Text on the 40x25 grid (1-based column/row like BASIC LOCATE). One glyph per cell so columns stay aligned; `title` picks the skin's title face. */
+  text(col: number, row: number, s: string, color: string = COLORS.grey, title = false): void {
     const c = this.ctx;
     const u = this.unit;
-    c.fillStyle = color;
-    c.font = `bold ${8 * u + 2}px "Courier New", Courier, monospace`;
-    c.textBaseline = "top";
+    c.fillStyle = this.tone(color);
+    if (this.skin) {
+      c.font = `${title ? "" : "bold "}${(title ? 9.5 : 9.6) * u}px ${title ? this.skin.titleFont : this.skin.bodyFont}`;
+      c.textBaseline = "middle";
+    } else {
+      c.font = `bold ${8 * u + 2}px "Courier New", Courier, monospace`;
+      c.textBaseline = "top";
+    }
     c.textAlign = "center";
+    const y = this.skin ? (row - 1) * 8 * u + (title ? 5.4 : 4.4) * u + this.oy : (row - 1) * 8 * u + this.oy;
     for (let i = 0; i < s.length; i += 1) {
       const ch = s.charAt(i);
-      if (ch !== " ") c.fillText(ch, (col - 1 + i) * 8 * u + 4 * u + this.ox, (row - 1) * 8 * u + this.oy);
+      if (ch !== " ") c.fillText(ch, (col - 1 + i) * 8 * u + 4 * u + this.ox, y);
     }
   }
 
-  centered(row: number, s: string, color: string = COLORS.grey): void {
-    this.text(Math.max(1, Math.floor((COLUMNS - s.length) / 2) + 1), row, s, color);
+  centered(row: number, s: string, color: string = COLORS.grey, title = false): void {
+    this.text(Math.max(1, Math.floor((COLUMNS - s.length) / 2) + 1), row, s, color, title);
   }
 
   /** Text at pixel position (logical coordinates), left aligned, 8x8 glyphs. */
@@ -188,13 +214,14 @@ export class Gfx {
   text80(col: number, row: number, s: string, color: string = COLORS.grey): void {
     const c = this.ctx;
     const u = this.unit;
-    c.fillStyle = color;
-    c.font = `bold ${6.5 * u}px "Courier New", Courier, monospace`;
-    c.textBaseline = "top";
+    c.fillStyle = this.tone(color);
+    c.font = this.skin ? `bold ${6.8 * u}px ${this.skin.bodyFont}` : `bold ${6.5 * u}px "Courier New", Courier, monospace`;
+    c.textBaseline = this.skin ? "middle" : "top";
     c.textAlign = "center";
+    const y = ((row - 1) * 8 + (this.skin ? 4 : 0.5)) * u + this.oy;
     for (let i = 0; i < s.length; i += 1) {
       const ch = s.charAt(i);
-      if (ch !== " ") c.fillText(ch, ((col - 1 + i) * 4 + 2) * u + this.ox, ((row - 1) * 8 + 0.5) * u + this.oy);
+      if (ch !== " ") c.fillText(ch, ((col - 1 + i) * 4 + 2) * u + this.ox, y);
     }
   }
 

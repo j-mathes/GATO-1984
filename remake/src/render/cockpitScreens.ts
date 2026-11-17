@@ -269,7 +269,7 @@ export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { dif
   const pal = L.palette("control_room");
   const white = pal[3] as string;
   g.clear(pal[0]);
-  g.text(15, 2, "GAME CONTROL", white);
+  g.text(15, 2, "GAME CONTROL", white, true);
   g.text(6, 6, "[1] DIFFICULTY LEVEL", white);
   g.text(35, 6, String(settings.difficulty), white);
   g.text(6, 7, "[2] SOUND", white);
@@ -279,7 +279,7 @@ export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { dif
   g.text(6, 9, "[4] RESET CAPTAIN'S LOG", white);
   if (showMission) {
     g.text(6, 10, "[5] NEXT MISSION", white); // remake additions, not on the original screen
-    g.text(35, 10, settings.mission ? String(settings.mission) : "RANDOM", white);
+    g.text(35, 10, settings.mission ? String(settings.mission) : "RND", white);
   }
   if (showTime) {
     g.text(6, 11, "[6] TIME COMPRESSION", white);

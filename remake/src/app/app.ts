@@ -51,6 +51,7 @@ import { ENHANCED_HEIGHT, type Graphics } from "../render/display.js";
 import { EnhancedRenderer } from "../render/enhanced/scene.js";
 import { registerEnhancedScenes } from "../render/enhanced/scenes.js";
 import { OXYGEN_FADE_SECONDS, drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
+import { TYPEWRITER_SKIN } from "../render/enhanced/skin.js";
 import { ShipArt } from "../render/enhanced/shipArt.js";
 import {
   drawCaptainsLog,
@@ -1072,15 +1073,17 @@ export class App {
         drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
         return;
       case "settings":
-        drawAdvancedOptions(g, {
-          rows: this.advancedList().map((f) => ({ label: f.label, on: this.advanced.on(f.key), indent: ADVANCED_INDENTED.has(f.key) })),
-          cursor: this.advancedCursor,
-          descriptions: this.advancedDescriptions(),
-          controlsKey: this.advanced.on("customControls"),
-        });
+        this.withSkin(() =>
+          drawAdvancedOptions(g, {
+            rows: this.advancedList().map((f) => ({ label: f.label, on: this.advanced.on(f.key), indent: ADVANCED_INDENTED.has(f.key) })),
+            cursor: this.advancedCursor,
+            descriptions: this.advancedDescriptions(),
+            controlsKey: this.advanced.on("customControls"),
+          }),
+        );
         return;
       case "controls":
-        drawControlsEditor(g, this.controlsView());
+        this.withSkin(() => drawControlsEditor(g, this.controlsView()));
         return;
       case "orders":
         this.frameOrders(timeMs);
@@ -1136,9 +1139,6 @@ export class App {
     this.lastTrailTick = sim.tick;
     for (const b of Object.values(this.trailBuffers)) b.recording = this.trails && record;
     this.drawPlayScreen(this.screen, view, this.trails, this.difficultyEditor, true);
-    if (this.prompt) {
-      drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
-    }
     if (this.sinking) {
       if (this.graphicsMode === "enhanced") {
         drawEnhancedSinking(g, this.sinking, this.enhancedView.width, this.enhancedView.height, timeMs);
@@ -1146,16 +1146,31 @@ export class App {
       } else drawSinking(g, this.sinking, this.screenPalette());
     }
     if (this.oxygenFadeStart !== null && sim.status === "suffocated") drawOxygenFade(g, (timeMs - this.oxygenFadeStart) / 1000);
-    if (sim.status !== "running") {
-      if (!this.endPending()) drawEnd(g, sim.status, this.advanced.on("endBox"));
-    } else {
-      const message = this.radio.current;
-      if (message) drawRadioMessage(g, message);
-      if (this.helpOpen) drawHelpOverlay(g, this.helpPage, this.helpPages());
-    }
-    if (this.toast) {
-      if (timeMs < this.toast.until) drawToast(g, this.toast.text);
-      else this.toast = null;
+    this.withSkin(() => {
+      if (this.prompt) {
+        drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
+      }
+      if (sim.status !== "running") {
+        if (!this.endPending()) drawEnd(g, sim.status, this.advanced.on("endBox"));
+      } else {
+        const message = this.radio.current;
+        if (message) drawRadioMessage(g, message);
+        if (this.helpOpen) drawHelpOverlay(g, this.helpPage, this.helpPages());
+      }
+      if (this.toast) {
+        if (timeMs < this.toast.until) drawToast(g, this.toast.text);
+        else this.toast = null;
+      }
+    });
+  }
+
+  /** Runs `draw` with the typewriter look of the enhanced graphics (render/enhanced/skin.ts); the original graphics draw it as it always was. */
+  private withSkin(draw: () => void): void {
+    this.g.skin = this.graphicsMode === "enhanced" ? TYPEWRITER_SKIN : null;
+    try {
+      draw();
+    } finally {
+      this.g.skin = null;
     }
   }
 
@@ -1213,8 +1228,10 @@ export class App {
         else drawDamageReport(g, view);
         break;
       case "gameControl":
-        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", showMission, showTime, remakeExtras);
-        else drawGameControl(g, view.settings, prompt, editor?.value ?? "", showMission, showTime, remakeExtras);
+        this.withSkin(() => {
+          if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", showMission, showTime, remakeExtras);
+          else drawGameControl(g, view.settings, prompt, editor?.value ?? "", showMission, showTime, remakeExtras);
+        });
         break;
     }
   }
@@ -1270,7 +1287,7 @@ export class App {
         break;
       case "playAgain":
       case "radioRoom":
-        g.clear();
+        this.withSkin(() => g.clear());
         layer = null;
         break;
       default:
@@ -1281,7 +1298,7 @@ export class App {
     if (page) {
       // the box is filled with the background colour of the screen behind it (LINE ...,0,BF) and the text is the screen's foreground
       const pal = this.cockpit && layer ? this.cockpit.palette(layer) : null;
-      drawDemoNarration(g, page, d.screen, pal?.[0] ?? COLORS.black, pal?.[3] ?? COLORS.white);
+      this.withSkin(() => drawDemoNarration(g, page, d.screen, pal?.[0] ?? COLORS.black, pal?.[3] ?? COLORS.white));
     }
   }
 

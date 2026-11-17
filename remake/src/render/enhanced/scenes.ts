@@ -5,6 +5,8 @@ import { liveContacts, type PlayView } from "../playScreens.js";
 import type { TrailBuffer } from "../trails.js";
 import { INSTRUMENT, ISLAND, rgba } from "./colors.js";
 import { drawControlPanel } from "./panel.js";
+import { drawEnhancedDamage } from "./damage.js";
+import { drawEnhancedLog } from "./log.js";
 import { drawEnhancedScope, ENHANCED_FACTOR } from "./scope.js";
 import type { EnhancedFrame, EnhancedRenderer } from "./scene.js";
 import type { ShipArt } from "./shipArt.js";
@@ -309,10 +311,12 @@ function quadrantScene(deps: SceneDeps): (f: EnhancedFrame) => void {
   };
 }
 
-/** Registers the enhanced scenes: the scope of the control room, the radar, the chart and the quadrant map. */
+/** Registers the enhanced scenes: the control room, the radar, the chart, the quadrant map, the damage report and the captain's log. */
 export function registerEnhancedScenes(renderer: EnhancedRenderer, deps: SceneDeps): void {
   renderer.register("control", controlScene(deps));
   renderer.register("radar", radarScene(deps));
   renderer.register("chart", chartScene(deps));
   renderer.register("quadrant", quadrantScene(deps));
+  renderer.register("damage", ({ g, view, width }) => drawEnhancedDamage(g, view, deps.cockpit, centreX(width)));
+  renderer.register("log", ({ g, view, width }) => drawEnhancedLog(g, view, centreX(width)));
 }

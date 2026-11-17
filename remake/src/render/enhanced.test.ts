@@ -6,7 +6,8 @@ import { darken, lighten, mix, rgba } from "./enhanced/colors.js";
 import { starField } from "./enhanced/scope.js";
 import { CHART_ISLANDS, RADAR_CX, RADAR_CY, RADAR_K, RADAR_R, circleRadii, radarBlip } from "./enhanced/scenes.js";
 import { enclosedPixels } from "./enhanced/shipArt.js";
-import { closeHull, thinPixels } from "./hull.js";
+import { closeHull, filledSilhouette, overlayRegion, thinPixels } from "./hull.js";
+import { glassCracks } from "./enhanced/cracks.js";
 import { centredColumn } from "./textScreens.js";
 import { SinkingAnimation, drawSegments } from "../core/index.js";
 import { drawGridText, textGrid } from "./enhanced/typography.js";
@@ -102,6 +103,35 @@ describe("enhanced ship shapes", () => {
   it("finds thin lines (rigging, stubs) as the solid pixels outside any 2 x 2 block", () => {
     const m = grid(["###..", "###.#", "...#."]);
     expect(show(thinPixels(m, 5, 3), 5)).toEqual([".....", "....#", "...#."]);
+  });
+
+  it("fills what an outline encloses, closing a one-pixel break, and leaves the outside empty", () => {
+    const ring = grid(["#######", "#.....#", "#.....#", "###.###", "......."]); // a gap at the bottom
+    expect(show(filledSilhouette(ring, 7, 5, 1), 7)).toEqual(["#######", "#######", "#######", "#######", "#######"]); // grown by the gap it closed
+    const open = grid(["#####", "#...#", "#...#", "#...#", "#...."]);
+    expect(filledSilhouette(open, 5, 5, 0).reduce((a, b) => a + b, 0)).toBe(12); // an open outline lets the flood in: only the outline remains
+  });
+
+  it("marks a compartment as the area its lines enclose inside the hull, or else the box around them, cut to the hull", () => {
+    const hull = Uint8Array.from({ length: 10 * 6 }, (_, i) => (i % 10 < 8 ? 1 : 0)); // x 0..7 is hull
+    const box: [number, number][] = [[1, 1], [2, 1], [3, 1], [4, 1], [1, 2], [4, 2], [1, 3], [2, 3], [3, 3], [4, 3]];
+    expect(show(overlayRegion(box, hull, 10, 6), 10)).toEqual(["..........", ".####.....", ".####.....", ".####.....", "..........", ".........."]);
+    const stub: [number, number][] = [[6, 2], [9, 4]]; // two dots: the box around them, cut at the hull's edge
+    expect(show(overlayRegion(stub, hull, 10, 6), 10)).toEqual(["..........", "..........", "......##..", "......##..", "......##..", ".........."]);
+  });
+});
+
+describe("glass cracks", () => {
+  it("are the same every time, start at the point of impact, and run out of it in many directions", () => {
+    const a = glassCracks(800, 400, 0.5, 0.4);
+    expect(glassCracks(800, 400, 0.5, 0.4)).toEqual(a);
+    expect(glassCracks(800, 400, 0.5, 0.4, 8)).not.toEqual(a);
+    const mains = a.filter((k) => k.weight === 1);
+    expect(mains.length).toBeGreaterThanOrEqual(8);
+    for (const k of mains) expect(k.points[0]).toEqual([400, 160]);
+    const directions = new Set(mains.map((k) => Math.round(Math.atan2((k.points.at(-1) as number[])[1]! - 160, (k.points.at(-1) as number[])[0]! - 400) * 2)));
+    expect(directions.size).toBeGreaterThan(5);
+    expect(a.some((k) => k.weight < 1)).toBe(true); // branches and rings
   });
 });
 
