@@ -223,13 +223,15 @@ function drawOxygen(c: Ctx, oxygen: number): void {
   const top = py(112);
   const h = (178 - 112) * U;
   const fraction = Math.max(Math.min(oxygen / START.oxygen, 1), 0);
-  const fill = h * fraction;
-  const grad = ctx.createLinearGradient(0, g.toY(top + h - fill), 0, g.toY(top + h));
+  // the level lives inside the bezel: a full tank reaches 6 units below its top edge and no further
+  const inner = h - 12;
+  const fill = inner * fraction;
+  const grad = ctx.createLinearGradient(0, g.toY(top + h - 6 - fill), 0, g.toY(top + h - 6));
   const color = levelColor(fraction, p);
   grad.addColorStop(0, mix(color, "#ffffff", 0.25));
   grad.addColorStop(1, mix(color, "#000000", 0.35));
   ctx.fillStyle = grad;
-  ctx.fillRect(g.toX(x + 6), g.toY(top + h - fill - 4), g.toLength(10 * U - 12), g.toLength(fill));
+  ctx.fillRect(g.toX(x + 6), g.toY(top + h - 6 - fill), g.toLength(10 * U - 12), g.toLength(fill));
   // scale marks 2 / 1 / 0 and the O2 label
   for (const [label, y] of [["2", 116], ["1", 146], ["0", 175]] as const) {
     g.line(px(c, 309) + 2, py(y), px(c, 309) + 12, py(y), p.mark, 1.6);
