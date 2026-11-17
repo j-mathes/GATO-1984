@@ -74,8 +74,7 @@ const pad = (n: number, width: number): string => String(Math.round(n)).padStart
 // Control room (0x042a8-0x05077)
 // --------------------------------------------------------------------------------------------------------------------
 
-/** `withScope` false leaves the scope window to the caller (the enhanced control room draws its own). */
-export function drawControlRoomLayout(g: Gfx, v: PlayView, L: CockpitLayouts, withScope = true): void {
+export function drawControlRoomLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
   const { sim, snap } = v;
   const sub = sim.sub;
   const pal = blit(g, L, "control_room");
@@ -84,9 +83,7 @@ export function drawControlRoomLayout(g: Gfx, v: PlayView, L: CockpitLayouts, wi
   // scope picture: sky colour = time of day, sea colour 2, horizon from the depth; a damaged raised periscope shows a black frame (0x05187)
   const horizon = scopeHorizon(sub);
   const damagedScope = sub.periscopeUp && sub.depth < 46 && (sub.damage[COMPARTMENT.periscopes] ?? 0) !== 0;
-  if (!withScope) {
-    // drawn by the caller
-  } else if (damagedScope) {
+  if (damagedScope) {
     g.rect(1, 1, 318, 96, pal[0] as string);
     g.rect(0, 0, LOGICAL_WIDTH, 98, pal[3] as string, false);
   } else {

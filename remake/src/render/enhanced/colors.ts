@@ -83,3 +83,73 @@ export const INSTRUMENT = {
   tender: "#6dff9a",
   boat: "#ffffff",
 } as const;
+
+/** The control room panel: gunmetal, brass bezels, off-white markings and amber needles by day; the same panel in dim red light at night. */
+export interface PanelColors {
+  metalTop: string;
+  metalBottom: string;
+  rivet: string;
+  brass: string;
+  brassDark: string;
+  brassLight: string;
+  glass: string;
+  glassEdge: string;
+  mark: string;
+  markDim: string;
+  label: string;
+  needle: string;
+  needleShadow: string;
+  value: string;
+  ok: string;
+  warn: string;
+  bad: string;
+  lampOff: string;
+}
+
+export const PANEL: { day: PanelColors; night: PanelColors } = {
+  day: {
+    metalTop: "#4a535b",
+    metalBottom: "#262c31",
+    rivet: "#69737c",
+    brass: "#b99a58",
+    brassDark: "#5c4a26",
+    brassLight: "#e6cd8c",
+    glass: "#0f1417",
+    glassEdge: "#02080a",
+    mark: "#ece6d2",
+    markDim: "#8e8a78",
+    label: "#d9c58c",
+    needle: "#ffb23a",
+    needleShadow: "rgba(0,0,0,0.5)",
+    value: "#ffe9b0",
+    ok: "#4fd66f",
+    warn: "#ffb23a",
+    bad: "#ff4a3a",
+    lampOff: "#1d2427",
+  },
+  night: {
+    metalTop: "#2a2220",
+    metalBottom: "#130f0e",
+    rivet: "#3d302d",
+    brass: "#7e5f3a",
+    brassDark: "#3b2a18",
+    brassLight: "#a8845a",
+    glass: "#0a0707",
+    glassEdge: "#030202",
+    mark: "#d9806c",
+    markDim: "#75423a",
+    label: "#c47a5c",
+    needle: "#ff8a4a",
+    needleShadow: "rgba(0,0,0,0.6)",
+    value: "#ff9a7a",
+    ok: "#3fae5a",
+    warn: "#e0922c",
+    bad: "#ff3a2a",
+    lampOff: "#171110",
+  },
+};
+
+/** Green, amber or red for a gauge that has `fraction` (0 to 1) of its scale left. */
+export function levelColor(fraction: number, p: PanelColors): string {
+  return fraction > 0.4 ? p.ok : fraction > 0.15 ? p.warn : p.bad;
+}

@@ -194,6 +194,12 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
     g.view(vw, vh);
   }
   g.unclip();
+  // seen through water: the picture turns green-blue with depth (the scope works down to depth 45)
+  if (sub.depth > 0) {
+    c.fillStyle = `rgba(10,72,84,${(Math.min(sub.depth / 45, 1) * 0.2).toFixed(3)})`;
+    c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
+  }
+  drawLens(g, area);
   // a little glass: a dark rim and a thin bright edge, so the window reads as a lens
   const rim = c.createLinearGradient(0, g.toY(area.y), 0, g.toY(area.y + area.h));
   rim.addColorStop(0, "rgba(0,0,0,0.35)");
@@ -203,4 +209,37 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
   c.fillStyle = rim;
   c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
   g.rect(area.x, area.y, area.w, area.h, darken(mix(SCOPE.day.seaNear, "#888888", 0.5), 0.2), false);
+}
+
+/** The periscope's lens: the corners fall off into shadow, with a fine crosshair and range ticks in the middle. */
+function drawLens(g: Gfx, area: ScopeArea): void {
+  const c = g.ctx;
+  const cx = area.x + area.w / 2;
+  const cy = area.y + area.h / 2;
+  c.save();
+  c.beginPath();
+  c.rect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
+  c.clip();
+  // an elliptical vignette: a circular gradient squeezed to the shape of the window
+  c.translate(g.toX(cx), g.toY(cy));
+  c.scale(area.w / area.h, 1);
+  const r = g.toLength(area.h) * 0.78;
+  const vignette = c.createRadialGradient(0, 0, r * 0.55, 0, 0, r);
+  vignette.addColorStop(0, "rgba(0,0,0,0)");
+  vignette.addColorStop(1, "rgba(0,0,0,0.55)");
+  c.fillStyle = vignette;
+  c.fillRect(-g.toLength(area.w), -g.toLength(area.h), g.toLength(area.w) * 2, g.toLength(area.h) * 2);
+  c.restore();
+  // crosshair with a gap at the centre, and ticks every 40 units along it
+  const gap = 10;
+  const arm = 70;
+  const color = "rgba(255,255,255,0.4)";
+  g.line(cx - arm, cy, cx - gap, cy, color, 1);
+  g.line(cx + gap, cy, cx + arm, cy, color, 1);
+  g.line(cx, cy - arm * 0.6, cx, cy - gap, color, 1);
+  g.line(cx, cy + gap, cx, cy + arm * 0.6, color, 1);
+  for (let i = 1; i <= 3; i += 1) {
+    g.line(cx - gap - i * 14, cy - 4, cx - gap - i * 14, cy + 4, color, 1);
+    g.line(cx + gap + i * 14, cy - 4, cx + gap + i * 14, cy + 4, color, 1);
+  }
 }

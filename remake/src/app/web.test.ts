@@ -11,6 +11,9 @@ import { noteFrequency, parsePlay, totalSeconds } from "../audio/play.js";
 import { BIOS_TICK_SECONDS, EFFECTS, SoundEngine, type AudioContextLike, type OscillatorLike } from "../audio/soundEngine.js";
 import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Simulation, SinkingAnimation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
 import { drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
+import { drawControlPanel } from "../render/enhanced/panel.js";
+import { drawEnhancedScope } from "../render/enhanced/scope.js";
+import { PANEL, levelColor } from "../render/enhanced/colors.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import { CONTROL_DEFS, CONTROL_GROUPS, Keymap, isLocked, type ControlId } from "../input/controls.js";
 import type { Gfx } from "../render/gfx.js";
@@ -2402,6 +2405,47 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       bands.finish();
       expect(() => drawEnhancedSinking(g, bands, 1422, 800, 0)).not.toThrow();
       drawOxygenFade(g, 1.5);
+    });
+
+    it("the control room panel draws in every state of its lamps, gauges and engine, by day and by night", () => {
+      const h = play();
+      const sub = h.sim().sub;
+      const states: Partial<typeof sub>[] = [
+        {},
+        { fuelAlert: true, batteryAlert: true, doorsOpen: true, fuel: 100, battery: 10, oxygen: 50, engine: 1, scopeFacing: "A" },
+        { engine: 2, scopeFacing: "S", depth: 400, speed: 12, torpedoes: 0, fuel: 0 },
+        { engine: 0, scopeFacing: "P", oxygen: 5000 },
+      ];
+      for (const timeOfDay of [1, 0] as const) {
+        h.app.settings.timeOfDay = timeOfDay;
+        for (const s of states) {
+          Object.assign(sub, s);
+          sub.damage[3] = (sub.damage[3] ?? 0) === 0 ? 1 : 0;
+          const { g, calls } = fullGfx();
+          g.resizeBacking(1422, 800);
+          g.view(1422, 800);
+          drawControlPanel(g, frameFor(h, "control").view, 71);
+          expect(calls.length).toBeGreaterThan(100);
+        }
+      }
+    });
+
+    it("the scope has a lens vignette, a crosshair and a depth tint", () => {
+      const h = play();
+      h.sim().sub.periscopeUp = true;
+      h.sim().sub.depth = 30;
+      const { g, calls } = fullGfx();
+      g.resizeBacking(1280, 800);
+      g.view(1280, 800);
+      drawEnhancedScope(g, frameFor(h, "control").view, null, { x: 0, y: 0, w: 1280, h: 392 }, ["#000", "#0ff", "#f0f", "#fff"]);
+      expect(calls).toContain("createRadialGradient"); // the vignette
+      expect(calls.filter((c) => c === "stroke").length).toBeGreaterThan(5); // the crosshair and its ticks
+    });
+
+    it("gauge levels run from green through amber to red", () => {
+      expect(levelColor(0.9, PANEL.day)).toBe(PANEL.day.ok);
+      expect(levelColor(0.3, PANEL.day)).toBe(PANEL.day.warn);
+      expect(levelColor(0.05, PANEL.night)).toBe(PANEL.night.bad);
     });
 
     it("each scene draws on a real context at 16:9 and at 8:5 without error, day and night, with the island in view", () => {

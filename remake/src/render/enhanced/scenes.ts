@@ -1,10 +1,10 @@
 import { SLOT, compassDegrees, quadrantOf } from "../../core/index.js";
 import type { CockpitLayouts } from "../cockpitLayouts.js";
-import { drawControlRoomLayout } from "../cockpitScreens.js";
 import type { Gfx } from "../gfx.js";
 import { liveContacts, type PlayView } from "../playScreens.js";
 import type { TrailBuffer } from "../trails.js";
 import { INSTRUMENT, ISLAND, rgba } from "./colors.js";
+import { drawControlPanel } from "./panel.js";
 import { drawEnhancedScope, ENHANCED_FACTOR } from "./scope.js";
 import type { EnhancedFrame, EnhancedRenderer } from "./scene.js";
 import type { ShipArt } from "./shipArt.js";
@@ -103,15 +103,14 @@ function drawTrail(g: Gfx, trail: TrailBuffer, xo: number, colors: Record<number
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-// Control room: the enhanced scope over the original instrument panel (the panel itself is redrawn in a later stage)
+// Control room: the enhanced scope above the enhanced instrument panel (panel.ts)
 // ------------------------------------------------------------------------------------------------------------------------------
 
 function controlScene(deps: SceneDeps): (f: EnhancedFrame) => void {
-  return ({ g, view, width, height }) => {
-    g.view(320, 200);
-    drawControlRoomLayout(g, view, deps.cockpit, false);
-    g.view(width, height);
-    drawEnhancedScope(g, view, deps.art, { x: centreX(width), y: 0, w: PICTURE_WIDTH, h: 98 * ENHANCED_FACTOR }, deps.cockpit.palette("control_room"));
+  return ({ g, view, width }) => {
+    const xo = centreX(width);
+    drawControlPanel(g, view, xo);
+    drawEnhancedScope(g, view, deps.art, { x: xo, y: 0, w: PICTURE_WIDTH, h: 98 * ENHANCED_FACTOR }, deps.cockpit.palette("control_room"));
   };
 }
 
