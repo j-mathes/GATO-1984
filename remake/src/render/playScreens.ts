@@ -371,16 +371,11 @@ export function drawPrompt(g: Gfx, lines: string[], entry: string): void {
   g.text(4, 10 + lines.length, `${entry}_`, COLORS.yellow);
 }
 
-export function drawEnd(g: Gfx, status: Simulation["status"], completedBy: Simulation["completedBy"] = null): void {
+export function drawEnd(g: Gfx, status: Simulation["status"]): void {
   g.rect(24, 70, 272, 56, COLORS.black);
   g.rect(24, 70, 272, 56, COLORS.white, false);
-  const text =
-    status === "missionComplete"
-      ? (completedBy === "island" ? ["CONTACT MADE", "MISSION COMPLETED"] : RADIO_MESSAGES.convoyDestroyed.lines.map((l) => l.text.trim()))
-      : status === "suffocated"
-        ? RADIO_MESSAGES.oxygenExhausted.lines.map((l) => l.text)
-        : ["YOUR SUBMARINE HAS BEEN LOST"];
-  text.forEach((t, i) => g.centered(10 + i, t, status === "missionComplete" ? COLORS.green : COLORS.red));
+  const text = status === "suffocated" ? RADIO_MESSAGES.oxygenExhausted.lines.map((l) => l.text) : ["YOUR SUBMARINE HAS BEEN LOST"];
+  text.forEach((t, i) => g.centered(10 + i, t, COLORS.red));
   g.centered(13, "DO YOU WANT DO PLAY AGAIN? (Y/N)", COLORS.white);
 }
 

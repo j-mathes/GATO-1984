@@ -269,7 +269,8 @@ describe("mission rules", () => {
     sim.sub.depth = 0;
     const events = sim.step();
     expect(events.some((e) => e.type === "missionComplete" && e.reason === "island")).toBe(true);
-    expect(sim.status).toBe("missionComplete");
+    expect(sim.status).toBe("running"); // like the original, the mission goes on after the message
+    expect(sim.missionComplete).toBe(true);
     const day = newSim(7, { timeOfDay: 1 });
     day.teleport(island.x, island.y + island.innerRadius + 50);
     day.step();

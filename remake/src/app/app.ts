@@ -758,7 +758,7 @@ export class App {
     if (this.prompt) {
       drawPrompt(g, [this.prompt.kind === "password" ? "PASSWORD?" : "ENTER NEW SUB COORDINATES (X,Y):"], this.prompt.editor.value);
     }
-    if (sim.status !== "running") drawEnd(g, sim.status, sim.completedBy);
+    if (sim.status !== "running") drawEnd(g, sim.status);
     else {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);

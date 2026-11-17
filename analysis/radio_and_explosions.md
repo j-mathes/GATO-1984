@@ -16,7 +16,7 @@ The GATO1 string pool has **no table of mid-mission radio traffic**: no sighting
 
 Messages are `LOCATE`/`PRINT` text, usually over a black `BF` box ((10,10)-(309,60) for the first three, (0,0)-(319,65) for the radio report); `MISSION COMPLETED` is printed into the box of `CONTACT MADE`. Key M (`0x0d13c`) calls the radio-room routine `0x0ba3d`; with a working radio it goes on to pick a random `ORDXX` file, i.e. it asks for a **new mission** (the French manual: "M: Mission - débuter une nouvelle mission"). The remake shows the current orders again instead.
 
-In the original, completing an objective does not end the program (it logs the mission and keeps playing); the remake ends the mission, as before.
+In the original, completing an objective does not end the program (it logs the mission and keeps playing). The remake now matches this: the boxed message is shown over the control room, the log is updated, and the simulation keeps running; each of the two objectives (island, convoy) fires once and counts once. The island objective's `ds:0x2246 = 1` is replaced by a one-shot flag.
 
 Port: `RADIO_MESSAGES` (text, LOCATE cells, box, hold passes), `RadioInbox` (queue with hold timers), `Simulation.requestRadioRoom()`, and `{ type: "radio" }` events. The cockpit shows them as the original's boxed text; `radioAlert` (two short tones) is a remake addition and plays only with sound on.
 

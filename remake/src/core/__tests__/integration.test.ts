@@ -71,8 +71,16 @@ describe("mission victory by sinking the convoy (trailer[2] = ds:0x226a)", () =>
     all.push(...sim.step());
 
     expect(sunkOrder).toEqual([3, 4, 5]);
-    expect(sim.status).toBe("missionComplete");
+    expect(sim.status).toBe("running"); // the original shows its message and keeps playing
+    expect(sim.missionComplete).toBe(true);
+    expect(sim.convoyDone).toBe(true);
     expect(all.filter((e) => e.type === "missionComplete")).toEqual([{ type: "missionComplete", reason: "convoySunk" }]);
+    // the objective fires once: later steps neither repeat the event nor stop the world
+    const tick = sim.tick;
+    const later = run(sim, 20);
+    expect(later.filter((e) => e.type === "missionComplete" || (e.type === "radio" && e.message === "convoyDestroyed"))).toEqual([]);
+    expect(sim.tick).toBe(tick + 20);
+    expect(sim.log.totals.missionsCompleted).toBe(1);
     // escorts outside trailer[2] are irrelevant
     for (const slot of [6, 7, 8]) expect(sim.vessels[slot]?.sunk).toBe(false);
 
@@ -127,10 +135,41 @@ describe("island rescue / patrol objective (trailer[0] = ds:0x2246, trailer[1] =
     sim.sub.speed = 0;
     sim.sub.orderedSpeed = 0;
     const events = run(sim, 5);
-    expect(sim.status).toBe("missionComplete");
+    expect(sim.status).toBe("running"); // CONTACT MADE / MISSION COMPLETED, then the patrol goes on
+    expect(sim.missionComplete).toBe(true);
+    expect(sim.completedBy).toBe("island");
     expect(events.map((e) => e.type)).toEqual(expect.arrayContaining(["objectiveReached", "missionComplete"]));
     expect(events.find((e) => e.type === "missionComplete")).toEqual({ type: "missionComplete", reason: "island" });
     expect(sim.log.totals.missionsCompleted).toBe(1);
+    // stopped at the island the whole time: the message and the log entry come once, not on every step, and the simulation keeps stepping
+    const tick = sim.tick;
+    const later = run(sim, 30);
+    expect(later.filter((e) => e.type === "missionComplete" || e.type === "objectiveReached" || e.type === "radio")).toEqual([]);
+    expect(sim.tick).toBe(tick + 30);
+    expect(sim.log.totals.missionsCompleted).toBe(1);
+  });
+
+  it("the convoy objective still fires after the island one (the two are independent, each counts once)", () => {
+    const sim = makeSim(7, sequenceRng([0.5]), { timeOfDay: 0 });
+    const island = sim.scenario.islands[14];
+    if (!island) throw new Error("quadrant 14 has no island");
+    sim.teleport(island.x, island.y - island.innerRadius - 80);
+    sim.sub.speed = 0;
+    sim.sub.orderedSpeed = 0;
+    run(sim, 5);
+    expect(sim.completions).toEqual(["island"]);
+    for (let slot = 3; slot <= sim.scenario.objectives.lastConvoySlot; slot += 1) {
+      const v = sim.vessels[slot];
+      if (v) {
+        v.y = -2000; // the sunk marker (0x095e4)
+        v.sunk = true;
+      }
+    }
+    const events = run(sim, 3);
+    expect(events.filter((e) => e.type === "missionComplete")).toEqual([{ type: "missionComplete", reason: "convoySunk" }]);
+    expect(sim.completions).toEqual(["island", "convoySunk"]);
+    expect(sim.log.totals.missionsCompleted).toBe(2);
+    expect(sim.status).toBe("running");
   });
 
   it("is not completed in daylight, in the wrong quadrant, or from beyond inner radius + 200", () => {

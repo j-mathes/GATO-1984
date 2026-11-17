@@ -2,7 +2,7 @@
 
 What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Nothing here has been switched off except the helm status line (row 1 below).
 
-Legend: **ON** = active in normal play, **key** = off until the player asks, **fallback** = only used when an asset is missing.
+Legend: **ON** = active in normal play, **key** = off until the player asks, **fallback** = only used when an asset is missing. Row 31 (what happens when an objective is completed) now matches the original; the other **ON** rows in section 5 are where play still differs.
 
 ## 1. Overlays, banners, prompts
 
@@ -18,7 +18,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | 8 | **GAME CONTROL rows `[5] NEXT MISSION`, `[6] TIME COMPRESSION`** | `render/cockpitScreens.ts` `drawGameControlLayout`, `render/playScreens.ts` `drawGameControl`; `core/launcher.ts` `GameControl` | **ON** (hidden in the demo's copy of the screen) | | Items 1-4 only |
 | 9 | **Display modes** `V`: Authentic / Fit / CRT scanlines | `render/display.ts`, `index.html` `#crt`, `main.ts` | **ON** (Authentic, remembered in `gato.display`) | `V` | A fixed CGA monitor |
 | 10 | **Wake-trail toggle** `W` | `render/trails.ts`, `app/app.ts` `setTrails` | **ON** = the original's persistent dots; `W` gives clean redraws (remembered in `gato.trails`) | `W` | The dots always persist; the toggle is the addition |
-| 11 | **End box text `YOUR SUBMARINE HAS BEEN LOST`** and the framed end box | `render/playScreens.ts` `drawEnd` | **ON** | | `CONTACT MADE`, `MISSION COMPLETED`, the oxygen message and `DO YOU WANT DO PLAY AGAIN? (Y/N)` are strings of GATO1; the text `YOUR SUBMARINE HAS BEEN LOST` and the box geometry are not found in the binary |
+| 11 | **End box text `YOUR SUBMARINE HAS BEEN LOST`** and the framed end box (now only for a lost boat or no oxygen) | `render/playScreens.ts` `drawEnd` | **ON** | | `CONTACT MADE`, `MISSION COMPLETED`, the oxygen message and `DO YOU WANT DO PLAY AGAIN? (Y/N)` are strings of GATO1; the text `YOUR SUBMARINE HAS BEEN LOST` and the box geometry are not found in the binary |
 | 12 | **Demo: any key skips the intro and the Morse example**, intro held 4 s | `core/demoPlayer.ts`, `app/app.ts` `demoKey` | **ON** | | Only F1 (exit) and F2 (sound off) exist; the intro stays while files load |
 | 13 | **Legacy approximated screens** when `cockpit_layouts.json` or the title art does not load | `render/playScreens.ts`, `textScreens.ts` | fallback | | n/a |
 | 14 | **Console hook** `window.__gato` (the `App`) | `main.ts` | **ON** | | n/a |
@@ -58,7 +58,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | 28 | **Fixed 2.5 Hz simulation (400 ms step) at 1x** | `core/constants.ts` `TIME_COMPRESSION`, `app/runner.ts` | **ON** | one pass of the main loop as fast as the CPU allows; the 2.5 figure is an estimate for a 4.77 MHz PC |
 | 29 | **Render interpolation** between simulation steps (60 FPS glide; the picture lags the simulation by one step) | `app/runner.ts` `interpolate` | **ON** | each pass redraws once |
 | 30 | **Mission select** (1-20 or random) | `core/launcher.ts`, `app/app.ts` `startMission` | Random = the original's pick | `1 + FIX(RND*20)` |
-| 31 | **Mission ends on completion** (convoy sunk / island reached) and shows the end box | `core/simulation.ts`, `app/app.ts` | **ON** | the objective is logged and play continues (`radio_and_explosions.md`) |
+| 31 | ~~Mission ends on completion~~ **Now matches the original** (since this change): `CONTACT MADE` / `MISSION COMPLETED` (island, `0x06fef`-`0x070f4`) and `YOU HAVE SUCCESSFULLY COMPLETED YOUR MISSION` (convoy, `0x07d9f`-`0x07e53`) are shown as boxed radio messages, the Captain's Log count goes up (`GOSUB 0x0d327`) and play continues; each objective fires once (convoy guarded by `ds:0x226e`, island by a flag standing in for `ds:0x2246 = 1`). The game only ends for a lost boat or no oxygen, with the play-again prompt | `core/simulation.ts` `completeMission`, `radio.ts`; `render/playScreens.ts` `drawEnd` | **ON** | still different: the original blocks while a message is held (the remake overlays it on a running world), and `M` re-reads the orders instead of requesting a new random mission |
 | 32 | **World keeps running during explosions** | `app/app.ts` `framePlay` | **ON** | the program blocks while the animation plays |
 | 33 | **Resupply speed and torpedo reload in real seconds** (900 fuel/s, 6 s per torpedo), damage-alarm interval 2 s | `core/constants.ts` `RESUPPLY`, `core/simulation.ts` | **ON** | CPU-bound loops |
 | 34 | **Explosion durations in seconds** (about 1.5-5 s) | `core/explosion.ts`, `render/explosions.ts` | **ON** | CPU-bound loops |
@@ -77,4 +77,4 @@ Drawn or timed from evidence but not byte-exact: the text font (the remake's own
 
 * Already hidden: row 1.
 * Easiest to drop without touching rules: rows 2, 4, 5, 7, 11, 12, 13, 21-23, 24, 25 (a remake choice each, no state depends on them).
-* Behaviour changes that alter play: rows 28 (pace), 31 (mission end), 32 (explosions do not block), 33; each is a constant or one branch in `core/` or `app/app.ts`.
+* Behaviour changes that alter play: rows 28 (pace), 32 (explosions do not block), 33; each is a constant or one branch in `core/` or `app/app.ts`. Row 31 (mission completion) has been brought back in line with the original.

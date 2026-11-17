@@ -62,13 +62,18 @@ export class Simulation {
   readonly options: SimOptions;
   status: GameStatus = "running";
   tick = 0;
+  /** At least one objective has been completed (the original keeps playing; see completeMission). */
   missionComplete = false;
-  /** How the mission was won, once it has been. */
+  /** The objective completed last. */
   completedBy: "island" | "convoySunk" | null = null;
+  /** Objectives completed so far, in order (each can happen once). */
+  readonly completions: ("island" | "convoySunk")[] = [];
   /** Running explosion animations; they only advance through {@link advanceExplosions} (the world does not wait for them). */
   readonly explosions: Explosion[] = [];
   /** Set once the island objective has been used (the original overwrites trailer[0] with 1, 0x070f4). */
   objectiveDone = false;
+  /** Set once the convoy message has been shown (ds:0x226e, 0x07e47). */
+  convoyDone = false;
 
   private readonly rng: Rng;
   private ticksPerSecond: number;
@@ -205,7 +210,7 @@ export class Simulation {
 
     stepAlertTimer(sub, this.vessels, o.difficulty);
     stepEnemies({ sub, vessels: this.vessels, difficulty: o.difficulty, timeOfDay: o.timeOfDay, island: this.island, rng: this.rng, events });
-    if (!this.missionComplete && convoySunk(this.vessels, this.scenario.objectives.lastConvoySlot)) {
+    if (!this.convoyDone && convoySunk(this.vessels, this.scenario.objectives.lastConvoySlot)) {
       this.completeMission("convoySunk", events);
     }
     return events;
@@ -229,11 +234,12 @@ export class Simulation {
 
   /**
    * Island objective (0x06fef-0x070f4): stopped, in the objective quadrant, time of day equal to trailer[1], and closer
-   * than the island's inner radius + 200.
+   * than the island's inner radius + 200. It fires once (the original then sets ds:0x2246 to 1, which switches it off for the
+   * scenarios whose objective is another quadrant) and does not stop the simulation.
    */
   private checkIslandObjective(events: SimEvent[]): void {
     const obj = this.scenario.objectives;
-    if (this.objectiveDone || this.missionComplete || obj.objectiveQuadrant === 0) return;
+    if (this.objectiveDone || obj.objectiveQuadrant === 0) return;
     if (
       this.sub.speed === 0 &&
       this.currentQuadrant === obj.objectiveQuadrant &&
@@ -248,12 +254,20 @@ export class Simulation {
     }
   }
 
+  /**
+   * An objective is done (GOSUB 0x0d327 in the original: the log is written and the count of completed missions goes up). The original shows
+   * its message and goes on with the loop: the boat keeps patrolling, resupplies, and leaves with Escape or M when the player is ready.
+   * The convoy objective and the island objective are independent and each counts once.
+   */
   private completeMission(reason: "island" | "convoySunk", events: SimEvent[]): void {
     this.missionComplete = true;
     this.completedBy = reason;
-    this.status = "missionComplete";
+    this.completions.push(reason);
     this.log.totals.missionsCompleted += 1;
-    if (reason === "convoySunk") events.push({ type: "radio", message: "convoyDestroyed" });
+    if (reason === "convoySunk") {
+      this.convoyDone = true;
+      events.push({ type: "radio", message: "convoyDestroyed" });
+    }
     events.push({ type: "missionComplete", reason });
   }
 

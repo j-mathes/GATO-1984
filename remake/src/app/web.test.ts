@@ -337,8 +337,11 @@ describe("application shell", () => {
     press(app, "c", "z", ..."PAED".split(""), "Enter", ...coords, "Enter");
     expect(sim.currentQuadrant).toBe(14);
     app.frame(0);
-    for (let t = 250; t <= 1500 && sim.status === "running"; t += 250) app.frame(t);
-    expect(sim.status).toBe("missionComplete");
+    for (let t = 250; t <= 3000 && !sim.missionComplete; t += 250) app.frame(t);
+    expect(sim.missionComplete).toBe(true);
+    expect(sim.status).toBe("running"); // the original goes on playing after MISSION COMPLETED
+    expect(app.mode).toBe("play");
+    expect(app.radio.history).toEqual(["contactMade", "missionCompleted"]);
     expect(app.log.missionsCompleted).toBe(1);
   });
 
@@ -1736,5 +1739,89 @@ describe("control HUD flag (the helm status line is remake-only)", () => {
     calls.length = 0;
     app.frame(100);
     expect(textsOf(calls)).toContain("TIME x2  (5 STEPS/S)");
+  });
+});
+
+describe("mission completion keeps the game running (as in GATO1.EXE)", () => {
+  type Call = [string, unknown[]];
+
+  function playNight7(): { app: App; calls: Call[]; sim: Simulation } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), null, () => 0.5);
+    app.settings.timeOfDay = 0;
+    app.keydown({ key: "x" });
+    app.startMission(7, 1);
+    app.keydown({ key: "x" });
+    app.keydown({ key: "x" });
+    const sim = (app as unknown as { sim: Simulation }).sim;
+    const island = sim.scenario.islands[14];
+    if (!island) throw new Error("missing island");
+    sim.teleport(island.x, island.y - island.innerRadius - 80);
+    sim.sub.speed = 0;
+    sim.sub.orderedSpeed = 0;
+    app.frame(0);
+    return { app, calls, sim };
+  }
+  const texts = (calls: Call[]): [number, number, string][] => calls.filter(([n]) => n === "text").map(([, a]) => [a[0] as number, a[1] as number, a[2] as string]);
+  /** 60 FPS frames until `done` (at most `limitMs`); returns the time of the last frame. */
+  function runUntil(app: App, from: number, limitMs: number, done: () => boolean): number {
+    let t = from;
+    while (!done() && t < from + limitMs) {
+      t += 1000 / 60;
+      app.frame(t);
+    }
+    return t;
+  }
+
+  it("shows the boxed CONTACT MADE, then MISSION COMPLETED, over the control room and goes on simulating", () => {
+    const { app, calls, sim } = playNight7();
+    let t = runUntil(app, 0, 5000, () => sim.missionComplete);
+    expect(sim.missionComplete).toBe(true);
+    expect(sim.completedBy).toBe("island");
+    expect(sim.status).toBe("running");
+    t = runUntil(app, t, 100, () => false); // the frame after the event
+    const box = calls.filter(([n, a]) => n === "rect" && a[0] === 10 && a[1] === 10);
+    expect(box.at(-1)?.[1]).toEqual([10, 10, 300, 51, "#000000"]); // the original's black BF box (10,10)-(309,60)
+    expect(texts(calls)).toContainEqual([14, 3, "CONTACT MADE"]);
+    expect(texts(calls).some(([, , s]) => s === "MISSION COMPLETED")).toBe(false);
+    // the second line is printed into the same box once the first has been held
+    t = runUntil(app, t, 20_000, () => app.radio.current?.message.id === "missionCompleted");
+    calls.length = 0;
+    app.frame(t + 17);
+    expect(texts(calls)).toEqual(expect.arrayContaining([[14, 3, "CONTACT MADE"], [12, 4, "MISSION COMPLETED"]]));
+    expect(app.radio.history).toEqual(["contactMade", "missionCompleted"]);
+    // no game-over box and no play-again prompt
+    expect(texts(calls).some(([, , s]) => /PLAY AGAIN|HAS BEEN LOST/.test(s))).toBe(false);
+    // the world keeps stepping, the objective is not announced again, the log counts it once
+    const tick = sim.tick;
+    t = runUntil(app, t, 8000, () => false);
+    expect(sim.tick).toBeGreaterThan(tick + 15);
+    expect(app.radio.history).toEqual(["contactMade", "missionCompleted"]);
+    expect(app.log.missionsCompleted).toBe(1);
+    expect(sim.status).toBe("running");
+  });
+
+  it("the boat still takes orders after the message (the island shoals keep it where it is), and Escape leaves for the launcher", () => {
+    const { app, sim } = playNight7();
+    const t = runUntil(app, 0, 5000, () => sim.missionComplete);
+    const tick = sim.tick;
+    app.keydown({ key: "F3" });
+    app.keydown({ key: "ArrowLeft" });
+    expect(sim.sub.orderedSpeed).toBeGreaterThan(0);
+    expect(sim.sub.rudder).toBeGreaterThan(0);
+    runUntil(app, t, 4000, () => false);
+    expect(sim.tick).toBeGreaterThan(tick + 8);
+    expect(sim.status).toBe("running");
+    app.keydown({ key: "Escape" });
+    expect(app.mode).toBe("menu");
+    expect(app.log.missionsCompleted).toBe(1);
   });
 });

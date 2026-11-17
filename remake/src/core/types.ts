@@ -188,7 +188,7 @@ export interface ResupplyState {
   reloadTicks: number;
 }
 
-export type GameStatus = "running" | "missionComplete" | "destroyed" | "suffocated";
+export type GameStatus = "running" | "destroyed" | "suffocated";
 
 export interface SinkRecord {
   slot: number;
