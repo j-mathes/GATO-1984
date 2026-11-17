@@ -6,6 +6,8 @@ import type { InputAction } from "./keyboard.js";
  * an action can also have no key at all. Typing in prompts, GAME CONTROL, the menus and the demo keep their fixed keys.
  */
 export type ControlId =
+  | "speedUp"
+  | "speedDown"
   | "speedFlank"
   | "speedFull"
   | "speedStandard"
@@ -23,6 +25,7 @@ export type ControlId =
   | "neutral"
   | "diesel"
   | "electric"
+  | "enginePower"
   | "scopeForward"
   | "scopePort"
   | "scopeAft"
@@ -53,15 +56,21 @@ export interface ControlDef {
   input: InputAction | null;
   /** Fixed: the key cannot be changed, cleared or taken over by another action. */
   locked?: true;
+  /** The default key while SIMPLE SPEED KEYS is on, where it differs from `key`. */
+  simpleKey?: string;
+  /** Which speed scheme the action belongs to: the four stage keys ("classic") or the step up/down keys ("simple"); the others serve both. */
+  speed?: "classic" | "simple";
 }
 
 const RAW_DEFS: readonly ControlDef[] = [
-  { id: "speedFlank", label: "AHEAD FLANK (10)", key: "F1", input: { type: "sim", command: { type: "speed", level: "F1" } } },
-  { id: "speedFull", label: "AHEAD FULL (8)", key: "F3", input: { type: "sim", command: { type: "speed", level: "F3" } } },
-  { id: "speedStandard", label: "AHEAD STANDARD (6)", key: "F5", input: { type: "sim", command: { type: "speed", level: "F5" } } },
-  { id: "speedSlow", label: "AHEAD SLOW (3)", key: "F7", input: { type: "sim", command: { type: "speed", level: "F7" } } },
-  { id: "allStop", label: "ALL STOP", key: "F9", input: { type: "sim", command: { type: "speed", level: "stop" } } },
-  { id: "reverse", label: "REVERSE", key: "F10", input: { type: "sim", command: { type: "speed", level: "reverse" } } },
+  { id: "speedUp", label: "SPEED UP ONE STEP", key: "=", input: { type: "sim", command: { type: "speed", level: "up" } }, speed: "simple" },
+  { id: "speedDown", label: "SPEED DOWN ONE STEP", key: "-", input: { type: "sim", command: { type: "speed", level: "down" } }, speed: "simple" },
+  { id: "speedFlank", label: "AHEAD FLANK (10)", key: "F1", input: { type: "sim", command: { type: "speed", level: "F1" } }, speed: "classic" },
+  { id: "speedFull", label: "AHEAD FULL (8)", key: "F3", input: { type: "sim", command: { type: "speed", level: "F3" } }, speed: "classic" },
+  { id: "speedStandard", label: "AHEAD STANDARD (6)", key: "F5", input: { type: "sim", command: { type: "speed", level: "F5" } }, speed: "classic" },
+  { id: "speedSlow", label: "AHEAD SLOW (3)", key: "F7", input: { type: "sim", command: { type: "speed", level: "F7" } }, speed: "classic" },
+  { id: "allStop", label: "ALL STOP", key: "F9", simpleKey: "0", input: { type: "sim", command: { type: "speed", level: "stop" } } },
+  { id: "reverse", label: "REVERSE", key: "F10", simpleKey: "Backspace", input: { type: "sim", command: { type: "speed", level: "reverse" } } },
   { id: "periscopeUp", label: "RAISE PERISCOPE", key: "F2", input: { type: "sim", command: { type: "periscope", direction: "raise" } } },
   { id: "periscopeDown", label: "LOWER PERISCOPE", key: "F4", input: { type: "sim", command: { type: "periscope", direction: "lower" } } },
   { id: "fire", label: "FIRE TORPEDO", key: "F8", input: { type: "sim", command: { type: "fire" } } },
@@ -71,8 +80,9 @@ const RAW_DEFS: readonly ControlDef[] = [
   { id: "planesUp", label: "RISE (PLANES UP)", key: "ArrowUp", input: { type: "sim", command: { type: "planes", direction: "up" } } },
   { id: "planesDown", label: "DIVE (PLANES DOWN)", key: "ArrowDown", input: { type: "sim", command: { type: "planes", direction: "down" } } },
   { id: "neutral", label: "CENTRE RUDDER, PLANES", key: "5", input: { type: "sim", command: { type: "neutral" } } },
-  { id: "diesel", label: "DIESEL ENGINE", key: "D", input: { type: "sim", command: { type: "engine", mode: "diesel" } } },
-  { id: "electric", label: "ELECTRIC MOTOR", key: "E", input: { type: "sim", command: { type: "engine", mode: "electric" } } },
+  { id: "diesel", label: "DIESEL ENGINE", key: "D", input: { type: "sim", command: { type: "engine", mode: "diesel" } }, speed: "classic" },
+  { id: "electric", label: "ELECTRIC MOTOR", key: "E", input: { type: "sim", command: { type: "engine", mode: "electric" } }, speed: "classic" },
+  { id: "enginePower", label: "TOGGLE ENGINE POWER", key: "E", input: { type: "sim", command: { type: "engine", mode: "toggle" } }, speed: "simple" },
   { id: "scopeForward", label: "SCOPE FORWARD", key: "F", input: { type: "sim", command: { type: "scope", facing: "F" } } },
   { id: "scopePort", label: "SCOPE PORT", key: "P", input: { type: "sim", command: { type: "scope", facing: "P" } } },
   { id: "scopeAft", label: "SCOPE AFT", key: "A", input: { type: "sim", command: { type: "scope", facing: "A" } } },
@@ -96,7 +106,7 @@ const RAW_DEFS: readonly ControlDef[] = [
 
 /** The sections of the assignment screen, in the order (and with the titles) of the help pages; the list on screen follows this order. */
 export const CONTROL_GROUPS: readonly { title: string; ids: readonly ControlId[] }[] = [
-  { title: "SPEED AND ENGINES", ids: ["speedFlank", "speedFull", "speedStandard", "speedSlow", "allStop", "reverse", "diesel", "electric"] },
+  { title: "SPEED AND ENGINES", ids: ["speedUp", "speedDown", "speedFlank", "speedFull", "speedStandard", "speedSlow", "allStop", "reverse", "diesel", "electric", "enginePower"] },
   { title: "STEERING", ids: ["rudderLeft", "rudderRight", "planesUp", "planesDown", "neutral"] },
   { title: "SCOPE AND WEAPONS", ids: ["periscopeUp", "periscopeDown", "scopeForward", "scopePort", "scopeAft", "scopeStarboard", "doors", "fire"] },
   { title: "SCREENS", ids: ["chart", "quadrant", "radar", "log", "damage", "radioRoom", "gameControl", "debug"] },
@@ -157,23 +167,65 @@ export type AssignResult = { ok: true } | { ok: false; conflict: ControlId } | {
 /** The assignments (one key per action, possibly none); `onChange` is called after every change. */
 export class Keymap {
   private keys = {} as Record<ControlId, string>;
+  private simple: boolean;
 
+  /**
+   * `simple`: SIMPLE SPEED KEYS is in force, so the step up/down actions are used instead of the four stage keys, and ALL STOP and REVERSE
+   * default to keys near them. The stored assignments are taken as they are.
+   */
   constructor(
     private readonly onChange: () => void = () => undefined,
     saved: string | null = null,
+    simple = false,
   ) {
+    this.simple = simple;
     this.resetKeys();
     if (saved) this.load(saved);
+  }
+
+  get simpleSpeed(): boolean {
+    return this.simple;
+  }
+
+  /** The default key of an action under the given speed scheme. */
+  private defaultKey(d: ControlDef, simple = this.simple): string {
+    return simple && d.simpleKey !== undefined ? d.simpleKey : d.key;
+  }
+
+  /** Whether the action is in use: the speed actions of the other scheme are not (they are neither listed nor answer to their keys). */
+  active(id: ControlId, simple = this.simple): boolean {
+    const speed = CONTROL_DEFS.find((d) => d.id === id)?.speed;
+    return speed === undefined || (speed === "simple") === simple;
+  }
+
+  /**
+   * Switch between the stage keys and the step keys. ALL STOP and REVERSE move to their other default only while they still have the
+   * old one (and the new key is free); an action that comes into use and finds its key taken by another is left without a key.
+   */
+  setSimpleSpeed(on: boolean): void {
+    if (on === this.simple) return;
+    const old = this.simple;
+    for (const d of CONTROL_DEFS) {
+      if (d.simpleKey === undefined || this.keys[d.id] !== this.defaultKey(d, old)) continue;
+      const next = this.defaultKey(d, on);
+      if (!CONTROL_DEFS.some((o) => o.id !== d.id && this.active(o.id, on) && this.keys[o.id] === next)) this.keys[d.id] = next;
+    }
+    this.simple = on;
+    for (const d of CONTROL_DEFS) {
+      if (this.active(d.id, old) || !this.active(d.id, on) || this.keys[d.id] === "") continue;
+      if (CONTROL_DEFS.some((o) => o.id !== d.id && this.active(o.id, on) && this.active(o.id, old) && this.keys[o.id] === this.keys[d.id])) this.keys[d.id] = "";
+    }
+    this.onChange();
   }
 
   get(id: ControlId): string {
     return this.keys[id];
   }
 
-  /** Which action has this key (the key is normalised first), if any. */
+  /** Which action in use has this key (the key is normalised first), if any. */
   idFor(key: string): ControlId | undefined {
     const k = normalizeKey(key);
-    return CONTROL_DEFS.find((d) => this.keys[d.id] === k)?.id;
+    return CONTROL_DEFS.find((d) => this.active(d.id) && this.keys[d.id] === k)?.id;
   }
 
   /** The action other than `id` that already has `key`. */
@@ -215,16 +267,16 @@ export class Keymap {
     return JSON.stringify(this.keys);
   }
 
-  /** True while every assignment is the default. */
+  /** True while every assignment in use is the default. */
   get isDefault(): boolean {
-    return CONTROL_DEFS.every((d) => this.keys[d.id] === d.key);
+    return CONTROL_DEFS.every((d) => !this.active(d.id) || this.keys[d.id] === this.defaultKey(d));
   }
 
   private resetKeys(): void {
-    for (const d of CONTROL_DEFS) this.keys[d.id] = d.key;
+    for (const d of CONTROL_DEFS) this.keys[d.id] = this.defaultKey(d);
   }
 
-  /** Reads stored assignments; unknown actions, non-strings and unusable keys are ignored, and a key given twice stays with the first action. */
+  /** Reads stored assignments; unknown actions, non-strings and unusable keys are ignored, and a key given twice stays with the first action in use. */
   private load(text: string): void {
     try {
       const raw = JSON.parse(text) as Record<string, unknown>;
@@ -232,10 +284,12 @@ export class Keymap {
       const loaded = {} as Record<ControlId, string>;
       for (const d of CONTROL_DEFS) {
         const v = raw[d.id];
-        let key = d.key;
+        let key = this.defaultKey(d);
         if (!d.locked && typeof v === "string" && (v === "" || (isAssignable(normalizeKey(v)) && !LOCKED_KEYS.has(normalizeKey(v))))) key = normalizeKey(v);
-        if (key !== "" && seen.has(key)) key = "";
-        if (key !== "") seen.add(key);
+        if (this.active(d.id)) {
+          if (key !== "" && seen.has(key)) key = "";
+          if (key !== "") seen.add(key);
+        }
         loaded[d.id] = key;
       }
       this.keys = loaded;

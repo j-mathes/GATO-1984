@@ -3,6 +3,7 @@ import type { MorseTables } from "../audio/morse.js";
 import { SoundEngine, type EffectName } from "../audio/soundEngine.js";
 import {
   ADVANCED_FEATURES,
+  type AdvancedFeature,
   ADVANCED_INDENTED,
   AdvancedOptions,
   type AdvancedKey,
@@ -42,7 +43,7 @@ import {
   type KeyLike,
   type PlayScreen,
 } from "../input/keyboard.js";
-import { CONTROL_DEFS, DEFAULT_KEYMAP, Keymap, controlGroup, controlLabel, isAssignable, isLocked, keyName, normalizeKey, type ControlId } from "../input/controls.js";
+import { CONTROL_DEFS, DEFAULT_KEYMAP, Keymap, controlGroup, controlLabel, isAssignable, isLocked, keyName, normalizeKey, type ControlDef, type ControlId } from "../input/controls.js";
 import { COLORS, Gfx } from "../render/gfx.js";
 import {
   drawCaptainsLog,
@@ -183,7 +184,7 @@ export class App {
   ) {
     this.storage = storage;
     this.advanced = new AdvancedOptions(() => this.advancedChanged(), storage?.getItem(ADVANCED_KEY) ?? null);
-    this.controls = new Keymap(() => this.controlsChanged(), storage?.getItem(CONTROLS_KEY) ?? null);
+    this.controls = new Keymap(() => this.controlsChanged(), storage?.getItem(CONTROLS_KEY) ?? null, this.advanced.effective("simpleSpeed"));
     if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
     this.showControlHud = storage?.getItem(CONTROL_HUD_KEY) === "1";
@@ -239,8 +240,14 @@ export class App {
     } catch {
       // storage may be unavailable (private mode)
     }
+    this.controls.setSimpleSpeed(this.advanced.effective("simpleSpeed")); // the speed keys follow SIMPLE SPEED KEYS (and CUSTOM CONTROLS)
     this.applyTimeScale();
     this.onAdvancedChange?.();
+  }
+
+  /** The switches on the ADVANCED OPTIONS screen: those whose prerequisite switch is on (SIMPLE SPEED KEYS needs CUSTOM CONTROLS). */
+  private advancedList(): AdvancedFeature[] {
+    return ADVANCED_FEATURES.filter((f) => this.advanced.available(f.key));
   }
 
   /** Push the current time compression into the running mission and remember it. */
@@ -331,22 +338,24 @@ export class App {
 
   /** The text under the list: what the selected switch gives on (the remake feature) and off (the 1984 behaviour), and which one is in force. */
   private advancedDescriptions(): { on: string; off: string; current: boolean } {
-    const f = ADVANCED_FEATURES[this.advancedCursor];
+    const f = this.advancedList()[this.advancedCursor];
     if (!f) return { on: "", off: "", current: true };
     return { on: f.remake, off: f.original, current: this.advanced.on(f.key) };
   }
 
   /** Left/Right (PageUp/PageDown) on ADVANCED OPTIONS: the first switch of the previous or next page, wrapping round. */
   private advancedPage(step: number): void {
-    const pages = Math.ceil(ADVANCED_FEATURES.length / ADVANCED_PAGE_SIZE);
+    const pages = Math.ceil(this.advancedList().length / ADVANCED_PAGE_SIZE);
     const page = Math.floor(this.advancedCursor / ADVANCED_PAGE_SIZE);
     this.advancedCursor = ((page + step + pages) % pages) * ADVANCED_PAGE_SIZE;
   }
 
   /** ADVANCED OPTIONS: Up/Down select, Enter or Space switch, Left/Right change page, R back to the defaults, Esc leaves for the menu. */
   private settingsKey(e: KeyLike): void {
-    const last = ADVANCED_FEATURES.length - 1;
-    const feature = ADVANCED_FEATURES[this.advancedCursor];
+    const list = this.advancedList();
+    const last = list.length - 1;
+    if (this.advancedCursor > last) this.advancedCursor = last; // a switch that needs another one disappears with it
+    const feature = list[this.advancedCursor];
     switch (e.key) {
       case "ArrowUp":
         this.advancedCursor = this.advancedCursor === 0 ? last : this.advancedCursor - 1;
@@ -407,7 +416,7 @@ export class App {
    */
   private controlsKey(e: KeyLike): void {
     const edit = this.controlsEdit;
-    const defs = CONTROL_DEFS;
+    const defs = this.controlDefs();
     const def = defs[this.controlsCursor];
     if (!def) return;
     if (edit.stage === "conflict") {
@@ -488,9 +497,15 @@ export class App {
     }
   }
 
+  /** The actions listed on the assignment screen: those in use (the stage keys or the step keys, depending on SIMPLE SPEED KEYS). */
+  private controlDefs(): ControlDef[] {
+    return CONTROL_DEFS.filter((d) => this.controls.active(d.id));
+  }
+
   private controlsView(): Parameters<typeof drawControlsEditor>[1] {
     const edit = this.controlsEdit;
-    const def = CONTROL_DEFS[this.controlsCursor];
+    const defs = this.controlDefs();
+    const def = defs[this.controlsCursor];
     let lines: ControlsEditorLine[] = [];
     let footer = "ENTER=SET DEL=CLEAR R=RESET ESC=BACK";
     if (edit.stage === "capture") {
@@ -507,9 +522,9 @@ export class App {
     } else if (this.controlsNote) lines = wrapText(this.controlsNote.text).slice(0, 3).map((text) => ({ text, tone: this.controlsNote?.tone ?? "info" }));
     else if (def?.locked) lines = [{ text: "FIXED: CANNOT BE CHANGED OR TAKEN OVER", tone: "info" }];
     return {
-      rows: CONTROL_DEFS.map((d, i) => {
+      rows: defs.map((d, i) => {
         const group = controlGroup(d.id);
-        const starts = i === 0 || controlGroup(CONTROL_DEFS[i - 1]?.id as ControlId) !== group;
+        const starts = i === 0 || controlGroup(defs[i - 1]?.id as ControlId) !== group;
         return { label: d.label, key: keyName(this.controls.get(d.id)), locked: d.locked === true, ...(starts ? { heading: group } : {}) };
       }),
       cursor: this.controlsCursor,
@@ -650,7 +665,7 @@ export class App {
 
   private helpPages(): HelpPage[] {
     const on = (k: AdvancedKey): boolean => this.advanced.on(k);
-    return controlsPages({ trails: on("trailToggle"), timeKeys: on("timeKeys"), display: on("displayModes"), escQuit: on("escQuit") }, (id) => this.activeKeymap.get(id));
+    return controlsPages({ trails: on("trailToggle"), timeKeys: on("timeKeys"), display: on("displayModes"), escQuit: on("escQuit"), simpleSpeed: this.advanced.effective("simpleSpeed") }, (id) => this.activeKeymap.get(id));
   }
 
   /** Left/Up/PageUp and Right/Down/PageDown/Space turn the pages (wrapping round); any other key closes the overlay and is not passed on. */
@@ -1002,7 +1017,7 @@ export class App {
         return;
       case "settings":
         drawAdvancedOptions(g, {
-          rows: ADVANCED_FEATURES.map((f) => ({ label: f.label, on: this.advanced.on(f.key), indent: ADVANCED_INDENTED.has(f.key) })),
+          rows: this.advancedList().map((f) => ({ label: f.label, on: this.advanced.on(f.key), indent: ADVANCED_INDENTED.has(f.key) })),
           cursor: this.advancedCursor,
           descriptions: this.advancedDescriptions(),
           controlsKey: this.advanced.on("customControls"),

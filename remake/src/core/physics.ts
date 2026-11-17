@@ -4,8 +4,8 @@ import type { EngineMode, Rng, ScopeFacing, SimEvent, SubmarineState } from "./t
 
 /** Player commands. Key names are those of the original: F1/F3/F5/F7 forward, F10 reverse, F9 stop, T doors, F2/F4 periscope. */
 export type HelmCommand =
-  | { type: "speed"; level: "F1" | "F3" | "F5" | "F7" | "reverse" | "stop" }
-  | { type: "engine"; mode: "diesel" | "electric" }
+  | { type: "speed"; level: "F1" | "F3" | "F5" | "F7" | "reverse" | "stop" | "up" | "down" }
+  | { type: "engine"; mode: "diesel" | "electric" | "toggle" }
   | { type: "rudder"; direction: "left" | "right" | "neutral" }
   | { type: "planes"; direction: "up" | "down" | "neutral" }
   | { type: "doors" }
@@ -47,20 +47,36 @@ function orderedFor(sub: SubmarineState, nominal: number): number {
   return (nominal - (sub.doorsOpen ? 1 : 0)) * (1 - (sub.damage[COMPARTMENT.engineRoom] ?? 0) * 0.5) * engineValue(sub.engine);
 }
 
+/**
+ * One step along the ahead stages (stop, F7, F5, F3, F1; remake addition for the simple speed keys): `up` orders the next higher stage,
+ * `down` the next lower one, never below stop (reverse stays a deliberate command). The stages are the ordered speeds of the F-keys for the
+ * current engine, doors and engine-room damage, so a speed that sits between stages (the doors were opened, the engine changed) moves to
+ * the nearest stage in the direction asked. From reverse, `up` goes to stop.
+ */
+export function steppedSpeed(sub: SubmarineState, direction: "up" | "down"): number {
+  const stages = [0, ...(["F7", "F5", "F3", "F1"] as const).map((level) => orderedFor(sub, HELM.speedCommands[level]))];
+  const now = sub.orderedSpeed;
+  if (direction === "up") return stages.find((v) => v > now + 1e-9) ?? now;
+  return [...stages].reverse().find((v) => v < now - 1e-9) ?? now;
+}
+
 /** Apply one player command (the key handlers at 0x054b3-0x05b60). */
 export function applyHelmCommand(sub: SubmarineState, cmd: HelmCommand): void {
   switch (cmd.type) {
     case "speed": {
-      if (cmd.level === "stop") sub.orderedSpeed = 0;
+      if (cmd.level === "up" || cmd.level === "down") sub.orderedSpeed = steppedSpeed(sub, cmd.level);
+      else if (cmd.level === "stop") sub.orderedSpeed = 0;
       else if (cmd.level === "reverse") sub.orderedSpeed = -(1 - (sub.damage[COMPARTMENT.engineRoom] ?? 0) * 0.5) * engineValue(sub.engine);
       else sub.orderedSpeed = orderedFor(sub, HELM.speedCommands[cmd.level]);
       return;
     }
     case "engine": {
-      if (cmd.mode === "diesel" && sub.fuel > 0 && sub.engine !== ENGINE.diesel) {
+      // "toggle" (remake, the simple speed keys) asks for the engine the boat is not running on, with the same fuel/battery rules
+      const mode = cmd.mode === "toggle" ? (sub.engine === ENGINE.diesel ? "electric" : "diesel") : cmd.mode;
+      if (mode === "diesel" && sub.fuel > 0 && sub.engine !== ENGINE.diesel) {
         sub.engine = ENGINE.diesel;
         sub.orderedSpeed *= 2;
-      } else if (cmd.mode === "electric" && sub.battery > 0 && sub.engine !== ENGINE.electric) {
+      } else if (mode === "electric" && sub.battery > 0 && sub.engine !== ENGINE.electric) {
         sub.engine = ENGINE.electric;
         sub.orderedSpeed *= 0.5;
       }

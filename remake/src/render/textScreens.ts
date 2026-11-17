@@ -231,6 +231,8 @@ export interface HelpExtras {
   timeKeys: boolean;
   display: boolean;
   escQuit: boolean;
+  /** SIMPLE SPEED KEYS is in force: the speed page lists the step keys and the engine toggle instead of the stage and engine keys. */
+  simpleSpeed?: boolean;
 }
 
 export const HELP_KEY_WIDTH = 6;
@@ -256,16 +258,27 @@ export function controlsPages(
   more.push(["help", "This help"]);
   if (extras.escQuit) more.push(["quit", "Back to the menu"]);
   return [
-    page("SPEED AND ENGINES", [
-      ["speedFlank", "Ahead flank (10)"],
-      ["speedFull", "Ahead full (8)"],
-      ["speedStandard", "Ahead standard (6)"],
-      ["speedSlow", "Ahead slow (3)"],
-      ["allStop", "All stop"],
-      ["reverse", "Reverse"],
-      ["diesel", "Diesel engine"],
-      ["electric", "Electric motor"],
-    ]),
+    page(
+      "SPEED AND ENGINES",
+      extras.simpleSpeed
+        ? [
+            ["speedUp", "Speed up one step"],
+            ["speedDown", "Speed down one step"],
+            ["allStop", "All stop"],
+            ["reverse", "Reverse"],
+            ["enginePower", "Diesel / electric"],
+          ]
+        : [
+            ["speedFlank", "Ahead flank (10)"],
+            ["speedFull", "Ahead full (8)"],
+            ["speedStandard", "Ahead standard (6)"],
+            ["speedSlow", "Ahead slow (3)"],
+            ["allStop", "All stop"],
+            ["reverse", "Reverse"],
+            ["diesel", "Diesel engine"],
+            ["electric", "Electric motor"],
+          ],
+    ),
     page("STEERING", [
       ["rudderLeft", "Rudder left"],
       ["rudderRight", "Rudder right"],

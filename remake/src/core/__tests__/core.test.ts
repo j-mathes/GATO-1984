@@ -82,6 +82,42 @@ describe("helm and engines", () => {
     expect(sim.sub.orderedSpeed).toBe(4.5); // (10-1) * 0.5 * 1
   });
 
+  it("steps the speed one stage up or down (simple speed keys): stop, slow, standard, full, flank; never below stop", () => {
+    const sim = newSim();
+    const sub = sim.sub;
+    const step = (direction: "up" | "down"): number => {
+      applyHelmCommand(sub, { type: "speed", level: direction });
+      return sub.orderedSpeed;
+    };
+    expect([step("up"), step("up"), step("up"), step("up"), step("up")]).toEqual([6, 12, 16, 20, 20]); // diesel: 3, 6, 8, 10 x 2
+    expect([step("down"), step("down"), step("down"), step("down"), step("down")]).toEqual([16, 12, 6, 0, 0]);
+    applyHelmCommand(sub, { type: "speed", level: "reverse" });
+    expect(sub.orderedSpeed).toBeLessThan(0);
+    expect(step("down")).toBeLessThan(0); // reverse is its own command: stepping down does not go further astern
+    expect(step("up")).toBe(0); // from reverse, up goes to stop
+    sub.engine = ENGINE.electric;
+    sub.doorsOpen = true;
+    sub.orderedSpeed = 3; // between stages: electric with the doors open gives 2, 5, 7, 9
+    expect(step("up")).toBe(5);
+    expect(step("down")).toBe(2);
+    sub.orderedSpeed = 3;
+    expect(step("down")).toBe(2);
+  });
+
+  it("toggles the engine between diesel and electric with the same fuel and battery rules", () => {
+    const sim = newSim();
+    const sub = sim.sub;
+    sub.orderedSpeed = 6;
+    applyHelmCommand(sub, { type: "engine", mode: "toggle" });
+    expect([sub.engine, sub.orderedSpeed]).toEqual([ENGINE.electric, 3]);
+    applyHelmCommand(sub, { type: "engine", mode: "toggle" });
+    expect([sub.engine, sub.orderedSpeed]).toEqual([ENGINE.diesel, 6]);
+    sub.fuel = 0;
+    applyHelmCommand(sub, { type: "engine", mode: "toggle" }); // to electric
+    applyHelmCommand(sub, { type: "engine", mode: "toggle" }); // diesel has no fuel: stays electric
+    expect(sub.engine).toBe(ENGINE.electric);
+  });
+
   it("accelerates by 0.25 and brakes by 1 per step", () => {
     const sim = newSim();
     sim.sub.orderedSpeed = 2;

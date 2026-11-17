@@ -1,6 +1,6 @@
 # Remake-only additions
 
-What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Eighteen of these (rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32) have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour; the rest are always on. Row 38 (custom controls) is a switch itself. Off by default: the helm status line (row 1) and custom controls (row 38).
+What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Eighteen of these (rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32) have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour; the rest are always on. Row 38 (custom controls) is a switch itself. Off by default: the helm status line (row 1), custom controls (row 38) and simple speed keys (row 40).
 
 Legend: **ON** = active in normal play, **key** = off until the player asks, **fallback** = only used when an asset is missing.
 
@@ -69,7 +69,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 
 ## 5a. Advanced options switches
 
-Menu item 5 opens the screen, which shows the switches ten to a page (`PAGE 1 OF 2`): Up/Down select a row and run on from one page to the next, Left/Right (or PageUp/PageDown) jump to the other page, Enter or Space switch it, `R` restores the defaults, Esc returns to the menu. The screen shows `ON` (the remake feature) or `OFF` (the 1984 behaviour) for each row, and the text under the list describes both states, `ON: ...` above `OFF: ...`, with the one in force in yellow and the other grey. The choices are saved in `localStorage` under `gato.advanced`. It opens from the launcher menu (item 5) and, during a mission, from GAME CONTROL (Tab) item 7; the world is paused while it is open, Esc returns to the menu or to GAME CONTROL, and a change applies at once (also to the mission that is running, for example the pace). "Row" is the row number above. Switches that depend on the one above them are shown indented: the hotkeys switch (16) sets the three under it (3, 9, 10) and follows them, while the next-mission pick (30, under 8) and the time pop-up (2, under 15) stay independent and simply have no effect while their parent is off. All switches default to ON except rows 1 and 38.
+Menu item 5 opens the screen, which shows the switches ten to a page (`PAGE 1 OF 2`): Up/Down select a row and run on from one page to the next, Left/Right (or PageUp/PageDown) jump to the other page, Enter or Space switch it, `R` restores the defaults, Esc returns to the menu. The screen shows `ON` (the remake feature) or `OFF` (the 1984 behaviour) for each row, and the text under the list describes both states, `ON: ...` above `OFF: ...`, with the one in force in yellow and the other grey. The choices are saved in `localStorage` under `gato.advanced`. It opens from the launcher menu (item 5) and, during a mission, from GAME CONTROL (Tab) item 7; the world is paused while it is open, Esc returns to the menu or to GAME CONTROL, and a change applies at once (also to the mission that is running, for example the pace). "Row" is the row number above. Switches that depend on the one above them are shown indented: the hotkeys switch (16) sets the three under it (3, 9, 10) and follows them, while the next-mission pick (30, under 8) and the time pop-up (2, under 15) stay independent and simply have no effect while their parent is off. All switches default to ON except rows 1, 38 and 40. Row 40 is only listed (as the last row, indented under custom controls) while custom controls is on; with it off the stored value is kept but not used.
 
 | Row | Switch (screen label) | OFF gives |
 | --- | --- | --- |
@@ -92,6 +92,13 @@ Menu item 5 opens the screen, which shows the switches ten to a page (`PAGE 1 OF
 | 30 | CHOOSE THE NEXT MISSION | the next mission is always the original's random pick; GAME CONTROL item 5 is hidden (the pick is kept but unused) |
 | 32 | WORLD RUNS DURING BLASTS | the world is held while an explosion plays, as the original blocks in its animation |
 | 38 | CUSTOM CONTROLS (default OFF) | the original key assignments only; ON lets the player reassign the mission keys on the CONTROL ASSIGNMENTS screen (below) |
+| 40 | SIMPLE SPEED KEYS (default OFF; only listed and in force while CUSTOM CONTROLS is on) | a key per speed stage (F1 F3 F5 F7), F9 stop, F10 reverse, D and E engines; ON replaces the stage and engine keys by one key that steps the speed up and one that steps it down (defaults `=` and `-`), ALL STOP (`0`), REVERSE (`Backspace`) and one engine toggle (`E`), see below |
+
+### Simple speed keys (row 40)
+
+* **Stepping:** the ahead stages are stop, slow (3), standard (6), full (8) and flank (10), each times the engine factor, the open doors and engine-room damage like the F keys (`core/physics.ts` `steppedSpeed`). Speed up orders the next higher stage and speed down the next lower one, never below stop; from a speed between stages (doors opened, engine changed) each goes to the nearest stage in its direction. Reverse stays a deliberate key: speed down does not go astern and speed up from reverse goes to stop.
+* **Defaults chosen to sit next to `=` and `-`:** `0` for all stop (zero speed, beside `-`) and `Backspace` for reverse (back, beside `=`). `E` toggles diesel and electric (the fuel and battery rules of the D and E keys). `P` was not used: it is the scope-port key.
+* **What changes in the lists:** the four stage actions and the D and E actions leave the assignment screen and the help (and their keys do nothing); the step up, step down and engine toggle actions take their place. ALL STOP and REVERSE move to `0` and `Backspace` when the switch is turned on, but only if they still have the F9 and F10 defaults and the new key is free (the same in reverse when it is turned off); an action that comes into use and finds its key taken by another is left without a key. `R` on the assignment screen restores the defaults of the scheme in force.
 
 ### Control assignments (row 38)
 
@@ -114,6 +121,6 @@ Drawn or timed from evidence but not byte-exact: the text font (the remake's own
 
 ## 8. Suggested decisions
 
-* Hidden by default: rows 1 and 38. Switchable on the ADVANCED OPTIONS screen: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32, 38 (section 5a).
+* Hidden by default: rows 1, 38 and 40. Switchable on the ADVANCED OPTIONS screen: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32, 38, 40 (section 5a).
 * Easiest to drop without touching rules: rows 2, 4, 5, 7, 11, 12, 13, 21-23, 24, 25 (a remake choice each, no state depends on them).
 * Behaviour changes that alter play: rows 28 (pace), 31 (message boxes wait for a key, world keeps running), 32 (explosions do not block), 33; each is a constant or one branch in `core/` or `app/app.ts`.

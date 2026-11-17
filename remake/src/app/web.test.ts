@@ -1963,14 +1963,14 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     return h.calls.slice();
   };
 
-  it("offers the 18 requested rows plus CUSTOM CONTROLS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line and the custom controls", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 12, 15, 2, 17, 20, 28, 32, 24, 25, 38]);
+  it("offers the 18 requested rows plus CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line and the custom-controls pair", () => {
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 12, 15, 2, 17, 20, 28, 32, 24, 25, 38, 40]);
     const keys = ADVANCED_FEATURES.map((f) => f.key);
     const at = keys.indexOf("hotkeys");
     expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);
     expect(ADVANCED_FEATURES.every((f) => f.label.length <= 30)).toBe(true);
     const { app } = boot();
-    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(f.key !== "helmHud" && f.key !== "customControls");
+    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(f.key !== "helmHud" && f.key !== "customControls" && f.key !== "simpleSpeed");
   });
 
   it("indented switches: the hotkey members, the next-mission pick and the time pop-up sit under the switch they depend on", () => {
@@ -1979,7 +1979,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect(keys.indexOf(child), child).toBe(keys.indexOf(parent) + 1);
       expect(ADVANCED_INDENTED.has(child)).toBe(true);
     }
-    expect([...ADVANCED_INDENTED].sort()).toEqual([...HOTKEY_GROUP, "missionSelect", "timeToast"].sort());
+    expect([...ADVANCED_INDENTED].sort()).toEqual([...HOTKEY_GROUP, "missionSelect", "timeToast", "simpleSpeed"].sort());
     const h = boot();
     press(h.app, "x", "5");
     const placed = (label: string): number => {
@@ -2000,15 +2000,17 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
   it("under the list both descriptions are shown, ON text above OFF text, the one in force bright and the other grey, each within three lines", () => {
     const h = boot();
     press(h.app, "x", "5");
+    h.app.advanced.set("customControls", true); // SIMPLE SPEED KEYS is only listed with it
     const descriptions = (): { on: string; off: string; current: boolean } => (h.app as unknown as { advancedDescriptions(): { on: string; off: string; current: boolean } }).advancedDescriptions();
     for (const f of ADVANCED_FEATURES) {
       for (const on of [true, false]) {
         h.app.advanced.set(f.key, on);
-        expect(descriptions(), f.key).toEqual({ on: f.remake, off: f.original, current: on });
+        if (f.key === "customControls") h.app.advanced.set(f.key, true); // keep the list as long as it is
+        expect(descriptions(), f.key).toEqual({ on: f.remake, off: f.original, current: f.key === "customControls" ? true : on });
         expect(wrapText(`ON: ${f.remake}`.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
         expect(wrapText(`OFF: ${f.original}`.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
       }
-      h.app.advanced.set(f.key, f.default);
+      h.app.advanced.set(f.key, f.key === "customControls" ? true : f.default);
       press(h.app, "ArrowDown");
     }
     // drawn for the helm status line (off): its ON text first and grey, its OFF text below it and yellow
@@ -2376,7 +2378,7 @@ describe("custom controls (key assignments)", () => {
     press(app, "c");
   };
   const select = (app: App, id: ControlId): void => {
-    (app as unknown as { controlsCursor: number }).controlsCursor = CONTROL_DEFS.findIndex((d) => d.id === id);
+    (app as unknown as { controlsCursor: number }).controlsCursor = CONTROL_DEFS.filter((d) => app.controls.active(d.id)).findIndex((d) => d.id === id);
   };
   const texts = (h: ReturnType<typeof boot>): string[] => {
     h.calls.length = 0;
@@ -2386,10 +2388,12 @@ describe("custom controls (key assignments)", () => {
 
   it("the default assignments are the original's keys, in either letter case, and the keypad 5", () => {
     for (const d of CONTROL_DEFS) {
-      if (!d.input) continue;
+      if (!d.input || d.speed === "simple") continue; // the step keys belong to SIMPLE SPEED KEYS
       expect(translatePlayKey({ key: d.key }), d.id).toEqual(d.input);
       if (d.key.length === 1) expect(translatePlayKey({ key: d.key.toLowerCase() }), d.id).toEqual(d.input);
     }
+    expect(translatePlayKey({ key: "=" })).toBeNull();
+    expect(translatePlayKey({ key: "-" })).toBeNull();
     expect(translatePlayKey({ key: "Unidentified", code: "Numpad5" })).toEqual({ type: "sim", command: { type: "neutral" } });
     expect(translatePlayKey({ key: "t", ctrlKey: true })).toBeNull();
     expect(new Keymap().isDefault).toBe(true);
@@ -2459,7 +2463,134 @@ describe("custom controls (key assignments)", () => {
     shown = texts(h);
     expect(shown).toEqual(expect.arrayContaining(["-- REMAKE EXTRAS --", "BACK TO THE MENU", "(FIXED)"]));
     expect(shown).not.toContain("-- SPEED AND ENGINES --");
-    expect(shown).toContain(`${CONTROL_DEFS.length}/${CONTROL_DEFS.length}`); // the counter counts actions, not title lines
+    const inUse = CONTROL_DEFS.filter((d) => h.app.controls.active(d.id));
+    expect(shown).toContain(`${inUse.length}/${inUse.length}`); // the counter counts the actions in use, not title lines
+  });
+
+  it("simple speed keys: the step keys replace the four stage keys and the engine keys; all stop and reverse move next to them", () => {
+    const map = new Keymap();
+    expect([map.get("allStop"), map.get("reverse"), map.active("speedUp"), map.active("speedFlank"), map.active("enginePower"), map.active("diesel")]).toEqual(["F9", "F10", false, true, false, true]);
+    map.assign("fire", "0"); // a taken key: ALL STOP must not take it over
+    map.setSimpleSpeed(true);
+    expect(map.simpleSpeed).toBe(true);
+    expect([map.get("speedUp"), map.get("speedDown"), map.get("enginePower")]).toEqual(["=", "-", "E"]);
+    expect([map.get("allStop"), map.get("reverse")]).toEqual(["F9", "Backspace"]);
+    expect(translatePlayKey({ key: "=" }, map)).toEqual({ type: "sim", command: { type: "speed", level: "up" } });
+    expect(translatePlayKey({ key: "-" }, map)).toEqual({ type: "sim", command: { type: "speed", level: "down" } });
+    expect(translatePlayKey({ key: "Backspace" }, map)).toEqual({ type: "sim", command: { type: "speed", level: "reverse" } });
+    expect(translatePlayKey({ key: "e" }, map)).toEqual({ type: "sim", command: { type: "engine", mode: "toggle" } });
+    expect(translatePlayKey({ key: "F1" }, map)).toBeNull(); // the stage and engine keys are out of use
+    expect(translatePlayKey({ key: "d" }, map)).toBeNull();
+    expect(map.conflict("doors", "=")).toBe("speedUp");
+    expect(map.conflict("doors", "F3")).toBeNull(); // an unused action's key does not count
+    map.setSimpleSpeed(false);
+    expect([map.get("allStop"), map.get("reverse")]).toEqual(["F9", "F10"]);
+    expect(translatePlayKey({ key: "=" }, map)).toBeNull();
+    expect(translatePlayKey({ key: "F1" }, map)).toEqual({ type: "sim", command: { type: "speed", level: "F1" } });
+    // reset follows the scheme in force
+    const simple = new Keymap(undefined, null, true);
+    simple.assign("doors", "G");
+    simple.reset();
+    expect([simple.get("allStop"), simple.get("reverse"), simple.isDefault]).toEqual(["0", "Backspace", true]);
+  });
+
+  it("switching the speed scheme keeps the player's own choices and blanks a key that comes into use taken", () => {
+    const map = new Keymap();
+    map.assign("allStop", "X"); // changed by the player: stays when the scheme changes
+    map.assign("doors", "="); // takes the step-up key while the stage keys are in use
+    map.setSimpleSpeed(true);
+    expect([map.get("allStop"), map.get("reverse"), map.get("speedUp"), map.get("doors")]).toEqual(["X", "Backspace", "", "="]);
+    map.assign("fire", "F3"); // free while the stage key F3 is out of use
+    map.setSimpleSpeed(false);
+    expect([map.get("speedFull"), map.get("fire")]).toEqual(["", "F3"]); // the stage key came back into use with F3 taken: left blank
+    expect(new Keymap(undefined, map.serialize(), false).snapshot()).toEqual(map.snapshot());
+  });
+
+  it("SIMPLE SPEED KEYS is only offered, listed and in force with CUSTOM CONTROLS on", () => {
+    const h = boot();
+    press(h.app, "x", "5");
+    const list = (): string[] => (h.app as unknown as { advancedList(): { key: string }[] }).advancedList().map((f) => f.key);
+    expect(list()).not.toContain("simpleSpeed");
+    expect(texts(h)).not.toContain("SIMPLE SPEED KEYS");
+    h.app.advanced.set("simpleSpeed", true); // a stored value without the prerequisite is not used
+    expect(h.app.advanced.effective("simpleSpeed")).toBe(false);
+    expect(h.app.controls.simpleSpeed).toBe(false);
+    h.app.advanced.set("customControls", true);
+    expect(list()).toContain("simpleSpeed");
+    (h.app as unknown as { advancedCursor: number }).advancedCursor = 19; // page 2
+    expect(texts(h)).toContain("SIMPLE SPEED KEYS");
+    expect(h.app.controls.simpleSpeed).toBe(true);
+    h.app.advanced.set("customControls", false); // with the prerequisite gone it is hidden and the keys go back
+    expect(h.app.controls.simpleSpeed).toBe(false);
+    expect(list()).not.toContain("simpleSpeed");
+  });
+
+  it("in a mission the step keys order the next stage, 0 stops, Backspace reverses and E toggles the engine; the stage keys do nothing", () => {
+    const h = boot();
+    h.app.advanced.set("customControls", true);
+    h.app.advanced.set("simpleSpeed", true);
+    startPlay(h);
+    const sub = h.sim().sub;
+    press(h.app, "F1");
+    expect(sub.orderedSpeed).toBe(0); // F1 is not a key any more
+    press(h.app, "=", "=");
+    expect(sub.orderedSpeed).toBe(12); // diesel: slow 6, standard 12
+    press(h.app, "-");
+    expect(sub.orderedSpeed).toBe(6);
+    press(h.app, "=", "=", "=", "=");
+    expect(sub.orderedSpeed).toBe(20);
+    press(h.app, "0");
+    expect(sub.orderedSpeed).toBe(0);
+    press(h.app, "Backspace");
+    expect(sub.orderedSpeed).toBeLessThan(0);
+    press(h.app, "e");
+    expect(sub.engine).toBe(1);
+    press(h.app, "e");
+    expect(sub.engine).toBe(2);
+    h.app.advanced.set("simpleSpeed", false);
+    press(h.app, "F3");
+    expect(sub.orderedSpeed).toBeGreaterThan(0);
+    const before = sub.orderedSpeed;
+    press(h.app, "=");
+    expect(sub.orderedSpeed).toBe(before);
+  });
+
+  it("the assignment screen and the help show the speed scheme in use", () => {
+    const h = boot();
+    h.app.advanced.set("customControls", true);
+    openEditor(h.app);
+    select(h.app, "allStop");
+    let shown = texts(h);
+    expect(shown).not.toContain("SPEED UP ONE STEP");
+    expect(shown).toContain("AHEAD FLANK (10)");
+    h.app.advanced.set("simpleSpeed", true);
+    select(h.app, "speedUp");
+    shown = texts(h);
+    expect(shown).toEqual(expect.arrayContaining(["SPEED UP ONE STEP", "=", "SPEED DOWN ONE STEP", "-", "ALL STOP", "0", "REVERSE", "BKSP", "TOGGLE ENGINE POWER"]));
+    expect(shown).not.toContain("AHEAD FLANK (10)");
+    expect(shown).not.toContain("DIESEL ENGINE");
+    const pages = controlsPages({ trails: true, timeKeys: true, display: true, escQuit: true, simpleSpeed: true }, (id) => h.app.controls.get(id));
+    expect(pages[0]?.rows).toEqual([["=", "Speed up one step"], ["-", "Speed down one step"], ["0", "All stop"], ["BKSP", "Reverse"], ["E", "Diesel / electric"]]);
+  });
+
+  it("the stage keys keep working with CUSTOM CONTROLS off, even if SIMPLE SPEED KEYS was left on", () => {
+    const h = boot();
+    h.app.advanced.set("customControls", true);
+    h.app.advanced.set("simpleSpeed", true);
+    h.app.advanced.set("customControls", false);
+    startPlay(h);
+    press(h.app, "F3");
+    expect(h.sim().sub.orderedSpeed).toBeGreaterThan(0);
+    press(h.app, "=");
+    expect(h.sim().sub.orderedSpeed).toBe(16);
+  });
+
+  it("stored assignments: a key used by an action in use stays with the first, an action out of use may share it", () => {
+    const stored = JSON.stringify({ speedUp: "G", speedFlank: "G", doors: "G" });
+    const classic = new Keymap(undefined, stored, false);
+    expect([classic.get("speedFlank"), classic.get("doors"), classic.get("speedUp")]).toEqual(["G", "", "G"]); // speedUp is out of use
+    const simple = new Keymap(undefined, stored, true);
+    expect([simple.get("speedUp"), simple.get("doors"), simple.get("speedFlank")]).toEqual(["G", "", "G"]);
   });
 
   it("custom controls are off by default; the C key opens the assignment screen only while they are on, Esc goes back", () => {
@@ -2517,7 +2648,8 @@ describe("custom controls (key assignments)", () => {
     expect(shown).toContain("(NONE)");
     expect(JSON.parse(h.map.get("gato.controls") ?? "{}")).toMatchObject({ doors: "C", chart: "" });
     press(h.app, "ArrowDown", "Delete"); // the action under the cursor loses its key
-    expect(h.app.controls.get(CONTROL_DEFS[(CONTROL_DEFS.findIndex((d) => d.id === "doors") + 1) % CONTROL_DEFS.length]?.id as ControlId)).toBe("");
+    const inUse = CONTROL_DEFS.filter((d) => h.app.controls.active(d.id));
+    expect(h.app.controls.get(inUse[(inUse.findIndex((d) => d.id === "doors") + 1) % inUse.length]?.id as ControlId)).toBe("");
     press(h.app, "r");
     expect(h.app.controls.isDefault).toBe(true);
     expect(boot(h.map).app.controls.isDefault).toBe(true);

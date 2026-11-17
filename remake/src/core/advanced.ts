@@ -22,7 +22,8 @@ export type AdvancedKey =
   | "pcPace"
   | "missionSelect"
   | "explosionsRun"
-  | "customControls";
+  | "customControls"
+  | "simpleSpeed";
 
 export interface AdvancedFeature {
   key: AdvancedKey;
@@ -36,6 +37,8 @@ export interface AdvancedFeature {
   remake: string;
   /** What the switch gives when it is off (the 1984 behaviour); shown while it is on. */
   original: string;
+  /** Only offered (and only in force) while this other switch is on. */
+  requires?: AdvancedKey;
 }
 
 /** In screen order: grouped by topic, with the HOTKEYS group switch right before the three switches it covers (HOTKEY_GROUP). */
@@ -59,6 +62,7 @@ export const ADVANCED_FEATURES: readonly AdvancedFeature[] = [
   { key: "boomSound", row: 24, label: "EXPLOSION BOOM SOUND", default: true, remake: "explosions make a descending boom", original: "silent explosions" },
   { key: "radioAlert", row: 25, label: "RADIO ALERT TONE", default: true, remake: "radio messages sound an alert tone", original: "silent messages" },
   { key: "customControls", row: 38, label: "CUSTOM CONTROLS", default: false, remake: "keys can be reassigned: press C on this screen to open the control assignments", original: "the original key assignments only" },
+  { key: "simpleSpeed", row: 40, label: "SIMPLE SPEED KEYS", default: false, requires: "customControls", remake: "= and - step the speed up and down; 0 stops, Backspace reverses, E toggles diesel/electric", original: "a key per speed stage (F1 F3 F5 F7), F9 stop, F10 reverse, D and E engines" },
 ];
 
 export type AdvancedValues = Record<AdvancedKey, boolean>;
@@ -78,7 +82,7 @@ export const HOTKEY_GROUP: readonly AdvancedKey[] = ["helpOverlay", "displayMode
  * (GAME CONTROL item 5 only exists with the extra items) and the time pop-up (only shown by the time keys). Only the hotkeys switch
  * also sets its members; the others stay independent.
  */
-export const ADVANCED_INDENTED: ReadonlySet<AdvancedKey> = new Set<AdvancedKey>([...HOTKEY_GROUP, "missionSelect", "timeToast"]);
+export const ADVANCED_INDENTED: ReadonlySet<AdvancedKey> = new Set<AdvancedKey>([...HOTKEY_GROUP, "missionSelect", "timeToast", "simpleSpeed"]);
 
 /** The switches with their storage form (the whole object is kept as JSON). */
 export class AdvancedOptions {
@@ -94,6 +98,17 @@ export class AdvancedOptions {
 
   on(key: AdvancedKey): boolean {
     return this.values[key];
+  }
+
+  /** Whether the switch is offered: it has no prerequisite, or its prerequisite switch is on (see {@link AdvancedFeature.requires}). */
+  available(key: AdvancedKey): boolean {
+    const req = ADVANCED_FEATURES.find((f) => f.key === key)?.requires;
+    return req === undefined || this.values[req];
+  }
+
+  /** The switch is on and offered: what the game acts on (a stored value of an unavailable switch is kept but not used). */
+  effective(key: AdvancedKey): boolean {
+    return this.values[key] && this.available(key);
   }
 
   set(key: AdvancedKey, value: boolean): void {
