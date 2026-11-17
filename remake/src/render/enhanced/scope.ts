@@ -201,7 +201,7 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
     c.fillStyle = `rgba(10,72,84,${(Math.min(sub.depth / 45, 1) * 0.2).toFixed(3)})`;
     c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
   }
-  drawLens(g, area);
+  drawLens(g, area, horizon >= 0 ? hy : area.y + area.h / 2, day);
   // a little glass: a dark rim and a thin bright edge, so the window reads as a lens
   const rim = c.createLinearGradient(0, g.toY(area.y), 0, g.toY(area.y + area.h));
   rim.addColorStop(0, "rgba(0,0,0,0.35)");
@@ -237,17 +237,17 @@ function drawCrackedGlass(g: Gfx, area: ScopeArea): void {
   g.unclip();
 }
 
-/** The periscope's lens: the corners fall off into shadow, with a fine crosshair and range ticks in the middle. */
-function drawLens(g: Gfx, area: ScopeArea): void {
+/** The periscope's lens: the corners fall off into shadow, with a fine crosshair and range ticks; the crosshair's horizontal line lies on the horizon (`cy`). */
+function drawLens(g: Gfx, area: ScopeArea, cy: number, day: boolean): void {
   const c = g.ctx;
   const cx = area.x + area.w / 2;
-  const cy = area.y + area.h / 2;
+  const cvy = area.y + area.h / 2;
   c.save();
   c.beginPath();
   c.rect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
   c.clip();
   // an elliptical vignette: a circular gradient squeezed to the shape of the window
-  c.translate(g.toX(cx), g.toY(cy));
+  c.translate(g.toX(cx), g.toY(cvy));
   c.scale(area.w / area.h, 1);
   const r = g.toLength(area.h) * 0.78;
   const vignette = c.createRadialGradient(0, 0, r * 0.55, 0, 0, r);
@@ -256,16 +256,20 @@ function drawLens(g: Gfx, area: ScopeArea): void {
   c.fillStyle = vignette;
   c.fillRect(-g.toLength(area.w), -g.toLength(area.h), g.toLength(area.w) * 2, g.toLength(area.h) * 2);
   c.restore();
-  // crosshair with a gap at the centre, and ticks every 40 units along it
+  // crosshair with a gap at the centre and ticks along it, drawn light over a dark edge so it shows on the pale haze and on the dark sea
   const gap = 10;
-  const arm = 70;
-  const color = "rgba(255,255,255,0.4)";
-  g.line(cx - arm, cy, cx - gap, cy, color, 1);
-  g.line(cx + gap, cy, cx + arm, cy, color, 1);
-  g.line(cx, cy - arm * 0.6, cx, cy - gap, color, 1);
-  g.line(cx, cy + gap, cx, cy + arm * 0.6, color, 1);
+  const arm = 80;
+  const strokes: [number, number, number, number][] = [
+    [cx - arm, cy, cx - gap, cy],
+    [cx + gap, cy, cx + arm, cy],
+    [cx, cy - arm * 0.6, cx, cy - gap],
+    [cx, cy + gap, cx, cy + arm * 0.6],
+  ];
   for (let i = 1; i <= 3; i += 1) {
-    g.line(cx - gap - i * 14, cy - 4, cx - gap - i * 14, cy + 4, color, 1);
-    g.line(cx + gap + i * 14, cy - 4, cx + gap + i * 14, cy + 4, color, 1);
+    strokes.push([cx - gap - i * 14, cy - 5, cx - gap - i * 14, cy + 5], [cx + gap + i * 14, cy - 5, cx + gap + i * 14, cy + 5]);
   }
+  // by day the pale haze takes a dark line with a light edge; by night the opposite
+  const [edge, core] = day ? ["rgba(255,255,255,0.4)", "rgba(6,20,34,0.7)"] : ["rgba(0,6,14,0.5)", "rgba(255,255,255,0.75)"];
+  for (const [x1, y1, x2, y2] of strokes) g.line(x1, y1, x2, y2, edge, 5.5);
+  for (const [x1, y1, x2, y2] of strokes) g.line(x1, y1, x2, y2, core, 2.4);
 }
