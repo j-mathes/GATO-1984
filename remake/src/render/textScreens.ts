@@ -152,10 +152,14 @@ export interface OrdersView {
  * The incoming order message, printed character by character while it is sounded in Morse: the text screen of the original (black text on
  * the growing light-grey band, row 25 never used by the program). The line on row 25 is a remake addition that says how to continue.
  */
+/** The line under the orders that says how to continue. */
+export function ordersNote(view: OrdersView): string {
+  return view.finished ? "PRESS ANY KEY TO CONTINUE" : view.hidden ? "ORDERS IN MORSE ONLY - ANY KEY SKIPS" : "PRESS ANY KEY TO SKIP";
+}
+
 export function drawOrders(g: Gfx, view: OrdersView): void {
   drawTeletype(g, view.screen, view.cursorOn);
-  const note = view.finished ? "PRESS ANY KEY TO CONTINUE" : view.hidden ? "ORDERS IN MORSE ONLY - ANY KEY SKIPS" : "PRESS ANY KEY TO SKIP";
-  g.text(1, 25, note, COLORS.grey);
+  g.text(1, 25, ordersNote(view), COLORS.grey);
 }
 
 export function drawHistory(g: Gfx, view: HistoryView): void {
@@ -176,15 +180,17 @@ export function drawHistory(g: Gfx, view: HistoryView): void {
 }
 
 /** Screens whose unboxed page text is drawn by the demo itself (the others, such as the damage report or GAME CONTROL, draw their own labels). */
-const OWN_TEXT_SCREENS: ReadonlySet<string> = new Set(["playAgain", "radioRoom", "captainsLog"]);
+const OWN_TEXT_SCREENS: ReadonlySet<string> = new Set(["playAgain", "radioRoom", "captainsLog", "shipGallery"]);
 
 /**
  * Narration of the demo, as DEMO.EXE draws it: `LINE (5,5)-(314,y),0,BF` fills a box at the TOP of the screen with the background colour of the
  * screen behind it and the lines are printed into it on their LOCATE cells in the foreground colour. Pages without a box are the text of
  * the screen itself; those are only drawn for screens that have no labels of their own. There is no F1/F2 banner after the intro.
  */
-export function drawDemoNarration(g: Gfx, page: DemoPage, screen: string, background: string, foreground: string): void {
-  const cells = page.text ?? [];
+export function drawDemoNarration(g: Gfx, page: DemoPage, screen: string, background: string, foreground: string, only?: number): void {
+  const cells = only === undefined ? (page.text ?? []) : (page.text ?? []).slice(only, only + 1);
+  // a page that prints one line after another on the same cells (the ship names): the line is printed on a strip of the background
+  if (only !== undefined) for (const c of cells) if (c.row !== null && c.col !== null) g.rect((c.col - 1) * 8, (c.row - 1) * 8, c.text.length * 8, 8, background);
   if (page.box) {
     const { x1, y1, x2, y2 } = page.box;
     g.rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1, background);

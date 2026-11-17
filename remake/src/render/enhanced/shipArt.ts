@@ -215,6 +215,27 @@ export class ShipArt {
     fill.addColorStop(1, mix(ISLAND.bottom, "#000000", 1 - k));
     ctx.fillStyle = fill;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // lines drawn inside the land (an airstrip, a track) are kept, in the shore colour
+    const marks = interiorMarks(rows);
+    if (marks.length > 0) {
+      const line = (x: number, y: number): number => (rows[y]?.charAt(x) === "3" ? 1 : 0);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeStyle = mix(ISLAND.shore, "#000000", 1 - k);
+      ctx.lineWidth = UPSCALE * 0.9;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      for (const [x, y] of marks) {
+        ctx.moveTo((x + 0.5) * UPSCALE, (y + 0.5) * UPSCALE);
+        ctx.lineTo((x + 0.5) * UPSCALE, (y + 0.5) * UPSCALE);
+        for (const [dx, dy] of [[1, 0], [0, 1], [1, 1], [-1, 1], [-1, 0], [0, -1], [-1, -1], [1, -1]] as const) {
+          if (line(x + dx, y + dy)) {
+            ctx.moveTo((x + 0.5) * UPSCALE, (y + 0.5) * UPSCALE);
+            ctx.lineTo((x + dx + 0.5) * UPSCALE, (y + dy + 0.5) * UPSCALE);
+          }
+        }
+      }
+      ctx.stroke();
+    }
     if (ix) {
       const shore = document.createElement("canvas");
       shore.width = canvas.width;
@@ -270,6 +291,55 @@ export class ShipArt {
     ctx.putImageData(data, 0, 0);
     return { canvas, originX: w / 2, originY: h, density: 1 };
   }
+}
+
+/**
+ * The outline pixels (palette index 3) of an island bitmap that do not touch the sea: marks drawn on the land itself, such as the
+ * airstrip. The sea is the empty pixels connected to the picture's border; the picture's edge counts as sea.
+ */
+export function interiorMarks(rows: readonly string[]): [number, number][] {
+  const h = rows.length;
+  const w = Math.max(0, ...rows.map((r) => r.length));
+  const empty = (x: number, y: number): boolean => (rows[y]?.charAt(x) ?? "0") === "0";
+  const sea = new Uint8Array(w * h);
+  const stack: number[] = [];
+  const push = (x: number, y: number): void => {
+    if (x < 0 || y < 0 || x >= w || y >= h || sea[y * w + x] || !empty(x, y)) return;
+    sea[y * w + x] = 1;
+    stack.push(y * w + x);
+  };
+  for (let x = 0; x < w; x += 1) {
+    push(x, 0);
+    push(x, h - 1);
+  }
+  for (let y = 0; y < h; y += 1) {
+    push(0, y);
+    push(w - 1, y);
+  }
+  while (stack.length > 0) {
+    const i = stack.pop() as number;
+    const x = i % w;
+    const y = Math.floor(i / w);
+    push(x + 1, y);
+    push(x - 1, y);
+    push(x, y + 1);
+    push(x, y - 1);
+  }
+  const touchesSea = (x: number, y: number): boolean => {
+    for (let dy = -1; dy <= 1; dy += 1) {
+      for (let dx = -1; dx <= 1; dx += 1) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= w || ny >= h || sea[ny * w + nx]) return true;
+      }
+    }
+    return false;
+  };
+  const marks: [number, number][] = [];
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) if (rows[y]?.charAt(x) === "3" && !touchesSea(x, y)) marks.push([x, y]);
+  }
+  return marks;
 }
 
 /**

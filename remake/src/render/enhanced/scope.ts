@@ -35,7 +35,7 @@ export function starField(count = STAR_COUNT): { x: number; y: number; size: num
 
 const STARS = starField();
 
-function skyAndSea(g: Gfx, a: ScopeArea, hy: number, day: boolean, timeMs: number): void {
+export function skyAndSea(g: Gfx, a: ScopeArea, hy: number, day: boolean, timeMs: number): void {
   const c = g.ctx;
   const pal = day ? SCOPE.day : SCOPE.night;
   const x = g.toX(a.x);

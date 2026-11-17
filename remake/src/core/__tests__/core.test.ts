@@ -5,6 +5,7 @@ import {
   Launcher,
   GameControl,
   DemoPlayer,
+  galleryShip,
   FixedStepLoop,
   Simulation,
   TYPE,
@@ -560,6 +561,28 @@ describe("launcher and demo", () => {
     expect(again.pressKey("F1")).toEqual([{ type: "finished", reason: "exit" }]);
     const radar = demoScript.pages.find((p) => p.lines.some((l) => l.includes("RADAR")));
     expect(radar && screenForPage(radar)).toBe("radar");
+  });
+
+  it("the ship gallery page names the five enemy ships in turn, one fifth of its time each, and no other page is a gallery", () => {
+    const gallery = demoScript.pages.find((p) => p.lines.some((l) => l.includes("FREIGHTER")));
+    if (!gallery) throw new Error("no gallery page");
+    expect(screenForPage(gallery)).toBe("shipGallery");
+    const at = (f: number): number | undefined => galleryShip(gallery, f)?.typeCode;
+    expect([0, 0.25, 0.45, 0.65, 0.85, 0.999].map(at)).toEqual([TYPE.freighter, TYPE.tanker, TYPE.troopCarrier, TYPE.patrolBoat, TYPE.destroyer, TYPE.destroyer]);
+    expect(galleryShip(gallery, 0.45)?.index).toBe(2);
+    expect(galleryShip(gallery, -1)?.index).toBe(0);
+    expect(galleryShip(gallery, 5)?.index).toBe(4);
+    expect(demoScript.pages.filter((p) => galleryShip(p, 0) !== null)).toEqual([gallery]);
+    // the player says how far through the page it is
+    const player = new DemoPlayer(demoScript);
+    player.start();
+    player.pressKey("x");
+    player.pressKey("x");
+    for (let i = 0; i < demoScript.pages.indexOf(gallery); i += 1) player.advance(player.pageHoldSeconds(demoScript.pages[i] as typeof gallery) + 0.001);
+    expect(player.currentPage).toBe(gallery);
+    expect(player.pageFraction).toBeLessThan(0.01);
+    player.advance(player.pageHoldSeconds(gallery) / 2);
+    expect(player.pageFraction).toBeCloseTo(0.5, 1);
   });
 
   it("F2 only turns the sound off; any other key skips the intro, then ends the Morse example", () => {

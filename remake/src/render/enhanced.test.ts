@@ -5,9 +5,10 @@ import { EnhancedRenderer } from "./enhanced/scene.js";
 import { darken, lighten, mix, rgba } from "./enhanced/colors.js";
 import { starField } from "./enhanced/scope.js";
 import { CHART_ISLANDS, RADAR_CX, RADAR_CY, RADAR_K, RADAR_R, circleRadii, radarBlip } from "./enhanced/scenes.js";
-import { enclosedPixels } from "./enhanced/shipArt.js";
+import { enclosedPixels, interiorMarks } from "./enhanced/shipArt.js";
 import { closeHull, filledSilhouette, overlayRegion, thinPixels } from "./hull.js";
 import { crackSpread, glassCracks } from "./enhanced/cracks.js";
+import { blindOpenness, ribbonColor, smoothCurve, splashAlpha } from "./enhanced/frontend.js";
 import { instrumentPanes, scopePane } from "./enhanced/panel.js";
 import { COMPARTMENT } from "../core/index.js";
 import { centredColumn } from "./textScreens.js";
@@ -123,6 +124,36 @@ describe("enhanced ship shapes", () => {
   });
 });
 
+describe("the enhanced front screens", () => {
+  it("the logo fades in, holds and fades out within its time, and is invisible outside it", () => {
+    expect(splashAlpha(0, 2500)).toBe(0);
+    expect(splashAlpha(250, 2500)).toBeCloseTo(0.5, 9);
+    expect(splashAlpha(1200, 2500)).toBe(1);
+    expect(splashAlpha(2500, 2500)).toBe(0);
+    expect(splashAlpha(2300, 2500)).toBeLessThan(0.5);
+    expect(splashAlpha(-10, 2500)).toBe(0);
+  });
+
+  it("the title's blinds stay shut for the hold, open over the wipe, and are open without a time", () => {
+    expect(blindOpenness(undefined)).toBe(1);
+    expect(blindOpenness(0)).toBe(0);
+    expect(blindOpenness(400)).toBe(0);
+    expect(blindOpenness(850)).toBeCloseTo(0.5, 2);
+    expect(blindOpenness(5000)).toBe(1);
+  });
+
+  it("the ribbon curve passes through its points, left to right, and the colours run from magenta through the spectrum", () => {
+    const pts: [number, number][] = [[0, 0], [10, 5], [20, 0]];
+    const curve = smoothCurve(pts, 8);
+    expect(curve[0]).toEqual([0, 0]);
+    expect(curve.at(-1)).toEqual([20, 0]);
+    expect(curve.length).toBe(2 * 8 + 1);
+    expect(curve.some(([x, y]) => Math.abs(x - 10) < 1e-9 && Math.abs(y - 5) < 1e-9)).toBe(true);
+    expect(ribbonColor(0)).toMatch(/^hsl\(300,/);
+    expect(ribbonColor(1)).toMatch(/^hsl\(225,/); // blue at the far end
+    expect(ribbonColor(0.5)).not.toBe(ribbonColor(0));
+  });
+});
 describe("cracks in the instruments", () => {
   it("a crack spreads quickly at first and settles: nothing before the impact, all of it once the time is up", () => {
     expect(crackSpread(-1)).toBe(0);
@@ -218,6 +249,21 @@ describe("enhanced colours and geometry", () => {
     const alpha = (rows: string[]): number[] => rows.flatMap((row) => [...row].flatMap((ch) => [0, 0, 0, ch === "#" ? 255 : 0]));
     expect([...enclosedPixels(alpha(ring), 5, 4)].reduce((a, b) => a + b, 0)).toBe(6);
     expect([...enclosedPixels(alpha(gap), 5, 4)].reduce((a, b) => a + b, 0)).toBe(0);
+  });
+
+  it("finds the marks drawn on an island's land (an airstrip) but not its coast", () => {
+    const island = [
+      "0000000000",
+      "0333333330",
+      "0311111130",
+      "0313333130",
+      "0313111130",
+      "0311111130",
+      "0333333330",
+      "0000000000",
+    ];
+    expect(interiorMarks(island)).toEqual([[3, 3], [4, 3], [5, 3], [6, 3], [3, 4]]);
+    expect(interiorMarks(["000", "000", "000"])).toEqual([]);
   });
 
   it("the night sky has a fixed star field", () => {

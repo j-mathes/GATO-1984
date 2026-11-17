@@ -13,6 +13,8 @@ import {
   type DemoEvent,
   type DemoMorseExample,
   GameControl,
+  galleryShip,
+  LAUNCHER_MENU,
   Launcher,
   Simulation,
   SinkingAnimation,
@@ -50,6 +52,7 @@ import { COLORS, Gfx, LOGICAL_HEIGHT, LOGICAL_WIDTH } from "../render/gfx.js";
 import { ENHANCED_HEIGHT, type Graphics } from "../render/display.js";
 import { EnhancedRenderer } from "../render/enhanced/scene.js";
 import { registerEnhancedScenes } from "../render/enhanced/scenes.js";
+import { drawEnhancedMenu, drawEnhancedOrders, drawEnhancedSplash, drawEnhancedTitle } from "../render/enhanced/frontend.js";
 import { OXYGEN_FADE_SECONDS, drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
 import { TYPEWRITER_SKIN } from "../render/enhanced/skin.js";
 import { ShipArt } from "../render/enhanced/shipArt.js";
@@ -81,7 +84,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { cursorBlink, controlsPages, drawAdvancedOptions, drawControlsEditor, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash, wrapText, ADVANCED_PAGE_SIZE, type ControlsEditorLine, type HelpPage } from "../render/textScreens.js";
+import { cursorBlink, controlsPages, drawAdvancedOptions, drawControlsEditor, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, ordersNote, type OrdersView, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash, wrapText, ADVANCED_PAGE_SIZE, type ControlsEditorLine, type HelpPage } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -115,6 +118,11 @@ const HELM_COMMANDS: ReadonlySet<string> = new Set(["speed", "rudder", "planes",
  * duration depended on the CPU, so the time is a remake choice in the 2.5-3 s range.
  */
 export const SPLASH_MS = 2500;
+/** The ships of the demo's gallery are shown this big (the scope's apparent size) and broadside (sprite frame 4 of 16). */
+const GALLERY_SHIP_SIZE = 5;
+const GALLERY_SHIP_FRAME = 4;
+/** Where the demo's boat starts: quadrant 5 (x 20000-24999, y 0-4999), heading west (mathematical angle pi), 1600 units from the island of that quadrant (22500, 2500). */
+export const DEMO_START = { x: 24300, y: 900, heading: Math.PI } as const;
 
 const todayStamp = (): string => {
   const d = new Date();
@@ -968,6 +976,11 @@ export class App {
       shipLog: this.data.shipLog,
       ticksPerSecond: this.baseHz,
     });
+    // the narration puts the boat in quadrant 5 (with its island, the sub-tender in quadrant 7): start there, steaming west along the south
+    // side of the island, outside its shoals, so the boat stays in the quadrant for the whole show
+    sim.sub.x = DEMO_START.x;
+    sim.sub.y = DEMO_START.y;
+    sim.sub.heading = DEMO_START.heading;
     sim.command({ type: "speed", level: "F5" });
     sim.command({ type: "periscope", direction: "raise" });
     const runner = new FixedTimestepRunner(sim, this.baseHz);
@@ -1071,14 +1084,14 @@ export class App {
     if (this.mode !== "title") this.titleSince = null;
     switch (this.mode) {
       case "splash":
-        drawSplash(g, this.titleArt);
+        if (!this.front((w, h) => drawEnhancedSplash(g, this.titleArt, w, h, timeMs - (this.splashStart ?? timeMs), SPLASH_MS))) drawSplash(g, this.titleArt);
         return;
       case "title":
         this.titleSince ??= timeMs;
-        drawTitle(g, this.titleArt, this.sprites, timeMs, timeMs - this.titleSince);
+        if (!this.front((w, h) => drawEnhancedTitle(g, this.titleArt, w, h, timeMs, timeMs - (this.titleSince ?? timeMs)))) drawTitle(g, this.titleArt, this.sprites, timeMs, timeMs - this.titleSince);
         return;
       case "menu":
-        drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
+        if (!this.front((w, h) => drawEnhancedMenu(g, this.titleArt, w, h, this.menuEntry, LAUNCHER_MENU, timeMs))) drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
         return;
       case "settings":
         this.withSkin(() =>
@@ -1111,13 +1124,23 @@ export class App {
     }
   }
 
+  /** Draws a screen before the mission in the enhanced graphics, in the enhanced view; false (nothing drawn) in the original graphics or when the draw has no artwork. */
+  private front(draw: (width: number, height: number) => boolean): boolean {
+    if (this.graphicsMode !== "enhanced") return false;
+    const { width, height } = this.enhancedView;
+    const done = draw(width, height);
+    this.g.view(LOGICAL_WIDTH, LOGICAL_HEIGHT);
+    return done;
+  }
+
   private frameOrders(timeMs: number): void {
     const o = this.orders;
     if (!o) return;
     const elapsed = o.done ? Infinity : (timeMs - o.start) / 1000;
     const finished = o.done || elapsed >= o.timeline.duration;
     const hidden = this.settings.difficulty >= 8;
-    drawOrders(this.g, { screen: ordersScreen(o.lines, revealedLines(o.lines, o.timeline, finished ? Infinity : elapsed), hidden), hidden, finished, cursorOn: cursorBlink(timeMs) });
+    const view: OrdersView = { screen: ordersScreen(o.lines, revealedLines(o.lines, o.timeline, finished ? Infinity : elapsed), hidden), hidden, finished, cursorOn: cursorBlink(timeMs) };
+    this.front((w, h) => (drawEnhancedOrders(this.g, w, h, view, timeMs, ordersNote(view)), true)) || drawOrders(this.g, view);
   }
 
   private framePlay(timeMs: number): void {
@@ -1272,11 +1295,15 @@ export class App {
     if (d.screen === "morseExample") {
       const m = this.demoMorse;
       const elapsed = m ? (timeMs - m.start) / 1000 : 0;
-      drawTeletype(g, m ? ordersScreen(m.lines, revealedLines(m.lines, m.timeline, elapsed)) : ordersScreen([], []), cursorBlink(timeMs));
+      const screen = m ? ordersScreen(m.lines, revealedLines(m.lines, m.timeline, elapsed)) : ordersScreen([], []);
+      if (!this.front((w, h) => (drawEnhancedOrders(g, w, h, { screen, hidden: false, finished: false, cursorOn: cursorBlink(timeMs) }, timeMs, null), true))) drawTeletype(g, screen, cursorBlink(timeMs));
       return;
     }
     const sim = d.sim;
-    const view: PlayView = { sim, snap: result.render, settings: DEFAULT_SETTINGS, sprites: this.sprites, log: this.demoLog ?? this.log, timeMs };
+    // the page that names the enemy ships one by one: that ship is shown in the scope
+    const listed = d.player.currentPage;
+    const ship = d.screen === "shipGallery" && listed ? galleryShip(listed, d.player.pageFraction) : null;
+    const view: PlayView = { sim, snap: result.render, settings: DEFAULT_SETTINGS, sprites: this.sprites, log: this.demoLog ?? this.log, timeMs, gallery: ship ? { typeCode: ship.typeCode, size: GALLERY_SHIP_SIZE, frame: GALLERY_SHIP_FRAME } : null };
     let layer: ScreenName | null = "control_room";
     switch (d.screen) {
       case "chart":
@@ -1317,7 +1344,7 @@ export class App {
     if (page) {
       // the box is filled with the background colour of the screen behind it (LINE ...,0,BF) and the text is the screen's foreground
       const pal = this.cockpit && layer ? this.cockpit.palette(layer) : null;
-      this.withSkin(() => drawDemoNarration(g, page, d.screen, pal?.[0] ?? COLORS.black, pal?.[3] ?? COLORS.white));
+      this.withSkin(() => drawDemoNarration(g, page, d.screen, pal?.[0] ?? COLORS.black, pal?.[3] ?? COLORS.white, ship?.index));
     }
   }
 

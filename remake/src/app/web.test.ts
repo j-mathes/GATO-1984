@@ -2585,6 +2585,26 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect(sinking(0.05)).toBeLessThan(sinking(0.5)); // the cracks spread and more instruments crack
       expect(sinking(0.5)).toBeLessThan(sinking(1.2));
     });
+    it("the logo, title, menu and orders are redrawn on a real context in the enhanced graphics (with and without the artwork), and not by the original drawing", () => {
+      const art = new TitleArt(parseTitleArt(read<Record<string, unknown>>("public/assets/title_screen.json")), canvasFactory());
+      const draw = (mode: "splash" | "title" | "menu" | "orders", withArt: boolean): string[] => {
+        const h = boot({ art: withArt ? art : null });
+        const { g, calls } = fullGfx();
+        g.resizeBacking(1422, 800);
+        (h.app as unknown as { g: Gfx }).g = g;
+        h.app.setGraphics("enhanced");
+        h.app.setEnhancedView(1422, 800);
+        (h.app as unknown as { mode: string }).mode = mode;
+        if (mode === "orders") press(h.app, "x");
+        h.app.frame(1000);
+        return calls;
+      };
+      expect(draw("splash", true).filter((c) => c === "stroke").length).toBeGreaterThan(40); // the ribbon, drawn in pieces (it needs no artwork)
+      expect(draw("splash", false).filter((c) => c === "stroke").length).toBeGreaterThan(40);
+      expect(draw("title", false)).toContain("createLinearGradient"); // the sunset band
+      expect(draw("menu", true)).toContain("createLinearGradient"); // the sky and the board
+      expect(() => draw("menu", false)).not.toThrow(); // the original menu takes over when the artwork is missing
+    });
     it("gauge levels run from green through amber to red", () => {
       expect(levelColor(0.9, PANEL.day)).toBe(PANEL.day.ok);
       expect(levelColor(0.3, PANEL.day)).toBe(PANEL.day.warn);

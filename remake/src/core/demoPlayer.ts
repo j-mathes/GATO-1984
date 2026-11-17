@@ -1,3 +1,4 @@
+import { TYPE } from "./constants.js";
 import type { DemoMorseExample, DemoPage, DemoScriptDocument } from "./types.js";
 
 /**
@@ -42,6 +43,26 @@ const SCREEN_RULES: [RegExp, DemoScreen][] = [
   [/RADAR/, "radar"],
 ];
 
+/** The ships the demo names, by the word in their line, as the type codes of the scenario files. */
+const GALLERY_SHIPS: [RegExp, number][] = [
+  [/FREIGHTER/, TYPE.freighter],
+  [/TANKER/, TYPE.tanker],
+  [/TRANSPORT/, TYPE.troopCarrier],
+  [/PATROL/, TYPE.patrolBoat],
+  [/DESTROYER/, TYPE.destroyer],
+];
+
+/**
+ * The page that goes through the enemy ships one by one (FREIGHTER, OIL TANKER, ...): which line, and so which ship, is on `fraction` (0 to
+ * 1) of the way through the page's time, the lines sharing it equally. null for any other page.
+ */
+export function galleryShip(page: DemoPage, fraction: number): { index: number; typeCode: number } | null {
+  const types = page.lines.map((l) => GALLERY_SHIPS.find(([re]) => re.test(l))?.[1]);
+  if (types.length === 0 || types.some((t) => t === undefined)) return null;
+  const index = Math.min(Math.max(Math.floor(fraction * types.length), 0), types.length - 1);
+  return { index, typeCode: types[index] as number };
+}
+
 export function screenForPage(page: DemoPage): DemoScreen {
   const text = page.lines.join("\n");
   for (const [re, screen] of SCREEN_RULES) if (re.test(text)) return screen;
@@ -85,6 +106,12 @@ export class DemoPlayer {
 
   get currentPage(): DemoPage | undefined {
     return this.step === "pages" ? this.script.pages[this.index] : undefined;
+  }
+
+  /** How far through the current page's time the show is, 0 to just under 1 (0 when the page is held without a limit). */
+  get pageFraction(): number {
+    const hold = this.holdSeconds();
+    return Number.isFinite(hold) && hold > 0 ? Math.min(this.elapsed / hold, 0.999) : 0;
   }
 
   get pageIndex(): number {

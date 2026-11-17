@@ -39,6 +39,8 @@ export interface PlayView {
   timeMs: number;
   /** The last raising or lowering of the periscope and when it began (enhanced graphics: the lens shutter moves for a moment). */
   periscopeMotion?: { up: boolean; since: number } | null;
+  /** The demo's ship gallery: the scope shows only this ship, broadside and straight ahead, whatever the simulation holds. */
+  gallery?: { typeCode: number; size: number; frame: number } | null;
 }
 
 const COMPARTMENT_BOXES: { id: number; name: string; col: number; row: number }[] = [
@@ -72,6 +74,11 @@ export interface LiveContact {
 
 export function liveContacts(view: PlayView): LiveContact[] {
   const { sim, snap } = view;
+  if (view.gallery) {
+    // drawn under the slot of a real vessel (the scope looks the slot up), at the given size, dead ahead
+    const slot = sim.vessels.findIndex((v, i) => i > SLOT.island && v && !v.sunk);
+    return [{ slot: slot < 0 ? SLOT.firstEnemy : slot, typeCode: view.gallery.typeCode, distance: 1000, relative: 0, size: view.gallery.size, frame: view.gallery.frame, x: snap.sub.x, y: snap.sub.y }];
+  }
   const out: LiveContact[] = [];
   for (const v of sim.vessels) {
     if (v.slot < SLOT.island || v.typeCode === 0) continue;
