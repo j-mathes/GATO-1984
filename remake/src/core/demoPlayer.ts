@@ -31,15 +31,22 @@ export type DemoScreen =
   | "radioRoom"
   | "playAgain";
 
+/**
+ * The screen each narration page is printed over, found from its text and from where the program prints it (analysis/demo_flow.md):
+ * the page about the main chart is still on the control room (the chart is drawn after it), the page about the radar is on the quadrant
+ * map (the radar is drawn after it), "NOT MUCH IS HAPPENING HERE" is on the radar, and the page about the damage report is on the control
+ * room (its lamp flashes) before the report itself comes up.
+ */
 const SCREEN_RULES: [RegExp, DemoScreen][] = [
-  [/DAMAGE REPORT|CONTROL RM|AREA IS DAMAGED/, "damageReport"],
+  [/THIS IS THE DAMAGE REPORT|CONTROL RM/, "damageReport"],
   [/GAME CONTROL/, "gameControl"],
   [/PLAY AGAIN/, "playAgain"],
   [/RADIO ROOM/, "radioRoom"],
-  [/MAP FOR QUADRANT|SHOALS|RED LINES/, "quadrantMap"],
-  [/CHART/, "chart"],
-  [/FREIGHTER|TANKER|TRANSPORT|PATROL CRAFT|DESTROYER|LOOKS LIKE/, "shipGallery"],
-  [/CAPTAIN'S LOG|SHIP +TONNAGE|SHIPS SUNK|FIRST GROUP OF SHIPS|NAMES AND TONNAGES|DESTROYERS USED/, "captainsLog"],
+  [/MAP FOR QUADRANT|SHOALS|RED LINES|LOOK AT RADAR/, "quadrantMap"],
+  [/THIS IS THE CHART|CLOSER LOOK/, "chart"],
+  [/^ *(FREIGHTER|OIL TANKER|TRANSPORT|PATROL CRAFT|DESTROYER) *$/m, "shipGallery"],
+  [/NOT MUCH IS HAPPENING/, "radar"],
+  [/^ *CAPTAIN'S LOG *$|SHIP +TONNAGE|SHIPS SUNK|FIRST GROUP OF SHIPS|NAMES AND TONNAGES|DESTROYERS USED/m, "captainsLog"],
   [/RADAR/, "radar"],
 ];
 

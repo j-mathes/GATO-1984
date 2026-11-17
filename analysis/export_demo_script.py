@@ -6,8 +6,12 @@ waiting on empty ``FOR`` loops.  The program body is walked statement by stateme
 text PRINT is collected in file order.  Consecutive prints with no other PRINT in between are grouped into one page, and the
 first delay-style loop constant that follows a page is recorded as ``delay_loop_limit``.
 
-What is exact: the text, its order and the loop limits.  What is not: loop limits are iteration counts of the compiled
-BASIC loop, so the real time depends on the original CPU; ``seconds_estimate`` uses a nominal rate and is only a guide.
+The file order is NOT the order the pages are shown in: the program is a loop that jumps into the chart, map and radar code and
+picks the rest by a stage variable.  trace_demo_flow.py walks that control flow and ``pages`` is written in the order it runs them.
+
+What is exact: the text, its order (traced, see trace_demo_flow.py for the few branches decided by a rule) and the loop limits.
+What is not: loop limits are iteration counts of the compiled BASIC loop, so the real time depends on the original CPU;
+``seconds_estimate`` uses a nominal rate and is only a guide.
 """
 import json
 import re
@@ -16,6 +20,7 @@ from pathlib import Path
 
 import list_statements as ls
 import parse_scenarios as ps
+import trace_demo_flow as tdf
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "remake" / "src" / "data" / "demo_script.json"
@@ -28,7 +33,7 @@ LIMIT_RE = re.compile(r"mov di, v[0-9a-f]+=(\d+(?:\.\d+)?); mov si, v[0-9a-f]+; 
 # LOCATE row[,col]: the column operand is omitted when it equals the row (bx is left as it was)
 LOCATE_RE = re.compile(r"mov bx, (0x[0-9a-f]+|\d+); lcall 0x5cb, 0x125b; (?:mov bx, (0x[0-9a-f]+|\d+); )?lcall 0x5cb, 0x1275")
 # LINE (x1,y1)-(x2,y2),0,BF: 0x2865 sets the first corner, 0x28ad is the filled box with the colour in cx
-BOX_RE = re.compile(r"mov bx, (\S+); mov dx, (\S+); lcall 0x5cb, 0x2865; mov bx, (\S+); mov dx, (\S+); xor cx, cx; lcall 0x5cb, 0x28ad")
+BOX_RE = re.compile(r"(?:mov bx, (\S+)|xor bx, bx); mov dx, (\S+); lcall 0x5cb, 0x2865; mov bx, (\S+); mov dx, (\S+); xor cx, cx; lcall 0x5cb, 0x28ad")
 INTRO_SECONDS = 4.0
 MORSE_END_RE = re.compile(r"mov di, v[0-9a-f]+=(\d+); lcall 0x5cb, 0x1d71; jbe")
 # The radio subroutine (GOSUB 0x4704) prints RADIO ROOM / REPORTS HEAVY DAMAGE only when ds:0x175e (radio damage) is above 0; DEMO never sets it
@@ -65,7 +70,7 @@ def narration_box(stmts, first_print):
     for back in range(1, 9):
         m = BOX_RE.search(stmts[first_print - back][1])
         if m:
-            x1 = number(m.group(1))
+            x1 = number(m.group(1)) if m.group(1) else 0  # `xor bx, bx` is a corner at 0
             y1 = number(m.group(2), x1)
             return {"x1": x1, "y1": y1, "x2": number(m.group(3)), "y2": number(m.group(4)), "color": 0}
     return None
@@ -119,7 +124,7 @@ def main():
         limit = None
         for _, s in stmts[last_idx + 1:last_idx + 12]:
             m = LIMIT_RE.search(s)
-            if m:
+            if m and float(m.group(1)) >= 100:  # a delay loop, not a small counting loop
                 limit = float(m.group(1))
                 break
         entry = {"page": p + 1, "file_offset": f"0x{page[0][1]:05x}", "lines": [t for _, _, t, _ in page],
@@ -134,8 +139,26 @@ def main():
         raise SystemExit("unexpected first page")
     for n, page in enumerate(out):
         page["page"] = n + 1
+    # `out` is in file order, which is not the order the program runs them in (see trace_demo_flow.py): the show is a loop that picks its
+    # body by a stage variable and jumps into the chart, map and radar code from the middle of the control-room page
+    walked = tdf.walk()
+    by_offset = {int(page["file_offset"], 16): page for page in out}
+    run, seen = [], set()
+    for offset, _ in walked.prints:
+        page = by_offset.get(offset)
+        if page and page["page"] not in seen:
+            seen.add(page["page"])
+            run.append(page)
+    unreached = [{"page": page["page"], "file_offset": page["file_offset"], "lines": page["lines"]} for page in out if page["page"] not in seen]
     doc = {
-        "_about": "Screens and narration pages of DEMO.EXE in program order (see analysis/export_demo_script.py for what is exact).",
+        "_about": "Screens and narration pages of DEMO.EXE in the order the program runs them (see analysis/trace_demo_flow.py and "
+                  "analysis/demo_flow.md). `page` is the page's number in file order; the order of `pages` is the run order.",
+        "run_order": [page["page"] for page in run],
+        "restart": f"after the last page the program jumps back ({walked.restart}) to the Morse example and starts the loop again",
+        "unreached_pages": unreached,
+        "unreached_note": "Texts that are in the file but that the program cannot run in the show: the captain's-log reset, GAME CONTROL and "
+                          "'play again?' belong to game code that DEMO.EXE carries along (it is entered only after the boat is lost or a "
+                          "key is pressed in the game proper)",
         "exit_key": "F1 (the demo polls INKEY$ against the F1 key string ds:0x25e4)",
         "sound_toggle_key": "F2 (printed by the demo's title page)",
         "nominal_iterations_per_second": NOMINAL_ITERATIONS_PER_SECOND,
@@ -147,7 +170,7 @@ def main():
             "seconds_note": "no delay loop or key wait follows the page: its time on screen is the loading time of the original, a remake estimate",
         },
         "morse": morse_example(stmts),
-        "pages": out,
+        "pages": run,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(ps.dump_json(doc, width=140) + "\n", encoding="utf-8")

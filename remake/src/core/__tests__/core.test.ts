@@ -559,12 +559,36 @@ describe("launcher and demo", () => {
     const again = new DemoPlayer(demoScript);
     again.start();
     expect(again.pressKey("F1")).toEqual([{ type: "finished", reason: "exit" }]);
-    const radar = demoScript.pages.find((p) => p.lines.some((l) => l.includes("RADAR")));
+    const radar = demoScript.pages.find((p) => p.lines.some((l) => l.includes("NOT MUCH IS HAPPENING")));
     expect(radar && screenForPage(radar)).toBe("radar");
   });
 
+  it("each page is on the screen it is printed over: the chart and radar pages are still on the screen before theirs", () => {
+    const screenOf = (text: string): string | undefined => {
+      const page = demoScript.pages.find((p) => p.lines.some((l) => l.includes(text)));
+      return page && screenForPage(page);
+    };
+    expect(screenOf("HERE IS THE MAIN CHART")).toBe("controlRoom");
+    expect(screenOf("THIS IS THE CHART OF YOUR PATROL AREA")).toBe("chart");
+    expect(screenOf("THE LOCAL QUADRANT MAP")).toBe("chart");
+    expect(screenOf("THIS IS THE MAP FOR QUADRANT")).toBe("quadrantMap");
+    expect(screenOf("LET'S TAKE A LOOK AT RADAR")).toBe("quadrantMap");
+    expect(screenOf("LETS READ THE CAPTAIN'S LOG")).toBe("radar");
+    for (const text of ["SHIPS SUNK", "THE FIRST GROUP OF SHIPS", "ALL OF THE NAMES", "ALSO ALL OF THE DESTROYERS"]) expect(screenOf(text)).toBe("captainsLog");
+    const header = demoScript.pages.find((p) => p.lines.some((l) => l.trim() === "CAPTAIN'S LOG"));
+    expect(header && screenForPage(header)).toBe("captainsLog");
+    expect(screenOf("LET'S SEE WHAT THE ENEMY LOOKS LIKE")).toBe("controlRoom");
+    const names = demoScript.pages.find((p) => p.lines.some((l) => l.trim() === "FREIGHTER"));
+    expect(names && screenForPage(names)).toBe("shipGallery");
+    expect(screenOf("TO SHOOT A SHIP")).toBe("controlRoom");
+    expect(screenOf("REMEMBER PATROL CRAFT")).toBe("controlRoom");
+    expect(screenOf("YOU HAVE TO PAY CLOSE ATTENTION")).toBe("controlRoom");
+    expect(screenOf("CONTROL RM")).toBe("damageReport");
+    expect(screenOf("THIS IS THE DAMAGE REPORT")).toBe("damageReport");
+  });
+
   it("the ship gallery page names the five enemy ships in turn, one fifth of its time each, and no other page is a gallery", () => {
-    const gallery = demoScript.pages.find((p) => p.lines.some((l) => l.includes("FREIGHTER")));
+    const gallery = demoScript.pages.find((p) => p.lines.some((l) => l.trim() === "FREIGHTER"));
     if (!gallery) throw new Error("no gallery page");
     expect(screenForPage(gallery)).toBe("shipGallery");
     const at = (f: number): number | undefined => galleryShip(gallery, f)?.typeCode;
@@ -627,6 +651,20 @@ describe("launcher and demo", () => {
       [6, 7, "OF THE SUBMARINE FROM HERE"],
     ]);
     expect(chart?.text?.map((t) => [t.row, t.col])).toEqual([[3, 5], [6, 5]]);
-    for (const page of demoScript.pages) if (page.box) expect([page.box.x1, page.box.y1, page.box.color]).toEqual([5, 5, 0]);
+    for (const page of demoScript.pages) if (page.box) expect([page.box.x1, page.box.y1, page.box.color]).toEqual(page.page === 15 ? [0, 0, 0] : [5, 5, 0]); // the log's first note starts at the corner
+  });
+
+  it("the pages are in the order DEMO.EXE runs them (traced with analysis/trace_demo_flow.py), not in file order", () => {
+    // stage 0: main screen, chart, quadrant map, radar, captain's log; stage 1: enemy ships, torpedoes, depth charges, damage report
+    expect(demoScript.pages.map((p) => p.page)).toEqual([1, 2, 19, 20, 22, 23, 24, 8, 13, 14, 15, 16, 17, 3, 4, 5, 6, 7, 9, 10]);
+    const starts = (text: string): number => demoScript.pages.findIndex((p) => p.lines.some((l) => l.includes(text)));
+    expect(starts("THE LOCAL QUADRANT MAP")).toBeLessThan(starts("THIS IS THE MAP FOR QUADRANT"));
+    expect(starts("LET'S TAKE A LOOK AT RADAR")).toBeLessThan(starts("LETS READ THE CAPTAIN'S LOG"));
+    expect(starts("LETS READ THE CAPTAIN'S LOG")).toBeLessThan(starts("NOW WE ARE BACK IN THE CONTROL ROOM"));
+    expect(starts("NOW WE ARE BACK IN THE CONTROL ROOM")).toBeLessThan(starts("TO SHOOT A SHIP"));
+    expect(starts("THIS IS THE DAMAGE REPORT")).toBe(demoScript.pages.length - 1);
+    // the log reset, GAME CONTROL and 'play again?' are game code DEMO.EXE carries but never reaches
+    expect(demoScript.unreached_pages?.map((p) => p.page)).toEqual([11, 12, 18, 21]);
+    expect(demoScript.pages.some((p) => p.lines.some((l) => /PLAY AGAIN|GAME CONTROL|LOG CLEARED/.test(l)))).toBe(false);
   });
 });

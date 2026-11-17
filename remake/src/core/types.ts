@@ -279,6 +279,7 @@ export interface DemoBox {
 }
 
 export interface DemoPage {
+  /** The page's number in the file (the order of `DemoScriptDocument.pages` is the run order, which differs). */
   page: number;
   lines: string[];
   delay_loop_limit: number | null;
@@ -306,7 +307,10 @@ export interface DemoMorseExample {
 export interface DemoScriptDocument {
   intro?: DemoIntro;
   morse?: DemoMorseExample;
+  /** The narration pages in the order DEMO.EXE runs them (analysis/trace_demo_flow.py), not in file order. */
   pages: DemoPage[];
+  /** Pages that are in the file but that the program never shows in the demo (game code it carries along). */
+  unreached_pages?: { page: number; file_offset: string; lines: string[] }[];
   nominal_iterations_per_second: number;
 }
 

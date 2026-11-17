@@ -1,5 +1,21 @@
 {
-  "_about": "Screens and narration pages of DEMO.EXE in program order (see analysis/export_demo_script.py for what is exact).",
+  "_about": "Screens and narration pages of DEMO.EXE in the order the program runs them (see analysis/trace_demo_flow.py and analysis/demo_flow.md). `page` is the page's number in file order; the order of `pages` is the run order.",
+  "run_order": [1, 2, 19, 20, 22, 23, 24, 8, 13, 14, 15, 16, 17, 3, 4, 5, 6, 7, 9, 10],
+  "restart": "after the last page the program jumps back (05641 JMP -> 02dca) to the Morse example and starts the loop again",
+  "unreached_pages": [
+    {"page": 11, "file_offset": "0x056a9", "lines": ["LAST SHIP IN LOG LIST SUNK", "DO YOU WISH TO REVIEW BEFORE DELETION"]},
+    {"page": 12, "file_offset": "0x05759", "lines": ["LOG CLEARED"]},
+    {
+      "page": 18,
+      "file_offset": "0x0602c",
+      "lines": [
+        "GAME CONTROL", "     [1] DIFFICULTY LEVEL", "     [2] SOUND", "     [3] TIME OF DAY", "     [4] RESET CAPTAIN'S LOG",
+        "(Press RETURN to continue)"
+      ]
+    },
+    {"page": 21, "file_offset": "0x06caa", "lines": ["DO YOU WANT DO PLAY AGAIN? (Y/N)"]}
+  ],
+  "unreached_note": "Texts that are in the file but that the program cannot run in the show: the captain's-log reset, GAME CONTROL and 'play again?' belong to game code that DEMO.EXE carries along (it is entered only after the boat is lost or a key is pressed in the game proper)",
   "exit_key": "F1 (the demo polls INKEY$ against the F1 key string ds:0x25e4)",
   "sound_toggle_key": "F2 (printed by the demo's title page)",
   "nominal_iterations_per_second": 2500,
@@ -46,6 +62,147 @@
       "delay_loop_limit": null,
       "seconds_estimate": null,
       "text": [{"row": 3, "col": 5, "text": "NOW LET'S LOOK AT SOME NAVIGATION"}, {"row": 6, "col": 5, "text": "HERE IS THE MAIN CHART (KEY 'C')"}],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
+    },
+    {
+      "page": 19,
+      "file_offset": "0x06562",
+      "lines": [
+        "THIS IS THE CHART OF YOUR PATROL AREA", "YOU ARE THE GREEN DOT IN QUADRANT 5", "YOUR SUB-TENDER IS IN QUADRANT 7",
+        "ENEMY SHIPS ARE RED DOTS"
+      ],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 2, "col": 2, "text": "THIS IS THE CHART OF YOUR PATROL AREA"},
+        {"row": 4, "col": 3, "text": "YOU ARE THE GREEN DOT IN QUADRANT 5"},
+        {"row": 5, "col": 5, "text": "YOUR SUB-TENDER IS IN QUADRANT 7"},
+        {"row": 6, "col": 7, "text": "ENEMY SHIPS ARE RED DOTS "}
+      ],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
+    },
+    {
+      "page": 20,
+      "file_offset": "0x06647",
+      "lines": [
+        "THIS IS THE CHART OF YOUR PATROL AREA", "WE CAN GET A CLOSER LOOK AT THE", "QUADRANT WE ARE IN BY CHECKING",
+        "THE LOCAL QUADRANT MAP (KEY 'Q')"
+      ],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 2, "col": 2, "text": "THIS IS THE CHART OF YOUR PATROL AREA"},
+        {"row": 4, "col": 5, "text": "WE CAN GET A CLOSER LOOK AT THE"},
+        {"row": 5, "col": 6, "text": "QUADRANT WE ARE IN BY CHECKING"},
+        {"row": 6, "col": 5, "text": "THE LOCAL QUADRANT MAP (KEY 'Q')"}
+      ],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
+    },
+    {
+      "page": 22,
+      "file_offset": "0x07ae2",
+      "lines": ["THIS IS THE MAP FOR QUADRANT 5", "THE DOTTED RED LINE REPRESENTS THE", "SHOALS SURROUNDING THE ISLAND"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 2, "col": 5, "text": "THIS IS THE MAP FOR QUADRANT 5"},
+        {"row": 3, "col": 3, "text": "THE DOTTED RED LINE REPRESENTS THE"},
+        {"row": 4, "col": 5, "text": "SHOALS SURROUNDING THE ISLAND"}
+      ],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 35, "color": 0}
+    },
+    {
+      "page": 23,
+      "file_offset": "0x07bab",
+      "lines": ["IF YOU ARE ON THE SURFACE THEN YOU", "WILL STOP WHEN YOU HIT THE RED LINES", "THE DEEPER YOU ARE THE SOONER YOU HIT"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 2, "col": 4, "text": "IF YOU ARE ON THE SURFACE THEN YOU"},
+        {"row": 3, "col": 3, "text": "WILL STOP WHEN YOU HIT THE RED LINES"},
+        {"row": 4, "col": 2, "text": "THE DEEPER YOU ARE THE SOONER YOU HIT"}
+      ],
+      "box": {"x1": 5, "y1": 5, "x2": 316, "y2": 35, "color": 0}
+    },
+    {
+      "page": 24,
+      "file_offset": "0x07c74",
+      "lines": ["LET'S TAKE A LOOK AT RADAR (F6)"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [{"row": 3, "col": 6, "text": "LET'S TAKE A LOOK AT RADAR (F6)"}],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 35, "color": 0}
+    },
+    {
+      "page": 8,
+      "file_offset": "0x04ec2",
+      "lines": ["NOT MUCH IS HAPPENING HERE", "LETS READ THE CAPTAIN'S LOG (KEY 'L')"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [{"row": 2, "col": 7, "text": "NOT MUCH IS HAPPENING HERE"}, {"row": 4, "col": 3, "text": "LETS READ THE CAPTAIN'S LOG (KEY 'L')"}],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 35, "color": 0}
+    },
+    {
+      "page": 13,
+      "file_offset": "0x05a57",
+      "lines": ["CAPTAIN'S LOG", "SHIP          TONNAGE       DATE SUNK"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [{"row": 5, "col": 12, "text": "CAPTAIN'S LOG"}, {"row": null, "col": null, "text": "SHIP          TONNAGE       DATE SUNK"}],
+      "box": null
+    },
+    {
+      "page": 14,
+      "file_offset": "0x05c0b",
+      "lines": ["SHIPS SUNK", "TOTAL TONNAGE", "MISSIONS", "COMPLETED"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": null, "col": null, "text": "SHIPS SUNK      "},
+        {"row": null, "col": null, "text": "TOTAL TONNAGE   "},
+        {"row": null, "col": null, "text": "MISSIONS"},
+        {"row": null, "col": null, "text": "COMPLETED       "}
+      ],
+      "box": null
+    },
+    {
+      "page": 15,
+      "file_offset": "0x05cf1",
+      "lines": ["THE FIRST GROUP OF SHIPS ARE", "FREIGHTERS THEN OIL TANKERS,", "TRANSPORTS,PATROL BOATS", " AND  DESTROYERS"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 2, "col": 6, "text": "THE FIRST GROUP OF SHIPS ARE"},
+        {"row": 3, "col": 6, "text": "FREIGHTERS THEN OIL TANKERS,"},
+        {"row": 4, "col": 8, "text": "TRANSPORTS,PATROL BOATS"},
+        {"row": 5, "col": 10, "text": " AND  DESTROYERS"}
+      ],
+      "box": {"x1": 0, "y1": 0, "x2": 314, "y2": 50, "color": 0}
+    },
+    {
+      "page": 16,
+      "file_offset": "0x05ddc",
+      "lines": ["ALL OF THE NAMES AND TONNAGES OF", "SHIPS SUNK WERE ACTUALLY SUNK OR", "DESTROYED DURING WORLD WAR II"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 3, "col": 5, "text": "ALL OF THE NAMES AND TONNAGES OF"},
+        {"row": 4, "col": 5, "text": "SHIPS SUNK WERE ACTUALLY SUNK OR"},
+        {"row": 5, "col": 6, "text": "DESTROYED DURING WORLD WAR II"}
+      ],
+      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
+    },
+    {
+      "page": 17,
+      "file_offset": "0x05ea8",
+      "lines": ["ALSO ALL OF THE DESTROYERS USED IN", "THIS PROGRAM WERE SUNK BY GATO", "CLASS SUBMARINES"],
+      "delay_loop_limit": null,
+      "seconds_estimate": null,
+      "text": [
+        {"row": 3, "col": 4, "text": "ALSO ALL OF THE DESTROYERS USED IN"},
+        {"row": 4, "col": 6, "text": "THIS PROGRAM WERE SUNK BY GATO"},
+        {"row": 5, "col": 12, "text": "CLASS SUBMARINES"}
+      ],
       "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
     },
     {
@@ -115,15 +272,6 @@
       "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 40, "color": 0}
     },
     {
-      "page": 8,
-      "file_offset": "0x04ec2",
-      "lines": ["NOT MUCH IS HAPPENING HERE", "LETS READ THE CAPTAIN'S LOG (KEY 'L')"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [{"row": 2, "col": 7, "text": "NOT MUCH IS HAPPENING HERE"}, {"row": 4, "col": 3, "text": "LETS READ THE CAPTAIN'S LOG (KEY 'L')"}],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 35, "color": 0}
-    },
-    {
       "page": 9,
       "file_offset": "0x05253",
       "lines": ["CONTROL RM        CONNING TOWER", "ENGINE RM         PERISCOPES"],
@@ -148,184 +296,6 @@
         {"row": 5, "col": 3, "text": "MANUAL FOR REPAIRS BY THE SUBTENDER"}
       ],
       "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 40, "color": 0}
-    },
-    {
-      "page": 11,
-      "file_offset": "0x056a9",
-      "lines": ["LAST SHIP IN LOG LIST SUNK", "DO YOU WISH TO REVIEW BEFORE DELETION"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [{"row": 2, "col": 7, "text": "LAST SHIP IN LOG LIST SUNK"}, {"row": 4, "col": 1, "text": "DO YOU WISH TO REVIEW BEFORE DELETION"}],
-      "box": null
-    },
-    {
-      "page": 12,
-      "file_offset": "0x05759",
-      "lines": ["LOG CLEARED"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [{"row": 6, "col": 15, "text": "LOG CLEARED"}],
-      "box": null
-    },
-    {
-      "page": 13,
-      "file_offset": "0x05a57",
-      "lines": ["CAPTAIN'S LOG", "SHIP          TONNAGE       DATE SUNK"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [{"row": 5, "col": 12, "text": "CAPTAIN'S LOG"}, {"row": null, "col": null, "text": "SHIP          TONNAGE       DATE SUNK"}],
-      "box": null
-    },
-    {
-      "page": 14,
-      "file_offset": "0x05c0b",
-      "lines": ["SHIPS SUNK", "TOTAL TONNAGE", "MISSIONS", "COMPLETED"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": null, "col": null, "text": "SHIPS SUNK      "},
-        {"row": null, "col": null, "text": "TOTAL TONNAGE   "},
-        {"row": null, "col": null, "text": "MISSIONS"},
-        {"row": null, "col": null, "text": "COMPLETED       "}
-      ],
-      "box": null
-    },
-    {
-      "page": 15,
-      "file_offset": "0x05cf1",
-      "lines": ["THE FIRST GROUP OF SHIPS ARE", "FREIGHTERS THEN OIL TANKERS,", "TRANSPORTS,PATROL BOATS", " AND  DESTROYERS"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 2, "col": 6, "text": "THE FIRST GROUP OF SHIPS ARE"},
-        {"row": 3, "col": 6, "text": "FREIGHTERS THEN OIL TANKERS,"},
-        {"row": 4, "col": 8, "text": "TRANSPORTS,PATROL BOATS"},
-        {"row": 5, "col": 10, "text": " AND  DESTROYERS"}
-      ],
-      "box": null
-    },
-    {
-      "page": 16,
-      "file_offset": "0x05ddc",
-      "lines": ["ALL OF THE NAMES AND TONNAGES OF", "SHIPS SUNK WERE ACTUALLY SUNK OR", "DESTROYED DURING WORLD WAR II"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 3, "col": 5, "text": "ALL OF THE NAMES AND TONNAGES OF"},
-        {"row": 4, "col": 5, "text": "SHIPS SUNK WERE ACTUALLY SUNK OR"},
-        {"row": 5, "col": 6, "text": "DESTROYED DURING WORLD WAR II"}
-      ],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
-    },
-    {
-      "page": 17,
-      "file_offset": "0x05ea8",
-      "lines": ["ALSO ALL OF THE DESTROYERS USED IN", "THIS PROGRAM WERE SUNK BY GATO", "CLASS SUBMARINES"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 3, "col": 4, "text": "ALSO ALL OF THE DESTROYERS USED IN"},
-        {"row": 4, "col": 6, "text": "THIS PROGRAM WERE SUNK BY GATO"},
-        {"row": 5, "col": 12, "text": "CLASS SUBMARINES"}
-      ],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
-    },
-    {
-      "page": 18,
-      "file_offset": "0x0602c",
-      "lines": [
-        "GAME CONTROL", "     [1] DIFFICULTY LEVEL", "     [2] SOUND", "     [3] TIME OF DAY", "     [4] RESET CAPTAIN'S LOG",
-        "(Press RETURN to continue)"
-      ],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 2, "col": 15, "text": "GAME CONTROL"},
-        {"row": 6, "col": 1, "text": "     [1] DIFFICULTY LEVEL"},
-        {"row": 6, "col": 1, "text": "     [2] SOUND"},
-        {"row": null, "col": null, "text": "     [3] TIME OF DAY"},
-        {"row": null, "col": null, "text": "     [4] RESET CAPTAIN'S LOG"},
-        {"row": 23, "col": 8, "text": "(Press RETURN to continue)"}
-      ],
-      "box": null
-    },
-    {
-      "page": 19,
-      "file_offset": "0x06562",
-      "lines": [
-        "THIS IS THE CHART OF YOUR PATROL AREA", "YOU ARE THE GREEN DOT IN QUADRANT 5", "YOUR SUB-TENDER IS IN QUADRANT 7",
-        "ENEMY SHIPS ARE RED DOTS"
-      ],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 2, "col": 2, "text": "THIS IS THE CHART OF YOUR PATROL AREA"},
-        {"row": 4, "col": 3, "text": "YOU ARE THE GREEN DOT IN QUADRANT 5"},
-        {"row": 5, "col": 5, "text": "YOUR SUB-TENDER IS IN QUADRANT 7"},
-        {"row": 6, "col": 7, "text": "ENEMY SHIPS ARE RED DOTS "}
-      ],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
-    },
-    {
-      "page": 20,
-      "file_offset": "0x06647",
-      "lines": [
-        "THIS IS THE CHART OF YOUR PATROL AREA", "WE CAN GET A CLOSER LOOK AT THE", "QUADRANT WE ARE IN BY CHECKING",
-        "THE LOCAL QUADRANT MAP (KEY 'Q')"
-      ],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 2, "col": 2, "text": "THIS IS THE CHART OF YOUR PATROL AREA"},
-        {"row": 4, "col": 5, "text": "WE CAN GET A CLOSER LOOK AT THE"},
-        {"row": 5, "col": 6, "text": "QUADRANT WE ARE IN BY CHECKING"},
-        {"row": 6, "col": 5, "text": "THE LOCAL QUADRANT MAP (KEY 'Q')"}
-      ],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 50, "color": 0}
-    },
-    {
-      "page": 21,
-      "file_offset": "0x06caa",
-      "lines": ["DO YOU WANT DO PLAY AGAIN? (Y/N)"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [{"row": 4, "col": 2, "text": "DO YOU WANT DO PLAY AGAIN? (Y/N)"}],
-      "box": null
-    },
-    {
-      "page": 22,
-      "file_offset": "0x07ae2",
-      "lines": ["THIS IS THE MAP FOR QUADRANT 5", "THE DOTTED RED LINE REPRESENTS THE", "SHOALS SURROUNDING THE ISLAND"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 2, "col": 5, "text": "THIS IS THE MAP FOR QUADRANT 5"},
-        {"row": 3, "col": 3, "text": "THE DOTTED RED LINE REPRESENTS THE"},
-        {"row": 4, "col": 5, "text": "SHOALS SURROUNDING THE ISLAND"}
-      ],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 35, "color": 0}
-    },
-    {
-      "page": 23,
-      "file_offset": "0x07bab",
-      "lines": ["IF YOU ARE ON THE SURFACE THEN YOU", "WILL STOP WHEN YOU HIT THE RED LINES", "THE DEEPER YOU ARE THE SOONER YOU HIT"],
-      "delay_loop_limit": null,
-      "seconds_estimate": null,
-      "text": [
-        {"row": 2, "col": 4, "text": "IF YOU ARE ON THE SURFACE THEN YOU"},
-        {"row": 3, "col": 3, "text": "WILL STOP WHEN YOU HIT THE RED LINES"},
-        {"row": 4, "col": 2, "text": "THE DEEPER YOU ARE THE SOONER YOU HIT"}
-      ],
-      "box": {"x1": 5, "y1": 5, "x2": 316, "y2": 35, "color": 0}
-    },
-    {
-      "page": 24,
-      "file_offset": "0x07c74",
-      "lines": ["LET'S TAKE A LOOK AT RADAR (F6)"],
-      "delay_loop_limit": 5.0,
-      "seconds_estimate": 0.0,
-      "text": [{"row": 3, "col": 6, "text": "LET'S TAKE A LOOK AT RADAR (F6)"}],
-      "box": {"x1": 5, "y1": 5, "x2": 314, "y2": 35, "color": 0}
     }
   ]
 }

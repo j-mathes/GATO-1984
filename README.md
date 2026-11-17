@@ -82,7 +82,7 @@ Items 5, 6 and 7 are additions to the original, which has items 1 to 4.
 
 ## The demonstration and history
 
-**2** at the menu plays a guided tour of the screens. **F1** leaves it and **F2** turns its sound off; any other key skips the opening page and the Morse example. **3** opens the history and specifications pages: Space, Enter, the right and down arrows or PgDn go on, the left and up arrows or PgUp go back, Home and End jump to the first and last page, and **Esc** leaves (the history opens on that page next time); a PAGE line shows where you are. Any other key also goes on, and **R** at the end rereads them. The advanced options switch HISTORY PAGE KEYS (row 45) turns this off, which gives the 1984 behaviour: any key goes forward only.
+**2** at the menu plays a guided tour of the screens, in the order the original program runs them (main screen, chart, quadrant map, radar, captain's log, then the enemy ships, torpedoes, depth charges and the damage report; the order was traced from `DEMO.EXE`'s code, see `analysis/demo_flow.md`). The remake plays it once and returns to the menu; the original starts over until you press F1. **F1** leaves it and **F2** turns its sound off; any other key skips the opening page and the Morse example. **3** opens the history and specifications pages: Space, Enter, the right and down arrows or PgDn go on, the left and up arrows or PgUp go back, Home and End jump to the first and last page, and **Esc** leaves (the history opens on that page next time); a PAGE line shows where you are. Any other key also goes on, and **R** at the end rereads them. The advanced options switch HISTORY PAGE KEYS (row 45) turns this off, which gives the 1984 behaviour: any key goes forward only.
 
 ## Display
 

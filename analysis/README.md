@@ -36,7 +36,7 @@ Run them from the repository root with Python 3. Those marked "capstone" need `p
 | `export_title_art.py` (Pillow) | `remake/public/assets/title_screen.json` and the title PNGs |
 | `export_cockpit_layouts.py` (Pillow) | `remake/public/assets/cockpit_layouts.json` and PNGs |
 | `export_audio_tables.py` (capstone) | `remake/src/data/audio_tables.json` |
-| `export_demo_script.py` | `remake/src/data/demo_script.json` |
+| `export_demo_script.py`, `trace_demo_flow.py` | `remake/src/data/demo_script.json` (pages in run order), `demo_trace.txt` |
 | `export_history_pages.py`, `extract_history.py` | `remake/src/data/history_pages.json`, `history_content.json` |
 | `export_ship_log.py` | `remake/src/data/ship_log.json` |
 | `verify_cockpit_layouts.py` (Pillow) | prints the pixel comparison against `reference_screenshots/` |

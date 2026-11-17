@@ -1,0 +1,346 @@
+175 text PRINTs executed in 43645 statements; the program restarts with: 05641 JMP -> 02dca
+
+GOSUB / RETURN / long jumps:
+  02dc3 GOSUB -> 0815f
+  08190 JMP -> 08271
+  08289 RETURN -> 02dcb
+  02dcb GOSUB -> 06d04
+  06da5 RETURN -> 02dd3
+  02ddf GOSUB -> 075e5
+  07694 RETURN -> 02de9
+  02e55 GOSUB -> 0769a
+  077a5 RETURN -> 02e6a
+  0360f JMP -> 03693
+  037ff JMP -> 03995
+  0380b JMP -> 03972
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  0380b JMP -> 03972
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  039ad JMP -> 03aa4
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  04219 JMP -> 062ab
+  0631f JMP -> 063a3
+  06715 JMP -> 077ab
+  079e9 JMP -> 07a6e
+  07cd9 JMP -> 04993
+  04ab5 JMP -> 04b3a
+  04bee JMP -> 04c86
+  04f4c JMP -> 0587e
+  0597e JMP -> 05a2e
+  0598a JMP -> 05a0b
+  0598a JMP -> 05a0b
+  0598a JMP -> 05a0b
+  05ab7 JMP -> 05bba
+  05f7a JMP -> 02f66
+  0360f JMP -> 03693
+  037ff JMP -> 03995
+  0380b JMP -> 03972
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  0380b JMP -> 03972
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  03897 JMP -> 03966
+  039ad JMP -> 03aa4
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  03a06 JMP -> 03a98
+  04271 JMP -> 0444a
+  0471e JMP -> 05020
+  05641 JMP -> 02dca
+  02dcb GOSUB -> 06d04
+
+Branches decided from known values (the stage counter, FOR counters):
+  0819c v2132=1 vs v23e0=2: jne taken
+  0819c v2132=2 vs v23e0=2: jne not taken
+  0819c v2132=3 vs v23e0=2: jne taken
+  0819c v2132=4 vs v23e0=2: jne taken
+  0819c v2132=5 vs v23e0=2: jne taken
+  0819c v2132=6 vs v23e0=2: jne taken
+  0819c v2132=7 vs v23e0=2: jne taken
+  0819c v2132=8 vs v23e0=2: jne taken
+  031bb v216a=2 vs v2290=1: je not taken
+  031e6 v216a=2 vs v23e0=2: je taken
+  03e83 v216e=36040 vs v2558=9022: ja taken
+  03f07 v2172=0 vs v255c=100: ja not taken
+  03f97 v216a=0 vs v23e0=2: je not taken
+  04073 v2136=0 vs v2290=1: jne taken
+  07927 v223a=5 vs v2514=5: je taken
+  04cd8 v217a=0 vs v2896=45: jbe taken
+  031bb v216a=0 vs v2290=1: je not taken
+  031e6 v216a=0 vs v23e0=2: je not taken
+  03f1c v21c6=0 vs v2290=1: je not taken
+  04073 v2136=1 vs v2290=1: jne not taken
+  0427d v21d6=4 vs v268a=7: jne taken
+  042f8 v21d6=4 vs v24f8=4: je taken
+  04328 v21d6=4 vs v2514=5: je not taken
+  04358 v21d6=4 vs v2518=6: je not taken
+  04388 v21d6=4 vs v268a=7: je not taken
+  043b8 v21d6=4 vs v2298=8: je not taken
+  04414 v21d6=4 vs v2298=8: jne taken
+  0427d v21d6=5 vs v268a=7: jne taken
+  042f8 v21d6=5 vs v24f8=4: je not taken
+  04328 v21d6=5 vs v2514=5: je taken
+  04358 v21d6=5 vs v2518=6: je not taken
+  04388 v21d6=5 vs v268a=7: je not taken
+  043b8 v21d6=5 vs v2298=8: je not taken
+  04414 v21d6=5 vs v2298=8: jne taken
+  0427d v21d6=6 vs v268a=7: jne taken
+  042f8 v21d6=6 vs v24f8=4: je not taken
+  04328 v21d6=6 vs v2514=5: je not taken
+  04358 v21d6=6 vs v2518=6: je taken
+  04388 v21d6=6 vs v268a=7: je not taken
+  043b8 v21d6=6 vs v2298=8: je not taken
+  04414 v21d6=6 vs v2298=8: jne taken
+  0427d v21d6=7 vs v268a=7: jne not taken
+  042f8 v21d6=7 vs v24f8=4: je not taken
+  04328 v21d6=7 vs v2514=5: je not taken
+  04358 v21d6=7 vs v2518=6: je not taken
+  04388 v21d6=7 vs v268a=7: je taken
+  043b8 v21d6=7 vs v2298=8: je not taken
+  04414 v21d6=7 vs v2298=8: jne taken
+  0427d v21d6=8 vs v268a=7: jne taken
+  042f8 v21d6=8 vs v24f8=4: je not taken
+  04328 v21d6=8 vs v2514=5: je not taken
+  04358 v21d6=8 vs v2518=6: je not taken
+  04388 v21d6=8 vs v268a=7: je not taken
+  043b8 v21d6=8 vs v2298=8: je taken
+  04414 v21d6=8 vs v2298=8: jne not taken
+
+Branches decided by a rule (unknown conditions):
+  06d11 `ja` taken -> 06d1e (else 06daa)
+  02fd0 `jb` taken -> 02fe5 (else 02ffb)
+  02ffc `je` taken -> 0300c (else 03022)
+  0361b `jne` taken -> 0365b (else 03687)
+  0361b revisited: left through 0365b
+  036c5 `jne` taken -> 036f0 (else 036ff)
+  0382b `jne` taken -> 03896 (else 0389a)
+  0382b revisited: left through 03896
+  039cd `jne` taken -> 03a05 (else 03a09)
+  039cd revisited: left through 03a05
+  03cde `jne` taken -> 03d09 (else 03d44)
+  03d6d `jne` taken -> 03dab (else 03df1)
+  03df2 `jne` taken -> 03e1a (else 03e6c)
+  03f1c `je` taken -> 03f2c (else 03f3b)
+  03fd7 `jne` taken -> 04002 (else 0401b)
+  0412f `jne` taken -> 0413f (else 0414b)
+  041dc `jne` taken -> 041ec (else 041f8)
+  064c2 `je` taken -> 064d2 (else 064ea)
+  064eb `jbe` taken -> 064fb (else 06761)
+  065e4 `jne` taken -> 065f4 (else 06600)
+  066cc `jne` taken -> 066dc (else 066e8)
+  078cb `jae` taken -> 078d8 (else 07eda)
+  07b45 `jne` taken -> 07b55 (else 07b61)
+  07c0e `jne` taken -> 07c1e (else 07c2a)
+  07c9c `jne` taken -> 07cac (else 07cb8)
+  04e4e `ja` taken -> 04e5e (else 04e6a)
+  04e6b `jne` taken -> 04e98 (else 04ef1)
+  04f0f `jne` taken -> 04f1f (else 04f2b)
+  05ad6 `jne` taken -> 05b2e (else 05bae)
+  05ad6 revisited: left through 05b2e
+  05c8c `jne` taken -> 05c9c (else 05ca8)
+  05d76 `jne` taken -> 05d86 (else 05d92)
+  05e42 `jne` taken -> 05e52 (else 05e5e)
+  05f0e `jne` taken -> 05f1e (else 05f2a)
+  044ee `jne` taken -> 044fe (else 0450a)
+  04618 `jne` taken -> 04628 (else 04634)
+  046e1 `jne` taken -> 046f1 (else 046fd)
+  05077 `ja` taken -> 05084 (else 0509c)
+  0509d `ja` taken -> 050aa (else 050c2)
+  050c3 `ja` taken -> 050d0 (else 050e8)
+  050e9 `ja` taken -> 050f6 (else 0510e)
+  0510f `ja` taken -> 0511c (else 05134)
+  05135 `ja` taken -> 05142 (else 0515a)
+  0536c `ja` taken -> 05379 (else 0538f)
+  05390 `ja` taken -> 0539d (else 053b3)
+  053b4 `ja` taken -> 053c1 (else 053d7)
+  053d8 `ja` taken -> 053e5 (else 053fa)
+  053fb `ja` taken -> 05408 (else 0541e)
+  0541f `ja` taken -> 0542c (else 05466)
+  05467 `ja` taken -> 05474 (else 0548a)
+  0548b `ja` taken -> 05498 (else 054d2)
+  054ed `jne` taken -> 054fd (else 05509)
+  055d5 `jne` taken -> 055e5 (else 055f1)
+
+Text PRINTs in run order (file offset, text):
+  029b4  DIESEL
+  029f7    OFF
+  02a3b   ELEC
+  02d25  GATO DEMONSTRATION
+  02d44  PRESS FUNCTION KEY 1 (F1) TO EXIT
+  02d63   FUNCTION KEY 2 (F2) TO TURN OFF SOUND
+  02f84  POWER           DAMAGE     SCOPE
+  02fa3  DEPTH   SPEED   HEADING
+  02fc2  TORPEDOES   _
+  03238  FUEL        O
+  03257  BATT
+  03286  CHARGING     _
+  040ad  THIS IS YOUR MAIN SCREEN
+  040cc  YOU ARE NOW IN THE THE CONTROL ROOM
+  040e8  YOU MAY CONTROL ALL OPERATIONS
+  04107  OF THE SUBMARINE FROM HERE
+  04195  NOW LET'S LOOK AT SOME NAVIGATION
+  041b4  HERE IS THE MAIN CHART (KEY 'C')
+  06562  THIS IS THE CHART OF YOUR PATROL AREA
+  06581  YOU ARE THE GREEN DOT IN QUADRANT 5
+  0659d  YOUR SUB-TENDER IS IN QUADRANT 7
+  065bc  ENEMY SHIPS ARE RED DOTS
+  06647  THIS IS THE CHART OF YOUR PATROL AREA
+  06666  WE CAN GET A CLOSER LOOK AT THE
+  06685  QUADRANT WE ARE IN BY CHECKING
+  066a4  THE LOCAL QUADRANT MAP (KEY 'Q')
+  07ae2  THIS IS THE MAP FOR QUADRANT 5
+  07afe  THE DOTTED RED LINE REPRESENTS THE
+  07b1d  SHOALS SURROUNDING THE ISLAND
+  07bab  IF YOU ARE ON THE SURFACE THEN YOU
+  07bc7  WILL STOP WHEN YOU HIT THE RED LINES
+  07be6  THE DEEPER YOU ARE THE SOONER YOU HIT
+  07c74  LET'S TAKE A LOOK AT RADAR (F6)
+  04a2b  HEADING
+  04a4a   SPEED
+  04a69   DEPTH
+  04a88  TORP
+  04ec2  NOT MUCH IS HAPPENING HERE
+  04ee1  LETS READ THE CAPTAIN'S LOG (KEY 'L')
+  05a57  CAPTAIN'S LOG
+  05a8d  SHIP          TONNAGE       DATE SUNK
+  05a9b  _____________________________________
+  05c0b  SHIPS SUNK
+  05c24  TOTAL TONNAGE
+  05c4b  MISSIONS
+  05c59  COMPLETED
+  05cf1  THE FIRST GROUP OF SHIPS ARE
+  05d10  FREIGHTERS THEN OIL TANKERS,
+  05d2f  TRANSPORTS,PATROL BOATS
+  05d4e   AND  DESTROYERS
+  05ddc  ALL OF THE NAMES AND TONNAGES OF
+  05dfb  SHIPS SUNK WERE ACTUALLY SUNK OR
+  05e1a  DESTROYED DURING WORLD WAR II
+  05ea8  ALSO ALL OF THE DESTROYERS USED IN
+  05ec7  THIS PROGRAM WERE SUNK BY GATO
+  05ee6  CLASS SUBMARINES
+  02f84  POWER           DAMAGE     SCOPE
+  02fa3  DEPTH   SPEED   HEADING
+  02fc2  TORPEDOES   _
+  03238  FUEL        O
+  03257  BATT
+  03286  CHARGING     _
+  04244  NOW WE ARE BACK IN THE CONTROL ROOM
+  04263  LET'S SEE WHAT THE ENEMY LOOKS LIKE
+  0431a    FREIGHTER
+  0434a   OIL TANKER
+  0437a    TRANSPORT
+  043aa   PATROL CRAFT
+  043da    DESTROYER
+  04488  TO SHOOT A SHIP YOU WOULD PRESS 'T'
+  044a7  TO OPEN THE TORPEDO DOORS AND
+  044c6  THEN F8 TO FIRE
+  04551  REMEMBER PATROL CRAFT AND DESTROYERS
+  04570  WILL SHOOT AND DROP DEPTH CHARGES
+  0458f  SO BE CAREFUL
+  0467e  YOU HAVE TO PAY CLOSE ATTENTION TO
+  0469d  THE DAMAGE REPORT BECAUSE IF AN
+  046b9  AREA IS DAMAGED IT CAN'T BE USED
+  05253  CONTROL RM        CONNING TOWER
+  05272  ENGINE RM         PERISCOPES
+  05291  BATTERY RM        FUEL TANKS
+  052b0  TORPEDO RM        RADIO RM
+  05553  THIS IS THE DAMAGE REPORT (KEY 'R')
+  0556f  THE AFFECTED AREA IS HIGHLIGHTED
+  0558e  AND RENDERED USELESS - REFER TO THE
+  055ad  MANUAL FOR REPAIRS BY THE SUBTENDER
