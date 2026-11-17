@@ -265,7 +265,7 @@ export function drawLogLayout(g: Gfx, v: PlayView, L: CockpitLayouts): void {
 }
 
 /** GAME CONTROL (0x0aed9-0x0b0d4): COLOR 8,1, title at LOCATE 2,15, items from row 6 with the value at TAB(34), prompts at 13,6 / 16,6. */
-export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { difficulty: number; sound: boolean; timeOfDay: number; mission?: number | null; timeScale?: number }, prompt: string | null, entry: string, showMission = true, showTime = showMission): void {
+export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { difficulty: number; sound: boolean; timeOfDay: number; mission?: number | null; timeScale?: number }, prompt: string | null, entry: string, showMission = true, showTime = showMission, showAdvanced = showMission): void {
   const pal = L.palette("control_room");
   const white = pal[3] as string;
   g.clear(pal[0]);
@@ -285,6 +285,7 @@ export function drawGameControlLayout(g: Gfx, L: CockpitLayouts, settings: { dif
     g.text(6, 11, "[6] TIME COMPRESSION", white);
     g.text(35, 11, `${settings.timeScale ?? 1}X`, white);
   }
+  if (showAdvanced) g.text(6, 12, "[7] ADVANCED OPTIONS", white);
   if (prompt) g.text(6, 16, `${prompt}? ${entry}_`, white);
   else {
     g.text(6, 13, "NUMBER OF ITEM TO CHANGE? _", white);

@@ -2063,6 +2063,55 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(ADVANCED_FEATURES.length).toBeLessThanOrEqual(2 * ADVANCED_PAGE_SIZE);
   });
 
+  it("GAME CONTROL item 7 opens the advanced options inside a mission: the world waits, changes apply at once, Esc returns to GAME CONTROL", () => {
+    expect(translateGameControlKey({ key: "7" })).toEqual({ type: "item", item: 7 });
+    const h = play();
+    const internals = h.app as unknown as { runner: FixedTimestepRunner; advancedCursor: number };
+    press(h.app, "Tab");
+    expect(textsOf(frameAfter(h, 20))).toContain("[7] ADVANCED OPTIONS");
+    const tick = h.sim().tick;
+    press(h.app, "7");
+    expect(h.app.mode).toBe("settings");
+    expect(textsOf(frameAfter(h, 30))).toContain("ADVANCED OPTIONS");
+    h.app.frame(5000);
+    h.app.frame(9000); // seconds pass on the settings screen
+    expect(h.sim().tick).toBe(tick);
+    expect(internals.runner.hz).toBe(2.5);
+    internals.advancedCursor = ADVANCED_FEATURES.findIndex((f) => f.key === "pcPace");
+    press(h.app, "Enter"); // the 1984 pace off: a running mission follows at once
+    expect(internals.runner.hz).toBe(10);
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("play");
+    expect(h.app.screen).toBe("gameControl");
+    press(h.app, "Tab");
+    expect(h.app.screen).toBe("control");
+    h.app.frame(9100);
+    h.app.frame(9400);
+    h.app.frame(9700);
+    expect(h.sim().tick).toBeGreaterThan(tick); // the world runs again, with no catch-up for the time on the settings screen
+    expect(h.sim().tick - tick).toBeLessThanOrEqual(6);
+  });
+
+  it("from inside a mission the custom controls screen is reached the same way and Esc steps back out: controls, settings, mission", () => {
+    const h = play();
+    h.app.advanced.set("customControls", true);
+    press(h.app, "Tab", "7", "c");
+    expect(h.app.mode).toBe("controls");
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("settings");
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("play");
+    expect(h.app.screen).toBe("gameControl");
+  });
+
+  it("the demo's copy of GAME CONTROL has no item 7", () => {
+    const h = boot();
+    press(h.app, "x", "2");
+    const demo = h.app as unknown as { demo: { screen: string } };
+    demo.demo.screen = "gameControl";
+    expect(textsOf(frameAfter(h, 50))).not.toContain("[7] ADVANCED OPTIONS");
+  });
+
   it("a damaged or unknown stored value falls back to the defaults", () => {
     expect(boot({ map: new Map([["gato.advanced", "{oops"]]) }).app.advanced.on("helpOverlay")).toBe(true);
     expect(boot({ map: new Map([["gato.advanced", '{"helpOverlay":"no","nothing":false}']]) }).app.advanced.on("helpOverlay")).toBe(true);

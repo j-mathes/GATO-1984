@@ -58,11 +58,11 @@ export function shouldPreventDefault(e: KeyLike): boolean {
 
 /** GAME CONTROL screen (0x0aeea-0x0b165): item number typed at "NUMBER OF ITEM TO CHANGE", then an optional value. */
 export type GameControlAction =
-  | { type: "item"; item: 1 | 2 | 3 | 4 | 5 | 6 }
+  | { type: "item"; item: 1 | 2 | 3 | 4 | 5 | 6 | 7 }
   | { type: "leave" };
 
 export function translateGameControlKey(e: KeyLike): GameControlAction | null {
-  if (/^[1-6]$/.test(e.key)) return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 | 5 | 6 };
+  if (/^[1-7]$/.test(e.key)) return { type: "item", item: Number(e.key) as 1 | 2 | 3 | 4 | 5 | 6 | 7 };
   if (e.key === "Enter" || e.key === "Escape" || e.key === "Tab") return { type: "leave" };
   return null;
 }

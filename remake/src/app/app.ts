@@ -367,7 +367,7 @@ export class App {
         if (feature) this.advanced.toggle(feature.key);
         return;
       case "Escape":
-        this.mode = "menu";
+        this.leaveSettings();
         return;
       default:
         if (e.key === "r" || e.key === "R") this.advanced.reset();
@@ -377,6 +377,23 @@ export class App {
           this.mode = "controls";
         }
     }
+  }
+
+  /** Where ADVANCED OPTIONS was opened from: the launcher menu, or GAME CONTROL item 7 during a mission (the world waits meanwhile). */
+  private settingsFrom: "menu" | "play" = "menu";
+
+  private openSettings(from: "menu" | "play"): void {
+    this.settingsFrom = from;
+    this.mode = "settings";
+  }
+
+  /** Esc: back to the menu, or to the mission's GAME CONTROL screen with its clock restarted so no time passes while the screen was open. */
+  private leaveSettings(): void {
+    if (this.settingsFrom === "play" && this.sim) {
+      this.mode = "play";
+      this.runner?.resetClock();
+      this.lastPlayMs = null;
+    } else this.mode = "menu";
   }
 
   private noteControls(text: string, tone: ControlsEditorLine["tone"] = "info"): void {
@@ -508,7 +525,7 @@ export class App {
     switch (state.target) {
       case "advanced":
         this.launcher.returnFrom("advanced"); // back to the menu state for when the screen is left
-        this.mode = "settings";
+        this.openSettings("menu");
         break;
       case "simulation":
         this.startMission();
@@ -676,6 +693,10 @@ export class App {
     if (!action) return;
     if (action.type === "leave") {
       this.setScreen("control");
+      return;
+    }
+    if (action.item === 7) {
+      this.openSettings("play"); // remake addition: ADVANCED OPTIONS from inside the mission; the world waits
       return;
     }
     if ((action.item === 5 && !this.missionItemOn) || (action.item === 6 && !this.advanced.on("gameControlExtras"))) return;
@@ -1088,8 +1109,8 @@ export class App {
         else drawDamageReport(g, view);
         break;
       case "gameControl":
-        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", showMission, showTime);
-        else drawGameControl(g, view.settings, prompt, editor?.value ?? "", showMission, showTime);
+        if (L) drawGameControlLayout(g, L, view.settings, prompt, editor?.value ?? "", showMission, showTime, remakeExtras);
+        else drawGameControl(g, view.settings, prompt, editor?.value ?? "", showMission, showTime, remakeExtras);
         break;
     }
   }
