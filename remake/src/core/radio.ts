@@ -108,9 +108,15 @@ export interface RadioView {
   lines: readonly RadioLine[];
   /** Seconds since the message appeared. */
   elapsed: number;
+  /** The message stays until the player presses a key (the last one of its box); an earlier one is followed by its continuation after its hold time. */
+  waitingForKey: boolean;
 }
 
-/** Queue of radio messages shown one after another, each for its hold time. */
+/**
+ * Queue of radio messages shown one after another. A message that another one continues in the same box (CONTACT MADE, then MISSION COMPLETED)
+ * is replaced by it after its hold time, like the original's delay loop; the last message of a box stays until {@link RadioInbox.dismiss}
+ * (a key press). The original holds every message with an empty FOR loop and blocks the game meanwhile; waiting for a key is a remake choice.
+ */
 export class RadioInbox {
   private queue: RadioMessage[] = [];
   private shown: RadioMessage | null = null;
@@ -129,23 +135,37 @@ export class RadioInbox {
     return this.queue.length + (this.shown ? 1 : 0);
   }
 
+  /** True while a message is on screen that only a key press removes. */
+  get waitingForKey(): boolean {
+    const m = this.shown;
+    return !!m && this.queue[0]?.continues !== m.id;
+  }
+
   get current(): RadioView | null {
     const m = this.shown;
     if (!m) return null;
     const earlier = m.continues && this.previous?.id === m.continues ? this.previous.lines : [];
     const box = m.box ?? (m.continues && this.previous?.id === m.continues ? this.previous.box : undefined);
-    return { message: m, box, lines: [...earlier, ...m.lines], elapsed: this.elapsed };
+    return { message: m, box, lines: [...earlier, ...m.lines], elapsed: this.elapsed, waitingForKey: this.waitingForKey };
   }
 
+  /** Time passes: a message that is continued in its box gives way after its hold time; the others wait for a key. */
   advance(seconds: number): void {
     if (!this.shown || seconds <= 0) return;
     this.elapsed += seconds;
-    while (this.shown && this.elapsed >= holdSeconds(this.shown)) {
+    while (this.shown && !this.waitingForKey && this.elapsed >= holdSeconds(this.shown)) {
       this.elapsed -= holdSeconds(this.shown);
       this.previous = this.shown;
-      this.shown = null;
       this.next();
     }
+  }
+
+  /** A key press: removes the message on screen if it waits for one (the next queued message, if any, appears). Returns whether it did. */
+  dismiss(): boolean {
+    if (!this.shown || !this.waitingForKey) return false;
+    this.previous = this.shown;
+    this.next();
+    return true;
   }
 
   clear(): void {

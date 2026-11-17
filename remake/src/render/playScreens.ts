@@ -384,4 +384,6 @@ export function drawRadioMessage(g: Gfx, view: RadioView): void {
   const b = view.box;
   if (b) g.rect(b.x0, b.y0, b.x1 - b.x0 + 1, b.y1 - b.y0 + 1, COLORS.black);
   for (const l of view.lines) g.text(l.col, l.row, l.text, COLORS.white);
+  // remake: the box stays until a key is pressed (the original holds it with a delay loop); the hint sits on the box's last text row
+  if (b && view.waitingForKey) g.centered(Math.floor(b.y1 / 8), "PRESS ANY KEY", COLORS.grey);
 }

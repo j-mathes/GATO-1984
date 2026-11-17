@@ -314,6 +314,7 @@ export class App {
   private playKey(e: KeyLike): void {
     const sim = this.sim;
     if (!sim) return;
+    if (this.radio.dismiss()) return; // a message box waits for a key: the key only closes it
     if (this.helpOpen) {
       this.closeHelp(); // any key closes the overlay and is not passed on
       return;

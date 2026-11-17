@@ -462,7 +462,7 @@ describe("radio room and message overlay in the app", () => {
     for (let i = 1; i <= count; i += 1) app.frame(from + i * 250);
   };
 
-  it("M with a damaged radio room shows RADIO ROOM REPORTS HEAVY DAMAGE for its hold time, then returns to the control room", () => {
+  it("M with a damaged radio room shows RADIO ROOM REPORTS HEAVY DAMAGE until a key closes it; that key does nothing else", () => {
     const { app, sim } = startApp();
     sim.sub.damage[1] = 1;
     app.keydown({ key: "c" });
@@ -473,8 +473,13 @@ describe("radio room and message overlay in the app", () => {
     frames(app, 0, 3); // the queued report is emitted by the next simulation step, 400 ms away at 2.5 steps a second
     expect(app.radio.current?.message.id).toBe("radioDamaged");
     expect(app.radio.current?.lines.map((l) => l.text)).toEqual(["RADIO ROOM", "REPORTS HEAVY DAMAGE", "NO MESSAGES MAY BE RECEIVED"]);
-    frames(app, 500, 6); // 1.5 s > the 10000-pass hold (about 1.1 s)
+    frames(app, 500, 40); // ten seconds: no timer removes it
+    expect(app.radio.current?.message.id).toBe("radioDamaged");
+    app.keydown({ key: "t" }); // closes the box and is not passed on
     expect(app.radio.current).toBeNull();
+    expect(sim.sub.doorsOpen).toBe(false);
+    app.keydown({ key: "t" });
+    expect(sim.sub.doorsOpen).toBe(true);
   });
 
   it("M with a working radio re-reads the orders (remake) and any key returns to play", () => {
@@ -1798,20 +1803,35 @@ describe("mission completion keeps the game running (as in GATO1.EXE)", () => {
     app.frame(t + 17);
     expect(texts(calls)).toEqual(expect.arrayContaining([[14, 3, "CONTACT MADE"], [12, 4, "MISSION COMPLETED"]]));
     expect(app.radio.history).toEqual(["contactMade", "missionCompleted"]);
-    // no game-over box and no play-again prompt
+    // no game-over box and no play-again prompt; the box waits for a key and says so on its last text row (row 7 of the box ending at y = 60)
     expect(texts(calls).some(([, , s]) => /PLAY AGAIN|HAS BEEN LOST/.test(s))).toBe(false);
-    // the world keeps stepping, the objective is not announced again, the log counts it once
+    expect(calls.some(([n, a]) => n === "centered" && a[0] === 7 && a[1] === "PRESS ANY KEY")).toBe(true);
+    // the world keeps stepping while the box is up; no timer removes it, the objective is not announced again, the log counts it once
     const tick = sim.tick;
     t = runUntil(app, t, 8000, () => false);
     expect(sim.tick).toBeGreaterThan(tick + 15);
+    expect(app.radio.current?.message.id).toBe("missionCompleted");
     expect(app.radio.history).toEqual(["contactMade", "missionCompleted"]);
     expect(app.log.missionsCompleted).toBe(1);
     expect(sim.status).toBe("running");
+    // a key closes the box and does nothing else
+    app.keydown({ key: "t" });
+    expect(app.radio.current).toBeNull();
+    expect(sim.sub.doorsOpen).toBe(false);
+    calls.length = 0;
+    app.frame(t + 50);
+    expect(calls.some(([n, a]) => n === "rect" && a[0] === 10 && a[1] === 10)).toBe(false);
+    expect(texts(calls).some(([, , s]) => s === "CONTACT MADE")).toBe(false);
+    app.keydown({ key: "t" });
+    expect(sim.sub.doorsOpen).toBe(true);
   });
 
-  it("the boat still takes orders after the message (the island shoals keep it where it is), and Escape leaves for the launcher", () => {
+  it("the boat still takes orders after the message is closed (the island shoals keep it where it is), and Escape leaves for the launcher", () => {
     const { app, sim } = playNight7();
-    const t = runUntil(app, 0, 5000, () => sim.missionComplete);
+    let t = runUntil(app, 0, 5000, () => sim.missionComplete);
+    t = runUntil(app, t, 20_000, () => app.radio.current?.message.id === "missionCompleted");
+    app.keydown({ key: "q" }); // closes the message box
+    expect(app.radio.current).toBeNull();
     const tick = sim.tick;
     app.keydown({ key: "F3" });
     app.keydown({ key: "ArrowLeft" });

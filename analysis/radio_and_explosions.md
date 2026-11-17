@@ -18,7 +18,7 @@ Messages are `LOCATE`/`PRINT` text, usually over a black `BF` box ((10,10)-(309,
 
 In the original, completing an objective does not end the program (it logs the mission and keeps playing). The remake now matches this: the boxed message is shown over the control room, the log is updated, and the simulation keeps running; each of the two objectives (island, convoy) fires once and counts once. The island objective's `ds:0x2246 = 1` is replaced by a one-shot flag.
 
-Port: `RADIO_MESSAGES` (text, LOCATE cells, box, hold passes), `RadioInbox` (queue with hold timers), `Simulation.requestRadioRoom()`, and `{ type: "radio" }` events. The cockpit shows them as the original's boxed text; `radioAlert` (two short tones) is a remake addition and plays only with sound on.
+Port: `RADIO_MESSAGES` (text, LOCATE cells, box, hold passes), `RadioInbox` (queue; a message continued in its box gives way after its hold time, the last message of a box stays until a key press closes it, which is a remake choice: the original holds every box with the delay loop and freezes meanwhile), `Simulation.requestRadioRoom()`, and `{ type: "radio" }` events. The cockpit shows them as the original's boxed text plus a `PRESS ANY KEY` hint on the box's last text row; `radioAlert` (two short tones) is a remake addition and plays only with sound on.
 
 ## Torpedo-hit explosion (`0x086dd-0x09c24`)
 

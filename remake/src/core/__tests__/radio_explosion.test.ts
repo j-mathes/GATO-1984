@@ -117,21 +117,28 @@ describe("radio and status messages (GATO1 string pool, 0x07046-0x07e47, 0x0ba3d
     expect(sim.step()).toContainEqual({ type: "radio", message: "radioDamaged" });
   });
 
-  it("inbox shows messages in turn, keeps CONTACT MADE on screen under MISSION COMPLETED, and expires them by hold time", () => {
+  it("inbox shows messages in turn, keeps CONTACT MADE on screen under MISSION COMPLETED, and removes the last one only on a key", () => {
     const inbox = new RadioInbox();
     inbox.push("contactMade");
     inbox.push("missionCompleted");
     expect(inbox.current?.lines.map((l) => l.text)).toEqual(["CONTACT MADE"]);
     expect(inbox.current?.box).toEqual({ x0: 10, y0: 10, x1: 309, y1: 60 });
+    expect(inbox.current?.waitingForKey).toBe(false); // continued in its box: gives way by itself after its hold time
+    expect(inbox.dismiss()).toBe(false); // a key does nothing while a continuation is on its way
     inbox.advance(holdSeconds(RADIO_MESSAGES.contactMade) - 0.01);
     expect(inbox.current?.message.id).toBe("contactMade");
     inbox.advance(0.02);
     expect(inbox.current?.message.id).toBe("missionCompleted");
     expect(inbox.current?.lines.map((l) => l.text)).toEqual(["CONTACT MADE", "MISSION COMPLETED"]);
     expect(inbox.current?.box).toEqual({ x0: 10, y0: 10, x1: 309, y1: 60 });
-    inbox.advance(holdSeconds(RADIO_MESSAGES.missionCompleted));
+    // the last message of a box is not removed by time, only by a key
+    expect(inbox.waitingForKey).toBe(true);
+    inbox.advance(holdSeconds(RADIO_MESSAGES.missionCompleted) + 1000);
+    expect(inbox.current?.message.id).toBe("missionCompleted");
+    expect(inbox.dismiss()).toBe(true);
     expect(inbox.current).toBeNull();
     expect(inbox.pending).toBe(0);
+    expect(inbox.dismiss()).toBe(false);
     expect(inbox.history).toEqual(["contactMade", "missionCompleted"]);
     expect(holdSeconds(RADIO_MESSAGES.contactMade)).toBeCloseTo(2.75, 5);
   });
