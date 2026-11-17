@@ -398,7 +398,7 @@ export function wrapText(text: string, width = 38): string[] {
 }
 
 /** Switches per page of the ADVANCED OPTIONS screen. */
-export const ADVANCED_PAGE_SIZE = 12;
+export const ADVANCED_PAGE_SIZE = 9;
 
 /**
  * ADVANCED OPTIONS (remake): the switches of the remake-only features, `ON` = the remake feature, `OFF` = the 1984 behaviour.
@@ -421,13 +421,14 @@ export function drawAdvancedOptions(g: Gfx, view: AdvancedView): void {
     g.text(r.indent ? 5 : 3, y, r.label, color);
     g.text(36, y, r.on ? "ON " : "OFF", selected ? COLORS.blue : r.on ? COLORS.green : COLORS.grey);
   });
-  g.line(8, 15 * 8 + 3, 312, 15 * 8 + 3, COLORS.cyan);
+  g.line(8, (3 + ADVANCED_PAGE_SIZE) * 8 + 3, 312, (3 + ADVANCED_PAGE_SIZE) * 8 + 3, COLORS.cyan);
   // both descriptions, one below the other (a blank line between); the one that is in force is yellow, the other grey
   const { on, off, current } = view.descriptions;
   const onLines = wrapText(`ON: ${on}`.toUpperCase()).slice(0, 3);
   const offLines = wrapText(`OFF: ${off}`.toUpperCase()).slice(0, 3);
-  onLines.forEach((l, i) => g.text(2, 17 + i, l, current ? COLORS.yellow : COLORS.grey));
-  offLines.forEach((l, i) => g.text(2, 17 + onLines.length + 1 + i, l, current ? COLORS.grey : COLORS.yellow));
+  const first = 5 + ADVANCED_PAGE_SIZE;
+  onLines.forEach((l, i) => g.text(2, first + i, l, current ? COLORS.yellow : COLORS.grey));
+  offLines.forEach((l, i) => g.text(2, first + onLines.length + 1 + i, l, current ? COLORS.grey : COLORS.yellow));
   g.text(2, 24, view.controlsKey ? "UP/DOWN=SELECT ENTER=CHANGE C=CONTROLS" : "UP/DOWN=SELECT  ENTER=CHANGE", COLORS.white);
   g.text(2, 25, "LEFT/RIGHT=PAGE  R=RESET  ESC=BACK", COLORS.white);
 }

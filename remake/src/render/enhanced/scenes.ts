@@ -11,6 +11,7 @@ import { drawEnhancedScope, ENHANCED_FACTOR } from "./scope.js";
 import type { EnhancedFrame, EnhancedRenderer } from "./scene.js";
 import type { ShipArt } from "./shipArt.js";
 import { drawText } from "./typography.js";
+import { OWN_COLOR, OWN_SLOT, drawNavSymbol, drawNavTag, isStationary, navDetail, navShips, vectorLength, type NavBounds, type NavObstacles, type NavPoint, type NavScreen, type NavShip, type NavState } from "./nav.js";
 
 /** What the scenes need besides the frame: the ship pictures, the extracted layouts, and the wake dots of the track screens. */
 export interface SceneDeps {
@@ -19,6 +20,8 @@ export interface SceneDeps {
   trails: { radar: TrailBuffer; chart: TrailBuffer; quadrant: TrailBuffer };
   /** True while the wake dots are shown (key W). */
   trailsOn: () => boolean;
+  /** The navigation symbols (switch SHIP NAV SYMBOLS): whether they replace the glowing dots, the ship history and the ship with a tag. */
+  nav: () => NavState;
 }
 
 /** The 4 x the original's 320 x 200 picture, centred in the view (the view is wider than 1280 on a wide window). */
@@ -71,6 +74,85 @@ function drawLand(g: Gfx, cx: number, cy: number, rx: number, ry: number): void 
   c.strokeStyle = ISLAND.shore;
   c.lineWidth = g.toLength(2.4);
   c.stroke();
+}
+
+/** How a screen puts the world on the view, for the ship symbols. */
+interface NavProjection {
+  /** World position to view units (the picture's margin included). */
+  toView: (x: number, y: number) => NavPoint;
+  /** Length of the triangle. */
+  size: number;
+  /** Opacity of a contact (the radar fades them after the sweep). */
+  alphaOf?: (x: number, y: number) => number;
+}
+
+/** Where a vessel is on the view, the unit vector of its heading there and the length of its velocity vector, all through the screen's own projection (the chart's two axes have different scales). */
+function aim(proj: NavProjection, x: number, y: number, heading: number, speed: number, minutes: number): { at: NavPoint; dx: number; dy: number; vector: number } {
+  const at = proj.toView(x, y);
+  const probe = proj.toView(x + Math.cos(heading) * 100, y + Math.sin(heading) * 100);
+  const n = Math.hypot(probe[0] - at[0], probe[1] - at[1]) || 1;
+  const d = vectorLength(speed, minutes, 1);
+  const end = proj.toView(x + Math.cos(heading) * d, y + Math.sin(heading) * d);
+  return { at, dx: (probe[0] - at[0]) / n, dy: (probe[1] - at[1]) / n, vector: Math.hypot(end[0] - at[0], end[1] - at[1]) };
+}
+
+/** A symbol that was drawn: its ship (null for the own boat), where, which way it points and how long its vector is; what a tag must keep clear of. */
+interface NavPlaced {
+  ship: NavShip | null;
+  at: NavPoint;
+  dx: number;
+  dy: number;
+  vector: number;
+  size: number;
+  /** Whether its heading line and vector were drawn. */
+  lines: boolean;
+}
+
+/** The ship symbols of a screen: every ship it shows, and (on the chart and the map) the own boat; the caller sets the clip. Returns what was drawn. */
+function drawNavShips(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen, proj: NavProjection, withOwn: boolean): NavPlaced[] {
+  const nav = deps.nav();
+  const { sim, snap, settings } = view;
+  const detail = navDetail(settings.difficulty);
+  const drawn: NavPlaced[] = [];
+  for (const ship of navShips(view, screen).reverse()) {
+    const a = aim(proj, ship.x, ship.y, ship.heading, ship.speed, nav.minutes);
+    drawNavSymbol(g, {
+      x: a.at[0], y: a.at[1], dx: a.dx, dy: a.dy, color: ship.cls.color, size: proj.size, speed: ship.speed, damaged: ship.damaged, alpha: proj.alphaOf?.(a.at[0], a.at[1]),
+      detail, vector: a.vector, turn: nav.tracker.turn(ship.slot),
+      trail: nav.tracker.trail(ship.slot).map((p) => proj.toView(p.x, p.y)), selected: nav.selected === ship.slot,
+    });
+    drawn.push({ ship, at: a.at, dx: a.dx, dy: a.dy, vector: a.vector, size: proj.size, lines: detail && !isStationary(ship.speed) });
+  }
+  if (withOwn) {
+    const a = aim(proj, snap.sub.x, snap.sub.y, snap.sub.heading, sim.sub.speed, nav.minutes);
+    drawNavSymbol(g, {
+      x: a.at[0], y: a.at[1], dx: a.dx, dy: a.dy, color: OWN_COLOR, size: proj.size * 1.1, speed: sim.sub.speed, detail: true, vector: a.vector,
+      turn: nav.tracker.turn(OWN_SLOT), trail: nav.tracker.trail(OWN_SLOT).map((p) => proj.toView(p.x, p.y)),
+    });
+    drawn.push({ ship: null, at: a.at, dx: a.dx, dy: a.dy, vector: a.vector, size: proj.size * 1.1, lines: !isStationary(sim.sub.speed) });
+  }
+  return drawn;
+}
+
+/**
+ * The data tag of the selected ship (at the difficulties that show the details), drawn after the clip of the symbols is lifted and placed where it hides
+ * the least: it keeps clear of the other symbols, of every heading line and vector (the ship's own included) and of `extra` circles (the radar's own boat).
+ */
+function drawNavTagOf(g: Gfx, deps: SceneDeps, view: PlayView, drawn: NavPlaced[], bounds: NavBounds, extra: NavObstacles["circles"] = []): void {
+  const selected = deps.nav().selected;
+  if (selected === null || !navDetail(view.settings.difficulty)) return;
+  const hit = drawn.find((d) => d.ship?.slot === selected);
+  if (!hit?.ship) return;
+  const obstacles: NavObstacles = {
+    circles: [...drawn.filter((d) => d !== hit).map((d) => ({ x: d.at[0], y: d.at[1], r: d.size * 0.8 })), ...extra],
+    segments: drawn
+      .filter((d) => d.lines)
+      .map((d) => {
+        const reach = Math.max(d.vector, d.size * 2.2);
+        return { x1: d.at[0], y1: d.at[1], x2: d.at[0] + d.dx * reach, y2: d.at[1] + d.dy * reach };
+      }),
+  };
+  drawNavTag(g, hit.ship, hit.at[0], hit.at[1], hit.size * 0.8, obstacles, bounds);
 }
 
 function glowDot(g: Gfx, x: number, y: number, radius: number, color: string, alpha = 1): void {
@@ -137,6 +219,8 @@ function readout(g: Gfx, xo: number, boxTop: number, label: string, labelY: numb
 function radarScene(deps: SceneDeps): (f: EnhancedFrame) => void {
   return ({ g, view, width }) => {
     const { sim, snap } = view;
+    const navOn = deps.nav().on;
+    let radarShips: NavPlaced[] = [];
     const xo = centreX(width);
     const c = g.ctx;
     backdrop(g, xo, "#0a100c", "#050806");
@@ -190,7 +274,25 @@ function radarScene(deps: SceneDeps): (f: EnhancedFrame) => void {
         }
         const seen = Math.atan2(p.y - RADAR_CY, p.x - RADAR_CX);
         const age = (((sweep - seen) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-        glowDot(g, bx, p.y, 6, INSTRUMENT.blip, Math.max(0.3, 1 - (age / (Math.PI * 2)) * 0.8));
+        if (!navOn) glowDot(g, bx, p.y, 6, INSTRUMENT.blip, Math.max(0.3, 1 - (age / (Math.PI * 2)) * 0.8));
+      }
+      if (navOn) {
+        // ship symbols on the blips: the picture is heading-up, so a ship's own heading is shown relative to the bow of the boat
+        const toView = (wx: number, wy: number): NavPoint => {
+          const dx = wx - snap.sub.x;
+          const dy = wy - snap.sub.y;
+          const p = radarBlip(Math.atan2(dy, dx) - snap.sub.heading, Math.hypot(dx, dy));
+          return [xo + p.x, p.y];
+        };
+        radarShips = drawNavShips(g, deps, view, "radar", {
+          toView,
+          size: 32,
+          alphaOf: (x, y) => {
+            const seenAt = Math.atan2(y - RADAR_CY, x - xo - RADAR_CX);
+            const age = (((sweep - seenAt) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+            return Math.max(0.6, 1 - (age / (Math.PI * 2)) * 0.5);
+          },
+        }, false);
       }
     }
     g.line(cx, cy - 2, cx, cy - 18, "#ffffff", 2); // the boat's own mark
@@ -207,11 +309,12 @@ function radarScene(deps: SceneDeps): (f: EnhancedFrame) => void {
     g.rect(xo + 1068, 624, 96, 56, "#07100a");
     g.rect(xo + 1068, 624, 96, 56, INSTRUMENT.frame, false);
     drawText(g, xo + 1116, 653, String(sim.sub.torpedoes), INSTRUMENT.panelText, 40, { role: "body", bold: true, align: "center" });
+    drawNavTagOf(g, deps, view, radarShips, { x0: xo + 20, y0: 20, x1: xo + RADAR_CX + RADAR_R + 40, y1: PICTURE_HEIGHT - 20 }, [{ x: cx, y: cy, r: 26 }]);
   };
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-// Chart (C): the 12 islands are the circles the original keeps as DATA (x, y, radius, aspect in 320 x 200 pixels, Gato1.exe 0x13d32)
+// Chart (C): the 12 islands, drawn from the quadrant map's bitmaps, with the shoal ellipse the simulation uses round each
 // ------------------------------------------------------------------------------------------------------------------------------
 
 export const CHART_ISLANDS: readonly (readonly [number, number, number, number])[] = [
@@ -274,15 +377,28 @@ function chartScene(deps: SceneDeps): (f: EnhancedFrame) => void {
     if (deps.trailsOn()) {
       drawTrail(g, deps.trails.chart, xo, { 0: rgba("#ffffff", 0.45), 2: rgba(INSTRUMENT.enemy, 0.45) }, (x, y) => [(x + 0.5) * ENHANCED_FACTOR, (y + 0.5) * ENHANCED_FACTOR], 3.2);
     }
-    if (settings.difficulty <= 2) {
-      for (const s of snap.vessels) {
-        const vessel = sim.vessels[s.slot];
-        if (!vessel || s.slot === SLOT.island || vessel.sunk) continue;
-        glowDot(g, xo + px(s.x), py(s.y), 5, s.slot === SLOT.tender ? INSTRUMENT.tender : INSTRUMENT.enemy);
+    let drawn: NavPlaced[] = [];
+    if (deps.nav().on) {
+      // ship symbols, kept inside the picture
+      const c = g.ctx;
+      c.save();
+      c.beginPath();
+      c.rect(g.toX(xo + 14), g.toY(14), g.toLength(PICTURE_WIDTH - 28), g.toLength(PICTURE_HEIGHT - 28));
+      c.clip();
+      drawn = drawNavShips(g, deps, view, "chart", { toView: (x, y) => [xo + px(x), py(y)], size: 34 }, true);
+      c.restore();
+    } else {
+      if (settings.difficulty <= 2) {
+        for (const s of snap.vessels) {
+          const vessel = sim.vessels[s.slot];
+          if (!vessel || s.slot === SLOT.island || vessel.sunk) continue;
+          glowDot(g, xo + px(s.x), py(s.y), 5, s.slot === SLOT.tender ? INSTRUMENT.tender : INSTRUMENT.enemy);
+        }
       }
+      glowDot(g, xo + px(snap.sub.x), py(snap.sub.y), 6, INSTRUMENT.boat);
     }
-    glowDot(g, xo + px(snap.sub.x), py(snap.sub.y), 6, INSTRUMENT.boat);
     brassFrame(g, xo);
+    drawNavTagOf(g, deps, view, drawn, { x0: xo + 14, y0: 14, x1: xo + PICTURE_WIDTH - 14, y1: PICTURE_HEIGHT - 14 });
   };
 }
 
@@ -339,15 +455,27 @@ function quadrantScene(deps: SceneDeps): (f: EnhancedFrame) => void {
     if (deps.trailsOn()) {
       drawTrail(g, deps.trails.quadrant, xo, { 1: rgba("#ffffff", 0.45), 2: rgba(INSTRUMENT.enemy, 0.45) }, (x, y) => [(x + 0.5) * ENHANCED_FACTOR, (y + 0.5) * ENHANCED_FACTOR], 3.2);
     }
-    if (settings.difficulty <= 5) {
-      for (const s of snap.vessels) {
-        const vessel = sim.vessels[s.slot];
-        if (!vessel || s.slot === SLOT.island || vessel.sunk || quadrantOf(s.x, s.y) !== q) continue;
-        glowDot(g, xo + px(s.x), py(s.y), 5, INSTRUMENT.enemy);
+    let drawn: NavPlaced[] = [];
+    if (deps.nav().on) {
+      const c = g.ctx;
+      c.save();
+      c.beginPath();
+      c.rect(g.toX(xo + 14), g.toY(14), g.toLength(PICTURE_WIDTH - 28), g.toLength(PICTURE_HEIGHT - 28));
+      c.clip();
+      drawn = drawNavShips(g, deps, view, "quadrant", { toView: (x, y) => [xo + px(x), py(y)], size: 30 }, true);
+      c.restore();
+    } else {
+      if (settings.difficulty <= 5) {
+        for (const s of snap.vessels) {
+          const vessel = sim.vessels[s.slot];
+          if (!vessel || s.slot === SLOT.island || vessel.sunk || quadrantOf(s.x, s.y) !== q) continue;
+          glowDot(g, xo + px(s.x), py(s.y), 5, INSTRUMENT.enemy);
+        }
       }
+      glowDot(g, xo + px(snap.sub.x), py(snap.sub.y), 6, INSTRUMENT.boat);
     }
-    glowDot(g, xo + px(snap.sub.x), py(snap.sub.y), 6, INSTRUMENT.boat);
     brassFrame(g, xo);
+    drawNavTagOf(g, deps, view, drawn, { x0: xo + 14, y0: 14, x1: xo + PICTURE_WIDTH - 14, y1: PICTURE_HEIGHT - 14 });
   };
 }
 

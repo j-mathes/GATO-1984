@@ -23,6 +23,7 @@ export type AdvancedKey =
   | "radioAlert"
   | "solidShips"
   | "enhancedGraphics"
+  | "navSymbols"
   | "pcPace"
   | "missionSelect"
   | "explosionsRun"
@@ -69,6 +70,7 @@ export const ADVANCED_FEATURES: readonly AdvancedFeature[] = [
   { key: "radioAlert", row: 25, label: "RADIO ALERT TONE", default: true, remake: "radio messages sound an alert tone", original: "silent messages" },
   { key: "solidShips", row: 43, label: "SOLID SHIPS IN THE SCOPE", default: true, remake: "ships in the original picture are filled in, so they show up better when small", original: "ships are the original's open line art, see-through" },
   { key: "enhancedGraphics", row: 42, label: "ENHANCED GRAPHICS", default: false, remake: "the scope, ships, radar, chart and map are drawn sharply in natural colours, with typewriter text", original: "the 1984 320 x 200 four-colour picture" },
+  { key: "navSymbols", row: 46, label: "SHIP NAV SYMBOLS", default: true, requires: "enhancedGraphics", remake: "marine-style ship symbols with heading, speed vector and track; U tags a ship, O sets the vector", original: "ships are plain glowing dots" },
   { key: "customControls", row: 38, label: "CUSTOM CONTROLS", default: false, remake: "keys can be reassigned: press C on this screen to open the control assignments", original: "the original key assignments only" },
   { key: "simpleSpeed", row: 40, label: "SIMPLE SPEED KEYS", default: false, requires: "customControls", remake: "= and - step the speed up and down; 0 stops, Backspace reverses, E toggles diesel/electric", original: "a key per speed stage (F1 F3 F5 F7), F9 stop, F10 reverse, D and E engines" },
 ];
@@ -90,7 +92,7 @@ export const HOTKEY_GROUP: readonly AdvancedKey[] = ["helpOverlay", "displayMode
  * (GAME CONTROL item 5 only exists with the extra items) and the time pop-up (only shown by the time keys). Only the hotkeys switch
  * also sets its members; the others stay independent.
  */
-export const ADVANCED_INDENTED: ReadonlySet<AdvancedKey> = new Set<AdvancedKey>([...HOTKEY_GROUP, "missionSelect", "timeToast", "simpleSpeed"]);
+export const ADVANCED_INDENTED: ReadonlySet<AdvancedKey> = new Set<AdvancedKey>([...HOTKEY_GROUP, "missionSelect", "timeToast", "simpleSpeed", "navSymbols"]);
 
 /** The switches with their storage form (the whole object is kept as JSON). */
 export class AdvancedOptions {

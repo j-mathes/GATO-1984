@@ -52,6 +52,7 @@ import { COLORS, Gfx, LOGICAL_HEIGHT, LOGICAL_WIDTH } from "../render/gfx.js";
 import { ENHANCED_HEIGHT, type Graphics } from "../render/display.js";
 import { EnhancedRenderer } from "../render/enhanced/scene.js";
 import { registerEnhancedScenes } from "../render/enhanced/scenes.js";
+import { DEFAULT_VECTOR_MINUTE, ShipTracker, VECTOR_MINUTES, navDetail, navShips, nextSelection, type NavScreen } from "../render/enhanced/nav.js";
 import { drawEnhancedMenu, drawEnhancedOrders, drawEnhancedSplash, drawEnhancedTitle } from "../render/enhanced/frontend.js";
 import { OXYGEN_FADE_SECONDS, drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
 import { TYPEWRITER_SKIN } from "../render/enhanced/skin.js";
@@ -202,6 +203,10 @@ export class App {
   private readonly storage: StorageLike | null;
   private readonly trailBuffers = createTrails();
   private lastTrailTick = -1;
+  /** The navigation symbols of the enhanced radar, chart and map: the history of each ship, the ship with a data tag and how far ahead the vectors look. */
+  private readonly navTracker = new ShipTracker();
+  private navSelected: number | null = null;
+  private navMinuteIndex = DEFAULT_VECTOR_MINUTE;
   /** Short status line over the top of the screen (helm orders, time compression); drawn every frame until it expires. */
   private toast: { text: string; until: number } | null = null;
 
@@ -226,7 +231,20 @@ export class App {
     this.log = new LogStore(data.shipLog, storage);
     this.gameControl = new GameControl(this.settings, () => this.log.reset());
     this.sound.enabled = this.settings.sound;
-    if (cockpit) registerEnhancedScenes(this.enhanced, { art: new ShipArt(sprites), cockpit, trails: this.trailBuffers, trailsOn: () => this.trails });
+    if (cockpit) {
+      registerEnhancedScenes(this.enhanced, {
+        art: new ShipArt(sprites),
+        cockpit,
+        trails: this.trailBuffers,
+        trailsOn: () => this.trails,
+        nav: () => ({ on: this.navOn, tracker: this.navTracker, selected: this.navSelected, minutes: VECTOR_MINUTES[this.navMinuteIndex] ?? 12 }),
+      });
+    }
+  }
+
+  /** The ship symbols replace the glowing dots: enhanced graphics with SHIP NAV SYMBOLS on. */
+  private get navOn(): boolean {
+    return this.graphicsMode === "enhanced" && this.advanced.effective("navSymbols");
   }
 
   /** The ENHANCED GRAPHICS switch decides the graphics; the page calls this once its canvas is wired, and the switch calls it on every change. */
@@ -676,6 +694,24 @@ export class App {
         return;
       case "toggleTrails":
         if (this.advanced.on("trailToggle")) this.setTrails(!this.trailsOn);
+        return;
+      case "navSelect": {
+        const screen = this.screen;
+        if (!this.navOn || !this.snapshot || (screen !== "radar" && screen !== "chart" && screen !== "quadrant")) return;
+        if (!navDetail(this.settings.difficulty)) {
+          this.showToast("SHIP TAGS: DIFFICULTY 2 OR LOWER");
+          return;
+        }
+        const ships = navShips({ sim, snap: this.snapshot, settings: this.settings }, screen as NavScreen);
+        this.navSelected = nextSelection(ships, this.navSelected);
+        const picked = ships.find((s) => s.slot === this.navSelected);
+        this.showToast(picked ? `TAG: ${picked.cls.label}` : "TAG OFF");
+        return;
+      }
+      case "navVector":
+        if (!this.navOn) return;
+        this.navMinuteIndex = (this.navMinuteIndex + 1) % VECTOR_MINUTES.length;
+        this.showToast(`SHIP VECTORS: ${VECTOR_MINUTES[this.navMinuteIndex]} MIN`);
         return;
       case "help":
         if (this.advanced.on("helpOverlay")) {
@@ -1179,6 +1215,7 @@ export class App {
     // tracks are only remembered once per simulation step (the original plots once per pass of its loop)
     const record = sim.tick !== this.lastTrailTick;
     this.lastTrailTick = sim.tick;
+    if (this.navOn) this.navTracker.update(sim);
     for (const b of Object.values(this.trailBuffers)) b.recording = this.trails && record;
     this.drawPlayScreen(this.screen, view, this.trails, this.difficultyEditor, true);
     if (this.sinking) {

@@ -41,6 +41,8 @@ export type ControlId =
   | "gameControl"
   | "debug"
   | "trails"
+  | "navSelect"
+  | "navVector"
   | "help"
   | "helpAlt"
   | "timeDown"
@@ -101,6 +103,8 @@ const RAW_DEFS: readonly ControlDef[] = [
   { id: "gameControl", label: "GAME CONTROL", key: "Tab", input: { type: "screen", screen: "gameControl" }, locked: true },
   { id: "debug", label: "DEBUG PROMPT (CHART)", key: "Z", input: { type: "debugPrompt" } },
   { id: "trails", label: "WAKE TRAILS ON/OFF", key: "W", input: { type: "toggleTrails" } },
+  { id: "navSelect", label: "TAG THE NEXT SHIP", key: "U", input: { type: "navSelect" } },
+  { id: "navVector", label: "SHIP VECTOR TIME", key: "O", input: { type: "navVector" } },
   { id: "help", label: "HELP", key: "?", input: { type: "help" } },
   { id: "helpAlt", label: "HELP (SECOND KEY)", key: "H", input: { type: "help" } },
   { id: "timeDown", label: "TIME SPEED DOWN", key: "[", input: { type: "timeScale", direction: "slower" } },
@@ -115,7 +119,7 @@ export const CONTROL_GROUPS: readonly { title: string; ids: readonly ControlId[]
   { title: "STEERING", ids: ["rudderLeft", "rudderRight", "planesUp", "planesDown", "neutral"] },
   { title: "SCOPE AND WEAPONS", ids: ["periscopeToggle", "periscopeUp", "periscopeDown", "scopeForward", "scopePort", "scopeAft", "scopeStarboard", "doors", "fire"] },
   { title: "SCREENS", ids: ["chart", "quadrant", "radar", "log", "damage", "radioRoom", "gameControl", "debug"] },
-  { title: "REMAKE EXTRAS", ids: ["trails", "timeDown", "timeUp", "display", "help", "helpAlt", "quit"] },
+  { title: "REMAKE EXTRAS", ids: ["trails", "navSelect", "navVector", "timeDown", "timeUp", "display", "help", "helpAlt", "quit"] },
 ];
 
 export const CONTROL_DEFS: readonly ControlDef[] = CONTROL_GROUPS.flatMap((g) => g.ids.map((id) => RAW_DEFS.find((d) => d.id === id) as ControlDef));

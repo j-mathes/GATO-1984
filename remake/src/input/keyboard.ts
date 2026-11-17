@@ -11,6 +11,10 @@ export type InputAction =
   | { type: "radioRoom" }
   /** W: persistent track dots on the radar, chart and quadrant map (the original's behaviour) or clean redraws. */
   | { type: "toggleTrails" }
+  /** U: puts the data tag on the next ship of the radar, chart or map, nearest first, then on none (enhanced graphics, SHIP NAV SYMBOLS; remake addition). */
+  | { type: "navSelect" }
+  /** O: how far ahead the ships' velocity vectors look, 3, 6 or 12 minutes (enhanced graphics, SHIP NAV SYMBOLS; remake addition). */
+  | { type: "navVector" }
   /** [ and ]: slower / faster time compression (1x = 2.5 steps per second, 2x, 4x); remake addition. */
   | { type: "timeScale"; direction: "slower" | "faster" }
   /** ? or H: controls quick-reference overlay (remake addition). */
@@ -40,6 +44,7 @@ export interface KeyLike {
  *   C / Q / L / R / M   chart, quadrant map, captain's log, damage report, radio room (then the control room)
  *   Tab          GAME CONTROL                                    Z (on chart)     hidden coordinate command
  *   W            track dots on radar, chart and quadrant map on/off
+ *   U / O        tag the next ship / how far ahead the ship vectors look (enhanced graphics with SHIP NAV SYMBOLS; remake addition)
  *   ? or H       controls quick-reference overlay (remake addition; pauses the world while shown)
  *   [ / ]        time compression 1x / 2x / 4x (2.5 / 5 / 10 simulation steps per second; remake addition)
  * The table lives in controls.ts (CONTROL_DEFS): these are the original's keys. With CUSTOM CONTROLS on, the player's own Keymap, which starts from

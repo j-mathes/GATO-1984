@@ -2034,7 +2034,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
   };
 
   it("offers the 18 requested rows plus the sinking scene, CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line, the sinking skip and the custom-controls pair", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 45, 15, 2, 17, 20, 28, 32, 24, 25, 43, 42, 38, 40]);
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 45, 15, 2, 17, 20, 28, 32, 24, 25, 43, 42, 46, 38, 40]);
     const keys = ADVANCED_FEATURES.map((f) => f.key);
     const at = keys.indexOf("hotkeys");
     expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);
@@ -2049,7 +2049,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect(keys.indexOf(child), child).toBe(keys.indexOf(parent) + 1);
       expect(ADVANCED_INDENTED.has(child)).toBe(true);
     }
-    expect([...ADVANCED_INDENTED].sort()).toEqual([...HOTKEY_GROUP, "missionSelect", "timeToast", "simpleSpeed"].sort());
+    expect([...ADVANCED_INDENTED].sort()).toEqual([...HOTKEY_GROUP, "missionSelect", "timeToast", "simpleSpeed", "navSymbols"].sort());
     const h = boot();
     press(h.app, "x", "5");
     const placed = (label: string): number => {
@@ -2071,21 +2071,22 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     const h = boot();
     press(h.app, "x", "5");
     h.app.advanced.set("customControls", true); // SIMPLE SPEED KEYS is only listed with it
+    h.app.advanced.set("enhancedGraphics", true); // and SHIP NAV SYMBOLS with this
     const descriptions = (): { on: string; off: string; current: boolean } => (h.app as unknown as { advancedDescriptions(): { on: string; off: string; current: boolean } }).advancedDescriptions();
     for (const f of ADVANCED_FEATURES) {
       for (const on of [true, false]) {
         h.app.advanced.set(f.key, on);
-        if (f.key === "customControls") h.app.advanced.set(f.key, true); // keep the list as long as it is
-        expect(descriptions(), f.key).toEqual({ on: f.remake, off: f.original, current: f.key === "customControls" ? true : on });
+        if (f.key === "customControls" || f.key === "enhancedGraphics") h.app.advanced.set(f.key, true); // keep the list as long as it is
+        expect(descriptions(), f.key).toEqual({ on: f.remake, off: f.original, current: f.key === "customControls" || f.key === "enhancedGraphics" ? true : on });
         expect(wrapText(`ON: ${f.remake}`.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
         expect(wrapText(`OFF: ${f.original}`.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
       }
-      h.app.advanced.set(f.key, f.key === "customControls" ? true : f.default);
+      h.app.advanced.set(f.key, f.key === "customControls" || f.key === "enhancedGraphics" ? true : f.default);
       press(h.app, "ArrowDown");
     }
     // drawn for the helm status line (off): its ON text first and grey, its OFF text below it and yellow
     (h.app as unknown as { advancedCursor: number }).advancedCursor = 0;
-    const text = frameAfter(h, 10).filter(([n, a]) => n === "text" && Number(a[1]) >= 17 && Number(a[1]) <= 23);
+    const text = frameAfter(h, 10).filter(([n, a]) => n === "text" && Number(a[1]) >= 5 + ADVANCED_PAGE_SIZE && Number(a[1]) <= 11 + ADVANCED_PAGE_SIZE);
     const offFirst = text.find(([, a]) => String(a[2]).startsWith("OFF:"));
     const offRow = Number(offFirst?.[1][1]);
     const onRows = text.filter(([, a]) => Number(a[1]) < offRow);
@@ -2124,33 +2125,37 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(h.app.mode).toBe("orders");
   });
 
-  it("the switches are on two pages: the page follows the selected row, Left/Right/PageUp/PageDown change page", () => {
+  it("the switches are on three pages: the page follows the selected row, Left/Right/PageUp/PageDown change page", () => {
     const h = boot();
     press(h.app, "x", "5");
     const cursor = (): number => (h.app as unknown as { advancedCursor: number }).advancedCursor;
     let shown = textsOf(frameAfter(h, 10));
-    expect(shown).toContain("PAGE 1 OF 2");
+    expect(shown).toContain("PAGE 1 OF 3");
     expect(shown).toContain("HELM STATUS LINE");
     expect(shown).not.toContain("CUSTOM CONTROLS");
     expect(shown).toContain("LEFT/RIGHT=PAGE  R=RESET  ESC=BACK");
     press(h.app, "ArrowRight");
     expect(cursor()).toBe(ADVANCED_PAGE_SIZE);
     shown = textsOf(frameAfter(h, 20));
-    expect(shown).toContain("PAGE 2 OF 2");
-    expect(shown).toContain("CUSTOM CONTROLS");
+    expect(shown).toContain("PAGE 2 OF 3");
+    expect(shown).toContain("SKIP THE SINKING SCENE");
     expect(shown).not.toContain("HELM STATUS LINE");
+    press(h.app, "ArrowRight");
+    expect(textsOf(frameAfter(h, 25))).toContain("CUSTOM CONTROLS");
     press(h.app, "PageDown"); // wraps round to page 1
     expect(cursor()).toBe(0);
-    press(h.app, "ArrowLeft");
-    expect(cursor()).toBe(ADVANCED_PAGE_SIZE);
+    press(h.app, "ArrowLeft"); // and back to the last page
+    expect(textsOf(frameAfter(h, 27))).toContain("PAGE 3 OF 3");
+    press(h.app, "PageUp");
+    expect(textsOf(frameAfter(h, 28))).toContain("PAGE 2 OF 3");
     press(h.app, "PageUp");
     expect(cursor()).toBe(0);
     for (let i = 0; i < ADVANCED_PAGE_SIZE; i += 1) press(h.app, "ArrowDown"); // Up/Down run on from page 1 to page 2
-    expect(textsOf(frameAfter(h, 30))).toContain("PAGE 2 OF 2");
-    press(h.app, "ArrowRight", "Enter"); // the first switch of page 1 again
+    expect(textsOf(frameAfter(h, 30))).toContain("PAGE 2 OF 3");
+    press(h.app, "ArrowRight", "ArrowRight", "Enter"); // the first switch of page 1 again
     expect(h.app.advanced.on("helmHud")).toBe(true);
     expect(ADVANCED_FEATURES.length).toBeGreaterThan(ADVANCED_PAGE_SIZE);
-    expect(ADVANCED_FEATURES.length).toBeLessThanOrEqual(2 * ADVANCED_PAGE_SIZE);
+    expect(ADVANCED_FEATURES.length).toBeLessThanOrEqual(3 * ADVANCED_PAGE_SIZE);
   });
 
   it("GAME CONTROL item 7 opens the advanced options inside a mission: the world waits, changes apply at once, Esc returns to GAME CONTROL", () => {
@@ -2444,6 +2449,7 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect(stored.app.graphics).toBe("enhanced");
       expect(h.app.enhanced.screens.sort()).toEqual(["chart", "control", "damage", "log", "quadrant", "radar"]);
     });
+
   });
 
   describe("the enhanced scenes", () => {
@@ -2467,6 +2473,58 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       const internals = h.app as unknown as { snapshot: PlayView["snap"] };
       return { view: { sim, snap: internals.snapshot, settings: h.app.settings, sprites: null, log: h.app.log, timeMs: 1500 }, screen };
     };
+
+    it("SHIP NAV SYMBOLS (46) needs the enhanced graphics; U tags the ships of the chart, map and radar nearest first and then none, O cycles the vector time", () => {
+      const h = play();
+      const internals = h.app as unknown as { navSelected: number | null; navMinuteIndex: number };
+      expect(h.app.advanced.on("navSymbols")).toBe(true);
+      expect(h.app.advanced.effective("navSymbols")).toBe(false); // the original graphics keep the dots
+      press(h.app, "c", "u", "o");
+      expect([internals.navSelected, internals.navMinuteIndex]).toEqual([null, 2]); // the keys do nothing there
+      h.app.advanced.set("enhancedGraphics", true);
+      expect(h.app.advanced.effective("navSymbols")).toBe(true);
+      h.app.settings.difficulty = 1;
+      press(h.app, "u");
+      const first = internals.navSelected;
+      expect(first).not.toBeNull();
+      const tagged = new Set<number | null>([first]);
+      for (let i = 0; i < 12 && internals.navSelected !== null; i += 1) {
+        press(h.app, "u");
+        tagged.add(internals.navSelected);
+      }
+      expect(internals.navSelected).toBeNull(); // after the farthest, no tag
+      expect(tagged.size).toBeGreaterThan(2);
+      press(h.app, "o");
+      expect(internals.navMinuteIndex).toBe(0);
+      press(h.app, "o", "o");
+      expect(internals.navMinuteIndex).toBe(2); // 3, 6, 12 minutes and round again, 12 to begin with
+      h.app.settings.difficulty = 4;
+      press(h.app, "u");
+      expect(internals.navSelected).toBeNull(); // the details are for difficulty 2 and below
+      h.app.advanced.set("navSymbols", false);
+      press(h.app, "o");
+      expect(internals.navMinuteIndex).toBe(2);
+    });
+
+    it("every enhanced track screen draws with the ship symbols on and off, a tagged ship included", () => {
+      const h = play();
+      h.app.settings.difficulty = 1;
+      h.app.advanced.set("enhancedGraphics", true);
+      for (const nav of [true, false]) {
+        h.app.advanced.set("navSymbols", nav);
+        for (const screen of ["chart", "quadrant", "radar"] as const) {
+          press(h.app, screen === "chart" ? "c" : screen === "quadrant" ? "q" : "F6");
+          press(h.app, "u");
+          const { g, calls } = fullGfx();
+          g.resizeBacking(1422, 800);
+          g.view(1422, 800);
+          const scene = h.app.enhanced.scene(screen);
+          scene?.({ g, ...frameFor(h, screen), width: 1422, height: 800 });
+          expect(calls.length, screen).toBeGreaterThan(20);
+          if (nav && screen !== "radar") expect(calls, screen).toContain("setLineDash"); // the dashed velocity vectors
+        }
+      }
+    });
 
     it("the enhanced sinking draws glass cracks and a rising sea on a real context, without the original's palette", () => {
       const { g, calls } = fullGfx();
