@@ -231,12 +231,46 @@ function chartScene(deps: SceneDeps): (f: EnhancedFrame) => void {
     backdrop(g, xo, INSTRUMENT.chartSeaTop, INSTRUMENT.chartSeaBottom);
     for (let i = 1; i < 5; i += 1) g.line(xo + i * 64 * ENHANCED_FACTOR, 0, xo + i * 64 * ENHANCED_FACTOR, PICTURE_HEIGHT, rgba(INSTRUMENT.grid, 0.3), 1.4);
     for (let j = 1; j < 4; j += 1) g.line(xo, j * 50 * ENHANCED_FACTOR, xo + PICTURE_WIDTH, j * 50 * ENHANCED_FACTOR, rgba(INSTRUMENT.grid, 0.3), 1.4);
-    for (const [x, y, r, a] of CHART_ISLANDS) {
-      const { rx, ry } = circleRadii(r, a);
-      drawLand(g, xo + x * ENHANCED_FACTOR, y * ENHANCED_FACTOR, rx * ENHANCED_FACTOR, ry * ENHANCED_FACTOR);
-    }
     const px = (x: number): number => x * 0.01252 * ENHANCED_FACTOR;
     const py = (y: number): number => (196 - y * 0.009650499) * ENHANCED_FACTOR;
+    const islands = sim.scenario.islands.filter((i) => i.present);
+    if (islands.length === 0) {
+      for (const [x, y, r, a] of CHART_ISLANDS) {
+        const { rx, ry } = circleRadii(r, a);
+        drawLand(g, xo + x * ENHANCED_FACTOR, y * ENHANCED_FACTOR, rx * ENHANCED_FACTOR, ry * ENHANCED_FACTOR);
+      }
+    }
+    // the islands as the quadrant map draws them (the same bitmaps, scaled to the chart's units) with the shoal the simulation uses round each
+    const pics = deps.cockpit.screen("quadrant_map").dynamic.islands as Record<string, { offset: [number, number]; rows: string[] }> | undefined;
+    const night = settings.timeOfDay === 0;
+    for (const island of islands) {
+      const cx = xo + px(island.x);
+      const cy = py(island.y);
+      const key = `${island.shape}_${island.drawScale}`;
+      const pic = pics?.[key];
+      const land = pic ? deps.art?.landFromRows(key, pic.rows, night) : null;
+      if (pic && land) {
+        // one bitmap pixel is 1/0.0638 by 1/0.0398 world units on the map
+        const sx = (0.01252 / 0.0638) * ENHANCED_FACTOR;
+        const sy = (0.0096505 / 0.0398) * ENHANCED_FACTOR;
+        const w = (land.canvas.width / land.density) * sx;
+        const h = (land.canvas.height / land.density) * sy;
+        g.smooth(true);
+        g.ctx.drawImage(land.canvas, g.toX(cx + pic.offset[0] * sx), g.toY(cy + pic.offset[1] * sy), g.toLength(w), g.toLength(h));
+        g.smooth(false);
+      } else drawLand(g, cx, cy, island.innerRadius * 0.01252 * ENHANCED_FACTOR * 0.8, island.innerRadius * 0.0096505 * ENHANCED_FACTOR * 0.8);
+      const c = g.ctx;
+      c.fillStyle = rgba(INSTRUMENT.tick, 0.8);
+      c.beginPath();
+      for (let i = 0; i < 40; i += 1) {
+        const a = (i / 40) * Math.PI * 2;
+        const dx = cx + Math.cos(a) * px(island.innerRadius);
+        const dy = cy + Math.sin(a) * island.outerRadius * 0.0096505 * ENHANCED_FACTOR;
+        c.moveTo(g.toX(dx) + g.toLength(1.8), g.toY(dy));
+        c.arc(g.toX(dx), g.toY(dy), g.toLength(1.8), 0, Math.PI * 2);
+      }
+      c.fill();
+    }
     if (deps.trailsOn()) {
       drawTrail(g, deps.trails.chart, xo, { 0: rgba("#ffffff", 0.45), 2: rgba(INSTRUMENT.enemy, 0.45) }, (x, y) => [(x + 0.5) * ENHANCED_FACTOR, (y + 0.5) * ENHANCED_FACTOR], 3.2);
     }
