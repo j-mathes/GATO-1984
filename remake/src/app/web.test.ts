@@ -2548,8 +2548,8 @@ describe("custom controls (key assignments)", () => {
     press(h.app, "e");
     expect(sub.engine).toBe(2);
     h.app.advanced.set("simpleSpeed", false);
-    press(h.app, "F3");
-    expect(sub.orderedSpeed).toBeGreaterThan(0);
+    press(h.app, "3"); // the custom layout's key for ahead full
+    expect(sub.orderedSpeed).toBe(16);
     const before = sub.orderedSpeed;
     press(h.app, "=");
     expect(sub.orderedSpeed).toBe(before);
@@ -2605,16 +2605,16 @@ describe("custom controls (key assignments)", () => {
     const shown = texts(h);
     expect(shown).toContain("CONTROL ASSIGNMENTS");
     expect(shown).toContain("AHEAD FLANK (10)");
-    expect(shown).toContain("F1");
+    expect(shown).toContain("4"); // the custom layout's key for flank
     press(h.app, "Escape");
     expect(h.app.mode).toBe("settings");
   });
 
   it("the game uses the original keys until custom controls are switched on, then the player's own", () => {
     const h = boot();
-    h.app.controls.assign("doors", "G"); // set up but not in force
+    h.app.controls.assign("doors", "X"); // set up but not in force
     startPlay(h);
-    press(h.app, "g");
+    press(h.app, "x");
     expect(h.sim().sub.doorsOpen).toBe(false);
     press(h.app, "t");
     expect(h.sim().sub.doorsOpen).toBe(true);
@@ -2622,7 +2622,7 @@ describe("custom controls (key assignments)", () => {
     h.app.advanced.set("customControls", true);
     press(h.app, "t");
     expect(h.sim().sub.doorsOpen).toBe(false);
-    press(h.app, "g");
+    press(h.app, "x");
     expect(h.sim().sub.doorsOpen).toBe(true);
   });
 
@@ -2646,13 +2646,93 @@ describe("custom controls (key assignments)", () => {
     expect(h.app.controls.get("chart")).toBe("");
     shown = texts(h);
     expect(shown).toContain("(NONE)");
-    expect(JSON.parse(h.map.get("gato.controls") ?? "{}")).toMatchObject({ doors: "C", chart: "" });
+    expect(JSON.parse(h.map.get("gato.controls") ?? "{}")).toMatchObject({ v: 2, keys: { doors: "C", chart: "" } });
     press(h.app, "ArrowDown", "Delete"); // the action under the cursor loses its key
     const inUse = CONTROL_DEFS.filter((d) => h.app.controls.active(d.id));
     expect(h.app.controls.get(inUse[(inUse.findIndex((d) => d.id === "doors") + 1) % inUse.length]?.id as ControlId)).toBe("");
     press(h.app, "r");
     expect(h.app.controls.isDefault).toBe(true);
     expect(boot(h.map).app.controls.isDefault).toBe(true);
+  });
+
+  it("the custom layout has its own defaults for modern keyboards, free of clashes in either speed scheme; the original layout is untouched", () => {
+    for (const simple of [false, true]) {
+      const map = new Keymap(undefined, null, simple, "custom");
+      const used = CONTROL_DEFS.filter((d) => map.active(d.id)).map((d) => map.get(d.id)).filter((k) => k !== "");
+      expect(new Set(used).size, `simple ${simple}`).toBe(used.length);
+      expect(map.isDefault).toBe(true);
+      expect(["scopeForward", "scopePort", "scopeAft", "scopeStarboard"].map((id) => map.get(id as ControlId))).toEqual(["I", "J", "K", "L"]);
+      expect([map.get("fire"), map.get("neutral"), map.get("periscopeToggle"), map.get("radar"), map.get("log"), map.get("allStop"), map.get("reverse")]).toEqual([" ", "N", "P", "G", "B", "0", "Backspace"]);
+      expect([map.get("periscopeUp"), map.get("periscopeDown")]).toEqual(["", ""]);
+      expect([map.get("chart"), map.get("quadrant"), map.get("damage"), map.get("radioRoom"), map.get("doors"), map.get("trails"), map.get("display")]).toEqual(["C", "Q", "R", "M", "T", "W", "V"]);
+    }
+    const classic = new Keymap(undefined, null, false, "custom");
+    expect(["speedSlow", "speedStandard", "speedFull", "speedFlank"].map((id) => classic.get(id as ControlId))).toEqual(["1", "2", "3", "4"]);
+    expect([classic.get("diesel"), classic.get("electric")]).toEqual(["D", "E"]);
+    expect([new Keymap(undefined, null, true, "custom").get("speedUp"), new Keymap(undefined, null, true, "custom").get("enginePower")]).toEqual(["=", "E"]);
+    const original = new Keymap();
+    expect([original.get("fire"), original.get("scopeForward"), original.get("periscopeToggle"), original.get("periscopeUp"), original.get("radar")]).toEqual(["F8", "F", "", "F2", "F6"]);
+    const key = (k: string) => translatePlayKey({ key: k }, classic);
+    expect(key("i")).toEqual({ type: "sim", command: { type: "scope", facing: "F" } });
+    expect(key(" ")).toEqual({ type: "sim", command: { type: "fire" } });
+    expect(key("p")).toEqual({ type: "sim", command: { type: "periscope", direction: "toggle" } });
+    expect(key("F2")).toBeNull();
+    expect(key("f")).toBeNull(); // no longer the forward scope
+  });
+
+  it("P toggles the periscope in a mission with the custom layout (raise a lowered one, lower a raised one, only at periscope depth)", () => {
+    const h = boot();
+    h.app.advanced.set("customControls", true);
+    startPlay(h);
+    const sub = h.sim().sub;
+    expect(sub.periscopeUp).toBe(false);
+    press(h.app, "p");
+    expect(sub.periscopeUp).toBe(true);
+    press(h.app, "p");
+    expect(sub.periscopeUp).toBe(false);
+    press(h.app, "F2"); // the original key is not in the custom layout
+    expect(sub.periscopeUp).toBe(false);
+    sub.depth = 60;
+    press(h.app, "p");
+    expect(sub.periscopeUp).toBe(false); // too deep
+    sub.depth = 10;
+    press(h.app, "p");
+    sub.depth = 60;
+    press(h.app, "p");
+    expect(sub.periscopeUp).toBe(true); // too deep to lower, too
+  });
+
+  it("R in the assignment screen restores the custom defaults, and the stored value is versioned", () => {
+    const h = boot();
+    openEditor(h.app);
+    select(h.app, "fire");
+    press(h.app, "Enter", "x");
+    expect(h.app.controls.get("fire")).toBe("X");
+    press(h.app, "r");
+    expect(h.app.controls.get("fire")).toBe(" ");
+    expect(h.app.controls.isDefault).toBe(true);
+    expect(JSON.parse(h.map.get("gato.controls") ?? "{}").v).toBe(2);
+    expect(boot(h.map).app.controls.get("scopeForward")).toBe("I");
+  });
+
+  it("assignments stored by the first release (no version, original defaults) keep only what the player changed", () => {
+    const legacy = JSON.stringify({ doors: "T", fire: "F8", radar: "F6", scopeForward: "F", periscopeUp: "F2", log: "X", chart: "", speedFlank: "F1" });
+    const custom = new Keymap(undefined, legacy, false, "custom");
+    expect([custom.get("fire"), custom.get("radar"), custom.get("scopeForward"), custom.get("periscopeUp"), custom.get("speedFlank"), custom.get("doors")]).toEqual([" ", "G", "I", "", "4", "T"]);
+    expect([custom.get("log"), custom.get("chart")]).toEqual(["X", ""]); // deliberate choices stay
+    const original = new Keymap(undefined, legacy, false, "original"); // the original layout reads it as before
+    expect([original.get("fire"), original.get("log"), original.get("periscopeUp")]).toEqual(["F8", "X", "F2"]);
+    const app = boot(new Map([["gato.controls", legacy]])).app;
+    expect(app.controls.get("radar")).toBe("G");
+  });
+
+  it("the help lists the periscope keys that exist: the toggle with the custom layout, raise and lower with the original", () => {
+    const rows = (map: Keymap) => controlsPages(undefined, (id) => map.get(id))[2]?.rows.filter(([, action]) => /periscope/i.test(action));
+    expect(rows(new Keymap(undefined, null, false, "custom"))).toEqual([["P", "Periscope up / down"]]);
+    expect(rows(new Keymap())).toEqual([["F2", "Raise periscope"], ["F4", "Lower periscope"]]);
+    const blank = new Keymap(undefined, null, false, "custom");
+    blank.clear("periscopeToggle");
+    expect(rows(blank)).toEqual([["(NONE)", "Raise periscope"], ["(NONE)", "Lower periscope"]]);
   });
 
   it("the editor lists Tab and Escape as fixed and refuses to change them or to assign them", () => {
@@ -2696,14 +2776,14 @@ describe("custom controls (key assignments)", () => {
   it("the help overlay and the display key follow the assignments in force", () => {
     const h = boot();
     h.app.advanced.set("customControls", true);
-    h.app.controls.assign("doors", "G");
-    h.app.controls.assign("display", "K");
+    h.app.controls.assign("doors", "X");
+    h.app.controls.assign("display", "Y");
     startPlay(h);
-    expect(h.app.isDisplayKey({ key: "k" })).toBe(true);
+    expect(h.app.isDisplayKey({ key: "y" })).toBe(true);
     expect(h.app.isDisplayKey({ key: "v" })).toBe(false);
     press(h.app, "?", "ArrowRight", "ArrowRight");
     const page = texts(h);
-    expect(page).toEqual(expect.arrayContaining(["CONTROLS - SCOPE AND WEAPONS", "G", "Torpedo doors"]));
+    expect(page).toEqual(expect.arrayContaining(["CONTROLS - SCOPE AND WEAPONS", "X", "Torpedo doors"]));
     expect(page).not.toContain("T");
     h.app.advanced.set("customControls", false);
     expect(h.app.isDisplayKey({ key: "v" })).toBe(true);

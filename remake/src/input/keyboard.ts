@@ -42,7 +42,8 @@ export interface KeyLike {
  *   W            track dots on radar, chart and quadrant map on/off
  *   ? or H       controls quick-reference overlay (remake addition; pauses the world while shown)
  *   [ / ]        time compression 1x / 2x / 4x (2.5 / 5 / 10 simulation steps per second; remake addition)
- * The table lives in controls.ts (CONTROL_DEFS); with CUSTOM CONTROLS on, the player's own Keymap replaces the default one.
+ * The table lives in controls.ts (CONTROL_DEFS): these are the original's keys. With CUSTOM CONTROLS on, the player's own Keymap, which starts from
+ * a separate custom layout for modern keyboards, replaces them.
  */
 export function translatePlayKey(e: KeyLike, keymap: Keymap = DEFAULT_KEYMAP): InputAction | null {
   if (e.ctrlKey || e.altKey || e.metaKey) return null;

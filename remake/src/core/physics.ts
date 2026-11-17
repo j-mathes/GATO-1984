@@ -9,7 +9,7 @@ export type HelmCommand =
   | { type: "rudder"; direction: "left" | "right" | "neutral" }
   | { type: "planes"; direction: "up" | "down" | "neutral" }
   | { type: "doors" }
-  | { type: "periscope"; direction: "raise" | "lower" }
+  | { type: "periscope"; direction: "raise" | "lower" | "toggle" }
   | { type: "scope"; facing: ScopeFacing };
 
 export function createSubmarine(rng: Rng): SubmarineState {
@@ -97,11 +97,14 @@ export function applyHelmCommand(sub: SubmarineState, cmd: HelmCommand): void {
       sub.doorsOpen = !sub.doorsOpen;
       return;
     }
-    case "periscope":
-      if (cmd.direction === "raise") {
+    case "periscope": {
+      // "toggle" (remake, the custom P key) raises a lowered periscope and lowers a raised one, with the same depth limit
+      const raise = cmd.direction === "toggle" ? !sub.periscopeUp : cmd.direction === "raise";
+      if (raise) {
         if (!sub.periscopeUp && sub.depth <= DEPTH.periscopeMax) sub.periscopeUp = true;
       } else if (sub.periscopeUp && sub.depth <= DEPTH.periscopeMax) sub.periscopeUp = false;
       return;
+    }
     case "scope":
       sub.scopeFacing = cmd.facing;
       return;

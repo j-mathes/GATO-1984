@@ -184,7 +184,7 @@ export class App {
   ) {
     this.storage = storage;
     this.advanced = new AdvancedOptions(() => this.advancedChanged(), storage?.getItem(ADVANCED_KEY) ?? null);
-    this.controls = new Keymap(() => this.controlsChanged(), storage?.getItem(CONTROLS_KEY) ?? null, this.advanced.effective("simpleSpeed"));
+    this.controls = new Keymap(() => this.controlsChanged(), storage?.getItem(CONTROLS_KEY) ?? null, this.advanced.effective("simpleSpeed"), "custom");
     if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
     this.showControlHud = storage?.getItem(CONTROL_HUD_KEY) === "1";

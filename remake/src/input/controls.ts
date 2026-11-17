@@ -1,9 +1,10 @@
 import type { InputAction } from "./keyboard.js";
 
 /**
- * Key assignments for the mission screens. The default assignments are the original's (GATO1.EXE's key dispatcher, see keyboard.ts) plus the
- * remake's own keys; with CUSTOM CONTROLS switched on (ADVANCED OPTIONS) the player can give each action another key. One key per action:
- * an action can also have no key at all. Typing in prompts, GAME CONTROL, the menus and the demo keep their fixed keys.
+ * Key assignments for the mission screens. There are two sets of defaults: the original's (GATO1.EXE's key dispatcher, see keyboard.ts, plus
+ * the remake's own keys) and, with CUSTOM CONTROLS switched on (ADVANCED OPTIONS), a custom layout for a modern keyboard that the player can
+ * then change key by key. One key per action: an action can also have no key at all. Typing in prompts, GAME CONTROL, the menus and the demo
+ * keep their fixed keys.
  */
 export type ControlId =
   | "speedUp"
@@ -14,6 +15,7 @@ export type ControlId =
   | "speedSlow"
   | "allStop"
   | "reverse"
+  | "periscopeToggle"
   | "periscopeUp"
   | "periscopeDown"
   | "fire"
@@ -50,14 +52,16 @@ export interface ControlDef {
   id: ControlId;
   /** At most 24 characters (shown on the assignment screen). */
   label: string;
-  /** The key of the original (or, for the remake's own actions, of the remake). */
+  /** The key of the original (or, for the remake's own actions, of the remake). "" = none. */
   key: string;
   /** What the key does in a mission; null for the actions the page itself handles (display mode). */
   input: InputAction | null;
   /** Fixed: the key cannot be changed, cleared or taken over by another action. */
   locked?: true;
-  /** The default key while SIMPLE SPEED KEYS is on, where it differs from `key`. */
+  /** The default key while SIMPLE SPEED KEYS is on, where it differs from `key` (original layout only). */
   simpleKey?: string;
+  /** The default key of the custom layout (CUSTOM CONTROLS on), where it differs from `key`. "" = none. */
+  customKey?: string;
   /** Which speed scheme the action belongs to: the four stage keys ("classic") or the step up/down keys ("simple"); the others serve both. */
   speed?: "classic" | "simple";
 }
@@ -65,32 +69,33 @@ export interface ControlDef {
 const RAW_DEFS: readonly ControlDef[] = [
   { id: "speedUp", label: "SPEED UP ONE STEP", key: "=", input: { type: "sim", command: { type: "speed", level: "up" } }, speed: "simple" },
   { id: "speedDown", label: "SPEED DOWN ONE STEP", key: "-", input: { type: "sim", command: { type: "speed", level: "down" } }, speed: "simple" },
-  { id: "speedFlank", label: "AHEAD FLANK (10)", key: "F1", input: { type: "sim", command: { type: "speed", level: "F1" } }, speed: "classic" },
-  { id: "speedFull", label: "AHEAD FULL (8)", key: "F3", input: { type: "sim", command: { type: "speed", level: "F3" } }, speed: "classic" },
-  { id: "speedStandard", label: "AHEAD STANDARD (6)", key: "F5", input: { type: "sim", command: { type: "speed", level: "F5" } }, speed: "classic" },
-  { id: "speedSlow", label: "AHEAD SLOW (3)", key: "F7", input: { type: "sim", command: { type: "speed", level: "F7" } }, speed: "classic" },
-  { id: "allStop", label: "ALL STOP", key: "F9", simpleKey: "0", input: { type: "sim", command: { type: "speed", level: "stop" } } },
-  { id: "reverse", label: "REVERSE", key: "F10", simpleKey: "Backspace", input: { type: "sim", command: { type: "speed", level: "reverse" } } },
-  { id: "periscopeUp", label: "RAISE PERISCOPE", key: "F2", input: { type: "sim", command: { type: "periscope", direction: "raise" } } },
-  { id: "periscopeDown", label: "LOWER PERISCOPE", key: "F4", input: { type: "sim", command: { type: "periscope", direction: "lower" } } },
-  { id: "fire", label: "FIRE TORPEDO", key: "F8", input: { type: "sim", command: { type: "fire" } } },
-  { id: "radar", label: "RADAR", key: "F6", input: { type: "screen", screen: "radar" } },
+  { id: "speedFlank", label: "AHEAD FLANK (10)", key: "F1", customKey: "4", input: { type: "sim", command: { type: "speed", level: "F1" } }, speed: "classic" },
+  { id: "speedFull", label: "AHEAD FULL (8)", key: "F3", customKey: "3", input: { type: "sim", command: { type: "speed", level: "F3" } }, speed: "classic" },
+  { id: "speedStandard", label: "AHEAD STANDARD (6)", key: "F5", customKey: "2", input: { type: "sim", command: { type: "speed", level: "F5" } }, speed: "classic" },
+  { id: "speedSlow", label: "AHEAD SLOW (3)", key: "F7", customKey: "1", input: { type: "sim", command: { type: "speed", level: "F7" } }, speed: "classic" },
+  { id: "allStop", label: "ALL STOP", key: "F9", simpleKey: "0", customKey: "0", input: { type: "sim", command: { type: "speed", level: "stop" } } },
+  { id: "reverse", label: "REVERSE", key: "F10", simpleKey: "Backspace", customKey: "Backspace", input: { type: "sim", command: { type: "speed", level: "reverse" } } },
+  { id: "periscopeToggle", label: "PERISCOPE UP / DOWN", key: "", customKey: "P", input: { type: "sim", command: { type: "periscope", direction: "toggle" } } },
+  { id: "periscopeUp", label: "RAISE PERISCOPE", key: "F2", customKey: "", input: { type: "sim", command: { type: "periscope", direction: "raise" } } },
+  { id: "periscopeDown", label: "LOWER PERISCOPE", key: "F4", customKey: "", input: { type: "sim", command: { type: "periscope", direction: "lower" } } },
+  { id: "fire", label: "FIRE TORPEDO", key: "F8", customKey: " ", input: { type: "sim", command: { type: "fire" } } },
+  { id: "radar", label: "RADAR", key: "F6", customKey: "G", input: { type: "screen", screen: "radar" } },
   { id: "rudderLeft", label: "RUDDER LEFT", key: "ArrowLeft", input: { type: "sim", command: { type: "rudder", direction: "left" } } },
   { id: "rudderRight", label: "RUDDER RIGHT", key: "ArrowRight", input: { type: "sim", command: { type: "rudder", direction: "right" } } },
   { id: "planesUp", label: "RISE (PLANES UP)", key: "ArrowUp", input: { type: "sim", command: { type: "planes", direction: "up" } } },
   { id: "planesDown", label: "DIVE (PLANES DOWN)", key: "ArrowDown", input: { type: "sim", command: { type: "planes", direction: "down" } } },
-  { id: "neutral", label: "CENTRE RUDDER, PLANES", key: "5", input: { type: "sim", command: { type: "neutral" } } },
+  { id: "neutral", label: "CENTRE RUDDER, PLANES", key: "5", customKey: "N", input: { type: "sim", command: { type: "neutral" } } },
   { id: "diesel", label: "DIESEL ENGINE", key: "D", input: { type: "sim", command: { type: "engine", mode: "diesel" } }, speed: "classic" },
   { id: "electric", label: "ELECTRIC MOTOR", key: "E", input: { type: "sim", command: { type: "engine", mode: "electric" } }, speed: "classic" },
   { id: "enginePower", label: "TOGGLE ENGINE POWER", key: "E", input: { type: "sim", command: { type: "engine", mode: "toggle" } }, speed: "simple" },
-  { id: "scopeForward", label: "SCOPE FORWARD", key: "F", input: { type: "sim", command: { type: "scope", facing: "F" } } },
-  { id: "scopePort", label: "SCOPE PORT", key: "P", input: { type: "sim", command: { type: "scope", facing: "P" } } },
-  { id: "scopeAft", label: "SCOPE AFT", key: "A", input: { type: "sim", command: { type: "scope", facing: "A" } } },
-  { id: "scopeStarboard", label: "SCOPE STARBOARD", key: "S", input: { type: "sim", command: { type: "scope", facing: "S" } } },
+  { id: "scopeForward", label: "SCOPE FORWARD", key: "F", customKey: "I", input: { type: "sim", command: { type: "scope", facing: "F" } } },
+  { id: "scopePort", label: "SCOPE PORT", key: "P", customKey: "J", input: { type: "sim", command: { type: "scope", facing: "P" } } },
+  { id: "scopeAft", label: "SCOPE AFT", key: "A", customKey: "K", input: { type: "sim", command: { type: "scope", facing: "A" } } },
+  { id: "scopeStarboard", label: "SCOPE STARBOARD", key: "S", customKey: "L", input: { type: "sim", command: { type: "scope", facing: "S" } } },
   { id: "doors", label: "TORPEDO DOORS", key: "T", input: { type: "sim", command: { type: "doors" } } },
   { id: "chart", label: "CHART", key: "C", input: { type: "screen", screen: "chart" } },
   { id: "quadrant", label: "QUADRANT MAP", key: "Q", input: { type: "screen", screen: "quadrant" } },
-  { id: "log", label: "CAPTAIN'S LOG", key: "L", input: { type: "screen", screen: "log" } },
+  { id: "log", label: "CAPTAIN'S LOG", key: "L", customKey: "B", input: { type: "screen", screen: "log" } },
   { id: "damage", label: "DAMAGE REPORT", key: "R", input: { type: "screen", screen: "damage" } },
   { id: "radioRoom", label: "RADIO ROOM", key: "M", input: { type: "radioRoom" } },
   { id: "gameControl", label: "GAME CONTROL", key: "Tab", input: { type: "screen", screen: "gameControl" }, locked: true },
@@ -108,7 +113,7 @@ const RAW_DEFS: readonly ControlDef[] = [
 export const CONTROL_GROUPS: readonly { title: string; ids: readonly ControlId[] }[] = [
   { title: "SPEED AND ENGINES", ids: ["speedUp", "speedDown", "speedFlank", "speedFull", "speedStandard", "speedSlow", "allStop", "reverse", "diesel", "electric", "enginePower"] },
   { title: "STEERING", ids: ["rudderLeft", "rudderRight", "planesUp", "planesDown", "neutral"] },
-  { title: "SCOPE AND WEAPONS", ids: ["periscopeUp", "periscopeDown", "scopeForward", "scopePort", "scopeAft", "scopeStarboard", "doors", "fire"] },
+  { title: "SCOPE AND WEAPONS", ids: ["periscopeToggle", "periscopeUp", "periscopeDown", "scopeForward", "scopePort", "scopeAft", "scopeStarboard", "doors", "fire"] },
   { title: "SCREENS", ids: ["chart", "quadrant", "radar", "log", "damage", "radioRoom", "gameControl", "debug"] },
   { title: "REMAKE EXTRAS", ids: ["trails", "timeDown", "timeUp", "display", "help", "helpAlt", "quit"] },
 ];
@@ -164,19 +169,25 @@ export function isLocked(id: ControlId): boolean {
 /** `locked`: the action, or the key asked for, is fixed (Tab, Escape). `conflict`: another action has the key. */
 export type AssignResult = { ok: true } | { ok: false; conflict: ControlId } | { ok: false; locked: true };
 
+export type KeyLayout = "original" | "custom";
+
+/** Stored form: {@link STORAGE_VERSION} with the assignments under `keys` (the first release stored the assignments bare, without a version). */
+const STORAGE_VERSION = 2;
+
 /** The assignments (one key per action, possibly none); `onChange` is called after every change. */
 export class Keymap {
   private keys = {} as Record<ControlId, string>;
   private simple: boolean;
 
   /**
-   * `simple`: SIMPLE SPEED KEYS is in force, so the step up/down actions are used instead of the four stage keys, and ALL STOP and REVERSE
-   * default to keys near them. The stored assignments are taken as they are.
+   * `simple`: SIMPLE SPEED KEYS is in force, so the step up/down actions are used instead of the four stage keys. `layout` picks the
+   * defaults: the original's keys (the default, also what the game uses with CUSTOM CONTROLS off) or the custom layout the player edits.
    */
   constructor(
     private readonly onChange: () => void = () => undefined,
     saved: string | null = null,
     simple = false,
+    readonly layout: KeyLayout = "original",
   ) {
     this.simple = simple;
     this.resetKeys();
@@ -187,8 +198,9 @@ export class Keymap {
     return this.simple;
   }
 
-  /** The default key of an action under the given speed scheme. */
-  private defaultKey(d: ControlDef, simple = this.simple): string {
+  /** The default key of an action under the given speed scheme and the layout of this keymap. */
+  private defaultKey(d: ControlDef, simple = this.simple, layout: KeyLayout = this.layout): string {
+    if (layout === "custom" && d.customKey !== undefined) return d.customKey;
     return simple && d.simpleKey !== undefined ? d.simpleKey : d.key;
   }
 
@@ -264,7 +276,7 @@ export class Keymap {
   }
 
   serialize(): string {
-    return JSON.stringify(this.keys);
+    return JSON.stringify({ v: STORAGE_VERSION, keys: this.keys });
   }
 
   /** True while every assignment in use is the default. */
@@ -276,14 +288,22 @@ export class Keymap {
     for (const d of CONTROL_DEFS) this.keys[d.id] = this.defaultKey(d);
   }
 
-  /** Reads stored assignments; unknown actions, non-strings and unusable keys are ignored, and a key given twice stays with the first action in use. */
+  /**
+   * Reads stored assignments; unknown actions, non-strings and unusable keys are ignored, and a key given twice stays with the first action
+   * in use. An unversioned value (first release, whose defaults were the original's keys) keeps only what differs from those defaults, so
+   * the custom layout is not mistaken for the player's own choices.
+   */
   private load(text: string): void {
     try {
-      const raw = JSON.parse(text) as Record<string, unknown>;
+      const parsed = JSON.parse(text) as Record<string, unknown>;
+      const versioned = parsed.v === STORAGE_VERSION && typeof parsed.keys === "object" && parsed.keys !== null;
+      const raw = (versioned ? parsed.keys : parsed) as Record<string, unknown>;
+      const legacyDefault = (d: ControlDef): string[] => [d.key, d.simpleKey ?? d.key];
       const seen = new Set<string>();
       const loaded = {} as Record<ControlId, string>;
       for (const d of CONTROL_DEFS) {
-        const v = raw[d.id];
+        let v = raw[d.id];
+        if (!versioned && this.layout === "custom" && typeof v === "string" && legacyDefault(d).includes(v)) v = undefined;
         let key = this.defaultKey(d);
         if (!d.locked && typeof v === "string" && (v === "" || (isAssignable(normalizeKey(v)) && !LOCKED_KEYS.has(normalizeKey(v))))) key = normalizeKey(v);
         if (this.active(d.id)) {
@@ -299,4 +319,5 @@ export class Keymap {
   }
 }
 
+/** The original's keys; what the game uses while CUSTOM CONTROLS is off. */
 export const DEFAULT_KEYMAP = new Keymap();

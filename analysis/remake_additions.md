@@ -93,13 +93,13 @@ Menu item 5 opens the screen, which shows the switches ten to a page (`PAGE 1 OF
 | 28 | SLOW 1984 PC PACE (2.5 HZ) | 10 simulation steps a second at 1x (2x = 20, 4x = 40). The original has no fixed rate (one pass of its loop as fast as the CPU allows), so there is no exact equivalent |
 | 30 | CHOOSE THE NEXT MISSION | the next mission is always the original's random pick; GAME CONTROL item 5 is hidden (the pick is kept but unused) |
 | 32 | WORLD RUNS DURING BLASTS | the world is held while an explosion plays, as the original blocks in its animation |
-| 38 | CUSTOM CONTROLS (default OFF) | the original key assignments only; ON lets the player reassign the mission keys on the CONTROL ASSIGNMENTS screen (below) |
+| 38 | CUSTOM CONTROLS (default OFF) | the original key assignments only; ON switches to a custom key layout for a modern keyboard that the player can change on the CONTROL ASSIGNMENTS screen (below) |
 | 40 | SIMPLE SPEED KEYS (default OFF; only listed and in force while CUSTOM CONTROLS is on) | a key per speed stage (F1 F3 F5 F7), F9 stop, F10 reverse, D and E engines; ON replaces the stage and engine keys by one key that steps the speed up and one that steps it down (defaults `=` and `-`), ALL STOP (`0`), REVERSE (`Backspace`) and one engine toggle (`E`), see below |
 
 ### Simple speed keys (row 40)
 
 * **Stepping:** the ahead stages are stop, slow (3), standard (6), full (8) and flank (10), each times the engine factor, the open doors and engine-room damage like the F keys (`core/physics.ts` `steppedSpeed`). Speed up orders the next higher stage and speed down the next lower one, never below stop; from a speed between stages (doors opened, engine changed) each goes to the nearest stage in its direction. Reverse stays a deliberate key: speed down does not go astern and speed up from reverse goes to stop.
-* **Defaults chosen to sit next to `=` and `-`:** `0` for all stop (zero speed, beside `-`) and `Backspace` for reverse (back, beside `=`). `E` toggles diesel and electric (the fuel and battery rules of the D and E keys). `P` was not used: it is the scope-port key.
+* **Defaults chosen to sit next to `=` and `-`:** `0` for all stop (zero speed, beside `-`) and `Backspace` for reverse (back, beside `=`); the custom layout uses them with the stage keys too. `E` toggles diesel and electric (the fuel and battery rules of the D and E keys); `P` is the periscope toggle in the custom layout.
 * **What changes in the lists:** the four stage actions and the D and E actions leave the assignment screen and the help (and their keys do nothing); the step up, step down and engine toggle actions take their place. ALL STOP and REVERSE move to `0` and `Backspace` when the switch is turned on, but only if they still have the F9 and F10 defaults and the new key is free (the same in reverse when it is turned off); an action that comes into use and finds its key taken by another is left without a key. `R` on the assignment screen restores the defaults of the scheme in force.
 
 ### Control assignments (row 38)
@@ -109,9 +109,28 @@ With CUSTOM CONTROLS on, `C` on the ADVANCED OPTIONS screen opens CONTROL ASSIGN
 * **Layout:** the list is in the sections of the help pages (speed and engines, steering, scope and weapons, screens, remake extras), each with a `-- TITLE --` line that scrolls with the list. Actions are listed whether or not their feature is switched on, so keys can be assigned ahead of use.
 * **Conflicts:** giving an action a key another action already has shows a warning (`<KEY> IS ALREADY USED FOR <ACTION>`); Enter overrides, which leaves the other action without a key (shown `(NONE)`), and Esc cancels.
 * **Fixed keys:** Tab (GAME CONTROL) and Escape (back to the menu) are listed with `(FIXED)`: their actions cannot be changed or blanked, and no other action can take those keys. Delete is not assignable (it blanks or cancels), nor are Shift, Ctrl, Alt and Meta alone. Which other keys should be protected is still open.
-* **Defaults:** the original's keys (and the remake's own keys for the remake-only actions); custom defaults are not decided yet.
+* **Defaults:** two sets. The original's keys (plus the remake's own keys for the remake-only actions) are what the game uses with the switch off and what `Keymap` gives by default. The custom layout, below, is what the assignment screen starts from and what `R` restores; the player's changes are kept per action and the layout in use follows the switch.
 * **Scope:** only the mission keys. Menu, GAME CONTROL numbers, prompts, the demo (F1, F2) and the orders screen keep their fixed keys.
-* **Storage:** `localStorage` `gato.controls`; the assignments are used in play only while the switch is on. The help overlay and the display-mode key follow them.
+* **Storage:** `localStorage` `gato.controls`, as `{"v": 2, "keys": {...}}`; the assignments are used in play only while the switch is on. The help overlay and the display-mode key follow them. A value written by the first release (no version, whose defaults were the original's keys) is read keeping only what differs from the original's keys, so the custom layout is not mistaken for the player's own choices.
+
+### Custom layout (defaults while CUSTOM CONTROLS is on)
+
+Chosen for a modern keyboard (no function keys), keeping the mnemonic letters and the arrow keys that already worked. Fixed keys are Tab and Escape. No two actions in use share a key, with the stage keys or with the simple speed keys (checked in `web.test.ts`).
+
+| Action | Original | Custom (stage keys) | Custom (simple speed keys) |
+| --- | --- | --- | --- |
+| Ahead slow / standard / full / flank | F7 / F5 / F3 / F1 | `1` / `2` / `3` / `4` | not used |
+| Step speed up / down | none | not used | `=` / `-` |
+| All stop / reverse | F9 / F10 | `0` / `Backspace` | `0` / `Backspace` |
+| Diesel / electric | D / E | `D` / `E` | `E` toggles |
+| Centre rudder and planes | 5 | `N` | `N` |
+| Periscope | F2 raise, F4 lower | `P` toggles; raise and lower exist but have no key | same |
+| Scope forward / port / aft / starboard | F / P / A / S | `I` / `J` / `K` / `L` | same |
+| Fire | F8 | `Space` | `Space` |
+| Radar | F6 | `G` | `G` |
+| Captain's log | L | `B` | `B` |
+
+All other keys (arrows, `T`, `C`, `Q`, `R`, `M`, `Z`, `W`, `V`, `?`, `H`, `[`, `]`) are the same in both layouts. The periscope toggle (`P`, `core/physics.ts` `periscope` with `toggle`) raises a lowered periscope and lowers a raised one, with the same depth limit as F2 and F4; the help lists only the periscope keys that have one.
 
 ## 6. Tooling (not part of the game)
 

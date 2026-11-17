@@ -145,6 +145,22 @@ describe("helm and engines", () => {
     expect(sub.battery).toBe(0);
   });
 
+  it("toggles the periscope: up when down, down when up, only at periscope depth", () => {
+    const sub = newSim().sub;
+    applyHelmCommand(sub, { type: "periscope", direction: "toggle" });
+    expect(sub.periscopeUp).toBe(true);
+    applyHelmCommand(sub, { type: "periscope", direction: "toggle" });
+    expect(sub.periscopeUp).toBe(false);
+    sub.depth = 46;
+    applyHelmCommand(sub, { type: "periscope", direction: "toggle" });
+    expect(sub.periscopeUp).toBe(false); // too deep to raise
+    sub.depth = 40;
+    applyHelmCommand(sub, { type: "periscope", direction: "toggle" });
+    sub.depth = 46;
+    applyHelmCommand(sub, { type: "periscope", direction: "toggle" });
+    expect(sub.periscopeUp).toBe(true); // and too deep to lower
+  });
+
   it("accelerates by 0.25 and brakes by 1 per step", () => {
     const sim = newSim();
     sim.sub.orderedSpeed = 2;

@@ -25,7 +25,7 @@ Each mission gives you a convoy to find: where it was seen, its heading and spee
 
 Things to keep an eye on:
 
-- **Contacts.** Use the periscope (**F2**, only at depth 45 or less) and point it with **F / P / A / S** (forward, port, aft, starboard). The radar (**F6**), the chart (**C**) and the quadrant map (**Q**) show where ships and islands are.
+- **Contacts.** Use the periscope (**F2**, only at depth 45 or less) and point it with **F / P / A / S** (forward, port, aft, starboard); see Controls for the custom layout's keys. The radar (**F6**), the chart (**C**) and the quadrant map (**Q**) show where ships and islands are.
 - **Torpedoes.** You carry 24, fired from four tubes with **F8**. The doors must be open (**T**), and a torpedo runs straight ahead of the bow, so you aim by steering the boat. Open doors slow the boat a little.
 - **Fuel, battery and air.** Diesel gives speed and charges the battery, but it **cuts out when you are deeper than 20 or out of fuel**, so surface or come up to snorkel depth to run it. Electric is quiet but drains the battery and cuts out when it is flat. Oxygen runs down while you are submerged and is restored by running on diesel. Warning tones sound when fuel or battery run low.
 - **Damage.** The damage report (**R**) shows the eight compartments. A damaged torpedo room cannot fire, a damaged engine room halves your speed and a damaged radio room cannot take messages. Too many damaged compartments lose the boat. Depth charges from escorts that have spotted you damage the boat, and ramming a ship can destroy it.
@@ -33,30 +33,32 @@ Things to keep an eye on:
 
 ## Controls
 
-| Key | Action |
-| --- | --- |
-| F1 / F3 / F5 / F7 | Ahead: flank / full / standard / slow |
-| F9 / F10 | All stop / reverse |
-| ← / → | Rudder left / right |
-| ↑ / ↓ | Rise / dive |
-| 5 (or keypad 5) | Centre rudder and planes |
-| D / E | Diesel / electric engine |
-| F2 / F4 | Raise / lower periscope |
-| F / P / A / S | Periscope facing: forward / port / aft / starboard |
-| T | Open / close torpedo doors |
-| F8 | Fire a torpedo |
-| F6 | Radar |
-| C | Chart |
-| Q | Quadrant map |
-| L | Captain's Log (ships sunk, tonnage, missions completed) |
-| R | Damage report |
-| M | Radio room, then back to the control room. With a working radio this shows your orders again |
-| Tab | GAME CONTROL |
-| ? or H | Controls help (pages through the keys; arrow keys turn pages, any other key closes) |
-| W | Turn the persistent position dots on the chart, map and radar on or off |
-| [ / ] | Slower / faster time: 1× is the pace of a 1984 PC, 2× and 4× fast-forward |
-| V | Display mode (below) |
-| Esc | Leave the mission and return to the menu |
+These are the original game's keys. Because some of them (the function keys, `5`, `P A S F`) are awkward on a modern keyboard, the advanced options can switch to a second, custom layout (right-hand column; see [Custom controls](#advanced-options)). Keys not listed there are the same in both.
+
+| Action | Original keys | Custom layout |
+| --- | --- | --- |
+| Ahead slow / standard / full / flank | F7 / F5 / F3 / F1 | `1` / `2` / `3` / `4` |
+| All stop / reverse | F9 / F10 | `0` / `Backspace` |
+| Rudder left / right | ← / → | same |
+| Rise / dive | ↑ / ↓ | same |
+| Centre rudder and planes | 5 (or keypad 5) | `N` |
+| Diesel / electric engine | D / E | same |
+| Periscope up / down | F2 / F4 | `P` (one key toggles it) |
+| Periscope facing: forward / port / aft / starboard | F / P / A / S | `I` / `J` / `K` / `L` |
+| Open / close torpedo doors | T | same |
+| Fire a torpedo | F8 | `Space` |
+| Radar | F6 | `G` |
+| Chart | C | same |
+| Quadrant map | Q | same |
+| Captain's Log (ships sunk, tonnage, missions completed) | L | `B` |
+| Damage report | R | same |
+| Radio room, then back to the control room. With a working radio this shows your orders again | M | same |
+| GAME CONTROL | Tab | same |
+| Controls help (pages through the keys; arrow keys turn pages, any other key closes) | ? or H | same |
+| Turn the persistent position dots on the chart, map and radar on or off | W | same |
+| Slower / faster time: 1× is the pace of a 1984 PC, 2× and 4× fast-forward | [ / ] | same |
+| Display mode (below) | V | same |
+| Leave the mission and return to the menu | Esc | same |
 
 The Captain's Log, the damage report and GAME CONTROL pause the game; the radar, chart and quadrant map do not. When a message box is on screen (mission completed, radio room report), the first key only closes it.
 
@@ -96,9 +98,9 @@ Menu item **5** (or item 7 in GAME CONTROL during a mission) opens a settings sc
 
 The defaults keep the additions (key help, display modes, wake-dot toggle, time compression, the 2.5 steps a second pace, message boxes that wait for a key, and so on), except for the helm status line, custom controls and simple speed keys, which are off.
 
-**Custom controls.** With this switch on, press **C** on the advanced options screen to open *Control assignments*: pick an action, press Enter, then press the new key. If the key is already used you are warned and can override it (the other action is left without a key) or cancel. **Delete** clears an action, **R** restores the defaults. Tab and Esc are fixed. Only the mission keys can be changed.
+**Custom controls.** With this switch on, the game uses a second layout built for a modern keyboard (the right-hand column of the controls table), which you can then change key by key. Press **C** on the advanced options screen to open *Control assignments*: pick an action, press Enter, then press the new key. If the key is already used you are warned and can override it (the other action is left without a key) or cancel. **Delete** clears an action, **R** restores the custom layout. Tab and Esc are fixed. Only the mission keys can be changed, and the controls help shows the keys in force. With the switch off you get the original keys, and your assignments are kept for later.
 
-**Simple speed keys** (listed only while custom controls is on) replaces the four speed keys and the two engine keys by `=` (speed up one step), `-` (speed down one step), `0` (all stop), `Backspace` (reverse) and `E` (switch between diesel and electric).
+**Simple speed keys** (listed only while custom controls is on) replaces the four speed-stage keys and the two engine keys by `=` (speed up one step), `-` (speed down one step), `0` (all stop), `Backspace` (reverse) and `E` (switch between diesel and electric).
 
 ## Your saved data
 

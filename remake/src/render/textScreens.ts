@@ -240,6 +240,17 @@ export const HELP_ACTION_WIDTH = 22;
 
 type HelpSpec = readonly (readonly [id: ControlId | "help", action: string])[];
 
+/** The periscope rows of the help: only those with a key (the original has raise and lower, the custom layout one toggle key); all three blank lists raise and lower as `(NONE)`. */
+function periscopeRows(keyOf: (id: ControlId) => string): [ControlId, string][] {
+  const rows: [ControlId, string][] = [
+    ["periscopeToggle", "Periscope up / down"],
+    ["periscopeUp", "Raise periscope"],
+    ["periscopeDown", "Lower periscope"],
+  ];
+  const keyed = rows.filter(([id]) => keyOf(id) !== "");
+  return keyed.length > 0 ? keyed : rows.slice(1);
+}
+
 /** The quick reference in pages; the keys shown are the current assignments (`keyOf`, default: the original's). */
 export function controlsPages(
   extras: HelpExtras = { trails: true, timeKeys: true, display: true, escQuit: true },
@@ -287,8 +298,7 @@ export function controlsPages(
       ["neutral", "Centre rudder, planes"],
     ]),
     page("SCOPE AND WEAPONS", [
-      ["periscopeUp", "Raise periscope"],
-      ["periscopeDown", "Lower periscope"],
+      ...periscopeRows(keyOf),
       ["scopeForward", "Scope forward"],
       ["scopePort", "Scope port"],
       ["scopeAft", "Scope aft"],
