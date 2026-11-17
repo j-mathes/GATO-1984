@@ -2274,6 +2274,39 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(plain.some(([n, a]) => n === "text" && a[0] === 2 && a[1] === 4 && a[2] === "DO YOU WANT DO PLAY AGAIN? (Y/N)")).toBe(true);
   });
 
+  it("on radar, chart, map, log or damage report an unassigned key, or the key that opened the screen, goes back to the control room", () => {
+    const h = play();
+    for (const [open, screen] of [["F6", "radar"], ["c", "chart"], ["q", "quadrant"], ["l", "log"], ["r", "damage"]] as const) {
+      press(h.app, open);
+      expect(h.app.screen, open).toBe(screen);
+      press(h.app, " "); // the space bar has no assignment
+      expect(h.app.screen, `${open} then space`).toBe("control");
+      press(h.app, open);
+      expect(h.app.screen).toBe(screen);
+      press(h.app, open); // the same key again toggles back
+      expect(h.app.screen, `${open} twice`).toBe("control");
+    }
+    press(h.app, "F6");
+    press(h.app, "c"); // another screen key still switches directly
+    expect(h.app.screen).toBe("chart");
+    press(h.app, "Shift"); // modifiers, lock keys, browser shortcuts and unused function keys do not
+    press(h.app, "CapsLock");
+    press(h.app, "F11");
+    expect(h.app.screen).toBe("chart");
+    h.app.keydown({ key: "x", ctrlKey: true });
+    expect(h.app.screen).toBe("chart");
+    press(h.app, "Enter");
+    expect(h.app.screen).toBe("control");
+  });
+
+  it("the toggle also works with the custom controls on (the screen keys are the player's own)", () => {
+    const h = play({ map: new Map([["gato.advanced", JSON.stringify({ customControls: true })]]) });
+    press(h.app, "g"); // radar in the custom layout
+    expect(h.app.screen).toBe("radar");
+    press(h.app, "g");
+    expect(h.app.screen).toBe("control");
+  });
+
   it("the radar prints the torpedo count with BASIC's leading space, so its digits sit inside the box (columns 35 and on)", () => {
     const h = play();
     press(h.app, "F6");

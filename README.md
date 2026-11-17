@@ -60,7 +60,7 @@ These are the original game's keys. Because some of them (the function keys, `5`
 | Display mode (below) | V | V |
 | Leave the mission and return to the menu | Esc | Esc |
 
-The Captain's Log, the damage report and GAME CONTROL pause the game; the radar, chart and quadrant map do not. When a message box is on screen (mission completed, radio room report), the first key only closes it.
+The Captain's Log, the damage report and GAME CONTROL pause the game; the radar, chart and quadrant map do not. On the radar, chart, quadrant map, log or damage report, any key that has no assignment (the space bar, for example) takes you back to the control room, as in the original, and so does pressing the key that opened the screen a second time. When a message box is on screen (mission completed, radio room report), the first key only closes it.
 
 When the boat is lost the glass cracks and the sea floods the screen, as in the original (about two and a half seconds; **Skip the sinking scene** in the advanced options turns it off). Then, or at once when the air runs out, you are asked whether to play again (**Y** / **N**).
 

@@ -51,6 +51,16 @@ export function translatePlayKey(e: KeyLike, keymap: Keymap = DEFAULT_KEYMAP): I
   return (id && CONTROL_DEFS.find((d) => d.id === id)?.input) || null;
 }
 
+/**
+ * A key press that means something to the player (a letter, the space bar, Enter, an arrow...) as opposed to a modifier, a lock key, a
+ * browser shortcut or a function key the page does not use; only these take the player back from another screen to the control room.
+ */
+export function isPlainKey(e: KeyLike): boolean {
+  if (e.ctrlKey || e.altKey || e.metaKey) return false;
+  if (/^(Shift|Control|Alt|Meta|AltGraph|CapsLock|NumLock|ScrollLock|ContextMenu|Dead|Unidentified|Process|Fn|FnLock|OS|Hyper|Super|Symbol|SymbolLock)$/.test(e.key)) return false;
+  return !/^F([1-9]|1\d|2[0-4])$/.test(e.key);
+}
+
 /** Keys the page must not handle itself (scrolling, focus change, browser function keys). */
 export function shouldPreventDefault(e: KeyLike): boolean {
   if (e.ctrlKey || e.altKey || e.metaKey) return false;

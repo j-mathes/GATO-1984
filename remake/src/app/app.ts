@@ -40,6 +40,7 @@ import {
   parseCoordinates,
   translateGameControlKey,
   translatePlayKey,
+  isPlainKey,
   type InputAction,
   type KeyLike,
   type PlayScreen,
@@ -625,6 +626,11 @@ export class App {
       return;
     }
     const action = translatePlayKey(e, this.activeKeymap);
+    // on another screen (radar, chart, map, log, damage report) a key with no assignment, or the key that brought the screen up, goes back to the control room
+    if (this.screen !== "control" && (action ? action.type === "screen" && action.screen === this.screen : isPlainKey(e))) {
+      this.setScreen("control");
+      return;
+    }
     if (action) this.perform(action);
   }
 
