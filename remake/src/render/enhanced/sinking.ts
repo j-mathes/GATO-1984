@@ -1,6 +1,8 @@
-import { drawSegments, type SinkingAnimation } from "../../core/index.js";
+import type { SinkingAnimation } from "../../core/index.js";
 import type { Gfx } from "../gfx.js";
 import { rgba } from "./colors.js";
+import { crackSpread } from "./cracks.js";
+import { drawPane, instrumentPanes, scopePane } from "./panel.js";
 
 /** The lost boat in the enhanced graphics: the original's cracks as glass lines and its rising water as a real sea. Times and geometry are the original's. */
 const SCALE = 4;
@@ -8,33 +10,17 @@ const SCALE = 4;
 /** Seconds the screen takes to go dark when the air runs out (the original has no animation there). */
 export const OXYGEN_FADE_SECONDS = 3;
 
+/**
+ * The glass cracks: not the open air but the glass of the periscope viewport and of each instrument, one after another (the viewport
+ * first), each spreading from its own impact like the broken periscope's cracks, before the water comes in over them.
+ */
 function crackLines(g: Gfx, sinking: SinkingAnimation, xo: number): void {
-  const c = g.ctx;
-  c.lineCap = "round";
-  c.lineJoin = "round";
-  for (const crack of sinking.drawnCracks) {
-    const segments = drawSegments(crack.x, crack.y, crack.draw);
-    // a dark edge under a bright line with a soft glow: cracked glass
-    for (const [offset, color, width, glow] of [
-      [1.6, "rgba(10,20,34,0.55)", 3.4, 0],
-      [0, "rgba(235,246,255,0.96)", 2.2, 6],
-    ] as const) {
-      c.strokeStyle = color;
-      c.lineWidth = g.toLength(width);
-      c.shadowColor = glow ? "rgba(170,210,255,0.9)" : "rgba(0,0,0,0)";
-      c.shadowBlur = g.toLength(glow);
-      c.beginPath();
-      for (const s of segments) {
-        c.moveTo(g.toX(xo + s.x0 * SCALE + offset), g.toY(s.y0 * SCALE + offset));
-        c.lineTo(g.toX(xo + s.x1 * SCALE + offset), g.toY(s.y1 * SCALE + offset));
-      }
-      c.stroke();
-    }
-    c.shadowBlur = 0;
-    c.shadowColor = "rgba(0,0,0,0)";
-  }
+  const panes = [scopePane(xo), ...instrumentPanes(xo)];
+  panes.forEach((pane, i) => {
+    const start = i === 0 ? 0 : 0.1 + (i - 1) * 0.06;
+    drawPane(g, pane, crackSpread(sinking.seconds - start, i === 0 ? 0.5 : 0.25));
+  });
 }
-
 function water(g: Gfx, sinking: SinkingAnimation, width: number, height: number, timeMs: number): void {
   const c = g.ctx;
   const top = height * (1 - sinking.progress);

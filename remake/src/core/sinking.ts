@@ -92,6 +92,11 @@ export class SinkingAnimation {
     return this.passes.length === 0 ? 1 : this.applied / this.passes.length;
   }
 
+  /** Seconds the animation has run (the enhanced graphics time their cracks by it). */
+  get seconds(): number {
+    return this.elapsed;
+  }
+
   get done(): boolean {
     return this.applied >= this.passes.length && this.elapsed >= this.duration;
   }

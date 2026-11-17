@@ -147,6 +147,10 @@ export class App {
   private editorItem: 1 | 5 = 1;
   private helpOpen = false;
   private helpPage = 0;
+  /** The periscope's last move, for the enhanced scope's shutter (see PlayView.periscopeMotion). */
+  private periscopeSim: Simulation | null = null;
+  private periscopeWas = false;
+  private periscopeMotion: { up: boolean; since: number } | null = null;
   private prompt: { kind: "password" | "coords"; editor: LineEditor } | null = null;
   private history: HistoryViewer | null = null;
   /** The history page Esc left from (the history opens there again). */
@@ -704,10 +708,10 @@ export class App {
     return controlsPages({ trails: on("trailToggle"), timeKeys: on("timeKeys"), display: on("displayModes"), escQuit: on("escQuit"), simpleSpeed: this.advanced.effective("simpleSpeed") }, (id) => this.activeKeymap.get(id));
   }
 
-  /** Left/Up/PageUp and Right/Down/PageDown/Space turn the pages (wrapping round); any other key closes the overlay and is not passed on. */
+  /** Left/Up/PageUp and Right/Down/PageDown turn the pages (wrapping round); any other key closes the overlay and is not passed on. */
   private helpKey(e: KeyLike): void {
     const count = this.helpPages().length;
-    if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) this.helpPage = (this.helpPage + 1) % count;
+    if (["ArrowRight", "ArrowDown", "PageDown"].includes(e.key)) this.helpPage = (this.helpPage + 1) % count;
     else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) this.helpPage = (this.helpPage + count - 1) % count;
     else this.closeHelp();
   }
@@ -1140,7 +1144,15 @@ export class App {
 
   private draw(timeMs: number, sim: Simulation, snap: Snapshot): void {
     const g = this.g;
-    const view: PlayView = { sim, snap, settings: this.settings, sprites: this.sprites, log: this.log, timeMs, solidShips: this.advanced.on("solidShips") };
+    if (this.periscopeSim !== sim) {
+      this.periscopeSim = sim;
+      this.periscopeMotion = null;
+      this.periscopeWas = sim.sub.periscopeUp;
+    } else if (this.periscopeWas !== sim.sub.periscopeUp) {
+      this.periscopeWas = sim.sub.periscopeUp;
+      this.periscopeMotion = { up: sim.sub.periscopeUp, since: timeMs };
+    }
+    const view: PlayView = { sim, snap, settings: this.settings, sprites: this.sprites, log: this.log, timeMs, solidShips: this.advanced.on("solidShips"), periscopeMotion: this.periscopeMotion };
     // tracks are only remembered once per simulation step (the original plots once per pass of its loop)
     const record = sim.tick !== this.lastTrailTick;
     this.lastTrailTick = sim.tick;

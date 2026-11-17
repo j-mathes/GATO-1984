@@ -44,7 +44,7 @@ export function drawEnhancedLog(g: Gfx, view: PlayView, xo: number): void {
   board.addColorStop(0, "#343d44");
   board.addColorStop(1, "#171c20");
   c.fillStyle = board;
-  c.fillRect(g.toX(xo), g.toY(0), g.toLength(1280), g.toLength(800));
+  c.fillRect(g.toX(0), g.toY(0), g.toLength(1280 + 2 * xo), g.toLength(800));
   // the page, with a shadow
   const px = xo + 90;
   const py = 34;

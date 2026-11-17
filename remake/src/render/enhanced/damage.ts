@@ -118,6 +118,9 @@ function drawBoat(g: Gfx, xo: number, art: Art, damaged: ReadonlySet<number>, ti
   const x = g.toX(xo);
   const w = g.toLength(W * U);
   const h = g.toLength(PICTURE_ROWS * U);
+  // sea, sky and veil run out to both edges of a wide view; the boat stays where the original's picture is
+  const left = g.toX(0);
+  const full = g.toLength(W * U + 2 * xo);
   const y0 = g.toY(0);
   const waterY = 62 * U;
   // the sea and the sky of the picture
@@ -125,17 +128,17 @@ function drawBoat(g: Gfx, xo: number, art: Art, damaged: ReadonlySet<number>, ti
   sky.addColorStop(0, night ? "#060b14" : "#16324f");
   sky.addColorStop(1, night ? "#16233a" : "#3a6d93");
   c.fillStyle = sky;
-  c.fillRect(x, y0, w, g.toLength(waterY));
+  c.fillRect(left, y0, full, g.toLength(waterY));
   const sea = c.createLinearGradient(0, g.toY(waterY), 0, y0 + h);
   sea.addColorStop(0, night ? "#0d2234" : "#2a7893");
   sea.addColorStop(1, night ? "#040c14" : "#0a2f45");
   c.fillStyle = sea;
-  c.fillRect(x, g.toY(waterY), w, y0 + h - g.toY(waterY));
+  c.fillRect(left, g.toY(waterY), full, y0 + h - g.toY(waterY));
   // a faint grid, like a drawing board
   c.strokeStyle = "rgba(180,220,235,0.07)";
   c.lineWidth = g.toLength(1);
   c.beginPath();
-  for (let gx = 0; gx <= W * U; gx += 80) {
+  for (let gx = -Math.ceil(xo / 80) * 80; gx <= W * U + xo; gx += 80) {
     c.moveTo(g.toX(xo + gx), y0);
     c.lineTo(g.toX(xo + gx), y0 + h);
   }
@@ -161,13 +164,13 @@ function drawBoat(g: Gfx, xo: number, art: Art, damaged: ReadonlySet<number>, ti
   // the part below the waterline, under a veil of water (drawn before the compartments, so their colours stay solid below it)
   c.save();
   c.beginPath();
-  c.rect(x, g.toY(waterY), w, y0 + h - g.toY(waterY));
+  c.rect(left, g.toY(waterY), full, y0 + h - g.toY(waterY));
   c.clip();
   const veil = c.createLinearGradient(0, g.toY(waterY), 0, y0 + h);
   veil.addColorStop(0, rgba(night ? "#0d2234" : "#2a7893", 0.55));
   veil.addColorStop(1, rgba(night ? "#040c14" : "#0a2f45", 0.8));
   c.fillStyle = veil;
-  c.fillRect(x, g.toY(waterY), w, y0 + h - g.toY(waterY));
+  c.fillRect(left, g.toY(waterY), full, y0 + h - g.toY(waterY));
   c.restore();
   // the compartments
   for (const [id, region] of art.regions) {
@@ -188,7 +191,7 @@ function drawBoat(g: Gfx, xo: number, art: Art, damaged: ReadonlySet<number>, ti
   c.drawImage(lines, x, y0, w, h);
   c.globalAlpha = 1;
   // light on the waterline
-  g.line(xo, waterY, xo + W * U, waterY, rgba("#dff4fa", night ? 0.3 : 0.6), 1.5);
+  g.line(0, waterY, W * U + 2 * xo, waterY, rgba("#dff4fa", night ? 0.3 : 0.6), 1.5);
   g.smooth(false);
 }
 
@@ -250,7 +253,7 @@ export function drawEnhancedDamage(g: Gfx, view: PlayView, L: CockpitLayouts, xo
   const c = panelContext(g, xo, night);
   drawMetal(c, PICTURE_ROWS, 200 - PICTURE_ROWS);
   if (art) drawBoat(g, xo, art, damaged, view.timeMs, night);
-  g.rect(xo, 0, W * U, PICTURE_ROWS * U, c.p.brass, false);
+  g.rect(0, 0, W * U + 2 * xo, PICTURE_ROWS * U, c.p.brass, false);
   bezelBox(c, 2, 102, 317, 197, null);
   drawText(g, xo + 160 * U, 109 * U, "DAMAGE REPORT", c.p.label, 36, { role: "title", align: "center" });
   drawLamps(g, xo, damaged, night, view.timeMs);

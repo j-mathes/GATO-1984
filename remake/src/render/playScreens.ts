@@ -37,6 +37,8 @@ export interface PlayView {
   solidShips?: boolean;
   /** performance.now() in milliseconds, for animation only. */
   timeMs: number;
+  /** The last raising or lowering of the periscope and when it began (enhanced graphics: the lens shutter moves for a moment). */
+  periscopeMotion?: { up: boolean; since: number } | null;
 }
 
 const COMPARTMENT_BOXES: { id: number; name: string; col: number; row: number }[] = [

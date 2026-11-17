@@ -49,6 +49,8 @@ export interface TextStyle {
   bold?: boolean;
   /** Font size in logical units; the default fills the cell height. */
   size?: number;
+  /** Centre the ink of the text (the height of its capitals or digits) on `y`, not the middle of the font's line box; for digits in a box. */
+  optical?: boolean;
 }
 
 function fontOf(g: Gfx, size: number, role: FontRole, bold: boolean): string {
@@ -73,7 +75,14 @@ export function drawText(g: Gfx, x: number, y: number, s: string, color: string,
   const c = g.ctx;
   c.fillStyle = color;
   c.font = fontOf(g, size, style.role ?? "body", style.bold ?? false);
-  c.textBaseline = "middle";
   c.textAlign = style.align ?? "left";
+  if (style.optical) {
+    c.textBaseline = "alphabetic";
+    const m = c.measureText(s) as TextMetrics | undefined;
+    const ink = m ? m.actualBoundingBoxAscent - m.actualBoundingBoxDescent : 0;
+    c.fillText(s, g.toX(x), g.toY(y) + (Number.isFinite(ink) ? ink : 0) / 2);
+    return;
+  }
+  c.textBaseline = "middle";
   c.fillText(s, g.toX(x), g.toY(y));
 }

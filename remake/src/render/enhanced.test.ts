@@ -7,7 +7,9 @@ import { starField } from "./enhanced/scope.js";
 import { CHART_ISLANDS, RADAR_CX, RADAR_CY, RADAR_K, RADAR_R, circleRadii, radarBlip } from "./enhanced/scenes.js";
 import { enclosedPixels } from "./enhanced/shipArt.js";
 import { closeHull, filledSilhouette, overlayRegion, thinPixels } from "./hull.js";
-import { glassCracks } from "./enhanced/cracks.js";
+import { crackSpread, glassCracks } from "./enhanced/cracks.js";
+import { instrumentPanes, scopePane } from "./enhanced/panel.js";
+import { COMPARTMENT } from "../core/index.js";
 import { centredColumn } from "./textScreens.js";
 import { SinkingAnimation, drawSegments } from "../core/index.js";
 import { drawGridText, textGrid } from "./enhanced/typography.js";
@@ -121,6 +123,39 @@ describe("enhanced ship shapes", () => {
   });
 });
 
+describe("cracks in the instruments", () => {
+  it("a crack spreads quickly at first and settles: nothing before the impact, all of it once the time is up", () => {
+    expect(crackSpread(-1)).toBe(0);
+    expect(crackSpread(0)).toBe(0);
+    expect(crackSpread(0.1)).toBeGreaterThan(0.4);
+    expect(crackSpread(0.4)).toBe(1);
+    expect(crackSpread(9)).toBe(1);
+  });
+
+  it("each instrument pane belongs to one compartment, lies inside the picture and has its own seed; the damage lamp has none", () => {
+    const panes = instrumentPanes(71);
+    expect(new Set(panes.map((p) => p.seed)).size).toBe(panes.length);
+    const byRoom = (k: number): number => panes.filter((p) => p.compartment === k).length;
+    expect(byRoom(COMPARTMENT.controlRoom)).toBe(4); // three dials and the oxygen gauge
+    expect(byRoom(COMPARTMENT.fuelTanks)).toBe(2); // readout and lamp
+    expect(byRoom(COMPARTMENT.batteryRoom)).toBe(3); // readout and two lamps
+    expect(byRoom(COMPARTMENT.torpedoRoom)).toBe(1);
+    expect(byRoom(COMPARTMENT.engineRoom)).toBe(1);
+    expect(byRoom(COMPARTMENT.radioRoom) + byRoom(COMPARTMENT.conningTower)).toBe(0); // no instruments of theirs
+    for (const p of panes) {
+      expect(p.x).toBeGreaterThanOrEqual(71);
+      expect(p.x + p.w).toBeLessThanOrEqual(71 + 1280);
+      expect(p.y).toBeGreaterThanOrEqual(98 * 4); // all below the scope window
+      expect(p.y + p.h).toBeLessThanOrEqual(800);
+    }
+    expect(scopePane(71)).toMatchObject({ x: 71, y: 0, w: 1280, h: 392, compartment: COMPARTMENT.periscopes });
+  });
+
+  it("a smaller reach keeps the cracks nearer their impact", () => {
+    const far = (k: number): number => Math.max(...glassCracks(800, 400, 0.5, 0.5, 3, k).flatMap((c) => c.points.map(([x, y]) => Math.hypot(x - 400, y - 200))));
+    expect(far(0.3)).toBeLessThan(far(1));
+  });
+});
 describe("glass cracks", () => {
   it("are the same every time, start at the point of impact, and run out of it in many directions", () => {
     const a = glassCracks(800, 400, 0.5, 0.4);

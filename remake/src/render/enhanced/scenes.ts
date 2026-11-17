@@ -38,13 +38,19 @@ export function radarBlip(relative: number, distance: number): { x: number; y: n
   return { x: RADAR_CX - Math.sin(relative) * distance * 0.065 * RADAR_K, y: RADAR_CY - Math.cos(relative) * distance * 0.065 * RADAR_K };
 }
 
+/** The picture's background, out to both edges of a wide view; the wings (outside the picture) are shaded darker so the picture still reads as the area of the map or instrument. */
 function backdrop(g: Gfx, xo: number, top: string, bottom: string): void {
   const c = g.ctx;
   const grad = c.createLinearGradient(0, g.toY(0), 0, g.toY(PICTURE_HEIGHT));
   grad.addColorStop(0, top);
   grad.addColorStop(1, bottom);
   c.fillStyle = grad;
-  c.fillRect(g.toX(xo), g.toY(0), g.toLength(PICTURE_WIDTH), g.toLength(PICTURE_HEIGHT));
+  c.fillRect(g.toX(0), g.toY(0), g.toLength(PICTURE_WIDTH + 2 * xo), g.toLength(PICTURE_HEIGHT));
+  if (xo > 0) {
+    c.fillStyle = "rgba(0,0,0,0.4)";
+    c.fillRect(g.toX(0), g.toY(0), g.toLength(xo), g.toLength(PICTURE_HEIGHT));
+    c.fillRect(g.toX(xo + PICTURE_WIDTH), g.toY(0), g.toLength(xo), g.toLength(PICTURE_HEIGHT));
+  }
 }
 
 function brassFrame(g: Gfx, xo: number): void {
@@ -112,7 +118,7 @@ function controlScene(deps: SceneDeps): (f: EnhancedFrame) => void {
   return ({ g, view, width }) => {
     const xo = centreX(width);
     drawControlPanel(g, view, xo);
-    drawEnhancedScope(g, view, deps.art, { x: xo, y: 0, w: PICTURE_WIDTH, h: 98 * ENHANCED_FACTOR }, deps.cockpit.palette("control_room"));
+    drawEnhancedScope(g, view, deps.art, { x: xo, y: 0, w: PICTURE_WIDTH, h: 98 * ENHANCED_FACTOR, wing: xo }, deps.cockpit.palette("control_room"));
   };
 }
 

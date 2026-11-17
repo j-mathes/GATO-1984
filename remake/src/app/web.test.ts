@@ -9,10 +9,10 @@ import { FixedTimestepRunner, interpolate, lerpAngle, takeSnapshot } from "./run
 import { buildMorseSchedule, type MorseTables } from "../audio/morse.js";
 import { noteFrequency, parsePlay, totalSeconds } from "../audio/play.js";
 import { BIOS_TICK_SECONDS, EFFECTS, SoundEngine, type AudioContextLike, type OscillatorLike } from "../audio/soundEngine.js";
-import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Simulation, SinkingAnimation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
+import { COMPARTMENT, ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Simulation, SinkingAnimation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
 import { drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
 import { drawControlPanel } from "../render/enhanced/panel.js";
-import { drawEnhancedScope } from "../render/enhanced/scope.js";
+import { PERISCOPE_MOTION_MS, drawEnhancedScope, periscopeOpenness } from "../render/enhanced/scope.js";
 import { damageHullMask } from "../render/enhanced/damage.js";
 import { PANEL, levelColor } from "../render/enhanced/colors.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
@@ -1082,7 +1082,7 @@ describe("controls overlay and mission select", () => {
     }
   });
 
-  it("the quick reference has pages: Right/Down/Space/PageDown next, Left/Up/PageUp back (wrapping); the page list follows the switches", () => {
+  it("the quick reference has pages: Right/Down/PageDown next, Left/Up/PageUp back (wrapping); the page list follows the switches", () => {
     const { app, calls, sim } = makeApp();
     press(app, "x");
     app.startMission(1, 1);
@@ -1098,7 +1098,7 @@ describe("controls overlay and mission select", () => {
     press(app, "ArrowRight");
     expect(app.helpPageIndex).toBe(1);
     expect(shown()).toEqual(expect.arrayContaining(["CONTROLS - STEERING", "2/5", "LEFT", "Rudder left", "RIGHT", "Rudder right"]));
-    press(app, " ");
+    press(app, "ArrowRight");
     expect(shown()).toEqual(expect.arrayContaining(["CONTROLS - SCOPE AND WEAPONS", "3/5", "Fire torpedo"]));
     press(app, "PageDown", "PageDown");
     expect(shown()).toEqual(expect.arrayContaining(["CONTROLS - REMAKE EXTRAS", "5/5", "Wake trails on / off", "[", "Time speed down", "]", "Time speed up", "Display mode", "Back to the menu"]));
@@ -1115,6 +1115,8 @@ describe("controls overlay and mission select", () => {
     press(app, "Escape");
     expect(app.helpVisible).toBe(false);
     expect(app.mode).toBe("play"); // the closing key is not passed on
+    press(app, "?", " ");
+    expect(app.helpVisible).toBe(false); // the space bar is an "other key": it closes, as the footer says
     press(app, "?");
     expect(app.helpPageIndex).toBe(0); // always opens on the first page
     press(app, "x");
@@ -2515,6 +2517,74 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect(calls.filter((c) => c === "stroke").length).toBeGreaterThan(5); // the crosshair and its ticks
     });
 
+    it("the lens shutter is slight: raising opens it from 55 %, lowering dips it to 80 % and back, it is open before and after", () => {
+      expect(periscopeOpenness(true, 0)).toBeCloseTo(0.55, 9);
+      expect(periscopeOpenness(true, PERISCOPE_MOTION_MS / 2)).toBeGreaterThan(0.85);
+      expect(periscopeOpenness(true, PERISCOPE_MOTION_MS)).toBe(1);
+      expect(periscopeOpenness(false, 0)).toBe(1);
+      expect(periscopeOpenness(false, PERISCOPE_MOTION_MS / 2)).toBeCloseTo(0.8, 9);
+      expect(periscopeOpenness(false, PERISCOPE_MOTION_MS * 3)).toBe(1);
+      expect(periscopeOpenness(true, -50)).toBe(1);
+    });
+
+    it("the app notes each raising and lowering of the periscope (not the state a mission starts in) and the shutter is drawn while it moves", () => {
+      const h = play();
+      press(h.app, "Tab"); // a screen the harness can draw without gradients: the motion is noted whichever screen is shown
+      const motion = (): unknown => (h.app as unknown as { periscopeMotion: unknown }).periscopeMotion;
+      h.app.frame(1000);
+      expect(motion()).toBeNull();
+      h.sim().sub.periscopeUp = true;
+      h.app.frame(2000);
+      expect(motion()).toEqual({ up: true, since: 2000 });
+      h.sim().sub.periscopeUp = false;
+      h.app.frame(3000);
+      expect(motion()).toEqual({ up: false, since: 3000 });
+      const { g, calls } = fullGfx();
+      g.resizeBacking(1280, 800);
+      g.view(1280, 800);
+      const view = frameFor(h, "control").view;
+      drawEnhancedScope(g, { ...view, timeMs: 3100, periscopeMotion: { up: false, since: 3000 } }, null, { x: 0, y: 0, w: 1280, h: 392 }, ["#000", "#0ff", "#f0f", "#fff"]);
+      const withShutter = calls.filter((c) => c === "fillRect").length;
+      const quiet = fullGfx();
+      quiet.g.resizeBacking(1280, 800);
+      quiet.g.view(1280, 800);
+      drawEnhancedScope(quiet.g, { ...view, periscopeMotion: null }, null, { x: 0, y: 0, w: 1280, h: 392 }, ["#000", "#0ff", "#f0f", "#fff"]);
+      expect(withShutter).toBeGreaterThan(quiet.calls.filter((c) => c === "fillRect").length);
+    });
+    it("a damaged compartment cracks its own instruments (and only those) while they keep drawing; the lost boat cracks them all, one after another", () => {
+      const h = play();
+      h.app.settings.timeOfDay = 1;
+      const strokes = (): number => {
+        const { g, calls } = fullGfx();
+        g.resizeBacking(1280, 800);
+        g.view(1280, 800);
+        drawControlPanel(g, frameFor(h, "control").view, 0);
+        return calls.filter((c) => c === "stroke").length;
+      };
+      const sub = h.sim().sub;
+      const base = strokes();
+      sub.damage[COMPARTMENT.fuelTanks] = 1;
+      const fuel = strokes();
+      expect(fuel).toBeGreaterThan(base + 20); // the readout and its lamp: many crack lines
+      sub.damage[COMPARTMENT.controlRoom] = 1;
+      expect(strokes()).toBeGreaterThan(fuel + 40); // three dials and the oxygen gauge
+      sub.damage[COMPARTMENT.fuelTanks] = 0;
+      sub.damage[COMPARTMENT.controlRoom] = 0;
+      sub.damage[COMPARTMENT.radioRoom] = 1; // no instruments of its own
+      expect(strokes()).toBe(base);
+      sub.damage[COMPARTMENT.radioRoom] = 0;
+
+      const sinking = (seconds: number): number => {
+        const { g, calls } = fullGfx();
+        g.resizeBacking(1280, 800);
+        const s = new SinkingAnimation("cracks");
+        s.advance(seconds);
+        drawEnhancedSinking(g, s, 1280, 800, 0);
+        return calls.filter((c) => c === "stroke").length;
+      };
+      expect(sinking(0.05)).toBeLessThan(sinking(0.5)); // the cracks spread and more instruments crack
+      expect(sinking(0.5)).toBeLessThan(sinking(1.2));
+    });
     it("gauge levels run from green through amber to red", () => {
       expect(levelColor(0.9, PANEL.day)).toBe(PANEL.day.ok);
       expect(levelColor(0.3, PANEL.day)).toBe(PANEL.day.warn);

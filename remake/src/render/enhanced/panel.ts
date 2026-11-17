@@ -2,6 +2,7 @@ import { COMPARTMENT, ENGINE, START } from "../../core/index.js";
 import type { Gfx } from "../gfx.js";
 import type { PlayView } from "../playScreens.js";
 import { PANEL, levelColor, mix, rgba, type PanelColors } from "./colors.js";
+import { glassCracks, strokeCracks, type Crack } from "./cracks.js";
 import { drawText } from "./typography.js";
 
 /**
@@ -240,19 +241,28 @@ function drawOxygen(c: Ctx, oxygen: number): void {
   drawText(g, px(c, 304), py(106), "O2", p.label, 26, { role: "title", align: "center" });
 }
 
-function drawScopeArrow(c: Ctx, facing: string): void {
+/**
+ * The scope's direction as a small compass card: F (forward), S (starboard), A (aft) and P (port) round the ring, the one the scope looks
+ * at lit and the others dim, and a short needle pointing at it. It sits low enough to clear the torpedo box above it.
+ */
+function drawScopeArrow(c: Ctx, facing: string, centreX: number): void {
   const { g, p } = c;
-  const cx = px(c, 283);
-  const cy = py(187);
-  g.circle(cx, cy, 8 * U + 6, p.brassDark, true);
-  g.circle(cx, cy, 8 * U + 2, p.brass, false, 2.5);
-  g.circle(cx, cy, 8 * U - 2, p.glass, true);
+  const cx = px(c, centreX);
+  const cy = py(189);
+  g.circle(cx, cy, 35, p.brassDark, true);
+  g.circle(cx, cy, 31, p.brass, false, 2.5);
+  g.circle(cx, cy, 27, p.glass, true);
+  const marks: [string, number, number][] = [["F", 0, -1], ["S", 1, 0], ["A", 0, 1], ["P", -1, 0]];
+  for (const [letter, dx, dy] of marks) {
+    const lit = letter === facing;
+    drawText(g, cx + dx * 20, cy + dy * 20, letter, lit ? p.needle : p.markDim, 15, { role: "body", bold: true, align: "center", optical: true });
+  }
   const a = ({ F: 0, P: -Math.PI / 2, A: Math.PI, S: Math.PI / 2 } as Record<string, number>)[facing] ?? 0;
   const ctx = g.ctx;
   ctx.save();
   ctx.translate(g.toX(cx), g.toY(cy));
   ctx.rotate(a);
-  const s = g.toLength(1);
+  const s = g.toLength(0.55);
   ctx.fillStyle = p.needle;
   ctx.beginPath();
   ctx.moveTo(0, -20 * s);
@@ -266,14 +276,13 @@ function drawScopeArrow(c: Ctx, facing: string): void {
   ctx.fill();
   ctx.restore();
 }
-
 /** Brushed gunmetal with a few rivets: the whole picture below the scope and a thin strip of it around. */
 export function drawMetal(c: Ctx, top = 98, height = 102): void {
   const { g, p } = c;
   const ctx = g.ctx;
-  const x = px(c, 0);
+  const x = 0; // the metal runs out to both edges of a wide view (`xo` is the margin on each side)
   const y = py(top);
-  const w = 320 * U;
+  const w = 320 * U + 2 * c.xo;
   const h = height * U;
   const metal = ctx.createLinearGradient(0, g.toY(y), 0, g.toY(y + h));
   metal.addColorStop(0, p.metalTop);
@@ -290,7 +299,7 @@ export function drawMetal(c: Ctx, top = 98, height = 102): void {
     ctx.lineTo(g.toX(x + w), g.toY(yy));
   }
   ctx.stroke();
-  for (const [rx, ry] of [[6, 106], [313, 106], [6, 192], [313, 192], [208, 190]] as const) {
+  for (const [rx, ry] of [[6, 106], [313, 106], [6, 192], [313, 192]] as const) {
     g.circle(px(c, rx), py(ry), 7, p.rivet, true);
     g.circle(px(c, rx) - 1.5, py(ry) - 1.5, 2.6, mix(p.rivet, "#ffffff", 0.45), true);
   }
@@ -326,9 +335,9 @@ export function drawControlPanel(g: Gfx, view: PlayView, xo: number): void {
   // torpedoes: count, doors lamp, four tubes
   bezelBox(c, 209, 150, 295, 178, null);
   drawText(g, px(c, 216), py(156), "TORPEDOES", p.label, 30, { role: "title" });
-  lamp(c, 219, 171, 6, sub.doorsOpen ? p.ok : null);
+  lamp(c, 219, 170, 4.5, sub.doorsOpen ? p.ok : null);
   bezelBox(c, 229, 166, 249, 176);
-  drawText(g, px(c, 241) + 14, py(171) - 4, String(sub.torpedoes), p.value, 34, { role: "body", bold: true, align: "right" });
+  drawText(g, px(c, 241) + 14, py(171), String(sub.torpedoes), p.value, 34, { role: "body", bold: true, align: "right", optical: true });
   for (let i = 1; i <= 4; i += 1) {
     const t = sim.torpedoes[i];
     const ready = 4 - i < sub.torpedoes && !!t && t.speed === 0;
@@ -343,22 +352,147 @@ export function drawControlPanel(g: Gfx, view: PlayView, xo: number): void {
       ctx.fillStyle = glow;
       ctx.fillRect(g.toX(cell + 3), g.toY(py(166) + 3), g.toLength(10 * U - 6), g.toLength(10 * U - 6));
     }
-    drawText(g, cell + 5 * U, py(171) - 3, String(i), ready ? "#06210d" : p.markDim, 32, { role: "body", bold: true, align: "center" });
+    drawText(g, cell + 5 * U, py(171), String(i), ready ? "#06210d" : p.markDim, 32, { role: "body", bold: true, align: "center", optical: true });
     g.rect(cell, py(166), 10 * U, 10 * U, p.brass, false);
   }
 
-  // engine mode, damage lamp, scope arrow
-  drawText(g, px(c, 16), py(188), "POWER", p.label, 30, { role: "title" });
-  bezelBox(c, 61, 181, 113, 193);
+  // the bottom row: four groups (power, damage, periscope, scope direction) with the same gap between each, from x = 12 to x = 308
+  const { textPx, powerX, boxX, damageX, periscopeX, compassX, compassW } = bottomRow();
+
+  drawText(g, px(c, powerX), py(188), "POWER", p.label, 30, { role: "title" });
+  bezelBox(c, boxX, 181, boxX + 52, 193);
   const [mode, color] = diesel ? ["DIESEL", p.warn] : sub.engine === ENGINE.electric ? ["ELECTRIC", p.ok] : ["OFF", mix(p.bad, "#000000", 0.25)];
-  drawText(g, px(c, 87), py(187) - 3, mode, color, 34, { role: "body", bold: true, align: "center" });
-  drawText(g, px(c, 144), py(188), "DAMAGE", p.label, 30, { role: "title" });
+  drawText(g, px(c, boxX + 26), py(187), mode, color, 34, { role: "body", bold: true, align: "center", optical: true });
+
+  drawText(g, px(c, damageX), py(188), "DAMAGE", p.label, 30, { role: "title" });
   const pulse = 0.65 + 0.35 * Math.sin(view.timeMs / 220);
-  lamp(c, 200, 187, 6, damaged ? mix(p.bad, "#000000", 1 - pulse) : null);
-  drawText(g, px(c, 232), py(188), "SCOPE", p.label, 30, { role: "title" });
-  drawScopeArrow(c, sub.scopeFacing);
+  lamp(c, damageX + textPx("DAMAGE", 30) + 4 + 6, 188, 4.5, damaged ? mix(p.bad, "#000000", 1 - pulse) : null);
+
+  // the periscope: the word SCOPE with a pair of lit chevrons like elevator buttons; the upper one glows green while it is raised
+  // (red if it is broken), the lower one amber while it is lowered
+  const raised = sub.periscopeUp;
+  const broken = raised && (sub.damage[COMPARTMENT.periscopes] ?? 0) !== 0;
+  drawText(g, px(c, periscopeX), py(188), "SCOPE", p.label, 30, { role: "title" });
+  const chevronX = periscopeX + textPx("SCOPE", 30) + 4 + 4.5;
+  chevron(c, chevronX, 185, true, raised ? (broken ? p.bad : p.ok) : null);
+  chevron(c, chevronX, 192, false, raised ? null : p.warn);
+
+  drawScopeArrow(c, sub.scopeFacing, compassX + compassW / 2);
+  for (const pane of instrumentPanes(c.xo)) if (pane.compartment !== null && (sub.damage[pane.compartment] ?? 0) !== 0) drawPane(g, pane);
 }
 
+/** Where the bottom row's four groups go, in original pixels: the same gap between each, from x = 12 to x = 308. */
+function bottomRow(): { textPx: (s: string, size: number) => number; powerX: number; boxX: number; damageX: number; periscopeX: number; compassX: number; compassW: number } {
+  const textPx = (s: string, size: number): number => (s.length * size * 0.6) / U; // typewriter text is about 0.6 em wide
+  const powerW = textPx("POWER", 30) + 4 + 52;
+  const damageW = textPx("DAMAGE", 30) + 4 + 12;
+  const periscopeW = textPx("SCOPE", 30) + 4 + 9;
+  const compassW = 17.5;
+  const gap = (296 - (powerW + damageW + periscopeW + compassW)) / 3;
+  const powerX = 12;
+  const damageX = powerX + powerW + gap;
+  const periscopeX = damageX + damageW + gap;
+  return { textPx, powerX, boxX: powerX + textPx("POWER", 30) + 4, damageX, periscopeX, compassX: periscopeX + periscopeW + gap, compassW };
+}
+
+/** The glass of one instrument (a rectangle or an oval, in view units) and the compartment whose damage cracks it. */
+export interface Pane {
+  shape: "rect" | "oval";
+  /** Fixes where its cracks are, so they never change. */
+  seed: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  compartment: number | null;
+}
+
+/**
+ * The panes of the panel's instruments, `xo` being where the 1280 x 800 picture starts. The dials and the oxygen gauge follow the control
+ * room, the fuel and battery readouts and lamps their tanks and battery, the whole torpedo box the torpedo room and the power window the
+ * engine room. The damage lamp has none, since it is what says something is damaged.
+ */
+export function instrumentPanes(xo: number): Pane[] {
+  const X = (x: number): number => xo + x * U;
+  const Y = (y: number): number => y * U;
+  const rect = (seed: number, x0: number, y0: number, x1: number, y1: number, compartment: number): Pane => ({ shape: "rect", seed, x: X(x0), y: Y(y0), w: (x1 - x0) * U, h: (y1 - y0) * U, compartment });
+  const round = (seed: number, cx: number, cy: number, r: number, compartment: number): Pane => ({ shape: "oval", seed, x: X(cx) - (r * U + 3), y: Y(cy) - (r * U + 3), w: 2 * (r * U + 3), h: 2 * (r * U + 3), compartment });
+  const dials: Pane[] = DIALS.map((d, i) => ({ shape: "oval", seed: 101 + i, x: X(d.cx) - 128, y: Y(135) - 115, w: 256, h: 230, compartment: COMPARTMENT.controlRoom }));
+  const { boxX } = bottomRow();
+  return [
+    ...dials,
+    rect(104, 299, 112, 309, 178, COMPARTMENT.controlRoom),
+    rect(105, 246, 102, 280, 112, COMPARTMENT.fuelTanks),
+    round(106, 289, 107, 6, COMPARTMENT.fuelTanks),
+    rect(107, 246, 118, 280, 128, COMPARTMENT.batteryRoom),
+    round(108, 289, 123, 6, COMPARTMENT.batteryRoom),
+    round(109, 289, 139, 6, COMPARTMENT.batteryRoom),
+    rect(110, 209, 150, 295, 178, COMPARTMENT.torpedoRoom),
+    rect(111, boxX, 181, boxX + 52, 193, COMPARTMENT.engineRoom),
+  ];
+}
+
+/** The periscope's viewport, the window above the panel. */
+export function scopePane(xo: number): Pane {
+  return { shape: "rect", seed: 100, x: xo, y: 0, w: 320 * U, h: 98 * U, compartment: COMPARTMENT.periscopes };
+}
+
+const paneCracks = new Map<string, { cracks: Crack[]; x: number; y: number }>();
+
+/**
+ * Cracks in one pane, clipped to its glass: they are fixed by its seed and size, so they never change. With `spread` (0 to 1) only the
+ * part within that share of their reach from the impact is drawn: the break spreading. The instruments keep working under the cracks.
+ */
+export function drawPane(g: Gfx, pane: Pane, spread = 1): void {
+  const { x, y, w, h } = pane;
+  const key = `${pane.seed}:${Math.round(w)}x${Math.round(h)}`;
+  let made = paneCracks.get(key);
+  if (!made) {
+    const where = (n: number): number => 0.3 + 0.4 * (((Math.sin(pane.seed * n) * 43758.5453) % 1 + 1) % 1);
+    const cx = where(12.9898);
+    const cy = where(78.233);
+    made = { cracks: glassCracks(w, h, cx, cy, pane.seed, 0.8), x: cx * w, y: cy * h };
+    paneCracks.set(key, made);
+  }
+  if (spread <= 0) return;
+  const ctx = g.ctx;
+  ctx.save();
+  ctx.beginPath();
+  if (pane.shape === "oval") ctx.ellipse(g.toX(x + w / 2), g.toY(y + h / 2), g.toLength(w / 2), g.toLength(h / 2), 0, 0, Math.PI * 2);
+  else ctx.rect(g.toX(x), g.toY(y), g.toLength(w), g.toLength(h));
+  ctx.clip();
+  const reach = Math.hypot(w, h) * 0.8 * 1.1;
+  strokeCracks(g, made.cracks, x, y, { thickness: Math.min(1, Math.max(0.55, Math.min(w, h) / 160)), reveal: spread < 1 ? { x: made.x, y: made.y, radius: reach * spread } : undefined });
+  ctx.restore();
+}
+/** A small triangle button centred at (`x`, `y`) in original pixels, pointing up or down; lit with `color` (with a glow) or dark when null. */
+function chevron(c: Ctx, x: number, y: number, up: boolean, color: string | null): void {
+  const { g, p } = c;
+  const ctx = g.ctx;
+  const cx = px(c, x);
+  const cy = py(y);
+  const w = 18;
+  const h = 13;
+  const tip = up ? -h : h;
+  const base = up ? h : -h;
+  ctx.save();
+  if (color) {
+    ctx.shadowColor = color;
+    ctx.shadowBlur = g.toLength(14);
+  }
+  ctx.beginPath();
+  ctx.moveTo(g.toX(cx), g.toY(cy + tip * 0.5));
+  ctx.lineTo(g.toX(cx + w), g.toY(cy + base * 0.5));
+  ctx.lineTo(g.toX(cx - w), g.toY(cy + base * 0.5));
+  ctx.closePath();
+  ctx.fillStyle = color ?? p.glass;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.lineWidth = g.toLength(2);
+  ctx.strokeStyle = color ? mix(color, "#ffffff", 0.45) : p.brassDark;
+  ctx.stroke();
+  ctx.restore();
+}
 /** Whether the damage of the periscope shows (the scope window is dark and cracked then). */
 export function scopeIsDamaged(view: PlayView): boolean {
   const sub = view.sim.sub;

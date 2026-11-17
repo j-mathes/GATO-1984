@@ -1,4 +1,4 @@
-import { glassCracks } from "./cracks.js";
+import { glassCracks, strokeCracks } from "./cracks.js";
 import { COMPARTMENT, SCOPE_OFFSET, SLOT, scopeScreenX, scopeUsable, inScopeWindow } from "../../core/index.js";
 import { scopeHorizon } from "../cockpitScreens.js";
 import { drawExplosion } from "../explosions.js";
@@ -10,6 +10,8 @@ import { drawText } from "./typography.js";
 
 /** The scope window of the control room in the enhanced space: 1280 x 392 (the original's 320 x 98, times 4), at x = `x`. */
 export interface ScopeArea {
+  /** Extra width on each side (a wide window): sea, sky and glass continue there; ships keep to the window proper. */
+  wing?: number;
   x: number;
   y: number;
   w: number;
@@ -145,9 +147,11 @@ const SHIP_MINIMUM = 1.1;
 
 /**
  * The scope picture of the control room at full resolution: a graded sky (stars at night), a swell, ships coloured by role with shading
- * and a reflection, the island, and the original's torpedo explosions drawn over them. `area` is the window in the enhanced space.
+ * and a reflection, the island, and the original's torpedo explosions drawn over them. `base` is the window in the enhanced space; the scenery fills it and its wings.
  */
-export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area: ScopeArea, explosionPalette: readonly string[]): void {
+export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, base: ScopeArea, explosionPalette: readonly string[]): void {
+  const wing = base.wing ?? 0;
+  const area: ScopeArea = { x: base.x - wing, y: base.y, w: base.w + 2 * wing, h: base.h };
   const sub = v.sim.sub;
   const day = v.settings.timeOfDay === 1;
   const c = g.ctx;
@@ -172,7 +176,7 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
     if (!vessel || vessel.sunk) continue;
     let angle = k.relative - SCOPE_OFFSET[sub.scopeFacing];
     while (angle < 0) angle += 6.2832;
-    const x = area.x + scopeScreenX(angle, k.size, k.frame, sub.scopeFacing) * ENHANCED_FACTOR;
+    const x = base.x + scopeScreenX(angle, k.size, k.frame, sub.scopeFacing) * ENHANCED_FACTOR;
     if (k.slot === SLOT.island) {
       const shape = sim.scenario.islands[sim.currentQuadrant]?.shape ?? 1;
       const pic = art?.island(shape, !day);
@@ -185,7 +189,7 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
     for (const ex of sim.explosions) {
       if (ex.shipVisible && !ex.plan.survived) {
         const ghost: LiveContact = { slot: 0, typeCode: ex.plan.typeCode, distance: 0, relative: 0, size: ex.plan.drawnSize, frame: ex.plan.frame, x: 0, y: 0 };
-        drawContactEnhanced(g, v, art, ghost, area.x + ex.plan.x * ENHANCED_FACTOR, hy, day, area);
+        drawContactEnhanced(g, v, art, ghost, base.x + ex.plan.x * ENHANCED_FACTOR, hy, day, area);
       }
     }
     const [vw, vh] = [g.viewWidth, g.viewHeight];
@@ -211,6 +215,8 @@ export function drawEnhancedScope(g: Gfx, v: PlayView, art: ShipArt | null, area
   c.fillStyle = rim;
   c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
   g.rect(area.x, area.y, area.w, area.h, darken(mix(SCOPE.day.seaNear, "#888888", 0.5), 0.2), false);
+  const motion = v.periscopeMotion;
+  if (motion) drawShutter(g, area, periscopeOpenness(motion.up, v.timeMs - motion.since));
 }
 
 /** The broken periscope glass: a dark pane with a glow at the point of impact and cracks running out from it, thin and bright with a soft halo. */
@@ -222,21 +228,40 @@ function drawCrackedGlass(g: Gfx, area: ScopeArea): void {
   c.fillStyle = glow;
   c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(area.h));
   g.clip(area.x, area.y, area.w, area.h);
-  const cracks = glassCracks(area.w, area.h, 0.58, 0.4);
-  c.lineCap = "round";
-  c.lineJoin = "round";
-  for (const pass of [{ w: 5, a: 0.12 }, { w: 1.6, a: 0.85 }]) {
-    for (const k of cracks) {
-      c.strokeStyle = `rgba(225,238,245,${(pass.a * Math.min(1, k.weight + 0.2)).toFixed(3)})`;
-      c.lineWidth = g.toLength(pass.w * k.weight);
-      c.beginPath();
-      k.points.forEach(([x, y], i) => (i === 0 ? c.moveTo(g.toX(area.x + x), g.toY(area.y + y)) : c.lineTo(g.toX(area.x + x), g.toY(area.y + y))));
-      c.stroke();
-    }
-  }
+  strokeCracks(g, glassCracks(area.w, area.h, 0.58, 0.4), area.x, area.y);
   g.unclip();
 }
 
+/** How long the lens shutter moves when the periscope is raised or lowered, in milliseconds. */
+export const PERISCOPE_MOTION_MS = 750;
+
+/**
+ * How open the lens shutter is (1 = the whole picture) `elapsedMs` after the periscope moved. The motion is slight: raising opens it from
+ * 70 % and lowering dips it to 88 % and back. 1 when there is no motion or it is over.
+ */
+export function periscopeOpenness(up: boolean, elapsedMs: number): number {
+  const t = elapsedMs / PERISCOPE_MOTION_MS;
+  if (!(t >= 0) || t >= 1) return 1;
+  if (up) return 0.55 + 0.45 * (1 - Math.pow(1 - t, 3));
+  return 1 - 0.2 * Math.sin(Math.PI * t);
+}
+
+/** Two soft dark shutters closing in from the top and the bottom of the scope window, feathered towards the middle. */
+function drawShutter(g: Gfx, area: ScopeArea, openness: number): void {
+  const half = (area.h / 2) * (1 - openness);
+  if (half <= 0.5) return;
+  const c = g.ctx;
+  const top = c.createLinearGradient(0, g.toY(area.y), 0, g.toY(area.y + half));
+  top.addColorStop(0, "rgba(3,7,10,0.8)");
+  top.addColorStop(1, "rgba(3,7,10,0)");
+  c.fillStyle = top;
+  c.fillRect(g.toX(area.x), g.toY(area.y), g.toLength(area.w), g.toLength(half));
+  const bottom = c.createLinearGradient(0, g.toY(area.y + area.h), 0, g.toY(area.y + area.h - half));
+  bottom.addColorStop(0, "rgba(3,7,10,0.8)");
+  bottom.addColorStop(1, "rgba(3,7,10,0)");
+  c.fillStyle = bottom;
+  c.fillRect(g.toX(area.x), g.toY(area.y + area.h - half), g.toLength(area.w), g.toLength(half));
+}
 /** The periscope's lens: the corners fall off into shadow, with a fine crosshair and range ticks; the crosshair's horizontal line lies on the horizon (`cy`). */
 function drawLens(g: Gfx, area: ScopeArea, cy: number, day: boolean): void {
   const c = g.ctx;
