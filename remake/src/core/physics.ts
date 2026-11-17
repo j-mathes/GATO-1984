@@ -1,4 +1,5 @@
 import { COMPASS, COMPARTMENT, DEPTH, ENGINE, HELM, ISLAND, RESOURCES, RESUPPLY, START, WORLD } from "./constants.js";
+import { WORLD_HEIGHT, WORLD_WIDTH, wrapInto } from "./world.js";
 import { cint } from "./rng.js";
 import type { EngineMode, Rng, ScopeFacing, SimEvent, SubmarineState } from "./types.js";
 
@@ -181,11 +182,16 @@ export function stepDepth(sub: SubmarineState): void {
   if (sub.speed !== 0 && sub.speed < 2 && sub.depth > DEPTH.shallow) sub.planes = 1;
 }
 
-/** Position update and clamp, 0x0672b-0x067cf. */
-export function stepPosition(sub: SubmarineState): void {
+/** Position update and clamp, 0x0672b-0x067cf; with `wrap` (remake) the world joins its opposite edges instead of stopping the boat at them. */
+export function stepPosition(sub: SubmarineState, wrap = false): void {
   sub.turnRate = sub.speed * sub.rudder; // 0x066ee
   sub.x += Math.cos(sub.heading) * sub.speed;
   sub.y += Math.sin(sub.heading) * sub.speed;
+  if (wrap) {
+    sub.x = wrapInto(sub.x, WORLD_WIDTH);
+    sub.y = wrapInto(sub.y, WORLD_HEIGHT);
+    return;
+  }
   sub.x = Math.min(Math.max(sub.x, 1), WORLD.maxX);
   sub.y = Math.min(Math.max(sub.y, 1), WORLD.maxY);
 }

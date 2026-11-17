@@ -93,7 +93,7 @@ export class Simulation {
     this.vessels = createVessels(cfg.scenario);
     this.torpedoes = createTorpedoes();
     this.island = this.refreshIsland();
-    updateContacts(this.sub, this.vessels, this.island);
+    updateContacts(this.sub, this.vessels, this.island, this.options.wrapWorld);
   }
 
   get currentQuadrant(): number {
@@ -133,7 +133,7 @@ export class Simulation {
     this.sub.x = x;
     this.sub.y = y;
     this.island = this.refreshIsland();
-    updateContacts(this.sub, this.vessels, this.island);
+    updateContacts(this.sub, this.vessels, this.island, this.options.wrapWorld);
   }
 
   /** Advance one step; returns the events of this step (including those queued by commands since the last step). */
@@ -166,6 +166,7 @@ export class Simulation {
         inControlRoom: o.inControlRoom,
         date: this.date,
         explosions: this.explosions,
+        wrap: o.wrapWorld,
       });
       if (result.ownBoatDestroyed) return this.destroy("ownTorpedo", events);
     }
@@ -178,11 +179,11 @@ export class Simulation {
 
     stepDepth(sub);
     if (nearQuadrantEdge(sub)) this.island = this.refreshIsland();
-    stepPosition(sub);
+    stepPosition(sub, o.wrapWorld);
     const island = this.vessels[SLOT.island];
     if (island) resolveIslandCollision(sub, this.island, island.bearing);
 
-    const contacts = updateContacts(sub, this.vessels, this.island);
+    const contacts = updateContacts(sub, this.vessels, this.island, o.wrapWorld);
     this.closeList = contacts.closeList;
     if (contacts.collision) {
       events.push({ type: "collision", slot: contacts.collision.slot });
@@ -209,7 +210,7 @@ export class Simulation {
     }
 
     stepAlertTimer(sub, this.vessels, o.difficulty);
-    stepEnemies({ sub, vessels: this.vessels, difficulty: o.difficulty, timeOfDay: o.timeOfDay, island: this.island, rng: this.rng, events });
+    stepEnemies({ sub, vessels: this.vessels, difficulty: o.difficulty, timeOfDay: o.timeOfDay, island: this.island, rng: this.rng, events, wrap: o.wrapWorld, gradualTurns: o.gradualTurns });
     if (!this.convoyDone && convoySunk(this.vessels, this.scenario.objectives.lastConvoySlot)) {
       this.completeMission("convoySunk", events);
     }

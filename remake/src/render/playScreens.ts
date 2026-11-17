@@ -12,6 +12,7 @@ import {
   quadrantOf,
   scopeScreenX,
   scopeUsable,
+  worldDelta,
   RADIO_MESSAGES,
   SINKING_HEIGHT,
   SINKING_WIDTH,
@@ -85,8 +86,7 @@ export function liveContacts(view: PlayView): LiveContact[] {
     const p = snap.vessels.find((s) => s.slot === v.slot);
     const x = v.slot === SLOT.island ? v.x : (p?.x ?? v.x);
     const y = v.slot === SLOT.island ? v.y : (p?.y ?? v.y);
-    const dx = x - snap.sub.x;
-    const dy = y - snap.sub.y;
+    const { dx, dy } = worldDelta(snap.sub.x, snap.sub.y, x, y, sim.options.wrapWorld); // the shorter way round when the world wraps
     const distance = Math.hypot(dx, dy);
     let bearing = dx === 0 ? Math.sign(dy) * 1.5708 : Math.atan(dy / dx);
     if (dx < 0) bearing += 3.1416;

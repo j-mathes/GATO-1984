@@ -1,4 +1,4 @@
-import { SLOT, TYPE, compassDegrees, quadrantOf, type Simulation } from "../../core/index.js";
+import { SLOT, TYPE, compassDegrees, quadrantOf, worldDelta, type Simulation } from "../../core/index.js";
 import type { Gfx } from "../gfx.js";
 import type { PlayView } from "../playScreens.js";
 import { rgba } from "./colors.js";
@@ -21,7 +21,10 @@ export const VECTOR_MINUTES = [3, 6, 12] as const;
 export const DEFAULT_VECTOR_MINUTE = 2;
 /** The dots of the past track and the steps between them. */
 export const TRACK_DOTS = 5;
-export const TRACK_EVERY_STEPS = 3 * STEPS_PER_MINUTE;
+export const TRACK_EVERY_STEPS = STEPS_PER_MINUTE;
+/** The chart is zoomed out, so its dots are three times as far apart in time; the radar and the map use TRACK_EVERY_STEPS. The tracker keeps enough samples for it. */
+export const CHART_TRACK_EVERY_STEPS = 3 * TRACK_EVERY_STEPS;
+const MAX_TRACK_STRIDE = 3;
 /** Below this speed (knots) a ship is stopped and drawn as a circle. */
 export const STATIONARY_KNOTS = 0.5;
 /** A change of heading per step above this (radians) is a turn; above SNAP it is the ship taking up a new leg, not turning. */
@@ -113,6 +116,17 @@ export interface NavShip {
   relative: number;
 }
 
+/**
+ * A world position on the quadrant map, in the original's 320 x 200 pixels, measured from the corner of `quadrant` (1 to 20). A position past the edge
+ * of the quadrant comes out past the edge of the picture, not wrapped round to the other side as `x % 5000` would put it: a velocity vector or a track
+ * that crosses the edge then runs off the map and is clipped there.
+ */
+export function quadrantPixel(quadrant: number, x: number, y: number): NavPoint {
+  const ox = ((quadrant - 1) % 5) * 5000;
+  const oy = Math.floor((quadrant - 1) / 5) * 5000;
+  return [(x - ox) * 0.0638, 199 - (y - oy) * 0.0398];
+}
+
 /** The radar shows contacts nearer than this (units) and only at periscope depth. */
 export const RADAR_RANGE = 1350;
 const PERISCOPE_DEPTH = 45;
@@ -137,11 +151,10 @@ export function navShips(view: NavView, screen: NavScreen): NavShip[] {
     const p = snap.vessels.find((s) => s.slot === v.slot);
     const x = p?.x ?? v.x;
     const y = p?.y ?? v.y;
-    const dx = x - snap.sub.x;
-    const dy = y - snap.sub.y;
+    const { dx, dy } = worldDelta(snap.sub.x, snap.sub.y, x, y, sim.options.wrapWorld);
     const distance = Math.hypot(dx, dy);
     if (screen === "radar" && distance >= RADAR_RANGE) continue;
-    if (screen === "quadrant" && quadrantOf(x, y) !== sim.currentQuadrant) continue;
+    if (screen === "quadrant" && quadrantOf(x, y) !== quadrantOf(snap.sub.x, snap.sub.y)) continue; // the quadrant the picture shows: that of the boat as drawn
     let relative = Math.atan2(dy, dx) - snap.sub.heading;
     while (relative < 0) relative += Math.PI * 2;
     while (relative >= Math.PI * 2) relative -= Math.PI * 2;
@@ -167,7 +180,9 @@ export function nextSelection(ships: readonly NavShip[], current: number | null)
 export const OWN_SLOT = 0;
 
 interface Track {
-  points: { x: number; y: number }[];
+  /** The samples, newest last; `n` counts the samples of the ship from 0, so a screen that shows every third one always picks the same ones. */
+  points: { x: number; y: number; n: number }[];
+  samples: number;
   heading: number;
   turn: -1 | 0 | 1;
   sampledAt: number;
@@ -191,14 +206,15 @@ export class ShipTracker {
       seen.add(slot);
       const t = this.tracks.get(slot);
       if (!t) {
-        this.tracks.set(slot, { points: [], heading, turn: 0, sampledAt: sim.tick });
+        this.tracks.set(slot, { points: [], samples: 0, heading, turn: 0, sampledAt: sim.tick });
         return;
       }
       t.turn = turnSign(headingDelta(heading, t.heading));
       t.heading = heading;
       if (sim.tick - t.sampledAt >= TRACK_EVERY_STEPS) {
-        t.points.push({ x, y });
-        if (t.points.length > TRACK_DOTS) t.points.shift();
+        t.points.push({ x, y, n: t.samples });
+        t.samples += 1;
+        if (t.points.length > TRACK_DOTS * MAX_TRACK_STRIDE) t.points.shift();
         t.sampledAt = sim.tick;
       }
     };
@@ -207,9 +223,14 @@ export class ShipTracker {
     for (const slot of [...this.tracks.keys()]) if (!seen.has(slot)) this.tracks.delete(slot);
   }
 
-  /** Where the ship was at the last few samples, oldest first. */
-  trail(slot: number): readonly { x: number; y: number }[] {
-    return this.tracks.get(slot)?.points ?? [];
+  /**
+   * Where the ship was at the last few dots, oldest first. The ship is sampled every {@link TRACK_EVERY_STEPS} steps; a screen can ask for a dot every
+   * `everySteps` steps, a multiple of that (up to {@link MAX_TRACK_STRIDE} times): it gets every second, third, ... sample, always the same ones.
+   */
+  trail(slot: number, everySteps: number = TRACK_EVERY_STEPS): readonly { x: number; y: number }[] {
+    const stride = Math.min(Math.max(Math.round(everySteps / TRACK_EVERY_STEPS), 1), MAX_TRACK_STRIDE);
+    const points = this.tracks.get(slot)?.points ?? [];
+    return points.filter((p) => p.n % stride === 0).slice(-TRACK_DOTS);
   }
 
   /** 1 = turning to port, -1 = to starboard, 0 = on its course. */

@@ -3,6 +3,7 @@ import { depthChargeAttack } from "./combat.js";
 import { cint } from "./rng.js";
 import type { IslandShape } from "./physics.js";
 import type { IslandRecord, Rng, Scenario, ScopeFacing, SimEvent, SubmarineState, TimeOfDay, Vessel } from "./types.js";
+import { WORLD_HEIGHT, WORLD_WIDTH, worldDelta, wrapInto } from "./world.js";
 
 const TWO_PI = 6.2832; // ds:0x26fa
 const PI = 3.1416; // ds:0x268c
@@ -20,6 +21,7 @@ export function createVessels(scenario: Scenario): Vessel[] {
     waypointIndex: 0,
     speed: 0,
     heading: 0,
+    desiredHeading: null,
     waypoints: [],
     distance: 0,
     bearing: 0,
@@ -94,16 +96,15 @@ export interface ContactResult {
 
 /**
  * Update distance, bearing, relative bearing, sprite frame and apparent size of slots 1..8.
- * Slots beyond 4000 are skipped and keep their previous values (0x06994).
+ * Slots beyond 4000 are skipped and keep their previous values (0x06994). With `wrap` (remake) distances and bearings go the shorter way round the world.
  */
-export function updateContacts(sub: SubmarineState, vessels: Vessel[], island: IslandShape): ContactResult {
+export function updateContacts(sub: SubmarineState, vessels: Vessel[], island: IslandShape, wrap = false): ContactResult {
   const closeList: number[] = [];
   let collision: ContactResult["collision"] = null;
   for (let slot = SLOT.island; slot <= SLOT.last; slot += 1) {
     const v = vessels[slot];
     if (!v) continue;
-    const dx = v.x - sub.x;
-    const dy = v.y - sub.y;
+    const { dx, dy } = worldDelta(sub.x, sub.y, v.x, v.y, wrap);
     v.distance = Math.sqrt(dx * dx + dy * dy);
     if (v.distance > CONTACT.maxTrackDistance) continue;
     if (!(slot > SLOT.island && v.distance > CONTACT.closeListDistance)) closeList.push(slot);
@@ -134,6 +135,10 @@ export interface AiContext {
   island: IslandShape;
   rng: Rng;
   events: SimEvent[];
+  /** Remake only: the world wraps (distances and routes take the shorter way round, positions wrap at the edges). */
+  wrap?: boolean;
+  /** Remake only: ships turn at their class's rate and take the waypoint when inside their turning circle, instead of snapping to the next leg's heading. */
+  gradualTurns?: boolean;
 }
 
 /** Probability that a ship at `distance` notices the boat this step: ((2+difficulty+scope)*(0.2+tod)/(...))^1.5 (0x07540). */
@@ -194,12 +199,50 @@ function selectWaypoint(v: Vessel, difficulty: number): void {
   }
 }
 
-function aimAtTarget(v: Vessel): void {
-  const dx = v.targetX - v.x;
-  const dy = v.targetY - v.y;
+/** The heading from the ship to its target (the shorter way round the world with `wrap`); the original's arctangent, so it can be negative. */
+function aimAngle(v: Vessel, wrap: boolean | undefined): number {
+  const { dx, dy } = worldDelta(v.x, v.y, v.targetX, v.targetY, wrap);
   let a = dx === 0 ? Math.sign(dy) * HALF_PI : Math.atan(dy / dx);
   if (dx < 0) a += PI;
+  return a;
+}
+
+/** A heading brought into 0..2pi. */
+function normalHeading(a: number): number {
+  let h = a;
+  while (h < 0) h += TWO_PI;
+  while (h >= TWO_PI) h -= TWO_PI;
+  return h;
+}
+
+/** The ship takes the heading of its next leg at once (the original); with gradual turns only its first leg is taken at once and later legs are steered to. */
+function aimAtTarget(ctx: AiContext, v: Vessel): void {
+  const a = aimAngle(v, ctx.wrap);
+  if (ctx.gradualTurns && v.desiredHeading != null) {
+    v.desiredHeading = normalHeading(a);
+    return;
+  }
   v.heading = a;
+  v.desiredHeading = normalHeading(a);
+}
+
+/** How fast a class of ship swings round (radians a step): the rate the original uses when it turns a ship away from or towards the boat. */
+function turnRate(v: Vessel): number {
+  return isWarship(v) ? ENEMY.warshipTurn : ENEMY.merchantTurn;
+}
+
+/**
+ * Remake: steer towards the target. The heading moves towards the bearing of the target by at most the turn rate of the ship's class a step, the
+ * short way round; a ship that is stopped does not turn.
+ */
+function steerToTarget(ctx: AiContext, v: Vessel): void {
+  if (v.desiredHeading == null || v.speed === 0) return;
+  v.desiredHeading = normalHeading(aimAngle(v, ctx.wrap));
+  let d = v.desiredHeading - v.heading;
+  while (d > Math.PI) d -= TWO_PI;
+  while (d < -Math.PI) d += TWO_PI;
+  const rate = turnRate(v);
+  v.heading = normalHeading(Math.abs(d) <= rate ? v.desiredHeading : v.heading + Math.sign(d) * rate);
 }
 
 /** One step of every ship in slots 2..8: detection, evasion or pursuit, waypoint traversal, island stop, movement. */
@@ -227,18 +270,27 @@ export function stepEnemies(ctx: AiContext): void {
         }
       }
     }
-    if (!reacted) followRoute(ctx, v);
+    if (!reacted) {
+      followRoute(ctx, v);
+      if (ctx.gradualTurns) steerToTarget(ctx, v);
+    }
     while (v.heading < 0) v.heading += TWO_PI;
     stopInsideIsland(v, island);
     v.x += v.speed * Math.cos(v.heading);
     v.y += v.speed * Math.sin(v.heading);
+    if (ctx.wrap && v.y >= 0) {
+      // a sunk ship is parked below zero and stays there
+      v.x = wrapInto(v.x, WORLD_WIDTH);
+      v.y = wrapInto(v.y, WORLD_HEIGHT);
+    }
   }
 }
 
 function followRoute(ctx: AiContext, v: Vessel): void {
-  const dx = v.targetX - v.x;
-  const dy = v.targetY - v.y;
-  const travelling = v.waypointIndex > ENEMY.lastWaypoint || Math.abs(dy) > ENEMY.arrivalRadius || Math.abs(dx) > ENEMY.arrivalRadius;
+  const { dx, dy } = worldDelta(v.x, v.y, v.targetX, v.targetY, ctx.wrap);
+  // A ship that turns gradually cannot reach a point nearer than its turning circle (speed / rate), so that is where it counts as having arrived and starts its next leg.
+  const arrival = ctx.gradualTurns ? Math.max(ENEMY.arrivalRadius, Math.abs(v.speed) / turnRate(v)) : ENEMY.arrivalRadius;
+  const travelling = v.waypointIndex > ENEMY.lastWaypoint || Math.abs(dy) > arrival || Math.abs(dx) > arrival;
   if (travelling) return;
   v.waypointIndex += 1;
   ctx.events.push({ type: "waypointReached", slot: v.slot, waypoint: v.waypointIndex });
@@ -249,7 +301,7 @@ function followRoute(ctx: AiContext, v: Vessel): void {
       selectWaypoint(v, ctx.difficulty);
     } else v.speed = 0;
   } else selectWaypoint(v, ctx.difficulty);
-  aimAtTarget(v);
+  aimAtTarget(ctx, v);
 }
 
 /** Ships stop inside the island ellipse shrunk by 150 on both radii (0x07c63). */

@@ -1,5 +1,6 @@
 import { COMPARTMENT, DEPTH, DEPTH_CHARGE, ENEMY, SCOPE_OFFSET, SLOT, TORPEDO, TYPE } from "./constants.js";
 import { Explosion, cosmeticRng, planExplosion, scopeScreenX } from "./explosion.js";
+import { WORLD_HEIGHT, WORLD_WIDTH, worldDelta, wrapInto } from "./world.js";
 import type {
   LogTotals,
   Rng,
@@ -113,6 +114,8 @@ export interface CombatContext extends DepthChargeContext {
   date: string;
   /** Running explosion animations (appended to when a hit is visible through the scope). */
   explosions?: Explosion[];
+  /** Remake only: the world wraps, so torpedoes cross the edges and distances go the shorter way round. */
+  wrap?: boolean;
 }
 
 export interface CombatResult {
@@ -138,6 +141,10 @@ export function advanceTorpedoes(ctx: CombatContext): CombatResult {
       if (!t || t.speed === 0) continue;
       t.x += t.speed * Math.cos(t.heading);
       t.y += t.speed * Math.sin(t.heading);
+      if (ctx.wrap) {
+        t.x = wrapInto(t.x, WORLD_WIDTH);
+        t.y = wrapInto(t.y, WORLD_HEIGHT);
+      }
       t.travelled += t.speed;
       if (t.travelled > TORPEDO.maxRange) releaseTube(t);
     }
@@ -148,7 +155,7 @@ export function advanceTorpedoes(ctx: CombatContext): CombatResult {
       for (let i = 1; i <= TORPEDO.tubes; i += 1) {
         const t = ctx.torpedoes[i];
         if (!t || t.speed === 0 || t.spent) continue;
-        if (torpedoHits(t, ship)) {
+        if (torpedoHits(t, ship, ctx.wrap)) {
           if (resolveHit(ctx, t, ship)) result.ownBoatDestroyed = true;
         }
       }
@@ -158,9 +165,8 @@ export function advanceTorpedoes(ctx: CombatContext): CombatResult {
 }
 
 /** dist < base + cos(angle(torpedo, ship) - ship heading)^6 * length (0x08555, 0x085e3). */
-export function torpedoHits(t: Torpedo, ship: Vessel): boolean {
-  const dx = t.x - ship.x;
-  const dy = t.y - ship.y;
+export function torpedoHits(t: Torpedo, ship: Vessel, wrap = false): boolean {
+  const { dx, dy } = worldDelta(ship.x, ship.y, t.x, t.y, wrap);
   const phi = dx === 0 ? Math.sign(dy) * 1.5708 : Math.atan(dy / dx);
   const shape = ship.typeCode === TYPE.patrolBoat ? TORPEDO.patrolBoat : TORPEDO.other;
   return Math.sqrt(dx * dx + dy * dy) < shape.base + Math.cos(phi - ship.heading) ** 6 * shape.length;
@@ -171,8 +177,7 @@ function explosionAngle(ctx: CombatContext, t: Torpedo): number | null {
   const sub = ctx.sub;
   const skip = !ctx.inControlRoom || (!sub.periscopeUp && sub.depth > DEPTH.shallow) || sub.depth > DEPTH.periscopeMax;
   if (skip) return null;
-  const dx = t.x - sub.x;
-  const dy = t.y - sub.y;
+  const { dx, dy } = worldDelta(sub.x, sub.y, t.x, t.y, ctx.wrap);
   let a = dx === 0 ? Math.sign(dy) * 1.5708 : Math.atan(dy / dx);
   if (dx < 0) a += 3.1416;
   while (a < 0) a += TWO_PI;

@@ -1,4 +1,4 @@
-import { SLOT, compassDegrees, quadrantOf } from "../../core/index.js";
+import { SLOT, compassDegrees, quadrantOf, worldDelta } from "../../core/index.js";
 import type { CockpitLayouts } from "../cockpitLayouts.js";
 import type { Gfx } from "../gfx.js";
 import { liveContacts, type PlayView } from "../playScreens.js";
@@ -11,7 +11,7 @@ import { drawEnhancedScope, ENHANCED_FACTOR } from "./scope.js";
 import type { EnhancedFrame, EnhancedRenderer } from "./scene.js";
 import type { ShipArt } from "./shipArt.js";
 import { drawText } from "./typography.js";
-import { OWN_COLOR, OWN_SLOT, drawNavSymbol, drawNavTag, isStationary, navDetail, navShips, vectorLength, type NavBounds, type NavObstacles, type NavPoint, type NavScreen, type NavShip, type NavState } from "./nav.js";
+import { CHART_TRACK_EVERY_STEPS, OWN_COLOR, OWN_SLOT, drawNavSymbol, drawNavTag, isStationary, navDetail, navShips, quadrantPixel, vectorLength, type NavBounds, type NavObstacles, type NavPoint, type NavScreen, type NavShip, type NavState } from "./nav.js";
 
 /** What the scenes need besides the frame: the ship pictures, the extracted layouts, and the wake dots of the track screens. */
 export interface SceneDeps {
@@ -84,6 +84,8 @@ interface NavProjection {
   size: number;
   /** Opacity of a contact (the radar fades them after the sweep). */
   alphaOf?: (x: number, y: number) => number;
+  /** Steps between the dots of the past track (the tracker's own interval when not given). */
+  trackEvery?: number;
 }
 
 /** Where a vessel is on the view, the unit vector of its heading there and the length of its velocity vector, all through the screen's own projection (the chart's two axes have different scales). */
@@ -119,7 +121,7 @@ function drawNavShips(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen
     drawNavSymbol(g, {
       x: a.at[0], y: a.at[1], dx: a.dx, dy: a.dy, color: ship.cls.color, size: proj.size, speed: ship.speed, damaged: ship.damaged, alpha: proj.alphaOf?.(a.at[0], a.at[1]),
       detail, vector: a.vector, turn: nav.tracker.turn(ship.slot),
-      trail: nav.tracker.trail(ship.slot).map((p) => proj.toView(p.x, p.y)), selected: nav.selected === ship.slot,
+      trail: nav.tracker.trail(ship.slot, proj.trackEvery).map((p) => proj.toView(p.x, p.y)), selected: nav.selected === ship.slot,
     });
     drawn.push({ ship, at: a.at, dx: a.dx, dy: a.dy, vector: a.vector, size: proj.size, lines: detail && !isStationary(ship.speed) });
   }
@@ -127,7 +129,7 @@ function drawNavShips(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen
     const a = aim(proj, snap.sub.x, snap.sub.y, snap.sub.heading, sim.sub.speed, nav.minutes);
     drawNavSymbol(g, {
       x: a.at[0], y: a.at[1], dx: a.dx, dy: a.dy, color: OWN_COLOR, size: proj.size * 1.1, speed: sim.sub.speed, detail: true, vector: a.vector,
-      turn: nav.tracker.turn(OWN_SLOT), trail: nav.tracker.trail(OWN_SLOT).map((p) => proj.toView(p.x, p.y)),
+      turn: nav.tracker.turn(OWN_SLOT), trail: nav.tracker.trail(OWN_SLOT, proj.trackEvery).map((p) => proj.toView(p.x, p.y)),
     });
     drawn.push({ ship: null, at: a.at, dx: a.dx, dy: a.dy, vector: a.vector, size: proj.size * 1.1, lines: !isStationary(sim.sub.speed) });
   }
@@ -279,8 +281,7 @@ function radarScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       if (navOn) {
         // ship symbols on the blips: the picture is heading-up, so a ship's own heading is shown relative to the bow of the boat
         const toView = (wx: number, wy: number): NavPoint => {
-          const dx = wx - snap.sub.x;
-          const dy = wy - snap.sub.y;
+          const { dx, dy } = worldDelta(snap.sub.x, snap.sub.y, wx, wy, sim.options.wrapWorld);
           const p = radarBlip(Math.atan2(dy, dx) - snap.sub.heading, Math.hypot(dx, dy));
           return [xo + p.x, p.y];
         };
@@ -383,9 +384,9 @@ function chartScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       const c = g.ctx;
       c.save();
       c.beginPath();
-      c.rect(g.toX(xo + 14), g.toY(14), g.toLength(PICTURE_WIDTH - 28), g.toLength(PICTURE_HEIGHT - 28));
+      c.rect(g.toX(xo), g.toY(0), g.toLength(PICTURE_WIDTH), g.toLength(PICTURE_HEIGHT)); // up to the edge: a boat stopped at the edge of the world stays visible
       c.clip();
-      drawn = drawNavShips(g, deps, view, "chart", { toView: (x, y) => [xo + px(x), py(y)], size: 34 }, true);
+      drawn = drawNavShips(g, deps, view, "chart", { toView: (x, y) => [xo + px(x), py(y)], size: 34, trackEvery: CHART_TRACK_EVERY_STEPS }, true);
       c.restore();
     } else {
       if (settings.difficulty <= 2) {
@@ -423,7 +424,7 @@ function quadrantScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       g.line(xo, y, xo + 28, y, INSTRUMENT.tick, 2.4);
       g.line(xo + PICTURE_WIDTH - 28, y, xo + PICTURE_WIDTH, y, INSTRUMENT.tick, 2.4);
     }
-    const q = sim.currentQuadrant;
+    const q = quadrantOf(snap.sub.x, snap.sub.y); // from where the boat is drawn (the simulation is up to a step ahead of the interpolated picture)
     const px = (x: number): number => (x % 5000) * 0.0638 * ENHANCED_FACTOR;
     const py = (y: number): number => (199 - (y % 5000) * 0.0398) * ENHANCED_FACTOR;
     const island = sim.scenario.islands[q];
@@ -460,9 +461,9 @@ function quadrantScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       const c = g.ctx;
       c.save();
       c.beginPath();
-      c.rect(g.toX(xo + 14), g.toY(14), g.toLength(PICTURE_WIDTH - 28), g.toLength(PICTURE_HEIGHT - 28));
+      c.rect(g.toX(xo), g.toY(0), g.toLength(PICTURE_WIDTH), g.toLength(PICTURE_HEIGHT)); // up to the edge: a boat stopped at the edge of the world stays visible
       c.clip();
-      drawn = drawNavShips(g, deps, view, "quadrant", { toView: (x, y) => [xo + px(x), py(y)], size: 30 }, true);
+      drawn = drawNavShips(g, deps, view, "quadrant", { toView: (x, y) => { const [a, b] = quadrantPixel(q, x, y); return [xo + a * ENHANCED_FACTOR, b * ENHANCED_FACTOR]; }, size: 30 }, true);
       c.restore();
     } else {
       if (settings.difficulty <= 5) {

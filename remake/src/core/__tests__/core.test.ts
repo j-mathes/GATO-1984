@@ -29,8 +29,15 @@ import {
   stepHeading,
   stepEngineChecks,
   stepSpeed,
+  stepPosition,
   torpedoHits,
   turnsPositive,
+  updateContacts,
+  shortestDelta,
+  worldDelta,
+  wrapInto,
+  WORLD_HEIGHT,
+  WORLD_WIDTH,
   ShipLog,
   type CourseJson,
   type DemoScriptDocument,
@@ -248,6 +255,143 @@ describe("enemy movement", () => {
     expect(events.some((e) => e.type === "contactAlert")).toBe(true);
     sim.step();
     expect(ship.speed).toBe(7 + 4);
+  });
+});
+
+describe("wrap-around world (remake switch; the original clamps at the edge)", () => {
+  it("measures the shorter way round only when wrapping", () => {
+    expect(shortestDelta(24900, 100, WORLD_WIDTH, false)).toBe(-24800);
+    expect(shortestDelta(24900, 100, WORLD_WIDTH, true)).toBe(200); // across the east edge
+    expect(shortestDelta(100, 24900, WORLD_WIDTH, true)).toBe(-200);
+    expect(shortestDelta(100, 600, WORLD_WIDTH, true)).toBe(500);
+    expect(worldDelta(10, 19950, 30, 50, true)).toEqual({ dx: 20, dy: 100 });
+    expect(wrapInto(25010, WORLD_WIDTH)).toBe(10);
+    expect(wrapInto(-5, WORLD_HEIGHT)).toBe(19995);
+    expect(wrapInto(0, WORLD_WIDTH)).toBe(1); // the lowest position is 1, as in the original
+  });
+
+  it("the boat stops at the edge of the world unless the world wraps, then it comes in on the other side", () => {
+    const run = (wrap: boolean): { x: number; y: number } => {
+      const sub = newSim().sub;
+      Object.assign(sub, { x: 24990, y: 10, heading: 0, speed: 20 });
+      stepPosition(sub, wrap);
+      return { x: sub.x, y: sub.y };
+    };
+    expect(run(false).x).toBe(24999);
+    expect(run(true).x).toBeCloseTo(10, 6);
+    const north = newSim().sub;
+    Object.assign(north, { x: 500, y: 19995, heading: Math.PI / 2, speed: 10 });
+    stepPosition(north, true);
+    expect(north.y).toBeCloseTo(5, 6);
+    const south = Object.assign(newSim().sub, { x: 500, y: 3, heading: -Math.PI / 2, speed: 10 });
+    stepPosition(south, true);
+    expect(south.y).toBeCloseTo(19993, 6);
+  });
+
+  it("a ship across the seam is near: distance and bearing go the short way", () => {
+    const sim = newSim();
+    const ship = sim.vessels[3];
+    if (!ship) throw new Error("missing");
+    Object.assign(sim.sub, { x: 24900, y: 8000, heading: 0 });
+    Object.assign(ship, { x: 100, y: 8000 });
+    updateContacts(sim.sub, sim.vessels, { x: -1, y: -1, innerRadius: 1, outerRadius: 1 }, true);
+    expect(ship.distance).toBeCloseTo(200);
+    expect(ship.relativeBearing).toBeCloseTo(0); // dead ahead (east), not astern
+    updateContacts(sim.sub, sim.vessels, { x: -1, y: -1, innerRadius: 1, outerRadius: 1 }, false);
+    expect(ship.distance).toBeCloseTo(24800);
+  });
+
+  it("a torpedo hits across the seam, and a ship that sails off the east edge appears in the west", () => {
+    const sim = newSim();
+    const ship = sim.vessels[3];
+    if (!ship) throw new Error("missing");
+    Object.assign(ship, { x: 5, y: 9000, heading: 0 });
+    const torp = createTorpedoes();
+    const t = torp[1];
+    if (!t) throw new Error("missing");
+    Object.assign(t, { active: true, speed: 17, x: 24995, y: 9000, heading: 0 });
+    expect(torpedoHits(t, ship, false)).toBe(false);
+    expect(torpedoHits(t, ship, true)).toBe(true);
+    const sailing = newSim(1, { wrapWorld: true });
+    const freighter = sailing.vessels[3];
+    if (!freighter) throw new Error("missing");
+    Object.assign(freighter, { x: 24995, y: 9000, heading: 0, speed: 8, targetX: 26000, targetY: 9000, waypointIndex: 1 });
+    sailing.step();
+    expect(freighter.x).toBeLessThan(100);
+  });
+
+  it("without the switch nothing changes: the boat is clamped and ships keep to the plain map", () => {
+    const sim = newSim(1);
+    Object.assign(sim.sub, { x: 24999, y: 8000, heading: 0, speed: 20 });
+    sim.step();
+    expect(sim.sub.x).toBe(24999);
+  });
+});
+
+describe("gradual ship turns (remake switch; the original takes the next leg's heading at once)", () => {
+  /** A freighter that has just reached a waypoint, with the next one to the north while it was heading east. */
+  function turning(over: Partial<SimOptions>): { sim: Simulation; ship: ReturnType<typeof newSim>["vessels"][number] } {
+    const sim = newSim(1, over);
+    const ship = sim.vessels[3];
+    if (!ship) throw new Error("missing");
+    sim.sub.x = 2000; // far away: no alert
+    sim.sub.y = 2000;
+    sim.sub.depth = 80;
+    sim.step(); // the first leg is taken at once in both modes
+    ship.waypoints = [{ x: 15000, y: 8000, speed: 4 }, { x: 15000, y: 12000, speed: 4 }, ...ship.waypoints.slice(2)];
+    Object.assign(ship, { x: 15000, y: 8000, heading: 0, waypointIndex: 1, speed: 8, targetX: 15000, targetY: 8000 });
+    return { sim, ship };
+  }
+
+  it("takes the first leg at once, then swings round a little each step instead of snapping to the next leg", () => {
+    const { sim, ship } = turning({ gradualTurns: true });
+    sim.step(); // arrives: the next waypoint is due north
+    const headings = [ship.heading];
+    for (let i = 0; i < 12; i += 1) {
+      sim.step();
+      headings.push(ship.heading);
+    }
+    expect(headings[0]).toBeLessThan(0.1); // still nearly east after the step that chose the new leg
+    const steps = headings.slice(1).map((h, i) => Math.abs(h - (headings[i] as number)));
+    expect(Math.max(...steps)).toBeLessThanOrEqual(0.028 + 1e-9); // a merchant turns at 0.028 rad a step at most
+    expect(headings.at(-1)).toBeGreaterThan(0.2);
+    expect(headings.at(-1)).toBeLessThan(Math.PI / 2 + 1e-9); // and never beyond the new bearing
+  });
+
+  it("the original takes the new heading at once", () => {
+    const { sim, ship } = turning({});
+    sim.step();
+    expect(ship.heading).toBeCloseTo(Math.PI / 2, 2);
+  });
+
+  it("a ship that turns gradually still reaches every waypoint and does not circle one", () => {
+    const sim = newSim(1, { gradualTurns: true });
+    sim.sub.x = 2000;
+    sim.sub.y = 2000;
+    sim.sub.depth = 80;
+    const freighter = sim.vessels[3];
+    if (!freighter) throw new Error("missing");
+    let reached = 0;
+    for (let i = 0; i < 6000 && freighter.waypointIndex < 3; i += 1) {
+      sim.sub.x = 2000;
+      sim.sub.y = 2000;
+      for (const e of sim.step()) if (e.type === "waypointReached" && e.slot === 3) reached += 1;
+    }
+    expect(reached).toBeGreaterThanOrEqual(2);
+  });
+
+  it("warships turn faster than merchants", () => {
+    const sim = newSim(1, { gradualTurns: true });
+    const destroyer = sim.vessels.find((v) => v.typeCode === TYPE.destroyer);
+    const freighter = sim.vessels[3];
+    if (!destroyer || !freighter) throw new Error("missing");
+    for (const v of [destroyer, freighter]) Object.assign(v, { desiredHeading: 0, heading: 0, speed: 8, x: 12000, y: 12000, targetX: 12000, targetY: 14000, waypointIndex: 2 });
+    sim.sub.x = 2000;
+    sim.sub.y = 2000;
+    sim.sub.depth = 80;
+    sim.step();
+    expect(destroyer.heading).toBeCloseTo(0.035, 6);
+    expect(freighter.heading).toBeCloseTo(0.028, 6);
   });
 });
 

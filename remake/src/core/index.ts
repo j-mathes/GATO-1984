@@ -1,4 +1,5 @@
 export * from "./constants.js";
+export * from "./world.js";
 export * from "./types.js";
 export * from "./rng.js";
 export * from "./scenario.js";

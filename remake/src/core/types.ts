@@ -132,6 +132,8 @@ export interface Vessel {
   waypointIndex: number; // A1cae: counter of reached waypoints (0..8)
   speed: number; // A1dce
   heading: number; // A1ea6, math angle (0 = east, counter-clockwise)
+  /** Remake only (SHIPS TURN GRADUALLY): the heading the ship is steering towards; null until its first leg is set. */
+  desiredHeading?: number | null;
   waypoints: Waypoint[];
   // Derived each step (A1df2, A1e16, A1e5e, A1e3a, A1d86)
   distance: number;
@@ -222,6 +224,10 @@ export interface SimOptions {
   /** True while the control-room screen is shown (ds:0x21ce = 0). Explosions are only animated, and can only kill the
    * own boat, while the control room is the active screen and the scope is usable. */
   inControlRoom: boolean;
+  /** Remake only (switch WRAP-AROUND WORLD): the map joins its opposite edges instead of stopping the boat at them (the original clamps, 0x067a1). Default false. */
+  wrapWorld?: boolean;
+  /** Remake only (switch SHIPS TURN GRADUALLY): other ships swing round at their class's turn rate instead of taking the next leg's heading at once. Default false. */
+  gradualTurns?: boolean;
 }
 
 export type SimEvent =

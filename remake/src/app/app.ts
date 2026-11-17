@@ -298,6 +298,11 @@ export class App {
       // storage may be unavailable (private mode)
     }
     this.controls.setSimpleSpeed(this.advanced.effective("simpleSpeed")); // the speed keys follow SIMPLE SPEED KEYS (and CUSTOM CONTROLS)
+    if (this.sim) {
+      // the world rules apply at once, also to the mission that is running
+      this.sim.options.wrapWorld = this.advanced.on("wrapWorld");
+      this.sim.options.gradualTurns = this.advanced.on("gradualTurns");
+    }
     this.applyTimeScale();
     this.syncGraphics();
     this.onAdvancedChange?.();
@@ -855,7 +860,7 @@ export class App {
     const sim = new Simulation({
       scenario,
       rng: createRng(seed),
-      options: { ...this.settings, inControlRoom: true },
+      options: { ...this.settings, inControlRoom: true, wrapWorld: this.advanced.on("wrapWorld"), gradualTurns: this.advanced.on("gradualTurns") },
       shipLog: this.log.document(),
       ticksPerSecond: this.stepRate,
       date: todayStamp(),

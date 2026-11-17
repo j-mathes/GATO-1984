@@ -6,6 +6,7 @@ import {
   DEFAULT_VECTOR_MINUTE,
   ShipTracker,
   STATIONARY_KNOTS,
+  CHART_TRACK_EVERY_STEPS,
   TRACK_DOTS,
   TRACK_EVERY_STEPS,
   VECTOR_MINUTES,
@@ -19,6 +20,7 @@ import {
   navTriangle,
   nextSelection,
   placeTag,
+  quadrantPixel,
   turnSign,
   vectorLength,
   type NavView,
@@ -37,10 +39,10 @@ interface FakeVessel {
 
 const ship = (slot: number, typeCode: number, x: number, y: number, extra: Partial<FakeVessel> = {}): FakeVessel => ({ slot, typeCode, x, y, heading: 0, speed: 8, sunk: false, damaged: false, ...extra });
 
-function fakeSim(vessels: FakeVessel[], tick = 0, depth = 0): Simulation {
+function fakeSim(vessels: FakeVessel[], tick = 0, depth = 0, wrapWorld = false): Simulation {
   const list: (FakeVessel | undefined)[] = [undefined, undefined];
   for (const v of vessels) list[v.slot] = v;
-  return { tick, currentQuadrant: 5, sub: { x: 22500, y: 2500, heading: Math.PI / 2, speed: 6, depth }, vessels: list } as unknown as Simulation;
+  return { tick, currentQuadrant: 5, options: { wrapWorld }, sub: { x: 22500, y: 2500, heading: Math.PI / 2, speed: 6, depth }, vessels: list } as unknown as Simulation;
 }
 
 function viewOf(sim: Simulation, difficulty = 1): NavView {
@@ -73,6 +75,18 @@ describe("navigation symbols: classes and geometry", () => {
     expect(isStationary(0)).toBe(true);
     expect(isStationary(0.49)).toBe(true);
     expect(isStationary(1.75)).toBe(false);
+  });
+
+  it("a point past the edge of a quadrant is past the edge of the map, not wrapped to the other side", () => {
+    const [left, top] = quadrantPixel(5, 20000, 4999); // the west edge, near the top of quadrant 5 (x 20000-25000, y 0-5000)
+    expect(left).toBeCloseTo(0);
+    expect(top).toBeLessThan(2);
+    const [inside] = quadrantPixel(5, 24900, 2500);
+    const [beyond] = quadrantPixel(5, 25300, 2500); // 400 units east of the edge, in quadrant 6
+    expect(inside).toBeGreaterThan(300);
+    expect(beyond).toBeGreaterThan(320); // off the picture, not back at its left side
+    expect(quadrantPixel(5, 19900, 2500)[0]).toBeLessThan(0);
+    expect(quadrantPixel(1, 0, 0)).toEqual([0, 199]);
   });
 
   it("the velocity vector grows linearly with the speed and the time", () => {
@@ -163,6 +177,21 @@ describe("navigation symbols: which ships a screen shows", () => {
     expect(navShips(viewOf(fakeSim([near], 0, 80), 9), "radar")).toEqual([]);
   });
 
+  it("with the world wrapping, a ship across the seam is near and ahead; without it, far away", () => {
+    const across = ship(3, TYPE.freighter, 100, 2500);
+    const eastBoat = (wrap: boolean): ReturnType<typeof fakeSim> => {
+      const s = fakeSim([across], 0, 0, wrap);
+      s.sub.x = 24900;
+      s.sub.heading = 0;
+      return s;
+    };
+    const wrapped = navShips(viewOf(eastBoat(true), 9), "radar");
+    expect(wrapped.map((s) => s.slot)).toEqual([3]);
+    expect(wrapped[0]?.distance).toBeCloseTo(200);
+    expect(wrapped[0]?.relative).toBeCloseTo(0);
+    expect(navShips(viewOf(eastBoat(false), 9), "radar")).toEqual([]);
+  });
+
   it("only the ships of the first difficulty levels get vectors, tracks and tags", () => {
     expect(navDetail(2)).toBe(true);
     expect(navDetail(3)).toBe(false);
@@ -179,7 +208,7 @@ describe("navigation symbols: which ships a screen shows", () => {
 });
 
 describe("navigation symbols: the history of the ships", () => {
-  it("keeps a dot every 3 game minutes, five at most, oldest first", () => {
+  it("keeps a dot every 10 steps (a game minute), five at most, oldest first", () => {
     const v = ship(3, TYPE.freighter, 0, 0);
     const sim = fakeSim([v]);
     const tracker = new ShipTracker();
@@ -193,6 +222,24 @@ describe("navigation symbols: the history of the ships", () => {
     const trail = tracker.trail(3).map((p) => p.x);
     expect(trail).toHaveLength(TRACK_DOTS);
     expect(trail).toEqual(sampled.slice(-TRACK_DOTS));
+  });
+
+  it("a screen can ask for every third dot (the chart): always the same ones, five at most, so they do not slide", () => {
+    const v = ship(3, TYPE.freighter, 0, 0);
+    const sim = fakeSim([v]);
+    const tracker = new ShipTracker();
+    let previous: number[] = [];
+    for (let tick = 0; tick <= TRACK_EVERY_STEPS * 20; tick += 1) {
+      (sim as unknown as { tick: number }).tick = tick;
+      v.x = tick;
+      tracker.update(sim);
+      const wide = tracker.trail(3, CHART_TRACK_EVERY_STEPS).map((p) => p.x);
+      expect(wide.length).toBeLessThanOrEqual(TRACK_DOTS);
+      for (const x of previous) if (wide.length === TRACK_DOTS && x >= (wide[0] as number)) expect(wide).toContain(x); // a dot stays until it is pushed out
+      previous = wide;
+    }
+    expect(tracker.trail(3, CHART_TRACK_EVERY_STEPS).map((p) => p.x)).toEqual([70, 100, 130, 160, 190]); // every 30 steps
+    expect(tracker.trail(3).map((p) => p.x)).toEqual([160, 170, 180, 190, 200]); // the radar and the map: every 10
   });
 
   it("notes the direction of a turn from the change of heading, and forgets it when the ship goes straight", () => {

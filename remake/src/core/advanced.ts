@@ -27,6 +27,8 @@ export type AdvancedKey =
   | "pcPace"
   | "missionSelect"
   | "explosionsRun"
+  | "wrapWorld"
+  | "gradualTurns"
   | "customControls"
   | "simpleSpeed";
 
@@ -66,6 +68,8 @@ export const ADVANCED_FEATURES: readonly AdvancedFeature[] = [
   { key: "radioReread", row: 20, label: "M REREADS THE ORDERS", default: true, remake: "M shows the current orders again", original: "M asks for a new random mission" },
   { key: "pcPace", row: 28, label: "SLOW 1984 PC PACE (2.5 HZ)", default: true, remake: "the world steps 2.5 times a second, like a 4.77 MHz PC", original: "10 steps a second (unpaced)" },
   { key: "explosionsRun", row: 32, label: "WORLD RUNS DURING BLASTS", default: true, remake: "the world keeps running while an explosion plays", original: "the world waits while an explosion plays" },
+  { key: "wrapWorld", row: 47, label: "WRAP-AROUND WORLD", default: false, remake: "the map joins its edges: leave east, come in west; the same north and south", original: "the boat stops at the edge of the world, as in 1984" },
+  { key: "gradualTurns", row: 48, label: "SHIPS TURN GRADUALLY", default: true, remake: "other ships swing round at their own turn rate instead of snapping to the next leg", original: "ships take the heading of the next leg at once, as in 1984" },
   { key: "boomSound", row: 24, label: "EXPLOSION BOOM SOUND", default: true, remake: "explosions make a descending boom", original: "silent explosions" },
   { key: "radioAlert", row: 25, label: "RADIO ALERT TONE", default: true, remake: "radio messages sound an alert tone", original: "silent messages" },
   { key: "solidShips", row: 43, label: "SOLID SHIPS IN THE SCOPE", default: true, remake: "ships in the original picture are filled in, so they show up better when small", original: "ships are the original's open line art, see-through" },

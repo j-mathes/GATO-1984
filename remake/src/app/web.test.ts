@@ -2034,13 +2034,13 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
   };
 
   it("offers the 18 requested rows plus the sinking scene, CUSTOM CONTROLS and SIMPLE SPEED KEYS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line, the sinking skip and the custom-controls pair", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 45, 15, 2, 17, 20, 28, 32, 24, 25, 43, 42, 46, 38, 40]);
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 41, 12, 45, 15, 2, 17, 20, 28, 32, 47, 48, 24, 25, 43, 42, 46, 38, 40]);
     const keys = ADVANCED_FEATURES.map((f) => f.key);
     const at = keys.indexOf("hotkeys");
     expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);
     expect(ADVANCED_FEATURES.every((f) => f.label.length <= 30)).toBe(true);
     const { app } = boot();
-    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(!["helmHud", "skipSinking", "enhancedGraphics", "customControls", "simpleSpeed"].includes(f.key));
+    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(!["helmHud", "skipSinking", "enhancedGraphics", "customControls", "simpleSpeed", "wrapWorld"].includes(f.key));
   });
 
   it("indented switches: the hotkey members, the next-mission pick and the time pop-up sit under the switch they depend on", () => {
@@ -2097,6 +2097,16 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     h.app.advanced.set("helmHud", true);
     const after = frameAfter(h, 20).filter(([n, a]) => n === "text" && String(a[2]).startsWith("ON:"));
     expect(after[0]?.[1][3]).toBe(COLORS.yellow);
+  });
+
+  it("WRAP-AROUND WORLD (47) and SHIPS TURN GRADUALLY (48) reach the running mission at once, and a new mission starts with them", () => {
+    const h = play();
+    expect([h.sim().options.wrapWorld, h.sim().options.gradualTurns]).toEqual([false, true]); // wrap is off by default, the turns are on
+    h.app.advanced.set("wrapWorld", true);
+    h.app.advanced.set("gradualTurns", false);
+    expect([h.sim().options.wrapWorld, h.sim().options.gradualTurns]).toEqual([true, false]);
+    h.app.startMission(1, 5);
+    expect([h.sim().options.wrapWorld, h.sim().options.gradualTurns]).toEqual([true, false]);
   });
 
   it("menu item 5 opens the screen; Up/Down/Enter switch a row, which is remembered; Esc returns to the menu", () => {
