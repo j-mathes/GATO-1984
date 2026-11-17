@@ -52,6 +52,16 @@ remake work and to document the analysis. Use of them is subject to the rights o
 The software the project is built with (Vite, TypeScript, Vitest and their dependencies, and the code they add to a build) stays under its
 own licenses. The Creative Commons license also does not grant any patent or trademark rights.
 
+### Fonts
+
+The enhanced graphics use two typefaces, bundled unchanged in `remake/public/assets/fonts/` with their license texts. They are not
+covered by the Creative Commons license above; they stay under their own licenses:
+
+| Font | Author | License | Files |
+| --- | --- | --- | --- |
+| Courier Prime | The Courier Prime Project Authors (Alan Dague-Greene, <https://github.com/quoteunquoteapps/CourierPrime>) | SIL Open Font License 1.1 | `CourierPrime-Regular.ttf`, `CourierPrime-Bold.ttf`, `CourierPrime-OFL.txt` |
+| Special Elite | Brian J. Bonislawsky DBA Astigmatic (AOETI) | Apache License 2.0 | `SpecialElite-Regular.ttf`, `SpecialElite-LICENSE.txt` |
+
 ## Giving credit
 
 When you share this project or something based on it, keep this file and say so. A reasonable credit reads:

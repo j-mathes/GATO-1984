@@ -178,7 +178,7 @@ export function drawRadarLayout(g: Gfx, v: PlayView, L: CockpitLayouts, contacts
   g.text(32, 5, String(compassDegrees(snap.sub.heading)).padStart(3, "0"), pal[3] as string);
   g.text(32, 10, pad(sim.sub.speed, 3), pal[3] as string);
   g.text(32, 15, pad(Math.trunc(sim.sub.depth), 3), pal[3] as string);
-  g.text(34, 21, String(sim.sub.torpedoes), pal[3] as string);
+  g.text(34, 21, ` ${sim.sub.torpedoes}`, pal[3] as string); // BASIC prints a positive number with a leading space: the digits start in column 35, inside the box
   if (sim.sub.depth > 45) return; // the sweep and the blips are only drawn at periscope depth
   trail?.draw(g, pal);
   const a = ((v.timeMs / 1000) * 1.2) % (Math.PI * 2);

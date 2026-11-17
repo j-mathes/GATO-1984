@@ -10,6 +10,7 @@ import type { CourseJson, DemoScriptDocument, HistoryPagesDocument, MxpJson, Ord
 import { attachKeyboard } from "./input/keyboard.js";
 import { Gfx } from "./render/gfx.js";
 import { setupDisplay } from "./render/display.js";
+import { loadEnhancedFonts } from "./render/enhanced/typography.js";
 import { SpriteLibrary } from "./render/sprites.js";
 import { TitleArt } from "./render/titleArt.js";
 import { CockpitLayouts } from "./render/cockpitLayouts.js";
@@ -68,6 +69,19 @@ async function boot(): Promise<void> {
 
   const app = new App(gfx, data, sprites, new SoundEngine(), storage, Math.random, titleArt, cockpit);
   const display = setupDisplay(canvas, document.getElementById("crt"), storage);
+  // the enhanced graphics draw into a canvas as sharp as the screen, in a logical space that follows the window (render/display.ts)
+  display.onLayout = (layout) => {
+    gfx.resizeBacking(layout.backingWidth, layout.backingHeight);
+    app.setEnhancedView(layout.viewWidth, layout.viewHeight);
+  };
+  let fontsRequested = false;
+  app.onGraphicsChange = (graphics) => {
+    if (graphics === "enhanced" && !fontsRequested) {
+      fontsRequested = true;
+      void loadEnhancedFonts(); // the typewriter faces; until they arrive (or if they cannot) the fallback monospace fonts are used
+    }
+    display.setGraphics(graphics);
+  };
   app.onAdvancedChange = () => display.setModesEnabled(app.advanced.on("displayModes"));
   app.onAdvancedChange();
   attachKeyboard(window, (e) => {

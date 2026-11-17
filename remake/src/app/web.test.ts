@@ -2269,6 +2269,51 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(plain.some(([n, a]) => n === "text" && a[0] === 2 && a[1] === 4 && a[2] === "DO YOU WANT DO PLAY AGAIN? (Y/N)")).toBe(true);
   });
 
+  it("the radar prints the torpedo count with BASIC's leading space, so its digits sit inside the box (columns 35 and on)", () => {
+    const h = play();
+    press(h.app, "F6");
+    const calls = frameAfter(h, 20);
+    expect(calls.some(([n, a]) => n === "text" && a[0] === 34 && a[1] === 21 && a[2] === ` ${h.sim().sub.torpedoes}`)).toBe(true);
+  });
+
+  describe("the enhanced graphics scaffold (render/enhanced)", () => {
+    it("original graphics never use a scene; enhanced ones use it, in the enhanced view, and fall back to the original screen without one", () => {
+      const h = play();
+      let seen: { width: number; height: number } | null = null;
+      h.app.enhanced.register("control", (f) => {
+        seen = { width: f.width, height: f.height };
+        f.g.rect(0, 0, 10, 10, "#123456");
+      });
+      expect(textsOf(frameAfter(h, 20))).toContain("FUEL"); // the original control room
+      expect(seen).toBeNull();
+
+      const changes: string[] = [];
+      h.app.onGraphicsChange = (m) => void changes.push(m);
+      h.app.setEnhancedView(1422, 800);
+      h.app.setGraphics("enhanced");
+      const calls = frameAfter(h, 40);
+      expect(changes).toEqual(["enhanced"]);
+      expect(seen).toEqual({ width: 1422, height: 800 });
+      const names = calls.map(([n, a]) => `${n}:${a.join(",")}`);
+      expect(names.indexOf("view:320,200")).toBeLessThan(names.indexOf("view:1422,800")); // bars cleared, then the scene's view
+      expect(names.lastIndexOf("view:320,200")).toBeGreaterThan(names.indexOf("view:1422,800")); // back to the original view for the overlays
+      expect(textsOf(calls)).not.toContain("FUEL"); // the scene replaced the original screen
+
+      h.app.setGraphics("original");
+      expect(changes).toEqual(["enhanced", "original"]);
+      expect(textsOf(frameAfter(h, 60))).toContain("FUEL"); // and the scene is not used again
+    });
+
+    it("a screen without a scene is drawn by the original code, centred in the canvas", () => {
+      const h = play();
+      h.app.setGraphics("enhanced");
+      const calls = frameAfter(h, 20);
+      expect(calls[0]).toEqual(["view", [320, 200]]);
+      expect(calls[1]).toEqual(["fillBacking", ["#000000"]]);
+      expect(textsOf(calls)).toContain("FUEL");
+    });
+  });
+
   describe("the sinking scene (41)", () => {
     const WATER = "#ff55ff";
     const lose = (h: Harness): void => {

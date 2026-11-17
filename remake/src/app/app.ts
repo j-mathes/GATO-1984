@@ -45,7 +45,9 @@ import {
   type PlayScreen,
 } from "../input/keyboard.js";
 import { CONTROL_DEFS, DEFAULT_KEYMAP, Keymap, controlGroup, controlLabel, isAssignable, isLocked, keyName, normalizeKey, type ControlDef, type ControlId } from "../input/controls.js";
-import { COLORS, Gfx } from "../render/gfx.js";
+import { COLORS, Gfx, LOGICAL_HEIGHT, LOGICAL_WIDTH } from "../render/gfx.js";
+import { ENHANCED_HEIGHT, type Graphics } from "../render/display.js";
+import { EnhancedRenderer } from "../render/enhanced/scene.js";
 import {
   drawCaptainsLog,
   drawChart,
@@ -164,6 +166,12 @@ export class App {
   readonly advanced: AdvancedOptions;
   /** Called after any switch changed (the page uses it for the display modes). */
   onAdvancedChange: (() => void) | null = null;
+  /** Mission screens drawn by the enhanced renderer (render/enhanced/); a screen without a scene is drawn by the original code. */
+  readonly enhanced = new EnhancedRenderer();
+  /** Called when the graphics are switched, so the page can size the canvas (main.ts). */
+  onGraphicsChange: ((graphics: Graphics) => void) | null = null;
+  private graphicsMode: Graphics = "original";
+  private enhancedView = { width: Math.round(ENHANCED_HEIGHT * 1.6), height: ENHANCED_HEIGHT };
   private advancedCursor = 0;
   /** The key assignments of the CONTROL ASSIGNMENTS screen; used for play only while CUSTOM CONTROLS is on. */
   readonly controls: Keymap;
@@ -1002,10 +1010,31 @@ export class App {
   // Frame
   // ---------------------------------------------------------------------------------------------------------------
 
+  /** The graphics in use: the original 320 x 200 picture, or the enhanced renderer (screens without a scene still draw as the original). */
+  get graphics(): Graphics {
+    return this.graphicsMode;
+  }
+
+  setGraphics(graphics: Graphics): void {
+    if (graphics === this.graphicsMode) return;
+    this.graphicsMode = graphics;
+    if (graphics === "original") this.g.view(LOGICAL_WIDTH, LOGICAL_HEIGHT);
+    this.onGraphicsChange?.(graphics);
+  }
+
+  /** The logical size the enhanced scenes draw in (the page reports it when the window changes; 800 units high, 1280 to 1422 wide). */
+  setEnhancedView(width: number, height: number): void {
+    this.enhancedView = { width, height };
+  }
+
   /** Draw one animation frame. `timeMs` is the requestAnimationFrame timestamp. */
   frame(timeMs: number): void {
     this.lastFrame = timeMs;
     const g = this.g;
+    if (this.graphicsMode === "enhanced") {
+      g.view(LOGICAL_WIDTH, LOGICAL_HEIGHT); // everything but the enhanced scenes draws in the original view, centred in the canvas
+      g.fillBacking(COLORS.black);
+    }
     if (this.mode === "splash") {
       this.splashStart ??= timeMs;
       if (timeMs - this.splashStart >= SPLASH_MS) this.mode = "title";
@@ -1117,6 +1146,14 @@ export class App {
     const showTime = remakeExtras && this.advanced.on("gameControlExtras");
     const trail = trails && (screen === "radar" || screen === "chart" || screen === "quadrant") ? this.trailBuffers[screen] : undefined;
     const prompt = editor ? (this.editorItem === 5 ? "MISSION 1-20, R = RANDOM" : "NEW DIFFICULTY LEVEL") : null;
+    const scene = this.graphicsMode === "enhanced" ? this.enhanced.scene(screen) : undefined;
+    if (scene) {
+      const { width, height } = this.enhancedView;
+      g.view(width, height);
+      scene({ g, view, screen, width, height });
+      g.view(LOGICAL_WIDTH, LOGICAL_HEIGHT);
+      return;
+    }
     switch (screen) {
       case "control":
         if (L) drawControlRoomLayout(g, view, L);
