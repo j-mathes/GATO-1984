@@ -50,10 +50,14 @@ export function titleWipeLines(sinceMs: number): number {
   return Math.max(0, Math.min(TITLE_WIPE_ROWS.length, Math.floor(progress * TITLE_WIPE_ROWS.length)));
 }
 
+/** Remake credit line on the title page, two text rows below the original authors' line. */
+export const ENHANCEMENT_CREDIT = "Enhancements by Jared Mathes";
+const ENHANCEMENT_ROW = 19;
+
 /**
  * Title page of GATO.EXE. With the exported artwork it is the original picture (striped GATO lettering, credits and the (c) ring
  * as drawn by the BASIC program, text placed on the original LOCATE cells); the old sprite layout is only a fallback when the
- * asset could not be loaded. "PRESS ANY KEY" is a remake addition: the original advances by itself.
+ * asset could not be loaded. "PRESS ANY KEY" and the enhancements credit are remake additions: the original advances by itself.
  * `sinceMs` is the time since the page appeared: the solid `title_letters` frame is shown first and the original's erase lines
  * run over it one by one until the striped `title` frame is reached; leave it out to show the finished page.
  */
@@ -72,6 +76,7 @@ export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary |
     g.clear(frame.palette[0]);
     g.image(art.image(), 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT, 0, 0, TITLE_ART_WIDTH, TITLE_ART_HEIGHT);
     for (const t of frame.text) g.text(t.col, t.row, t.text, frame.palette[t.colorIndex]);
+    drawEnhancementCredit(g, frame);
     g.centered(25, "PRESS ANY KEY", frame.palette[3]);
     return;
   }
@@ -83,9 +88,16 @@ export function drawTitle(g: Gfx, art: TitleArt | null, sprites: SpriteLibrary |
     g.image(sprite.img, f.cell.x, f.cell.y, f.cell.w, f.cell.h, 120, 60, f.cell.w * 1.2, f.cell.h * 1.2);
   }
   g.centered(15, TITLE_LINES[1], COLORS.grey);
+  g.centered(16, ENHANCEMENT_CREDIT, COLORS.grey);
   g.centered(18, TITLE_LINES[2], COLORS.grey);
   g.centered(19, TITLE_LINES[3], COLORS.grey);
   g.centered(24, "PRESS ANY KEY", COLORS.white);
+}
+
+/** The credit line in the colour of the authors' line of the same frame. */
+function drawEnhancementCredit(g: Gfx, frame: { palette: readonly string[]; text: readonly { text: string; colorIndex: number }[] }): void {
+  const authors = frame.text.find((t) => t.text.includes("Arlton"));
+  g.centered(ENHANCEMENT_ROW, ENHANCEMENT_CREDIT, frame.palette[authors?.colorIndex ?? 3]);
 }
 
 /**

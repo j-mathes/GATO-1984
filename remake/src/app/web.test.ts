@@ -14,7 +14,7 @@ import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameContro
 import { CONTROL_DEFS, CONTROL_GROUPS, Keymap, isLocked, type ControlId } from "../input/controls.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
-import { HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText, ADVANCED_PAGE_SIZE } from "../render/textScreens.js";
+import { ENHANCEMENT_CREDIT, HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText, ADVANCED_PAGE_SIZE } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
 import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
 import type { PlayView } from "../render/playScreens.js";
@@ -936,6 +936,9 @@ describe("title wipe (title_letters -> title)", () => {
     drawTitle(g, art, null, 0); // no timing: the finished page (demo)
     expect(calls.find(([n]) => n === "image")?.[1][0]).toBe(art.image("title"));
     expect(calls.some(([n, a]) => n === "centered" && a[1] === "PRESS ANY KEY")).toBe(true);
+    // the remake's credit sits between the authors (row 17) and the copyright (row 21), in the colour of the authors' line
+    expect(calls.find(([n, a]) => n === "centered" && a[1] === ENHANCEMENT_CREDIT)?.[1]).toEqual([19, ENHANCEMENT_CREDIT, "#ffffff"]);
+    expect(calls.find(([n, a]) => n === "text" && String(a[2]).includes("Arlton"))?.[1].slice(0, 2)).toEqual([6, 17]);
   });
 
   it("a key press during the wipe still leaves the title page", () => {

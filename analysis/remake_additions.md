@@ -65,6 +65,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | 35 | **Demo runs a throw-away simulation** behind the narration (ships move) | `app/app.ts` `startDemo` | **ON** | canned data |
 | 36 | **Captain's log in `localStorage`** instead of the `LOG1` file | `app/logStore.ts` (`gato.captains-log.v1`) | **ON** | `LOG1` (92 x 32-byte records) |
 | 37 | **Menu item 5, ADVANCED OPTIONS**, and its settings screen (section 5a); also GAME CONTROL **item `[7] ADVANCED OPTIONS`** during a mission, which pauses the world | `core/launcher.ts` `LAUNCHER_MENU`, `core/advanced.ts`, `app/app.ts` `settingsKey`/`openSettings`/`gameControlKey`, `render/textScreens.ts` `drawAdvancedOptions`, `drawLauncherMenu`, `render/cockpitScreens.ts` `drawGameControlLayout` | **ON** (settings in `localStorage` `gato.advanced`); item 7 is always shown on the mission's GAME CONTROL (not in the demo's copy) and is not affected by any switch, so the screen can always be reached | The menu has items 1-4 only; GAME CONTROL has items 1-4 |
+| 39 | **Credit line `Enhancements by Jared Mathes`** on the finished title page, row 19, between the authors (row 17) and the copyright (row 21), in the authors' colour | `render/textScreens.ts` `ENHANCEMENT_CREDIT`, `drawTitle` | **ON** (not shown during the letter wipe; no switch) | The credits are only the authors and the copyright |
 
 ## 5a. Advanced options switches
 
