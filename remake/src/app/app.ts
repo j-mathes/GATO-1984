@@ -329,11 +329,11 @@ export class App {
     else if (e.key.length === 1 && this.menuEntry.length < 3) this.menuEntry += e.key;
   }
 
-  /** The line under the list: what the selected switch gives in the state it is not in now (ON: the remake feature, OFF: the 1984 behaviour). */
-  private advancedHint(): string {
+  /** The text under the list: what the selected switch gives on (the remake feature) and off (the 1984 behaviour), and which one is in force. */
+  private advancedDescriptions(): { on: string; off: string; current: boolean } {
     const f = ADVANCED_FEATURES[this.advancedCursor];
-    if (!f) return "";
-    return this.advanced.on(f.key) ? `OFF: ${f.original}` : `ON: ${f.remake}`;
+    if (!f) return { on: "", off: "", current: true };
+    return { on: f.remake, off: f.original, current: this.advanced.on(f.key) };
   }
 
   /** Left/Right (PageUp/PageDown) on ADVANCED OPTIONS: the first switch of the previous or next page, wrapping round. */
@@ -1004,7 +1004,7 @@ export class App {
         drawAdvancedOptions(g, {
           rows: ADVANCED_FEATURES.map((f) => ({ label: f.label, on: this.advanced.on(f.key), indent: ADVANCED_INDENTED.has(f.key) })),
           cursor: this.advancedCursor,
-          hint: this.advancedHint(),
+          descriptions: this.advancedDescriptions(),
           controlsKey: this.advanced.on("customControls"),
         });
         return;

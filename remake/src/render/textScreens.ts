@@ -326,8 +326,8 @@ export interface AdvancedRow {
 export interface AdvancedView {
   rows: readonly AdvancedRow[];
   cursor: number;
-  /** What the selected switch would give if it were changed, e.g. `ON: ...` while it is off. */
-  hint: string;
+  /** What the selected switch gives when it is on and when it is off; the text of its current state is drawn brighter. */
+  descriptions: { on: string; off: string; current: boolean };
   /** CUSTOM CONTROLS is on, so the C key opens the control assignments. */
   controlsKey?: boolean;
 }
@@ -371,8 +371,12 @@ export function drawAdvancedOptions(g: Gfx, view: AdvancedView): void {
     g.text(36, y, r.on ? "ON " : "OFF", selected ? COLORS.blue : r.on ? COLORS.green : COLORS.grey);
   });
   g.line(8, 15 * 8 + 3, 312, 15 * 8 + 3, COLORS.cyan);
-  const note = wrapText(view.hint.toUpperCase());
-  note.slice(0, 3).forEach((l, i) => g.text(2, 17 + i, l, COLORS.yellow));
+  // both descriptions, one below the other (a blank line between); the one that is in force is yellow, the other grey
+  const { on, off, current } = view.descriptions;
+  const onLines = wrapText(`ON: ${on}`.toUpperCase()).slice(0, 3);
+  const offLines = wrapText(`OFF: ${off}`.toUpperCase()).slice(0, 3);
+  onLines.forEach((l, i) => g.text(2, 17 + i, l, current ? COLORS.yellow : COLORS.grey));
+  offLines.forEach((l, i) => g.text(2, 17 + onLines.length + 1 + i, l, current ? COLORS.grey : COLORS.yellow));
   g.text(2, 24, view.controlsKey ? "UP/DOWN=SELECT ENTER=CHANGE C=CONTROLS" : "UP/DOWN=SELECT  ENTER=CHANGE", COLORS.white);
   g.text(2, 25, "LEFT/RIGHT=PAGE  R=RESET  ESC=BACK", COLORS.white);
 }

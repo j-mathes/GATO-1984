@@ -13,6 +13,7 @@ import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Sim
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import { CONTROL_DEFS, CONTROL_GROUPS, Keymap, isLocked, type ControlId } from "../input/controls.js";
 import type { Gfx } from "../render/gfx.js";
+import { COLORS } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
 import { ENHANCEMENT_CREDIT, HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText, ADVANCED_PAGE_SIZE } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
@@ -1996,19 +1997,33 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(h.app.advanced.on("timeToast")).toBe(true);
   });
 
-  it("the hint under the list names the state a switch is not in: OFF text while on, ON text while off, always within three lines", () => {
+  it("under the list both descriptions are shown, ON text above OFF text, the one in force bright and the other grey, each within three lines", () => {
     const h = boot();
     press(h.app, "x", "5");
+    const descriptions = (): { on: string; off: string; current: boolean } => (h.app as unknown as { advancedDescriptions(): { on: string; off: string; current: boolean } }).advancedDescriptions();
     for (const f of ADVANCED_FEATURES) {
       for (const on of [true, false]) {
         h.app.advanced.set(f.key, on);
-        const hint = (h.app as unknown as { advancedHint(): string }).advancedHint();
-        expect(hint, f.key).toBe(on ? `OFF: ${f.original}` : `ON: ${f.remake}`);
-        expect(wrapText(hint.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
+        expect(descriptions(), f.key).toEqual({ on: f.remake, off: f.original, current: on });
+        expect(wrapText(`ON: ${f.remake}`.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
+        expect(wrapText(`OFF: ${f.original}`.toUpperCase()).length, f.key).toBeLessThanOrEqual(3);
       }
       h.app.advanced.set(f.key, f.default);
       press(h.app, "ArrowDown");
     }
+    // drawn for the helm status line (off): its ON text first and grey, its OFF text below it and yellow
+    (h.app as unknown as { advancedCursor: number }).advancedCursor = 0;
+    const text = frameAfter(h, 10).filter(([n, a]) => n === "text" && Number(a[1]) >= 17 && Number(a[1]) <= 23);
+    const offFirst = text.find(([, a]) => String(a[2]).startsWith("OFF:"));
+    const offRow = Number(offFirst?.[1][1]);
+    const onRows = text.filter(([, a]) => Number(a[1]) < offRow);
+    expect(String(onRows[0]?.[1][2]).startsWith("ON:")).toBe(true);
+    expect(onRows.every(([, a]) => a[3] === COLORS.grey)).toBe(true);
+    expect(offFirst?.[1][3]).toBe(COLORS.yellow);
+    expect(offRow - Math.max(...onRows.map(([, a]) => Number(a[1])))).toBe(2); // below it, with a blank line between
+    h.app.advanced.set("helmHud", true);
+    const after = frameAfter(h, 20).filter(([n, a]) => n === "text" && String(a[2]).startsWith("ON:"));
+    expect(after[0]?.[1][3]).toBe(COLORS.yellow);
   });
 
   it("menu item 5 opens the screen; Up/Down/Enter switch a row, which is remembered; Esc returns to the menu", () => {
