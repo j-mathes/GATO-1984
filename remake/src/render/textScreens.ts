@@ -5,6 +5,7 @@ import { CONTINUE_PROMPT, REREAD_PROMPT, RETURN_PROMPT, type HistoryView } from 
 import { COLORS, Gfx } from "./gfx.js";
 import type { SpriteLibrary } from "./sprites.js";
 import { TITLE_ART_HEIGHT, TITLE_ART_WIDTH, type TitleArt } from "./titleArt.js";
+import { DEFAULT_KEYMAP, keyName, type ControlId } from "../input/controls.js";
 
 /** Frame of title_screen.json that backs the launcher menu. */
 export const MENU_FRAME_ID = "launcher_menu";
@@ -223,63 +224,63 @@ export interface HelpExtras {
 export const HELP_KEY_WIDTH = 6;
 export const HELP_ACTION_WIDTH = 22;
 
-export function controlsPages(extras: HelpExtras = { trails: true, timeKeys: true, display: true, escQuit: true }): HelpPage[] {
-  const more: [string, string][] = [];
-  if (extras.trails) more.push(["W", "Wake trails on / off"]);
-  if (extras.timeKeys) more.push(["[", "Time speed down"], ["]", "Time speed up"]);
-  if (extras.display) more.push(["V", "Display mode"]);
-  more.push(["? or H", "This help"]);
-  if (extras.escQuit) more.push(["ESC", "Back to the menu"]);
+type HelpSpec = readonly (readonly [id: ControlId | "help", action: string])[];
+
+/** The quick reference in pages; the keys shown are the current assignments (`keyOf`, default: the original's). */
+export function controlsPages(
+  extras: HelpExtras = { trails: true, timeKeys: true, display: true, escQuit: true },
+  keyOf: (id: ControlId) => string = (id) => DEFAULT_KEYMAP.get(id),
+): HelpPage[] {
+  const label = (id: ControlId | "help"): string => {
+    if (id !== "help") return keyName(keyOf(id));
+    const keys = [keyOf("help"), keyOf("helpAlt")].filter((k) => k !== "");
+    return keys.length === 0 ? keyName("") : keys.map(keyName).join(" or ");
+  };
+  const page = (title: string, spec: HelpSpec): HelpPage => ({ title, rows: spec.map(([id, action]) => [label(id), action] as const) });
+  const more: [ControlId | "help", string][] = [];
+  if (extras.trails) more.push(["trails", "Wake trails on / off"]);
+  if (extras.timeKeys) more.push(["timeDown", "Time speed down"], ["timeUp", "Time speed up"]);
+  if (extras.display) more.push(["display", "Display mode"]);
+  more.push(["help", "This help"]);
+  if (extras.escQuit) more.push(["quit", "Back to the menu"]);
   return [
-    {
-      title: "SPEED AND ENGINES",
-      rows: [
-        ["F1", "Ahead flank (10)"],
-        ["F3", "Ahead full (8)"],
-        ["F5", "Ahead standard (6)"],
-        ["F7", "Ahead slow (3)"],
-        ["F9", "All stop"],
-        ["F10", "Reverse"],
-        ["D", "Diesel engine"],
-        ["E", "Electric motor"],
-      ],
-    },
-    {
-      title: "STEERING",
-      rows: [
-        ["LEFT", "Rudder left"],
-        ["RIGHT", "Rudder right"],
-        ["UP", "Rise (planes up)"],
-        ["DOWN", "Dive (planes down)"],
-        ["5", "Centre rudder, planes"],
-      ],
-    },
-    {
-      title: "SCOPE AND WEAPONS",
-      rows: [
-        ["F2", "Raise periscope"],
-        ["F4", "Lower periscope"],
-        ["F", "Scope forward"],
-        ["P", "Scope port"],
-        ["A", "Scope aft"],
-        ["S", "Scope starboard"],
-        ["T", "Torpedo doors"],
-        ["F8", "Fire torpedo"],
-      ],
-    },
-    {
-      title: "SCREENS",
-      rows: [
-        ["C", "Chart"],
-        ["Q", "Quadrant map"],
-        ["F6", "Radar"],
-        ["L", "Captain's log"],
-        ["R", "Damage report"],
-        ["M", "Radio room"],
-        ["TAB", "GAME CONTROL"],
-      ],
-    },
-    { title: "REMAKE EXTRAS", rows: more },
+    page("SPEED AND ENGINES", [
+      ["speedFlank", "Ahead flank (10)"],
+      ["speedFull", "Ahead full (8)"],
+      ["speedStandard", "Ahead standard (6)"],
+      ["speedSlow", "Ahead slow (3)"],
+      ["allStop", "All stop"],
+      ["reverse", "Reverse"],
+      ["diesel", "Diesel engine"],
+      ["electric", "Electric motor"],
+    ]),
+    page("STEERING", [
+      ["rudderLeft", "Rudder left"],
+      ["rudderRight", "Rudder right"],
+      ["planesUp", "Rise (planes up)"],
+      ["planesDown", "Dive (planes down)"],
+      ["neutral", "Centre rudder, planes"],
+    ]),
+    page("SCOPE AND WEAPONS", [
+      ["periscopeUp", "Raise periscope"],
+      ["periscopeDown", "Lower periscope"],
+      ["scopeForward", "Scope forward"],
+      ["scopePort", "Scope port"],
+      ["scopeAft", "Scope aft"],
+      ["scopeStarboard", "Scope starboard"],
+      ["doors", "Torpedo doors"],
+      ["fire", "Fire torpedo"],
+    ]),
+    page("SCREENS", [
+      ["chart", "Chart"],
+      ["quadrant", "Quadrant map"],
+      ["radar", "Radar"],
+      ["log", "Captain's log"],
+      ["damage", "Damage report"],
+      ["radioRoom", "Radio room"],
+      ["gameControl", "GAME CONTROL"],
+    ]),
+    page("REMAKE EXTRAS", more),
   ];
 }
 
@@ -306,6 +307,8 @@ export function drawHelpOverlay(g: Gfx, page: number, pages: readonly HelpPage[]
 export interface AdvancedRow {
   label: string;
   on: boolean;
+  /** Belongs to the group switch above it (the hotkeys). */
+  indent?: boolean;
 }
 
 export interface AdvancedView {
@@ -313,6 +316,8 @@ export interface AdvancedView {
   cursor: number;
   /** What the selected switch would give if it were changed, e.g. `ON: ...` while it is off. */
   hint: string;
+  /** CUSTOM CONTROLS is on, so the C key opens the control assignments. */
+  controlsKey?: boolean;
 }
 
 /** Word wrap for the 38 usable columns of the text screen. */
@@ -329,24 +334,112 @@ export function wrapText(text: string, width = 38): string[] {
   return lines;
 }
 
+/** Switches per page of the ADVANCED OPTIONS screen. */
+export const ADVANCED_PAGE_SIZE = 10;
+
 /**
  * ADVANCED OPTIONS (remake): the switches of the remake-only features, `ON` = the remake feature, `OFF` = the 1984 behaviour.
- * The selected row is inverted; the text under the list says what OFF gives for it.
+ * They are shown {@link ADVANCED_PAGE_SIZE} to a page, the page of the selected row (inverted); the text under the list describes
+ * what the selected switch would give if it were changed.
  */
 export function drawAdvancedOptions(g: Gfx, view: AdvancedView): void {
   g.clear(COLORS.blue);
   g.centered(1, "ADVANCED OPTIONS", COLORS.yellow);
   g.centered(2, "ON = REMAKE   OFF = 1984 ORIGINAL", COLORS.grey);
-  view.rows.forEach((r, i) => {
+  const pages = Math.max(Math.ceil(view.rows.length / ADVANCED_PAGE_SIZE), 1);
+  const page = Math.floor(view.cursor / ADVANCED_PAGE_SIZE);
+  g.text(2, 3, `PAGE ${page + 1} OF ${pages}`, COLORS.cyan);
+  view.rows.slice(page * ADVANCED_PAGE_SIZE, (page + 1) * ADVANCED_PAGE_SIZE).forEach((r, i) => {
+    const y = 5 + i;
+    const selected = page * ADVANCED_PAGE_SIZE + i === view.cursor;
+    if (selected) g.rect(0, (y - 1) * 8, 320, 8, COLORS.white);
+    const color = selected ? COLORS.blue : COLORS.white;
+    g.text(1, y, selected ? ">" : " ", color);
+    g.text(r.indent ? 5 : 3, y, r.label, color);
+    g.text(36, y, r.on ? "ON " : "OFF", selected ? COLORS.blue : r.on ? COLORS.green : COLORS.grey);
+  });
+  g.line(8, 15 * 8 + 3, 312, 15 * 8 + 3, COLORS.cyan);
+  const note = wrapText(view.hint.toUpperCase());
+  note.slice(0, 3).forEach((l, i) => g.text(2, 17 + i, l, COLORS.yellow));
+  g.text(2, 24, view.controlsKey ? "UP/DOWN=SELECT ENTER=CHANGE C=CONTROLS" : "UP/DOWN=SELECT  ENTER=CHANGE", COLORS.white);
+  g.text(2, 25, "LEFT/RIGHT=PAGE  R=RESET  ESC=BACK", COLORS.white);
+}
+
+export interface ControlsEditorRow {
+  label: string;
+  /** Display name of the assigned key, `(NONE)` when blank. */
+  key: string;
+  /** Tab and Escape: listed, but cannot be changed or taken over. */
+  locked: boolean;
+  /** Set on the first row of a section: the section title is listed above it. */
+  heading?: string;
+}
+
+export interface ControlsEditorLine {
+  text: string;
+  tone: "info" | "warn" | "prompt";
+}
+
+export interface ControlsEditorView {
+  rows: readonly ControlsEditorRow[];
+  cursor: number;
+  /** Message lines for rows 22-24 (a capture prompt, a conflict warning, a result). */
+  lines: readonly ControlsEditorLine[];
+  footer: string;
+}
+
+/** Text rows of the list on screen at a time (rows 3-20), section titles included. */
+export const CONTROLS_EDITOR_VISIBLE = 18;
+
+/** The list as drawn: a title line before the first row of each section (after a blank line, except for the first), then the rows (`row` indexes ControlsEditorView.rows). */
+export function controlsEditorEntries(rows: readonly ControlsEditorRow[]): ({ title: string } | { row: number } | { blank: true })[] {
+  const entries: ({ title: string } | { row: number } | { blank: true })[] = [];
+  rows.forEach((r, i) => {
+    if (r.heading) {
+      if (entries.length > 0) entries.push({ blank: true });
+      entries.push({ title: r.heading });
+    }
+    entries.push({ row: i });
+  });
+  return entries;
+}
+
+/** First entry shown so that the cursor row is on screen (about in the middle). */
+export function controlsEditorScroll(cursorEntry: number, total: number): number {
+  const maxFirst = Math.max(total - CONTROLS_EDITOR_VISIBLE, 0);
+  return Math.min(Math.max(cursorEntry - Math.floor(CONTROLS_EDITOR_VISIBLE / 2), 0), maxFirst);
+}
+
+/** CONTROL ASSIGNMENTS (remake, CUSTOM CONTROLS on): sections of actions with their keys, the selected row inverted, messages under the list. */
+export function drawControlsEditor(g: Gfx, view: ControlsEditorView): void {
+  g.clear(COLORS.blue);
+  g.centered(1, "CONTROL ASSIGNMENTS", COLORS.yellow);
+  g.text(2, 2, "ONE KEY PER ACTION", COLORS.grey);
+  g.text(34, 2, `${view.cursor + 1}/${view.rows.length}`, COLORS.grey);
+  const entries = controlsEditorEntries(view.rows);
+  const cursorEntry = entries.findIndex((e) => "row" in e && e.row === view.cursor);
+  const first = controlsEditorScroll(cursorEntry, entries.length);
+  entries.slice(first, first + CONTROLS_EDITOR_VISIBLE).forEach((entry, i) => {
     const y = 3 + i;
-    const selected = i === view.cursor;
+    if ("blank" in entry) return;
+    if ("title" in entry) {
+      g.text(2, y, `-- ${entry.title} --`, COLORS.cyan);
+      return;
+    }
+    const r = view.rows[entry.row];
+    if (!r) return;
+    const selected = entry.row === view.cursor;
     if (selected) g.rect(0, (y - 1) * 8, 320, 8, COLORS.white);
     const color = selected ? COLORS.blue : COLORS.white;
     g.text(1, y, selected ? ">" : " ", color);
     g.text(3, y, r.label, color);
-    g.text(36, y, r.on ? "ON " : "OFF", selected ? COLORS.blue : r.on ? COLORS.green : COLORS.grey);
+    const keyColor = selected ? COLORS.blue : r.key === "(NONE)" ? COLORS.grey : COLORS.cyan;
+    g.text(28, y, r.key, keyColor);
+    if (r.locked) g.text(34, y, "(FIXED)", selected ? COLORS.blue : COLORS.grey);
   });
-  const note = wrapText(view.hint.toUpperCase());
-  note.slice(0, 3).forEach((l, i) => g.text(2, 22 + i, l, COLORS.yellow));
-  g.text(2, 25, "UP/DOWN ENTER=CHANGE R=RESET ESC=BACK", COLORS.white);
+  if (first > 0) g.text(39, 3, "^", COLORS.yellow);
+  if (first + CONTROLS_EDITOR_VISIBLE < entries.length) g.text(39, 20, "v", COLORS.yellow);
+  const tones = { info: COLORS.grey, warn: COLORS.red, prompt: COLORS.yellow } as const;
+  view.lines.slice(0, 3).forEach((l, i) => g.text(2, 22 + i, l.text, tones[l.tone]));
+  g.text(2, 25, view.footer, COLORS.white);
 }

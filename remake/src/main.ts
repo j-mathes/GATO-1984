@@ -72,7 +72,7 @@ async function boot(): Promise<void> {
   app.onAdvancedChange();
   attachKeyboard(window, (e) => {
     // V cycles authentic -> fit window -> fit window + CRT scanlines (not while typing into a prompt)
-    if ((e.key === "v" || e.key === "V") && !e.ctrlKey && !e.altKey && !e.metaKey && !app.textEntryActive && app.advanced.on("displayModes")) {
+    if (app.isDisplayKey(e) && !app.textEntryActive && app.advanced.on("displayModes")) {
       display.cycle();
       return;
     }

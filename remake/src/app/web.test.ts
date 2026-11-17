@@ -9,11 +9,12 @@ import { FixedTimestepRunner, interpolate, lerpAngle, takeSnapshot } from "./run
 import { buildMorseSchedule, type MorseTables } from "../audio/morse.js";
 import { noteFrequency, parsePlay, totalSeconds } from "../audio/play.js";
 import { BIOS_TICK_SECONDS, EFFECTS, SoundEngine, type AudioContextLike, type OscillatorLike } from "../audio/soundEngine.js";
-import { ADVANCED_FEATURES, RADIO_MESSAGES, Simulation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
+import { ADVANCED_FEATURES, ADVANCED_INDENTED, HOTKEY_GROUP, RADIO_MESSAGES, Simulation, buildScenario, createRng, type CourseJson, type DemoScriptDocument, type HistoryPagesDocument, type MxpJson, type OrdersJson, type ShipLogDocument } from "../core/index.js";
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
+import { CONTROL_DEFS, CONTROL_GROUPS, Keymap, isLocked, type ControlId } from "../input/controls.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
-import { HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText } from "../render/textScreens.js";
+import { HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText, ADVANCED_PAGE_SIZE } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
 import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
 import type { PlayView } from "../render/playScreens.js";
@@ -1958,11 +1959,38 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     return h.calls.slice();
   };
 
-  it("offers exactly the 18 requested rows; everything but the helm line is on by default", () => {
-    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32]);
+  it("offers the 18 requested rows plus CUSTOM CONTROLS, grouped by topic with the hotkeys switch right before the three it covers; everything is on by default except the helm line and the custom controls", () => {
+    expect(ADVANCED_FEATURES.map((f) => f.row)).toEqual([1, 16, 3, 9, 10, 6, 8, 30, 11, 12, 15, 2, 17, 20, 28, 32, 24, 25, 38]);
+    const keys = ADVANCED_FEATURES.map((f) => f.key);
+    const at = keys.indexOf("hotkeys");
+    expect(keys.slice(at + 1, at + 1 + HOTKEY_GROUP.length)).toEqual([...HOTKEY_GROUP]);
     expect(ADVANCED_FEATURES.every((f) => f.label.length <= 30)).toBe(true);
     const { app } = boot();
-    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(f.key !== "helmHud");
+    for (const f of ADVANCED_FEATURES) expect(app.advanced.on(f.key), f.key).toBe(f.key !== "helmHud" && f.key !== "customControls");
+  });
+
+  it("indented switches: the hotkey members, the next-mission pick and the time pop-up sit under the switch they depend on", () => {
+    const keys = ADVANCED_FEATURES.map((f) => f.key);
+    for (const [child, parent] of [["missionSelect", "gameControlExtras"], ["timeToast", "timeKeys"]] as const) {
+      expect(keys.indexOf(child), child).toBe(keys.indexOf(parent) + 1);
+      expect(ADVANCED_INDENTED.has(child)).toBe(true);
+    }
+    expect([...ADVANCED_INDENTED].sort()).toEqual([...HOTKEY_GROUP, "missionSelect", "timeToast"].sort());
+    const h = boot();
+    press(h.app, "x", "5");
+    const placed = (label: string): number => {
+      const call = frameAfter(h, 10).find(([n, a]) => n === "text" && a[2] === label);
+      return Number(call?.[1][0]);
+    };
+    expect(placed("HELM STATUS LINE")).toBe(3);
+    expect(placed("CHOOSE THE NEXT MISSION")).toBe(5);
+    expect(placed("CONTROLS HELP OVERLAY")).toBe(5);
+    expect(placed("GAME CONTROL ITEMS 5 AND 6")).toBe(3);
+    // independent: the child keeps its own value when the parent changes
+    h.app.advanced.set("gameControlExtras", false);
+    expect(h.app.advanced.on("missionSelect")).toBe(true);
+    h.app.advanced.set("timeKeys", false);
+    expect(h.app.advanced.on("timeToast")).toBe(true);
   });
 
   it("the hint under the list names the state a switch is not in: OFF text while on, ON text while off, always within three lines", () => {
@@ -1989,12 +2017,13 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     const drawn = textsOf(frameAfter(h, 20));
     expect(drawn).toContain("HELM STATUS LINE");
     expect(drawn).toContain("ADVANCED OPTIONS");
-    press(h.app, "ArrowDown", "Enter"); // row 2, the time pop-up
-    expect(h.app.advanced.on("timeToast")).toBe(false);
-    expect(JSON.parse(h.map.get("gato.advanced") ?? "{}").timeToast).toBe(false);
-    press(h.app, "ArrowUp", "ArrowUp", " "); // wraps to the last row (32)
-    expect(h.app.advanced.on("explosionsRun")).toBe(false);
-    expect(boot({ map: h.map }).app.advanced.on("timeToast")).toBe(false); // a new page load reads it back
+    press(h.app, "ArrowDown", "Enter"); // the hotkeys group switch, next to the three switches it covers
+    expect(h.app.advanced.on("hotkeys")).toBe(false);
+    expect(h.app.advanced.on("helpOverlay")).toBe(false);
+    expect(JSON.parse(h.map.get("gato.advanced") ?? "{}").hotkeys).toBe(false);
+    press(h.app, "ArrowUp", "ArrowUp", "ArrowUp", " "); // wraps past CUSTOM CONTROLS to the radio alert tone
+    expect(h.app.advanced.on("radioAlert")).toBe(false);
+    expect(boot({ map: h.map }).app.advanced.on("hotkeys")).toBe(false); // a new page load reads it back
     press(h.app, "r");
     expect(h.app.advanced.snapshot()).toEqual(boot().app.advanced.snapshot());
     press(h.app, "Escape");
@@ -2003,6 +2032,35 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(h.app.mode).toBe("settings"); // the launcher is usable again after coming back
     press(h.app, "Escape", "1");
     expect(h.app.mode).toBe("orders");
+  });
+
+  it("the switches are on two pages: the page follows the selected row, Left/Right/PageUp/PageDown change page", () => {
+    const h = boot();
+    press(h.app, "x", "5");
+    const cursor = (): number => (h.app as unknown as { advancedCursor: number }).advancedCursor;
+    let shown = textsOf(frameAfter(h, 10));
+    expect(shown).toContain("PAGE 1 OF 2");
+    expect(shown).toContain("HELM STATUS LINE");
+    expect(shown).not.toContain("CUSTOM CONTROLS");
+    expect(shown).toContain("LEFT/RIGHT=PAGE  R=RESET  ESC=BACK");
+    press(h.app, "ArrowRight");
+    expect(cursor()).toBe(ADVANCED_PAGE_SIZE);
+    shown = textsOf(frameAfter(h, 20));
+    expect(shown).toContain("PAGE 2 OF 2");
+    expect(shown).toContain("CUSTOM CONTROLS");
+    expect(shown).not.toContain("HELM STATUS LINE");
+    press(h.app, "PageDown"); // wraps round to page 1
+    expect(cursor()).toBe(0);
+    press(h.app, "ArrowLeft");
+    expect(cursor()).toBe(ADVANCED_PAGE_SIZE);
+    press(h.app, "PageUp");
+    expect(cursor()).toBe(0);
+    for (let i = 0; i < ADVANCED_PAGE_SIZE; i += 1) press(h.app, "ArrowDown"); // Up/Down run on from page 1 to page 2
+    expect(textsOf(frameAfter(h, 30))).toContain("PAGE 2 OF 2");
+    press(h.app, "ArrowRight", "Enter"); // the first switch of page 1 again
+    expect(h.app.advanced.on("helmHud")).toBe(true);
+    expect(ADVANCED_FEATURES.length).toBeGreaterThan(ADVANCED_PAGE_SIZE);
+    expect(ADVANCED_FEATURES.length).toBeLessThanOrEqual(2 * ADVANCED_PAGE_SIZE);
   });
 
   it("a damaged or unknown stored value falls back to the defaults", () => {
@@ -2218,6 +2276,239 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
     expect(stage(on)).toBe("pages");
     press(h.app, "F1");
     expect(h.app.mode).toBe("menu");
+  });
+});
+
+describe("custom controls (key assignments)", () => {
+  type Call = [string, unknown[]];
+  const press = (app: App, ...keys: string[]) => keys.forEach((key) => app.keydown({ key }));
+  const num = (f: string) => Number(/(\d+)\.json$/.exec(f)?.[1]);
+
+  function boot(map: Map<string, string> = new Map()): { app: App; calls: Call[]; map: Map<string, string>; sim: () => Simulation } {
+    const { ctx } = fakeAudio();
+    const calls: Call[] = [];
+    const g = new Proxy({}, { get: (_t, name: string) => (...args: unknown[]) => calls.push([name, args]) }) as unknown as Gfx;
+    const courses: AppData["courses"] = {};
+    const orders: AppData["orders"] = {};
+    for (const f of readdirSync(new URL("src/data/scenarios/courses/", root))) courses[num(f)] = read(`src/data/scenarios/courses/${f}`);
+    for (const f of readdirSync(new URL("src/data/scenarios/orders/", root))) if (f.startsWith("ORDXX")) orders[num(f)] = read(`src/data/scenarios/orders/${f}`);
+    const data: AppData = { courses, orders, mxp, shipLog, demo: read<DemoScriptDocument>("src/data/demo_script.json"), history: read<HistoryPagesDocument>("src/data/history_pages.json"), morse: audio.morse };
+    const storage = { getItem: (k: string) => map.get(k) ?? null, setItem: (k: string, v: string) => void map.set(k, v) };
+    const app = new App(g, data, null, new SoundEngine(() => ctx), storage, () => 0.5);
+    return { app, calls, map, sim: () => (app as unknown as { sim: Simulation }).sim };
+  }
+  const startPlay = (h: ReturnType<typeof boot>): void => {
+    press(h.app, "x");
+    h.app.startMission(1, 1);
+    press(h.app, "x", "x");
+    h.app.frame(0);
+  };
+  const openEditor = (app: App): void => {
+    press(app, "x", "5");
+    app.advanced.set("customControls", true);
+    press(app, "c");
+  };
+  const select = (app: App, id: ControlId): void => {
+    (app as unknown as { controlsCursor: number }).controlsCursor = CONTROL_DEFS.findIndex((d) => d.id === id);
+  };
+  const texts = (h: ReturnType<typeof boot>): string[] => {
+    h.calls.length = 0;
+    h.app.frame(10);
+    return h.calls.filter(([n]) => n === "text" || n === "centered").map(([n, a]) => String(a[n === "text" ? 2 : 1]));
+  };
+
+  it("the default assignments are the original's keys, in either letter case, and the keypad 5", () => {
+    for (const d of CONTROL_DEFS) {
+      if (!d.input) continue;
+      expect(translatePlayKey({ key: d.key }), d.id).toEqual(d.input);
+      if (d.key.length === 1) expect(translatePlayKey({ key: d.key.toLowerCase() }), d.id).toEqual(d.input);
+    }
+    expect(translatePlayKey({ key: "Unidentified", code: "Numpad5" })).toEqual({ type: "sim", command: { type: "neutral" } });
+    expect(translatePlayKey({ key: "t", ctrlKey: true })).toBeNull();
+    expect(new Keymap().isDefault).toBe(true);
+  });
+
+  it("assigning checks for conflicts: refused until overridden, and the override blanks the other action", () => {
+    let changes = 0;
+    const map = new Keymap(() => (changes += 1));
+    expect(map.conflict("doors", "c")).toBe("chart");
+    expect(map.assign("doors", "c")).toEqual({ ok: false, conflict: "chart" });
+    expect(map.get("doors")).toBe("T");
+    expect(changes).toBe(0);
+    expect(map.assign("doors", "g")).toEqual({ ok: true });
+    expect(map.get("doors")).toBe("G");
+    expect(map.idFor("t")).toBeUndefined();
+    expect(map.assign("fire", "g", true)).toEqual({ ok: true });
+    expect(map.get("fire")).toBe("G");
+    expect(map.get("doors")).toBe(""); // the other assignment is left blank
+    expect(translatePlayKey({ key: "g" }, map)).toEqual({ type: "sim", command: { type: "fire" } });
+    expect(translatePlayKey({ key: "F8" }, map)).toBeNull();
+    map.clear("fire");
+    expect(map.get("fire")).toBe("");
+    map.reset();
+    expect(map.isDefault).toBe(true);
+  });
+
+  it("Tab and Escape are fixed: their actions cannot change and no other action can take them", () => {
+    const map = new Keymap();
+    expect(map.assign("gameControl", "G")).toEqual({ ok: false, locked: true });
+    expect(map.assign("quit", "G")).toEqual({ ok: false, locked: true });
+    expect(map.assign("doors", "Tab", true)).toEqual({ ok: false, locked: true });
+    expect(map.assign("doors", "Escape", true)).toEqual({ ok: false, locked: true });
+    map.clear("quit");
+    expect([map.get("gameControl"), map.get("quit"), map.get("doors")]).toEqual(["Tab", "Escape", "T"]);
+    expect(isLocked("quit") && isLocked("gameControl") && !isLocked("doors")).toBe(true);
+    const stored = JSON.stringify({ ...map.snapshot(), gameControl: "G", quit: "", doors: "Escape" });
+    const loaded = new Keymap(undefined, stored);
+    expect([loaded.get("gameControl"), loaded.get("quit"), loaded.get("doors")]).toEqual(["Tab", "Escape", "T"]);
+  });
+
+  it("stored assignments are cleaned up when read: unknown or damaged values are ignored and   a key used twice stays with the first action in the list", () => {
+    expect(new Keymap(undefined, "{oops").isDefault).toBe(true);
+    const map = new Keymap(undefined, JSON.stringify({ doors: "G", fire: "g", chart: 5, bogus: "X", radar: "" }));
+      expect([map.get("doors"), map.get("fire"), map.get("chart"), map.get("radar")]).toEqual(["G", "", "C", ""]);
+    expect(new Keymap(undefined, map.serialize()).snapshot()).toEqual(map.snapshot());
+  });
+
+  it("the assignment list is in sections like the help pages, each with a title line as it scrolls", () => {
+    expect(CONTROL_GROUPS.map((g) => g.title)).toEqual(["SPEED AND ENGINES", "STEERING", "SCOPE AND WEAPONS", "SCREENS", "REMAKE EXTRAS"]);
+    expect(CONTROL_GROUPS.flatMap((g) => g.ids).sort()).toEqual(CONTROL_DEFS.map((d) => d.id).sort());
+    expect(new Set(CONTROL_DEFS.map((d) => d.id)).size).toBe(CONTROL_DEFS.length);
+    const h = boot();
+    openEditor(h.app);
+    select(h.app, "speedFlank");
+    let shown = texts(h);
+    expect(shown).toContain("-- SPEED AND ENGINES --");
+    expect(shown).not.toContain("-- SCREENS --");
+    const rowOf = (s: string): number => Number(h.calls.find(([n, a]) => n === "text" && a[2] === s)?.[1][1]);
+    expect(rowOf("ELECTRIC MOTOR") - rowOf("DIESEL ENGINE")).toBe(1);
+    expect(rowOf("-- STEERING --") - rowOf("ELECTRIC MOTOR")).toBe(2); // a blank line between sections
+    expect(rowOf("RUDDER LEFT") - rowOf("-- STEERING --")).toBe(1);
+    select(h.app, "rudderLeft");
+    shown = texts(h);
+    expect(shown).toEqual(expect.arrayContaining(["-- STEERING --", "-- SCOPE AND WEAPONS --"]));
+    expect(shown).not.toContain("-- SPEED AND ENGINES --"); // scrolled off
+    select(h.app, "quit");
+    shown = texts(h);
+    expect(shown).toEqual(expect.arrayContaining(["-- REMAKE EXTRAS --", "BACK TO THE MENU", "(FIXED)"]));
+    expect(shown).not.toContain("-- SPEED AND ENGINES --");
+    expect(shown).toContain(`${CONTROL_DEFS.length}/${CONTROL_DEFS.length}`); // the counter counts actions, not title lines
+  });
+
+  it("custom controls are off by default; the C key opens the assignment screen only while they are on, Esc goes back", () => {
+    const h = boot();
+    expect(h.app.advanced.on("customControls")).toBe(false);
+    press(h.app, "x", "5", "c");
+    expect(h.app.mode).toBe("settings");
+    h.app.advanced.set("customControls", true);
+    expect(texts(h)).toContain("UP/DOWN=SELECT ENTER=CHANGE C=CONTROLS");
+    press(h.app, "c");
+    expect(h.app.mode).toBe("controls");
+    const shown = texts(h);
+    expect(shown).toContain("CONTROL ASSIGNMENTS");
+    expect(shown).toContain("AHEAD FLANK (10)");
+    expect(shown).toContain("F1");
+    press(h.app, "Escape");
+    expect(h.app.mode).toBe("settings");
+  });
+
+  it("the game uses the original keys until custom controls are switched on, then the player's own", () => {
+    const h = boot();
+    h.app.controls.assign("doors", "G"); // set up but not in force
+    startPlay(h);
+    press(h.app, "g");
+    expect(h.sim().sub.doorsOpen).toBe(false);
+    press(h.app, "t");
+    expect(h.sim().sub.doorsOpen).toBe(true);
+    press(h.app, "t");
+    h.app.advanced.set("customControls", true);
+    press(h.app, "t");
+    expect(h.sim().sub.doorsOpen).toBe(false);
+    press(h.app, "g");
+    expect(h.sim().sub.doorsOpen).toBe(true);
+  });
+
+  it("the editor: Enter then a key assigns it; a taken key warns, Esc cancels, Enter overrides and blanks the other", () => {
+    const h = boot();
+    openEditor(h.app);
+    select(h.app, "doors");
+    press(h.app, "Enter");
+    expect(texts(h)).toEqual(expect.arrayContaining(["PRESS THE NEW KEY FOR", "TORPEDO DOORS"]));
+    press(h.app, "c"); // the chart's key
+    let shown = texts(h);
+    expect(shown.join(" ")).toContain("C IS ALREADY USED FOR");
+    expect(shown).toContain("ENTER=OVERRIDE (CLEARS IT) ESC=CANCEL");
+    expect(h.app.controls.get("doors")).toBe("T");
+    press(h.app, "Escape");
+    expect(h.app.controls.get("doors")).toBe("T");
+    expect(h.app.controls.get("chart")).toBe("C");
+    expect(texts(h)).toContain("NOT CHANGED");
+    press(h.app, "Enter", "c", "Enter");
+    expect(h.app.controls.get("doors")).toBe("C");
+    expect(h.app.controls.get("chart")).toBe("");
+    shown = texts(h);
+    expect(shown).toContain("(NONE)");
+    expect(JSON.parse(h.map.get("gato.controls") ?? "{}")).toMatchObject({ doors: "C", chart: "" });
+    press(h.app, "ArrowDown", "Delete"); // the action under the cursor loses its key
+    expect(h.app.controls.get(CONTROL_DEFS[(CONTROL_DEFS.findIndex((d) => d.id === "doors") + 1) % CONTROL_DEFS.length]?.id as ControlId)).toBe("");
+    press(h.app, "r");
+    expect(h.app.controls.isDefault).toBe(true);
+    expect(boot(h.map).app.controls.isDefault).toBe(true);
+  });
+
+  it("the editor lists Tab and Escape as fixed and refuses to change them or to assign them", () => {
+    const h = boot();
+    openEditor(h.app);
+    select(h.app, "gameControl");
+    expect(texts(h)).toContain("FIXED: CANNOT BE CHANGED OR TAKEN OVER");
+    expect(texts(h)).toContain("(FIXED)");
+    press(h.app, "Enter");
+    expect(texts(h).join(" ")).toContain("CANNOT BE CHANGED");
+    press(h.app, "Delete");
+    expect(h.app.controls.get("gameControl")).toBe("Tab");
+    select(h.app, "quit");
+    press(h.app, "Enter", " ");
+    expect(h.app.controls.get("quit")).toBe("Escape");
+    select(h.app, "doors");
+    press(h.app, "Enter", "Tab");
+    expect(texts(h).join(" ")).toContain("TAB IS FIXED AND CANNOT BE ASSIGNED");
+    expect(h.app.controls.get("doors")).toBe("T");
+    press(h.app, "Enter", "Escape"); // Esc cancels the capture instead of assigning
+    expect(h.app.controls.get("doors")).toBe("T");
+    expect(h.app.mode).toBe("controls");
+  });
+
+  it("modifier keys alone are ignored while waiting for a key, and the display key can be assigned like any other", () => {
+    const h = boot();
+    openEditor(h.app);
+    select(h.app, "doors");
+    press(h.app, "Enter", "Shift", "Control");
+    expect(texts(h)).toContain("PRESS THE NEW KEY FOR");
+    expect(h.app.isDisplayKey({ key: "v" })).toBe(false); // not on this screen: the key is for assigning
+    press(h.app, "v"); // the display mode key is taken: warns like any other conflict
+    expect(texts(h).join(" ")).toContain("V IS ALREADY USED FOR DISPLAY MODE");
+    press(h.app, "Enter");
+    expect(h.app.controls.get("doors")).toBe("V");
+    expect(h.app.controls.get("display")).toBe("");
+    press(h.app, "Escape", "Escape");
+    expect(h.app.isDisplayKey({ key: "v" })).toBe(false); // V now belongs to the doors, so it no longer changes the display mode
+  });
+
+  it("the help overlay and the display key follow the assignments in force", () => {
+    const h = boot();
+    h.app.advanced.set("customControls", true);
+    h.app.controls.assign("doors", "G");
+    h.app.controls.assign("display", "K");
+    startPlay(h);
+    expect(h.app.isDisplayKey({ key: "k" })).toBe(true);
+    expect(h.app.isDisplayKey({ key: "v" })).toBe(false);
+    press(h.app, "?", "ArrowRight", "ArrowRight");
+    const page = texts(h);
+    expect(page).toEqual(expect.arrayContaining(["CONTROLS - SCOPE AND WEAPONS", "G", "Torpedo doors"]));
+    expect(page).not.toContain("T");
+    h.app.advanced.set("customControls", false);
+    expect(h.app.isDisplayKey({ key: "v" })).toBe(true);
+    expect(texts(h)).toContain("T");
   });
 });
 

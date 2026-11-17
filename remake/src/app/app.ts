@@ -3,6 +3,7 @@ import type { MorseTables } from "../audio/morse.js";
 import { SoundEngine, type EffectName } from "../audio/soundEngine.js";
 import {
   ADVANCED_FEATURES,
+  ADVANCED_INDENTED,
   AdvancedOptions,
   type AdvancedKey,
   DEFAULT_SETTINGS,
@@ -41,6 +42,7 @@ import {
   type KeyLike,
   type PlayScreen,
 } from "../input/keyboard.js";
+import { CONTROL_DEFS, DEFAULT_KEYMAP, Keymap, controlGroup, controlLabel, isAssignable, isLocked, keyName, normalizeKey, type ControlId } from "../input/controls.js";
 import { COLORS, Gfx } from "../render/gfx.js";
 import {
   drawCaptainsLog,
@@ -69,7 +71,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { cursorBlink, controlsPages, drawAdvancedOptions, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash, type HelpPage } from "../render/textScreens.js";
+import { cursorBlink, controlsPages, drawAdvancedOptions, drawControlsEditor, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash, wrapText, ADVANCED_PAGE_SIZE, type ControlsEditorLine, type HelpPage } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -86,7 +88,7 @@ export interface AppData {
   morse: MorseTables;
 }
 
-export type AppMode = "splash" | "title" | "menu" | "settings" | "orders" | "play" | "demo" | "history";
+export type AppMode = "splash" | "title" | "menu" | "settings" | "controls" | "orders" | "play" | "demo" | "history";
 
 /** Simulation steps per second at 1x time compression: the pace of the 1984 PC (see TIME_COMPRESSION). Rendering is independent of it. */
 export const TICKS_PER_SECOND = TIME_COMPRESSION.baseHz;
@@ -94,6 +96,7 @@ const TRAILS_KEY = "gato.trails";
 const TIME_SCALE_KEY = "gato.timeScale";
 const CONTROL_HUD_KEY = "gato.controlHud";
 const ADVANCED_KEY = "gato.advanced";
+const CONTROLS_KEY = "gato.controls";
 const TOAST_MS = 1800;
 /** Commands that change the helm: with `showControlHud` on, a status line confirms them on the very next frame (the boat itself answers at the step rate). */
 const HELM_COMMANDS: ReadonlySet<string> = new Set(["speed", "rudder", "planes", "neutral", "engine", "doors"]);
@@ -157,6 +160,11 @@ export class App {
   /** Called after any switch changed (the page uses it for the display modes). */
   onAdvancedChange: (() => void) | null = null;
   private advancedCursor = 0;
+  /** The key assignments of the CONTROL ASSIGNMENTS screen; used for play only while CUSTOM CONTROLS is on. */
+  readonly controls: Keymap;
+  private controlsCursor = 0;
+  private controlsEdit: { stage: "idle" } | { stage: "capture"; id: ControlId } | { stage: "conflict"; id: ControlId; key: string; other: ControlId } = { stage: "idle" };
+  private controlsNote: ControlsEditorLine | null = null;
   private readonly storage: StorageLike | null;
   private readonly trailBuffers = createTrails();
   private lastTrailTick = -1;
@@ -175,6 +183,7 @@ export class App {
   ) {
     this.storage = storage;
     this.advanced = new AdvancedOptions(() => this.advancedChanged(), storage?.getItem(ADVANCED_KEY) ?? null);
+    this.controls = new Keymap(() => this.controlsChanged(), storage?.getItem(CONTROLS_KEY) ?? null);
     if (hasSplash(titleArt)) this.mode = "splash";
     this.trailsOn = storage?.getItem(TRAILS_KEY) !== "0";
     this.showControlHud = storage?.getItem(CONTROL_HUD_KEY) === "1";
@@ -204,6 +213,24 @@ export class App {
     this.settings.timeScale = scale;
     this.applyTimeScale();
     if (this.advanced.on("timeToast")) this.showToast(`TIME x${scale}  (${this.stepRate} STEPS/S)`);
+  }
+
+  private controlsChanged(): void {
+    try {
+      this.storage?.setItem(CONTROLS_KEY, this.controls.serialize());
+    } catch {
+      // storage may be unavailable (private mode)
+    }
+  }
+
+  /** The assignments in force: the player's own with CUSTOM CONTROLS on, otherwise the original's. */
+  get activeKeymap(): Keymap {
+    return this.advanced.on("customControls") ? this.controls : DEFAULT_KEYMAP;
+  }
+
+  /** Whether the key is the display-mode key (V unless reassigned); the page handles it, in every mode. */
+  isDisplayKey(e: KeyLike): boolean {
+    return this.mode !== "controls" && !e.ctrlKey && !e.altKey && !e.metaKey && this.activeKeymap.idFor(e.key) === "display";
   }
 
   private advancedChanged(): void {
@@ -271,6 +298,9 @@ export class App {
       case "settings":
         this.settingsKey(e);
         return;
+      case "controls":
+        this.controlsKey(e);
+        return;
       case "orders":
         this.finishOrders();
         return;
@@ -306,7 +336,14 @@ export class App {
     return this.advanced.on(f.key) ? `OFF: ${f.original}` : `ON: ${f.remake}`;
   }
 
-  /** ADVANCED OPTIONS: Up/Down select, Enter or Space switch, R back to the defaults, Esc leaves for the menu. */
+  /** Left/Right (PageUp/PageDown) on ADVANCED OPTIONS: the first switch of the previous or next page, wrapping round. */
+  private advancedPage(step: number): void {
+    const pages = Math.ceil(ADVANCED_FEATURES.length / ADVANCED_PAGE_SIZE);
+    const page = Math.floor(this.advancedCursor / ADVANCED_PAGE_SIZE);
+    this.advancedCursor = ((page + step + pages) % pages) * ADVANCED_PAGE_SIZE;
+  }
+
+  /** ADVANCED OPTIONS: Up/Down select, Enter or Space switch, Left/Right change page, R back to the defaults, Esc leaves for the menu. */
   private settingsKey(e: KeyLike): void {
     const last = ADVANCED_FEATURES.length - 1;
     const feature = ADVANCED_FEATURES[this.advancedCursor];
@@ -317,6 +354,14 @@ export class App {
       case "ArrowDown":
         this.advancedCursor = this.advancedCursor === last ? 0 : this.advancedCursor + 1;
         return;
+      case "ArrowLeft":
+      case "PageUp":
+        this.advancedPage(-1);
+        return;
+      case "ArrowRight":
+      case "PageDown":
+        this.advancedPage(1);
+        return;
       case "Enter":
       case " ":
         if (feature) this.advanced.toggle(feature.key);
@@ -326,7 +371,134 @@ export class App {
         return;
       default:
         if (e.key === "r" || e.key === "R") this.advanced.reset();
+        else if ((e.key === "c" || e.key === "C") && this.advanced.on("customControls")) {
+          this.controlsEdit = { stage: "idle" };
+          this.controlsNote = null;
+          this.mode = "controls";
+        }
     }
+  }
+
+  private noteControls(text: string, tone: ControlsEditorLine["tone"] = "info"): void {
+    this.controlsNote = { text, tone };
+  }
+
+  /**
+   * CONTROL ASSIGNMENTS: Up/Down/PageUp/PageDown select an action; Enter or Space then waits for the new key. A key another action
+   * already has gives a warning: Enter overrides (the other action is left without a key), Esc cancels. Delete (or Backspace) blanks the
+   * selected action, R restores every default, Esc leaves. Tab and Escape are fixed: their actions cannot be changed and no action can take them.
+   */
+  private controlsKey(e: KeyLike): void {
+    const edit = this.controlsEdit;
+    const defs = CONTROL_DEFS;
+    const def = defs[this.controlsCursor];
+    if (!def) return;
+    if (edit.stage === "conflict") {
+      if (e.key === "Enter") {
+        this.controls.assign(edit.id, edit.key, true);
+        this.noteControls(`${keyName(edit.key)} NOW ${controlLabel(edit.id)}; ${controlLabel(edit.other)} HAS NO KEY`);
+        this.controlsEdit = { stage: "idle" };
+      } else if (e.key === "Escape") {
+        this.noteControls("NOT CHANGED");
+        this.controlsEdit = { stage: "idle" };
+      }
+      return;
+    }
+    if (edit.stage === "capture") {
+      if (e.key === "Escape" && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        this.noteControls("NOT CHANGED");
+        this.controlsEdit = { stage: "idle" };
+        return;
+      }
+      if (e.key === "Delete") {
+        this.noteControls("NOT CHANGED");
+        this.controlsEdit = { stage: "idle" };
+        return;
+      }
+      const key = normalizeKey(e.key);
+      if (e.ctrlKey || e.altKey || e.metaKey || !isAssignable(key)) return; // a modifier on its own, or a combination: keep waiting
+      if (key === this.controls.get(edit.id)) {
+        this.noteControls("NOT CHANGED");
+        this.controlsEdit = { stage: "idle" };
+        return;
+      }
+      const result = this.controls.assign(edit.id, key);
+      if (result.ok) {
+        this.noteControls(`${controlLabel(edit.id)} = ${keyName(key)}`);
+        this.controlsEdit = { stage: "idle" };
+      } else if ("locked" in result) {
+        this.noteControls(`${keyName(key)} IS FIXED AND CANNOT BE ASSIGNED`, "warn");
+        this.controlsEdit = { stage: "idle" };
+      } else this.controlsEdit = { stage: "conflict", id: edit.id, key, other: result.conflict };
+      return;
+    }
+    const count = defs.length;
+    this.controlsNote = null;
+    switch (e.key) {
+      case "ArrowUp":
+        this.controlsCursor = (this.controlsCursor + count - 1) % count;
+        return;
+      case "ArrowDown":
+        this.controlsCursor = (this.controlsCursor + 1) % count;
+        return;
+      case "PageUp":
+        this.controlsCursor = Math.max(this.controlsCursor - 10, 0);
+        return;
+      case "PageDown":
+        this.controlsCursor = Math.min(this.controlsCursor + 10, count - 1);
+        return;
+      case "Enter":
+      case " ":
+        if (isLocked(def.id)) this.noteControls(`${def.label} IS FIXED: ${keyName(def.key)} CANNOT BE CHANGED`, "warn");
+        else this.controlsEdit = { stage: "capture", id: def.id };
+        return;
+      case "Delete":
+      case "Backspace":
+        if (isLocked(def.id)) this.noteControls(`${def.label} IS FIXED: ${keyName(def.key)} CANNOT BE CHANGED`, "warn");
+        else {
+          this.controls.clear(def.id);
+          this.noteControls(`${def.label} HAS NO KEY`);
+        }
+        return;
+      case "Escape":
+        this.mode = "settings";
+        return;
+      default:
+        if (e.key === "r" || e.key === "R") {
+          this.controls.reset();
+          this.noteControls("ALL KEYS BACK TO THE DEFAULTS");
+        }
+    }
+  }
+
+  private controlsView(): Parameters<typeof drawControlsEditor>[1] {
+    const edit = this.controlsEdit;
+    const def = CONTROL_DEFS[this.controlsCursor];
+    let lines: ControlsEditorLine[] = [];
+    let footer = "ENTER=SET DEL=CLEAR R=RESET ESC=BACK";
+    if (edit.stage === "capture") {
+      lines = [
+        { text: "PRESS THE NEW KEY FOR", tone: "prompt" },
+        { text: controlLabel(edit.id), tone: "prompt" },
+      ];
+      footer = "PRESS A KEY   ESC OR DEL=CANCEL";
+    } else if (edit.stage === "conflict") {
+      lines = wrapText(`${keyName(edit.key)} IS ALREADY USED FOR ${controlLabel(edit.other)}`)
+        .slice(0, 2)
+        .map((text) => ({ text, tone: "warn" as const }));
+      footer = "ENTER=OVERRIDE (CLEARS IT) ESC=CANCEL";
+    } else if (this.controlsNote) lines = wrapText(this.controlsNote.text).slice(0, 3).map((text) => ({ text, tone: this.controlsNote?.tone ?? "info" }));
+    else if (def?.locked) lines = [{ text: "FIXED: CANNOT BE CHANGED OR TAKEN OVER", tone: "info" }];
+    return {
+      rows: CONTROL_DEFS.map((d, i) => {
+        const group = controlGroup(d.id);
+        const starts = i === 0 || controlGroup(CONTROL_DEFS[i - 1]?.id as ControlId) !== group;
+        return { label: d.label, key: keyName(this.controls.get(d.id)), locked: d.locked === true, ...(starts ? { heading: group } : {}) };
+      }),
+      cursor: this.controlsCursor,
+      lines,
+      footer,
+    };
   }
 
   private choose(input: string): void {
@@ -395,7 +567,7 @@ export class App {
       this.gameControlKey(e);
       return;
     }
-    const action = translatePlayKey(e);
+    const action = translatePlayKey(e, this.activeKeymap);
     if (action) this.perform(action);
   }
 
@@ -461,7 +633,7 @@ export class App {
 
   private helpPages(): HelpPage[] {
     const on = (k: AdvancedKey): boolean => this.advanced.on(k);
-    return controlsPages({ trails: on("trailToggle"), timeKeys: on("timeKeys"), display: on("displayModes"), escQuit: on("escQuit") });
+    return controlsPages({ trails: on("trailToggle"), timeKeys: on("timeKeys"), display: on("displayModes"), escQuit: on("escQuit") }, (id) => this.activeKeymap.get(id));
   }
 
   /** Left/Up/PageUp and Right/Down/PageDown/Space turn the pages (wrapping round); any other key closes the overlay and is not passed on. */
@@ -809,10 +981,14 @@ export class App {
         return;
       case "settings":
         drawAdvancedOptions(g, {
-          rows: ADVANCED_FEATURES.map((f) => ({ label: f.label, on: this.advanced.on(f.key) })),
+          rows: ADVANCED_FEATURES.map((f) => ({ label: f.label, on: this.advanced.on(f.key), indent: ADVANCED_INDENTED.has(f.key) })),
           cursor: this.advancedCursor,
           hint: this.advancedHint(),
+          controlsKey: this.advanced.on("customControls"),
         });
+        return;
+      case "controls":
+        drawControlsEditor(g, this.controlsView());
         return;
       case "orders":
         this.frameOrders(timeMs);

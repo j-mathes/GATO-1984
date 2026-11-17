@@ -1,6 +1,6 @@
 # Remake-only additions
 
-What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Eighteen of these (rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32) have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour; the rest are always on. Only the helm status line (row 1) is off by default.
+What the TypeScript remake (`remake/`) does that the 1984 binaries (`GATO.EXE`, `GATO1.EXE`, `DEMO.EXE`, `HISTORY.EXE`) do not, as found by reading `remake/src/`, `remake/README.md` and the extraction notes in this folder. "Default" is what a player sees with a fresh browser profile. Eighteen of these (rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32) have a switch on the ADVANCED OPTIONS screen (section 5a) that turns them back into the 1984 behaviour; the rest are always on. Row 38 (custom controls) is a switch itself. Off by default: the helm status line (row 1) and custom controls (row 38).
 
 Legend: **ON** = active in normal play, **key** = off until the player asks, **fallback** = only used when an asset is missing.
 
@@ -68,7 +68,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 
 ## 5a. Advanced options switches
 
-Menu item 5 opens the screen: Up/Down select a row, Enter or Space switch it, `R` restores the defaults, Esc returns to the menu. The screen shows `ON` (the remake feature) or `OFF` (the 1984 behaviour) for each row, and the line under the list describes the other state: `OFF: ...` while the switch is on, `ON: ...` while it is off. The choices are saved in `localStorage` under `gato.advanced` and apply at once, also to a mission in progress. "Row" is the row number above. All switches default to ON except row 1.
+Menu item 5 opens the screen, which shows the switches ten to a page (`PAGE 1 OF 2`): Up/Down select a row and run on from one page to the next, Left/Right (or PageUp/PageDown) jump to the other page, Enter or Space switch it, `R` restores the defaults, Esc returns to the menu. The screen shows `ON` (the remake feature) or `OFF` (the 1984 behaviour) for each row, and the line under the list describes the other state: `OFF: ...` while the switch is on, `ON: ...` while it is off. The choices are saved in `localStorage` under `gato.advanced`. The screen can only be opened from the launcher menu (not during a mission), so a change takes effect when the next mission or demo starts. "Row" is the row number above. Switches that depend on the one above them are shown indented: the hotkeys switch (16) sets the three under it (3, 9, 10) and follows them, while the next-mission pick (30, under 8) and the time pop-up (2, under 15) stay independent and simply have no effect while their parent is off. All switches default to ON except rows 1 and 38.
 
 | Row | Switch (screen label) | OFF gives |
 | --- | --- | --- |
@@ -90,6 +90,18 @@ Menu item 5 opens the screen: Up/Down select a row, Enter or Space switch it, `R
 | 28 | SLOW 1984 PC PACE (2.5 HZ) | 10 simulation steps a second at 1x (2x = 20, 4x = 40). The original has no fixed rate (one pass of its loop as fast as the CPU allows), so there is no exact equivalent |
 | 30 | CHOOSE THE NEXT MISSION | the next mission is always the original's random pick; GAME CONTROL item 5 is hidden (the pick is kept but unused) |
 | 32 | WORLD RUNS DURING BLASTS | the world is held while an explosion plays, as the original blocks in its animation |
+| 38 | CUSTOM CONTROLS (default OFF) | the original key assignments only; ON lets the player reassign the mission keys on the CONTROL ASSIGNMENTS screen (below) |
+
+### Control assignments (row 38)
+
+With CUSTOM CONTROLS on, `C` on the ADVANCED OPTIONS screen opens CONTROL ASSIGNMENTS: one line per mission action (speed, periscope, torpedo, radar, rudder, planes, engines, scope facings, doors, the screens, debug prompt, wake trails, help (two keys), time speed, back to the menu, display mode), with its key. Up/Down/PageUp/PageDown select, Enter or Space waits for the new key, Delete or Backspace blanks the action, `R` restores every default, Esc leaves. One key per action; an action can have no key.
+
+* **Layout:** the list is in the sections of the help pages (speed and engines, steering, scope and weapons, screens, remake extras), each with a `-- TITLE --` line that scrolls with the list. Actions are listed whether or not their feature is switched on, so keys can be assigned ahead of use.
+* **Conflicts:** giving an action a key another action already has shows a warning (`<KEY> IS ALREADY USED FOR <ACTION>`); Enter overrides, which leaves the other action without a key (shown `(NONE)`), and Esc cancels.
+* **Fixed keys:** Tab (GAME CONTROL) and Escape (back to the menu) are listed with `(FIXED)`: their actions cannot be changed or blanked, and no other action can take those keys. Delete is not assignable (it blanks or cancels), nor are Shift, Ctrl, Alt and Meta alone. Which other keys should be protected is still open.
+* **Defaults:** the original's keys (and the remake's own keys for the remake-only actions); custom defaults are not decided yet.
+* **Scope:** only the mission keys. Menu, GAME CONTROL numbers, prompts, the demo (F1, F2) and the orders screen keep their fixed keys.
+* **Storage:** `localStorage` `gato.controls`; the assignments are used in play only while the switch is on. The help overlay and the display-mode key follow them.
 
 ## 6. Tooling (not part of the game)
 
@@ -101,6 +113,6 @@ Drawn or timed from evidence but not byte-exact: the text font (the remake's own
 
 ## 8. Suggested decisions
 
-* Hidden by default: row 1. Switchable on the ADVANCED OPTIONS screen: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32 (section 5a).
+* Hidden by default: rows 1 and 38. Switchable on the ADVANCED OPTIONS screen: rows 1, 2, 3, 6, 8, 9, 10, 11, 12, 15, 16, 17, 20, 24, 25, 28, 30, 32, 38 (section 5a).
 * Easiest to drop without touching rules: rows 2, 4, 5, 7, 11, 12, 13, 21-23, 24, 25 (a remake choice each, no state depends on them).
 * Behaviour changes that alter play: rows 28 (pace), 31 (message boxes wait for a key, world keeps running), 32 (explosions do not block), 33; each is a constant or one branch in `core/` or `app/app.ts`.

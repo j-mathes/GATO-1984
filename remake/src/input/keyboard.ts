@@ -1,4 +1,5 @@
 import type { SimCommand } from "../core/index.js";
+import { CONTROL_DEFS, DEFAULT_KEYMAP, type Keymap } from "./controls.js";
 
 /** Screens reachable while a mission runs (the keys of the dispatcher at Gato1.exe 0x0d0c0 plus F6). */
 export type PlayScreen = "control" | "radar" | "chart" | "quadrant" | "log" | "damage" | "gameControl";
@@ -41,86 +42,12 @@ export interface KeyLike {
  *   W            track dots on radar, chart and quadrant map on/off
  *   ? or H       controls quick-reference overlay (remake addition; pauses the world while shown)
  *   [ / ]        time compression 1x / 2x / 4x (2.5 / 5 / 10 simulation steps per second; remake addition)
+ * The table lives in controls.ts (CONTROL_DEFS); with CUSTOM CONTROLS on, the player's own Keymap replaces the default one.
  */
-export function translatePlayKey(e: KeyLike): InputAction | null {
+export function translatePlayKey(e: KeyLike, keymap: Keymap = DEFAULT_KEYMAP): InputAction | null {
   if (e.ctrlKey || e.altKey || e.metaKey) return null;
-  const sim = (command: SimCommand): InputAction => ({ type: "sim", command });
-  switch (e.key) {
-    case "F1":
-      return sim({ type: "speed", level: "F1" });
-    case "F3":
-      return sim({ type: "speed", level: "F3" });
-    case "F5":
-      return sim({ type: "speed", level: "F5" });
-    case "F7":
-      return sim({ type: "speed", level: "F7" });
-    case "F9":
-      return sim({ type: "speed", level: "stop" });
-    case "F10":
-      return sim({ type: "speed", level: "reverse" });
-    case "F2":
-      return sim({ type: "periscope", direction: "raise" });
-    case "F4":
-      return sim({ type: "periscope", direction: "lower" });
-    case "F8":
-      return sim({ type: "fire" });
-    case "F6":
-      return { type: "screen", screen: "radar" };
-    case "ArrowLeft":
-      return sim({ type: "rudder", direction: "left" });
-    case "ArrowRight":
-      return sim({ type: "rudder", direction: "right" });
-    case "ArrowUp":
-      return sim({ type: "planes", direction: "up" });
-    case "ArrowDown":
-      return sim({ type: "planes", direction: "down" });
-    case "Tab":
-      return { type: "screen", screen: "gameControl" };
-    case "Escape":
-      return { type: "quit" };
-    default:
-      break;
-  }
-  if (e.code === "Numpad5" || e.key === "5") return sim({ type: "neutral" });
-  switch (e.key.toUpperCase()) {
-    case "D":
-      return sim({ type: "engine", mode: "diesel" });
-    case "E":
-      return sim({ type: "engine", mode: "electric" });
-    case "F":
-      return sim({ type: "scope", facing: "F" });
-    case "P":
-      return sim({ type: "scope", facing: "P" });
-    case "A":
-      return sim({ type: "scope", facing: "A" });
-    case "S":
-      return sim({ type: "scope", facing: "S" });
-    case "T":
-      return sim({ type: "doors" });
-    case "C":
-      return { type: "screen", screen: "chart" };
-    case "Q":
-      return { type: "screen", screen: "quadrant" };
-    case "L":
-      return { type: "screen", screen: "log" };
-    case "R":
-      return { type: "screen", screen: "damage" };
-    case "M":
-      return { type: "radioRoom" };
-    case "Z":
-      return { type: "debugPrompt" };
-    case "W":
-      return { type: "toggleTrails" };
-    case "H":
-    case "?":
-      return { type: "help" };
-    case "[":
-      return { type: "timeScale", direction: "slower" };
-    case "]":
-      return { type: "timeScale", direction: "faster" };
-    default:
-      return null;
-  }
+  const id = keymap.idFor(e.code === "Numpad5" ? "5" : e.key);
+  return (id && CONTROL_DEFS.find((d) => d.id === id)?.input) || null;
 }
 
 /** Keys the page must not handle itself (scrolling, focus change, browser function keys). */
