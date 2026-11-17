@@ -78,7 +78,7 @@ The script's static-layer comparison of the control room reports 0 of 261 differ
 
 ## Publishing on GitHub Pages
 
-The build is a static site, so it can be served from any path. `vite.config.ts` sets `base: "./"` and the game fetches its assets with URLs relative to the page, which is what makes a project site (`https://<user>.github.io/<repository>/`) work.
+The build is a static site, so it can be served from any path. `vite.config.ts` sets `base: "./"` and the game fetches its assets with URLs relative to the page, which is what makes a project site (<https://j-mathes.github.io/GATO-1984/>) work.
 
 [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) builds and deploys on every push to `main` (or by hand from the Actions tab): `npm ci`, `npm run typecheck`, `npm test`, `npm run build`, then it publishes `remake/dist`. A failing type-check or test stops the deployment.
 
