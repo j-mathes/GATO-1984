@@ -33,32 +33,32 @@ Things to keep an eye on:
 
 ## Controls
 
-These are the original game's keys. Because some of them (the function keys, `5`, `P A S F`) are awkward on a modern keyboard, the advanced options can switch to a second, custom layout (right-hand column; see [Custom controls](#advanced-options)). Keys not listed there are the same in both.
+These are the original game's keys. Because some of them (the function keys, `5`, `P A S F`) are awkward on a modern keyboard, the advanced options can switch to a second, custom layout (right-hand column; see [Custom controls](#advanced-options)).
 
 | Action | Original keys | Custom layout |
 | --- | --- | --- |
 | Ahead slow / standard / full / flank | F7 / F5 / F3 / F1 | `1` / `2` / `3` / `4` |
 | All stop / reverse | F9 / F10 | `0` / `Backspace` |
-| Rudder left / right | ← / → | same |
-| Rise / dive | ↑ / ↓ | same |
+| Rudder left / right | ← / → | ← / → |
+| Rise / dive | ↑ / ↓ | ↑ / ↓ |
 | Centre rudder and planes | 5 (or keypad 5) | `N` |
-| Diesel / electric engine | D / E | same |
+| Diesel / electric engine | D / E | D / E |
 | Periscope up / down | F2 / F4 | `P` (one key toggles it) |
 | Periscope facing: forward / port / aft / starboard | F / P / A / S | `I` / `J` / `K` / `L` |
-| Open / close torpedo doors | T | same |
+| Open / close torpedo doors | T | T |
 | Fire a torpedo | F8 | `Space` |
 | Radar | F6 | `G` |
-| Chart | C | same |
-| Quadrant map | Q | same |
+| Chart | C | C |
+| Quadrant map | Q | Q |
 | Captain's Log (ships sunk, tonnage, missions completed) | L | `B` |
-| Damage report | R | same |
-| Radio room, then back to the control room. With a working radio this shows your orders again | M | same |
-| GAME CONTROL | Tab | same |
-| Controls help (pages through the keys; arrow keys turn pages, any other key closes) | ? or H | same |
-| Turn the persistent position dots on the chart, map and radar on or off | W | same |
-| Slower / faster time: 1× is the pace of a 1984 PC, 2× and 4× fast-forward | [ / ] | same |
-| Display mode (below) | V | same |
-| Leave the mission and return to the menu | Esc | same |
+| Damage report | R | R |
+| Radio room, then back to the control room. With a working radio this shows your orders again | M | M |
+| GAME CONTROL | Tab | Tab |
+| Controls help (pages through the keys; arrow keys turn pages, any other key closes) | ? or H | ? or H |
+| Turn the persistent position dots on the chart, map and radar on or off | W | W |
+| Slower / faster time: 1× is the pace of a 1984 PC, 2× and 4× fast-forward | [ / ] | [ / ] |
+| Display mode (below) | V | V |
+| Leave the mission and return to the menu | Esc | Esc |
 
 The Captain's Log, the damage report and GAME CONTROL pause the game; the radar, chart and quadrant map do not. When a message box is on screen (mission completed, radio room report), the first key only closes it.
 
