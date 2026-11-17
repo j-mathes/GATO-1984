@@ -4,6 +4,7 @@ import { SoundEngine, type EffectName } from "../audio/soundEngine.js";
 import {
   ADVANCED_FEATURES,
   AdvancedOptions,
+  type AdvancedKey,
   DEFAULT_SETTINGS,
   DEFAULT_TICKS_PER_SECOND,
   DemoPlayer,
@@ -68,7 +69,7 @@ import {
   drawQuadrantLayout,
   drawRadarLayout,
 } from "../render/cockpitScreens.js";
-import { cursorBlink, drawAdvancedOptions, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash } from "../render/textScreens.js";
+import { cursorBlink, controlsPages, drawAdvancedOptions, drawDemoIntro, drawDemoNarration, drawHelpOverlay, drawHistory, drawTeletype, drawToast, helmStatus, drawLauncherMenu, drawOrders, drawSplash, drawTitle, hasSplash, type HelpPage } from "../render/textScreens.js";
 import { HistoryViewer } from "./historyViewer.js";
 import { LogStore, type StorageLike } from "./logStore.js";
 import { buildOrdersTimeline, revealedLines, type OrdersTimeline } from "./orders.js";
@@ -132,6 +133,7 @@ export class App {
   /** Which GAME CONTROL item `difficultyEditor` is editing: 1 DIFFICULTY LEVEL, 5 NEXT MISSION (remake addition). */
   private editorItem: 1 | 5 = 1;
   private helpOpen = false;
+  private helpPage = 0;
   private prompt: { kind: "password" | "coords"; editor: LineEditor } | null = null;
   private history: HistoryViewer | null = null;
   private demo: { player: DemoPlayer; sim: Simulation; runner: FixedTimestepRunner; page: number; screen: string } | null = null;
@@ -377,7 +379,7 @@ export class App {
     if (!sim) return;
     if (this.radio.dismiss()) return; // a message box waits for a key: the key only closes it
     if (this.helpOpen) {
-      this.closeHelp(); // any key closes the overlay and is not passed on
+      this.helpKey(e);
       return;
     }
     if (this.prompt) {
@@ -424,7 +426,10 @@ export class App {
         if (this.advanced.on("trailToggle")) this.setTrails(!this.trailsOn);
         return;
       case "help":
-        if (this.advanced.on("helpOverlay")) this.helpOpen = true;
+        if (this.advanced.on("helpOverlay")) {
+          this.helpPage = 0;
+          this.helpOpen = true;
+        }
         return;
       case "timeScale": {
         if (!this.advanced.on("timeKeys")) return;
@@ -447,6 +452,24 @@ export class App {
   /** Controls quick-reference overlay (key ? or H during a mission); the world is paused while it is shown. */
   get helpVisible(): boolean {
     return this.helpOpen;
+  }
+
+  /** The page of the overlay that is showing (0-based). */
+  get helpPageIndex(): number {
+    return this.helpPage;
+  }
+
+  private helpPages(): HelpPage[] {
+    const on = (k: AdvancedKey): boolean => this.advanced.on(k);
+    return controlsPages({ trails: on("trailToggle"), timeKeys: on("timeKeys"), display: on("displayModes"), escQuit: on("escQuit") });
+  }
+
+  /** Left/Up/PageUp and Right/Down/PageDown/Space turn the pages (wrapping round); any other key closes the overlay and is not passed on. */
+  private helpKey(e: KeyLike): void {
+    const count = this.helpPages().length;
+    if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) this.helpPage = (this.helpPage + 1) % count;
+    else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) this.helpPage = (this.helpPage + count - 1) % count;
+    else this.closeHelp();
   }
 
   private closeHelp(): void {
@@ -847,7 +870,7 @@ export class App {
     else {
       const message = this.radio.current;
       if (message) drawRadioMessage(g, message);
-      if (this.helpOpen) drawHelpOverlay(g);
+      if (this.helpOpen) drawHelpOverlay(g, this.helpPage, this.helpPages());
     }
     if (this.toast) {
       if (timeMs < this.toast.until) drawToast(g, this.toast.text);

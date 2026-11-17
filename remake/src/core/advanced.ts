@@ -47,7 +47,7 @@ export const ADVANCED_FEATURES: readonly AdvancedFeature[] = [
   { key: "trailToggle", row: 10, label: "WAKE TRAILS ON/OFF", default: true, remake: "W turns the track dots on the radar, chart and map on or off", original: "tracks always persist" },
   { key: "endBox", row: 11, label: "LOST-BOAT BOX AND TEXT", default: true, remake: "a lost boat shows a framed box saying YOUR SUBMARINE HAS BEEN LOST", original: "black screen with only the play-again prompt" },
   { key: "demoSkip", row: 12, label: "DEMO: ANY KEY SKIPS INTRO", default: true, remake: "any key skips the demo's opening page (F1 exits, F2 sound off)", original: "only F1 and F2 act in the demo" },
-  { key: "timeKeys", row: 15, label: "TIME COMPRESSION KEYS [ ]", default: true, remake: "[ and ] change the speed of time: 1x, 2x, 4x", original: "the pace cannot be changed" },
+  { key: "timeKeys", row: 15, label: "TIME COMPRESSION KEYS [ AND ]", default: true, remake: "[ and ] change the speed of time: 1x, 2x, 4x", original: "the pace cannot be changed" },
   { key: "hotkeys", row: 16, label: "HOTKEYS ? H W V", default: true, remake: "enable the help overlay, display mode and wake trail hotkeys", original: "disable the help overlay, display mode and wake trail hotkeys" },
   { key: "escQuit", row: 17, label: "ESC RETURNS TO MENU", default: true, remake: "Esc leaves the mission and returns to the menu", original: "Esc does nothing (the original ended the program)" },
   { key: "radioReread", row: 20, label: "M REREADS THE ORDERS", default: true, remake: "M shows the current orders again", original: "M asks for a new random mission" },

@@ -10,7 +10,7 @@ Legend: **ON** = active in normal play, **key** = off until the player asks, **f
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Helm status line** at the top of the screen after a helm command (`ORDER 8.0  RUDDER MID  PLANES LEVEL`) | `render/textScreens.ts` `helmStatus`/`drawToast`; `app/app.ts` `perform`, `HELM_COMMANDS`, `showControlHud` | **OFF** (flag `showControlHud = false`) | `__gato.showControlHud = true` in the console, or `localStorage["gato.controlHud"] = "1"` | None. The scope stays clean; only the dashboard lights/arrows change (door circle, engine text, scope arrow) |
 | 2 | **Time-compression toast** (`TIME x2  (5 STEPS/S)`, 1.8 s) | `app/app.ts` `setTimeScale`/`showToast`; `drawToast` | key (only after `[` / `]`) | switch 2 (ADVANCED OPTIONS) | None |
-| 3 | **Controls quick-reference overlay**, pauses the world | `render/textScreens.ts` `CONTROLS_HELP`/`drawHelpOverlay`; `app/app.ts` `helpOpen`; key `?` or `H` | key | closes on any key | None |
+| 3 | **Controls quick-reference overlay** in five pages (speed and engines, steering, scope and weapons, screens, remake extras), one key per line, pauses the world | `render/textScreens.ts` `controlsPages`/`drawHelpOverlay`; `app/app.ts` `helpOpen`, `helpKey`; key `?` or `H` | key | Left/Up/PageUp and Right/Down/PageDown/Space turn pages; any other key closes | None |
 | 4 | **Row 25 hint on the orders screen** (`PRESS ANY KEY TO SKIP`, `...TO CONTINUE`, `ORDERS IN MORSE ONLY - ANY KEY SKIPS`) | `render/textScreens.ts` `drawOrders` | **ON** | delete the `g.text(1, 25, ...)` line | Row 25 is never written |
 | 5 | **`PRESS ANY KEY` on the title page** | `render/textScreens.ts` `drawTitle` | **ON** | | The title advances by itself (an empty 5000-pass loop) |
 | 6 | **Spectrum HoloByte splash hold + key/click skip** | `app/app.ts` `SPLASH_MS`, `tap()`; `main.ts` `pointerdown` | **ON** (2.5 s) | | A 2000-pass empty loop, no key; the logo scene itself is original |
@@ -81,7 +81,7 @@ Menu item 5 opens the screen: Up/Down select a row, Enter or Space switch it, `R
 | 10 | WAKE TRAILS ON/OFF | track dots always persist; `W` does nothing |
 | 11 | LOST-BOAT BOX AND TEXT | a cleared screen with only `DO YOU WANT DO PLAY AGAIN? (Y/N)` (and the oxygen message when the air ran out) |
 | 12 | DEMO: ANY KEY SKIPS INTRO | the demo intro waits its time (the original shows it while it loads); only F1 (exit) and F2 (sound off) act there. Any key still ends the Morse example, as in the original |
-| 15 | TIME COMPRESSION KEYS [ ] | `[` and `]` do nothing (GAME CONTROL item 6 is row 8) |
+| 15 | TIME COMPRESSION KEYS [ AND ] | `[` and `]` do nothing (GAME CONTROL item 6 is row 8) |
 | 16 | HOTKEYS ? H W V | a group switch over rows 3, 9 and 10: switching it sets all three (OFF: `?`/`H`, `V` and `W` do nothing), and it follows them: it is ON while any of the three is ON and turns OFF when all three are OFF |
 | 17 | ESC RETURNS TO MENU | Esc does nothing during a mission (the original ends the program; the page cannot, so a mission then ends by losing the boat or reloading the page) |
 | 20 | M REREADS THE ORDERS | `M` with a working radio room asks for a new mission: a fresh world with new orders (a random pick, or the GAME CONTROL item 5 pick while row 30 is on) |

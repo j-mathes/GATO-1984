@@ -13,7 +13,7 @@ import { ADVANCED_FEATURES, RADIO_MESSAGES, Simulation, buildScenario, createRng
 import { LineEditor, parseCoordinates, shouldPreventDefault, translateGameControlKey, translatePlayKey } from "../input/keyboard.js";
 import type { Gfx } from "../render/gfx.js";
 import { computeDisplaySize, isDisplayMode, nextDisplayMode } from "../render/display.js";
-import { CONTROLS_HELP, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, drawLauncherMenu, drawTitle, titleWipeLines, wrapText } from "../render/textScreens.js";
+import { HELP_ACTION_WIDTH, HELP_KEY_WIDTH, TITLE_HOLD_MS, TITLE_WIPE_MS, TITLE_WIPE_ROWS, controlsPages, drawLauncherMenu, drawTitle, titleWipeLines, wrapText } from "../render/textScreens.js";
 import { CockpitLayouts, SCREEN_NAMES, decodePacked, parseCockpitLayouts, type ScreenName } from "../render/cockpitLayouts.js";
 import { drawControlRoomLayout, drawDamageLayout, drawLinePx, scopeHorizon } from "../render/cockpitScreens.js";
 import type { PlayView } from "../render/playScreens.js";
@@ -973,7 +973,14 @@ describe("controls overlay and mission select", () => {
     expect(translatePlayKey({ key: "?" })).toEqual({ type: "help" });
     expect(translatePlayKey({ key: "h" })).toEqual({ type: "help" });
     expect(translatePlayKey({ key: "H" })).toEqual({ type: "help" });
-    expect(CONTROLS_HELP.every((l) => l.length <= 38)).toBe(true); // 40 columns minus the margin
+    for (const p of controlsPages()) {
+      expect(p.title.length).toBeLessThanOrEqual(22);
+      expect(p.rows.length).toBeLessThanOrEqual(10);
+      for (const [key, action] of p.rows) {
+        expect(key.length, key).toBeLessThanOrEqual(HELP_KEY_WIDTH);
+        expect(action.length, action).toBeLessThanOrEqual(HELP_ACTION_WIDTH); // key column + action fit the 40 columns
+      }
+    }
     for (const key of ["?", "h"]) {
       const { app, calls, sim } = makeApp();
       press(app, "x");
@@ -989,17 +996,66 @@ describe("controls overlay and mission select", () => {
       app.frame(2000);
       expect(sim().tick).toBe(tick); // paused
       const text = calls.filter(([n]) => n === "text").map(([, a]) => a[2]);
-      expect(text).toEqual(expect.arrayContaining(["CONTROLS              (any key closes)", "TAB          GAME CONTROL"]));
+      expect(text).toEqual(expect.arrayContaining(["CONTROLS - SPEED AND ENGINES", "1/5", "F1", "Ahead flank (10)", "LEFT/RIGHT=PAGE  OTHER KEY=CLOSE"]));
       press(app, "t"); // closes the overlay and is not passed on
       expect(app.helpVisible).toBe(false);
       expect(sim().sub.doorsOpen).toBe(false);
       app.frame(2100);
       calls.length = 0;
       app.frame(2200);
-      expect(calls.some(([n, a]) => n === "text" && a[2] === "CONTROLS              (any key closes)")).toBe(false);
+      expect(calls.some(([n, a]) => n === "text" && String(a[2]).startsWith("CONTROLS - "))).toBe(false);
       press(app, "t");
       expect(sim().sub.doorsOpen).toBe(true);
     }
+  });
+
+  it("the quick reference has pages: Right/Down/Space/PageDown next, Left/Up/PageUp back (wrapping); the page list follows the switches", () => {
+    const { app, calls, sim } = makeApp();
+    press(app, "x");
+    app.startMission(1, 1);
+    press(app, "x", "x");
+    app.frame(0);
+    const shown = (): string[] => {
+      calls.length = 0;
+      app.frame(app.helpPageIndex * 100 + 10);
+      return calls.filter(([n]) => n === "text").map(([, a]) => String(a[2]));
+    };
+    press(app, "?");
+    expect(shown()).toContain("CONTROLS - SPEED AND ENGINES");
+    press(app, "ArrowRight");
+    expect(app.helpPageIndex).toBe(1);
+    expect(shown()).toEqual(expect.arrayContaining(["CONTROLS - STEERING", "2/5", "LEFT", "Rudder left", "RIGHT", "Rudder right"]));
+    press(app, " ");
+    expect(shown()).toEqual(expect.arrayContaining(["CONTROLS - SCOPE AND WEAPONS", "3/5", "Fire torpedo"]));
+    press(app, "PageDown", "PageDown");
+    expect(shown()).toEqual(expect.arrayContaining(["CONTROLS - REMAKE EXTRAS", "5/5", "Wake trails on / off", "[", "Time speed down", "]", "Time speed up", "Display mode", "Back to the menu"]));
+    press(app, "ArrowDown");
+    expect(app.helpPageIndex).toBe(0); // wraps round
+    press(app, "ArrowLeft");
+    expect(app.helpPageIndex).toBe(4);
+    press(app, "PageUp", "ArrowUp");
+    expect(app.helpPageIndex).toBe(2);
+    expect(app.helpVisible).toBe(true);
+    const tick = sim().tick;
+    app.frame(5000);
+    expect(sim().tick).toBe(tick); // still paused while paging
+    press(app, "Escape");
+    expect(app.helpVisible).toBe(false);
+    expect(app.mode).toBe("play"); // the closing key is not passed on
+    press(app, "?");
+    expect(app.helpPageIndex).toBe(0); // always opens on the first page
+    press(app, "x");
+    app.advanced.set("trailToggle", false);
+    app.advanced.set("displayModes", false);
+    app.advanced.set("timeKeys", false);
+    press(app, "?", "ArrowLeft");
+    const extras = shown();
+    expect(extras).toContain("? or H");
+    expect(extras).toContain("Back to the menu");
+    expect(extras).not.toContain("Wake trails on / off");
+    expect(extras).not.toContain("Display mode");
+    expect(extras).not.toContain("Time speed down");
+    expect(extras).not.toContain("Time speed up");
   });
 
   it("the overlay is not opened while typing into a prompt or on GAME CONTROL, and is cleared with the mission", () => {

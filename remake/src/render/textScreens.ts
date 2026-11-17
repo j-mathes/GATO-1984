@@ -206,34 +206,101 @@ export function drawToast(g: Gfx, text: string): void {
   g.text(2, 1, text.slice(0, 38), COLORS.yellow);
 }
 
-/** Controls quick-reference (remake addition, key ? or H), one string per row of the 40-column text grid. */
-export const CONTROLS_HELP: readonly string[] = [
-  "CONTROLS              (any key closes)",
-  "F1 F3 F5 F7  ahead flank/full/std/slow",
-  "F9 / F10     all stop / reverse",
-  "F2 / F4      periscope up / down",
-  "F6 radar     F8 fire torpedo",
-  "LEFT/RIGHT   rudder     UP/DOWN planes",
-  "5            centre rudder and planes",
-  "P A S F      scope port/aft/stbd/fwd",
-  "D / E        diesel / electric",
-  "T            torpedo doors",
-  "C Q L R M    chart quadrant log damage",
-  "             radio room",
-  "TAB          GAME CONTROL",
-  "W            wake trails on / off",
-  "[ / ]        time compression 1x 2x 4x",
-  "V            display mode",
-  "ESC          quit to the menu",
-];
+/** One page of the controls quick-reference (remake addition, key ? or H): a title and rows of key + action for the 40-column text grid. */
+export interface HelpPage {
+  title: string;
+  rows: readonly (readonly [key: string, action: string])[];
+}
 
-/** Dimmed quick-reference box over the current mission screen. */
-export function drawHelpOverlay(g: Gfx): void {
+/** Which remake-only keys exist (the ADVANCED OPTIONS switches); the page of extras lists only those. */
+export interface HelpExtras {
+  trails: boolean;
+  timeKeys: boolean;
+  display: boolean;
+  escQuit: boolean;
+}
+
+export const HELP_KEY_WIDTH = 6;
+export const HELP_ACTION_WIDTH = 22;
+
+export function controlsPages(extras: HelpExtras = { trails: true, timeKeys: true, display: true, escQuit: true }): HelpPage[] {
+  const more: [string, string][] = [];
+  if (extras.trails) more.push(["W", "Wake trails on / off"]);
+  if (extras.timeKeys) more.push(["[", "Time speed down"], ["]", "Time speed up"]);
+  if (extras.display) more.push(["V", "Display mode"]);
+  more.push(["? or H", "This help"]);
+  if (extras.escQuit) more.push(["ESC", "Back to the menu"]);
+  return [
+    {
+      title: "SPEED AND ENGINES",
+      rows: [
+        ["F1", "Ahead flank (10)"],
+        ["F3", "Ahead full (8)"],
+        ["F5", "Ahead standard (6)"],
+        ["F7", "Ahead slow (3)"],
+        ["F9", "All stop"],
+        ["F10", "Reverse"],
+        ["D", "Diesel engine"],
+        ["E", "Electric motor"],
+      ],
+    },
+    {
+      title: "STEERING",
+      rows: [
+        ["LEFT", "Rudder left"],
+        ["RIGHT", "Rudder right"],
+        ["UP", "Rise (planes up)"],
+        ["DOWN", "Dive (planes down)"],
+        ["5", "Centre rudder, planes"],
+      ],
+    },
+    {
+      title: "SCOPE AND WEAPONS",
+      rows: [
+        ["F2", "Raise periscope"],
+        ["F4", "Lower periscope"],
+        ["F", "Scope forward"],
+        ["P", "Scope port"],
+        ["A", "Scope aft"],
+        ["S", "Scope starboard"],
+        ["T", "Torpedo doors"],
+        ["F8", "Fire torpedo"],
+      ],
+    },
+    {
+      title: "SCREENS",
+      rows: [
+        ["C", "Chart"],
+        ["Q", "Quadrant map"],
+        ["F6", "Radar"],
+        ["L", "Captain's log"],
+        ["R", "Damage report"],
+        ["M", "Radio room"],
+        ["TAB", "GAME CONTROL"],
+      ],
+    },
+    { title: "REMAKE EXTRAS", rows: more },
+  ];
+}
+
+export const HELP_FOOTER = "LEFT/RIGHT=PAGE  OTHER KEY=CLOSE";
+
+/** Quick-reference box over the current mission screen: `page` of `pages` (0-based). */
+export function drawHelpOverlay(g: Gfx, page: number, pages: readonly HelpPage[] = controlsPages()): void {
+  const p = pages[Math.min(Math.max(page, 0), pages.length - 1)];
+  if (!p) return;
   const top = 3;
-  const height = CONTROLS_HELP.length * 8 + 8;
-  g.rect(8, (top - 1) * 8 - 4, 304, height, COLORS.black);
-  g.rect(8, (top - 1) * 8 - 4, 304, height, COLORS.cyan, false);
-  CONTROLS_HELP.forEach((line, i) => g.text(2, top + i, line, i === 0 ? COLORS.yellow : COLORS.white));
+  g.rect(8, 4, 304, 152, COLORS.black);
+  g.rect(8, 4, 304, 152, COLORS.cyan, false);
+  g.text(3, top, `CONTROLS - ${p.title}`, COLORS.yellow);
+  g.text(35, top, `${pages.indexOf(p) + 1}/${pages.length}`, COLORS.grey);
+  g.line(16, 29, 304, 29, COLORS.cyan);
+  const keyWidth = Math.max(...p.rows.map(([k]) => k.length)) + 2; // actions line up per page, close to their keys
+  p.rows.forEach(([key, action], i) => {
+    g.text(3, top + 3 + i, key, COLORS.cyan);
+    g.text(3 + keyWidth, top + 3 + i, action, COLORS.white);
+  });
+  g.text(3, 18, HELP_FOOTER, COLORS.grey);
 }
 
 export interface AdvancedRow {
