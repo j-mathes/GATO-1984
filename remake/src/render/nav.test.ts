@@ -3,15 +3,16 @@ import type { Simulation } from "../core/index.js";
 import { TYPE } from "../core/index.js";
 import { Gfx } from "./gfx.js";
 import {
-  DEFAULT_VECTOR_MINUTE,
+  DEFAULT_VECTOR_INTERVAL,
   ShipTracker,
   STATIONARY_KNOTS,
   CHART_TRACK_EVERY_STEPS,
   TRACK_DOTS,
   TRACK_EVERY_STEPS,
-  VECTOR_MINUTES,
+  VECTOR_INTERVALS,
   drawNavSymbol,
   headingDelta,
+  intervalSteps,
   isStationary,
   navClass,
   navDetail,
@@ -22,6 +23,7 @@ import {
   placeTag,
   quadrantPixel,
   turnSign,
+  vectorLegend,
   vectorLength,
   type NavView,
 } from "./enhanced/nav.js";
@@ -90,9 +92,9 @@ describe("navigation symbols: classes and geometry", () => {
   });
 
   it("the velocity vector grows linearly with the speed and the time", () => {
-    expect(vectorLength(8, 6, 1)).toBe(2 * vectorLength(4, 6, 1));
-    expect(vectorLength(8, 12, 0.05)).toBeCloseTo(2 * vectorLength(8, 6, 0.05));
-    expect(vectorLength(0, 30, 1)).toBe(0);
+    expect(vectorLength(8, 60, 1)).toBe(2 * vectorLength(4, 60, 1));
+    expect(vectorLength(8, 120, 0.05)).toBeCloseTo(2 * vectorLength(8, 60, 0.05));
+    expect(vectorLength(0, 300, 1)).toBe(0);
   });
 
   it("a turn is a steady change of heading; a jump to a new leg and standing still are not", () => {
@@ -115,9 +117,18 @@ describe("navigation symbols: classes and geometry", () => {
     expect(navTagLines({ slot: 2, cls: tender, speed: 0, heading: 0, damaged: false })[0]).toBe("SUB TENDER");
   });
 
-  it("the vector looks ahead 3, 6 or 12 minutes, 12 to begin with", () => {
-    expect(VECTOR_MINUTES).toEqual([3, 6, 12]);
-    expect(VECTOR_MINUTES[DEFAULT_VECTOR_MINUTE]).toBe(12);
+  it("the vector spans 3, 6 or 12 intervals, 6 to begin with; an interval is a game minute, on the chart three", () => {
+    expect(VECTOR_INTERVALS).toEqual([3, 6, 12]);
+    expect(VECTOR_INTERVALS[DEFAULT_VECTOR_INTERVAL]).toBe(6);
+    expect(intervalSteps("radar")).toBe(TRACK_EVERY_STEPS);
+    expect(intervalSteps("quadrant")).toBe(TRACK_EVERY_STEPS);
+    expect(intervalSteps("chart")).toBe(CHART_TRACK_EVERY_STEPS);
+    expect(CHART_TRACK_EVERY_STEPS).toBe(3 * TRACK_EVERY_STEPS); // the unit of the vector is as long in time as the spacing of the dots behind
+    expect(vectorLegend("radar", 6)).toBe("VECTOR 6 MIN  DOTS 1 MIN");
+    expect(vectorLegend("quadrant", 12)).toBe("VECTOR 12 MIN  DOTS 1 MIN");
+    expect(vectorLegend("chart", 6)).toBe("VECTOR 18 MIN  DOTS 3 MIN");
+    // the same setting is the same count of intervals on every screen, so the chart reaches three times as far in time
+    expect(vectorLength(8, 6 * intervalSteps("chart"), 1)).toBe(3 * vectorLength(8, 6 * intervalSteps("radar"), 1));
   });
 });
 

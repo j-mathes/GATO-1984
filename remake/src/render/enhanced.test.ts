@@ -4,7 +4,7 @@ import { Gfx } from "./gfx.js";
 import { EnhancedRenderer } from "./enhanced/scene.js";
 import { darken, lighten, mix, rgba } from "./enhanced/colors.js";
 import { starField } from "./enhanced/scope.js";
-import { CHART_ISLANDS, RADAR_CX, RADAR_CY, RADAR_K, RADAR_R, circleRadii, radarBlip } from "./enhanced/scenes.js";
+import { CHART_ISLANDS, RADAR_CX, RADAR_CY, RADAR_K, RADAR_R, SHOAL_DOTS_LARGEST, circleRadii, ellipseDotAngles, ellipsePerimeter, radarBlip, shoalDotCount } from "./enhanced/scenes.js";
 import { enclosedPixels, interiorMarks } from "./enhanced/shipArt.js";
 import { closeHull, filledSilhouette, overlayRegion, thinPixels } from "./hull.js";
 import { crackSpread, glassCracks } from "./enhanced/cracks.js";
@@ -266,6 +266,27 @@ describe("enhanced colours and geometry", () => {
     expect(interiorMarks(["000", "000", "000"])).toEqual([]);
   });
 
+  it("every shoal ring on the chart has the dot spacing of the largest: smaller rings get fewer dots", () => {
+    expect(ellipsePerimeter(10, 10)).toBeCloseTo(2 * Math.PI * 10, 6);
+    const big = ellipsePerimeter(60, 75);
+    expect(shoalDotCount(big, big)).toBe(SHOAL_DOTS_LARGEST);
+    expect(shoalDotCount(big / 2, big)).toBe(SHOAL_DOTS_LARGEST / 2);
+    expect(shoalDotCount(1, big)).toBe(8); // never fewer than 8
+    // the dots of a ring are an equal distance apart along its edge, also on an elongated ring
+    const angles = ellipseDotAngles(30, 60, 24);
+    const gaps = angles.map((a, i) => {
+      const b = angles[(i + 1) % angles.length] as number;
+      const next = i + 1 === angles.length ? b + Math.PI * 2 : b;
+      let length = 0;
+      for (let k = 0; k < 200; k += 1) {
+        const a0 = a + ((next - a) * k) / 200;
+        const a1 = a + ((next - a) * (k + 1)) / 200;
+        length += Math.hypot(30 * (Math.cos(a1) - Math.cos(a0)), 60 * (Math.sin(a1) - Math.sin(a0)));
+      }
+      return length;
+    });
+    expect(Math.max(...gaps) / Math.min(...gaps)).toBeLessThan(1.01);
+  });
   it("the night sky has a fixed star field", () => {
     const stars = starField();
     expect(stars).toEqual(starField());

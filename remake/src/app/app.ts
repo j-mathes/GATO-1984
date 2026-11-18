@@ -52,7 +52,7 @@ import { COLORS, Gfx, LOGICAL_HEIGHT, LOGICAL_WIDTH } from "../render/gfx.js";
 import { ENHANCED_HEIGHT, type Graphics } from "../render/display.js";
 import { EnhancedRenderer } from "../render/enhanced/scene.js";
 import { registerEnhancedScenes } from "../render/enhanced/scenes.js";
-import { DEFAULT_VECTOR_MINUTE, ShipTracker, VECTOR_MINUTES, navDetail, navShips, nextSelection, type NavScreen } from "../render/enhanced/nav.js";
+import { DEFAULT_VECTOR_INTERVAL, ShipTracker, VECTOR_INTERVALS, navDetail, navShips, nextSelection, vectorLegend, type NavScreen } from "../render/enhanced/nav.js";
 import { drawEnhancedMenu, drawEnhancedOrders, drawEnhancedSplash, drawEnhancedTitle } from "../render/enhanced/frontend.js";
 import { OXYGEN_FADE_SECONDS, drawEnhancedSinking, drawOxygenFade } from "../render/enhanced/sinking.js";
 import { TYPEWRITER_SKIN } from "../render/enhanced/skin.js";
@@ -206,7 +206,7 @@ export class App {
   /** The navigation symbols of the enhanced radar, chart and map: the history of each ship, the ship with a data tag and how far ahead the vectors look. */
   private readonly navTracker = new ShipTracker();
   private navSelected: number | null = null;
-  private navMinuteIndex = DEFAULT_VECTOR_MINUTE;
+  private navVectorIndex = DEFAULT_VECTOR_INTERVAL;
   /** Short status line over the top of the screen (helm orders, time compression); drawn every frame until it expires. */
   private toast: { text: string; until: number } | null = null;
 
@@ -237,7 +237,7 @@ export class App {
         cockpit,
         trails: this.trailBuffers,
         trailsOn: () => this.trails,
-        nav: () => ({ on: this.navOn, tracker: this.navTracker, selected: this.navSelected, minutes: VECTOR_MINUTES[this.navMinuteIndex] ?? 12 }),
+        nav: () => ({ on: this.navOn, tracker: this.navTracker, selected: this.navSelected, intervals: VECTOR_INTERVALS[this.navVectorIndex] ?? 6 }),
       });
     }
   }
@@ -715,8 +715,8 @@ export class App {
       }
       case "navVector":
         if (!this.navOn) return;
-        this.navMinuteIndex = (this.navMinuteIndex + 1) % VECTOR_MINUTES.length;
-        this.showToast(`SHIP VECTORS: ${VECTOR_MINUTES[this.navMinuteIndex]} MIN`);
+        this.navVectorIndex = (this.navVectorIndex + 1) % VECTOR_INTERVALS.length;
+        this.showToast(vectorLegend(this.screen, VECTOR_INTERVALS[this.navVectorIndex] ?? 6).replace("VECTOR", "SHIP VECTORS:"));
         return;
       case "help":
         if (this.advanced.on("helpOverlay")) {

@@ -16,9 +16,13 @@ import { drawText } from "./typography.js";
 
 /** A game minute is this many simulation steps (the time scale of the velocity vector and of the past track; the remake's own choice). */
 export const STEPS_PER_MINUTE = 10;
-/** The times the velocity vector looks ahead, in game minutes; a key cycles them. */
-export const VECTOR_MINUTES = [3, 6, 12] as const;
-export const DEFAULT_VECTOR_MINUTE = 2;
+/**
+ * How many intervals the velocity vector spans; a key cycles them. An interval is the time between the dots of the past track behind the ship and
+ * the unit the vector's length is counted in: one game minute on the radar and the quadrant map, three on the zoomed-out chart (see
+ * {@link TRACK_EVERY_STEPS}, {@link CHART_TRACK_EVERY_STEPS}). So the same setting means the same number of dots' spacings on every screen, and the chart looks further ahead.
+ */
+export const VECTOR_INTERVALS = [3, 6, 12] as const;
+export const DEFAULT_VECTOR_INTERVAL = 1;
 /** The dots of the past track and the steps between them. */
 export const TRACK_DOTS = 5;
 export const TRACK_EVERY_STEPS = STEPS_PER_MINUTE;
@@ -75,9 +79,20 @@ export function isStationary(speed: number): boolean {
   return Math.abs(speed) < STATIONARY_KNOTS;
 }
 
-/** Length of the velocity vector in view units: the distance the ship covers in `minutes` game minutes at `speed` (units a step) times the scale of the screen. */
-export function vectorLength(speed: number, minutes: number, unitsPerWorldUnit: number): number {
-  return Math.abs(speed) * minutes * STEPS_PER_MINUTE * unitsPerWorldUnit;
+/** Length of the velocity vector in view units: the distance the ship covers in `steps` simulation steps at `speed` (units a step) times the scale of the screen. */
+export function vectorLength(speed: number, steps: number, unitsPerWorldUnit: number): number {
+  return Math.abs(speed) * steps * unitsPerWorldUnit;
+}
+
+/** Simulation steps in one interval (the spacing of the track dots and the unit of the vector's length) on a screen. */
+export function intervalSteps(screen: string): number {
+  return screen === "chart" ? CHART_TRACK_EVERY_STEPS : TRACK_EVERY_STEPS;
+}
+
+/** The legend of the vector on a screen, `VECTOR 18 MIN  DOTS 3 MIN`: the game minutes the vector reaches ahead and the minutes between the dots of the track behind. */
+export function vectorLegend(screen: string, intervals: number): string {
+  const minutes = intervalSteps(screen) / STEPS_PER_MINUTE;
+  return `VECTOR ${intervals * minutes} MIN  DOTS ${minutes} MIN`;
 }
 
 /** Turn direction from the change of heading in one step: 1 = to port (left, counter-clockwise), -1 = to starboard, 0 = not turning (or a jump to a new leg). */
@@ -250,8 +265,8 @@ export interface NavState {
   tracker: ShipTracker;
   /** Slot of the ship with a tag, or null. */
   selected: number | null;
-  /** Minutes the velocity vector looks ahead. */
-  minutes: number;
+  /** Intervals the velocity vector spans (see {@link VECTOR_INTERVALS}). */
+  intervals: number;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------

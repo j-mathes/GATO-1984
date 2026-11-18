@@ -13,7 +13,7 @@ export type InputAction =
   | { type: "toggleTrails" }
   /** U: puts the data tag on the next ship of the radar, chart or map, nearest first, then on none (enhanced graphics, SHIP NAV SYMBOLS; remake addition). */
   | { type: "navSelect" }
-  /** O: how far ahead the ships' velocity vectors look, 3, 6 or 12 minutes (enhanced graphics, SHIP NAV SYMBOLS; remake addition). */
+  /** O: how many intervals the ships' velocity vectors span, 3, 6 or 12 (an interval is a game minute on the radar and the map, three on the chart; enhanced graphics, SHIP NAV SYMBOLS; remake addition). */
   | { type: "navVector" }
   /** [ and ]: slower / faster time compression (1x = 2.5 steps per second, 2x, 4x); remake addition. */
   | { type: "timeScale"; direction: "slower" | "faster" }

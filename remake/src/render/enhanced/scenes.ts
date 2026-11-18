@@ -1,4 +1,4 @@
-import { SLOT, compassDegrees, quadrantOf, worldDelta } from "../../core/index.js";
+import { SLOT, compassDegrees, quadrantOf, worldDelta, type IslandRecord } from "../../core/index.js";
 import type { CockpitLayouts } from "../cockpitLayouts.js";
 import type { Gfx } from "../gfx.js";
 import { liveContacts, type PlayView } from "../playScreens.js";
@@ -11,7 +11,7 @@ import { drawEnhancedScope, ENHANCED_FACTOR } from "./scope.js";
 import type { EnhancedFrame, EnhancedRenderer } from "./scene.js";
 import type { ShipArt } from "./shipArt.js";
 import { drawText } from "./typography.js";
-import { CHART_TRACK_EVERY_STEPS, OWN_COLOR, OWN_SLOT, drawNavSymbol, drawNavTag, isStationary, navDetail, navShips, quadrantPixel, vectorLength, type NavBounds, type NavObstacles, type NavPoint, type NavScreen, type NavShip, type NavState } from "./nav.js";
+import { CHART_TRACK_EVERY_STEPS, OWN_COLOR, OWN_SLOT, TRACK_EVERY_STEPS, drawNavSymbol, drawNavTag, isStationary, navDetail, navShips, quadrantPixel, vectorLegend, vectorLength, type NavBounds, type NavObstacles, type NavPoint, type NavScreen, type NavShip, type NavState } from "./nav.js";
 
 /** What the scenes need besides the frame: the ship pictures, the extracted layouts, and the wake dots of the track screens. */
 export interface SceneDeps {
@@ -89,11 +89,11 @@ interface NavProjection {
 }
 
 /** Where a vessel is on the view, the unit vector of its heading there and the length of its velocity vector, all through the screen's own projection (the chart's two axes have different scales). */
-function aim(proj: NavProjection, x: number, y: number, heading: number, speed: number, minutes: number): { at: NavPoint; dx: number; dy: number; vector: number } {
+function aim(proj: NavProjection, x: number, y: number, heading: number, speed: number, intervals: number): { at: NavPoint; dx: number; dy: number; vector: number } {
   const at = proj.toView(x, y);
   const probe = proj.toView(x + Math.cos(heading) * 100, y + Math.sin(heading) * 100);
   const n = Math.hypot(probe[0] - at[0], probe[1] - at[1]) || 1;
-  const d = vectorLength(speed, minutes, 1);
+  const d = vectorLength(speed, intervals * (proj.trackEvery ?? TRACK_EVERY_STEPS), 1); // the vector spans `intervals` of the screen's own interval
   const end = proj.toView(x + Math.cos(heading) * d, y + Math.sin(heading) * d);
   return { at, dx: (probe[0] - at[0]) / n, dy: (probe[1] - at[1]) / n, vector: Math.hypot(end[0] - at[0], end[1] - at[1]) };
 }
@@ -117,7 +117,7 @@ function drawNavShips(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen
   const detail = navDetail(settings.difficulty);
   const drawn: NavPlaced[] = [];
   for (const ship of navShips(view, screen).reverse()) {
-    const a = aim(proj, ship.x, ship.y, ship.heading, ship.speed, nav.minutes);
+    const a = aim(proj, ship.x, ship.y, ship.heading, ship.speed, nav.intervals);
     drawNavSymbol(g, {
       x: a.at[0], y: a.at[1], dx: a.dx, dy: a.dy, color: ship.cls.color, size: proj.size, speed: ship.speed, damaged: ship.damaged, alpha: proj.alphaOf?.(a.at[0], a.at[1]),
       detail, vector: a.vector, turn: nav.tracker.turn(ship.slot),
@@ -126,7 +126,7 @@ function drawNavShips(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen
     drawn.push({ ship, at: a.at, dx: a.dx, dy: a.dy, vector: a.vector, size: proj.size, lines: detail && !isStationary(ship.speed) });
   }
   if (withOwn) {
-    const a = aim(proj, snap.sub.x, snap.sub.y, snap.sub.heading, sim.sub.speed, nav.minutes);
+    const a = aim(proj, snap.sub.x, snap.sub.y, snap.sub.heading, sim.sub.speed, nav.intervals);
     drawNavSymbol(g, {
       x: a.at[0], y: a.at[1], dx: a.dx, dy: a.dy, color: OWN_COLOR, size: proj.size * 1.1, speed: sim.sub.speed, detail: true, vector: a.vector,
       turn: nav.tracker.turn(OWN_SLOT), trail: nav.tracker.trail(OWN_SLOT, proj.trackEvery).map((p) => proj.toView(p.x, p.y)),
@@ -134,6 +134,13 @@ function drawNavShips(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen
     drawn.push({ ship: null, at: a.at, dx: a.dx, dy: a.dy, vector: a.vector, size: proj.size * 1.1, lines: !isStationary(sim.sub.speed) });
   }
   return drawn;
+}
+
+/** The legend of the velocity vectors X, where the symbols have vectors to explain. */
+function drawVectorLegend(g: Gfx, deps: SceneDeps, view: PlayView, screen: NavScreen, x: number, y: number, align: CanvasTextAlign): void {
+  const nav = deps.nav();
+  if (!nav.on || (screen === "radar" && !navDetail(view.settings.difficulty))) return;
+  drawText(g, x, y, vectorLegend(screen, nav.intervals), rgba(INSTRUMENT.label, 0.85), 22, { role: "body", align });
 }
 
 /**
@@ -310,6 +317,7 @@ function radarScene(deps: SceneDeps): (f: EnhancedFrame) => void {
     g.rect(xo + 1068, 624, 96, 56, "#07100a");
     g.rect(xo + 1068, 624, 96, 56, INSTRUMENT.frame, false);
     drawText(g, xo + 1116, 653, String(sim.sub.torpedoes), INSTRUMENT.panelText, 40, { role: "body", bold: true, align: "center" });
+    drawVectorLegend(g, deps, view, "radar", xo + 1038, 732, "center");
     drawNavTagOf(g, deps, view, radarShips, { x0: xo + 20, y0: 20, x1: xo + RADAR_CX + RADAR_R + 40, y1: PICTURE_HEIGHT - 20 }, [{ x: cx, y: cy, r: 26 }]);
   };
 }
@@ -322,6 +330,48 @@ export const CHART_ISLANDS: readonly (readonly [number, number, number, number])
   [19, 35, 5, 0.9], [170, 37, 5, 0.9], [208, 22, 6, 1.5], [38, 80, 10, 0.9], [162, 75, 13, 1.5], [208, 85, 5, 0.9],
   [48, 134, 5, 0.9], [209, 113, 5, 0.9], [269, 128, 6, 1.5], [95, 174, 13, 1.5], [214, 168, 9, 0.9], [287, 174, 15, 0.9],
 ];
+
+/** Dots on the shoal ring of the largest island of the chart; the others get as many as keep the same spacing. */
+export const SHOAL_DOTS_LARGEST = 40;
+
+/** The length of the edge of an ellipse (Ramanujan's approximation, good to a few parts in a million for these shapes). */
+export function ellipsePerimeter(rx: number, ry: number): number {
+  const h = ((rx - ry) / (rx + ry)) ** 2;
+  return Math.PI * (rx + ry) * (1 + (3 * h) / (10 + Math.sqrt(4 - 3 * h)));
+}
+
+/** How many dots a ring of this length gets so that its spacing is that of the largest ring (which has {@link SHOAL_DOTS_LARGEST}); at least 8. */
+export function shoalDotCount(perimeter: number, largestPerimeter: number): number {
+  if (largestPerimeter <= 0) return SHOAL_DOTS_LARGEST;
+  return Math.max(8, Math.round((SHOAL_DOTS_LARGEST * perimeter) / largestPerimeter));
+}
+
+/** `count` angles round an ellipse (x = rx cos a, y = ry sin a) that put the dots an equal distance apart along its edge, not an equal angle. */
+export function ellipseDotAngles(rx: number, ry: number, count: number): number[] {
+  const steps = 720;
+  const lengths = [0];
+  let px0 = rx;
+  let py0 = 0;
+  for (let k = 1; k <= steps; k += 1) {
+    const a = (k / steps) * Math.PI * 2;
+    const x = rx * Math.cos(a);
+    const y = ry * Math.sin(a);
+    lengths.push((lengths[k - 1] as number) + Math.hypot(x - px0, y - py0));
+    px0 = x;
+    py0 = y;
+  }
+  const total = lengths[steps] as number;
+  const angles: number[] = [];
+  let k = 0;
+  for (let i = 0; i < count; i += 1) {
+    const target = (i / count) * total;
+    while (k < steps && (lengths[k + 1] as number) < target) k += 1;
+    const l0 = lengths[k] as number;
+    const l1 = lengths[k + 1] as number;
+    angles.push(((k + (l1 > l0 ? (target - l0) / (l1 - l0) : 0)) / steps) * Math.PI * 2);
+  }
+  return angles;
+}
 
 /** BASIC's CIRCLE with an aspect: below 1 the vertical radius shrinks, above 1 the horizontal one does. */
 export function circleRadii(radius: number, aspect: number): { rx: number; ry: number } {
@@ -338,6 +388,9 @@ function chartScene(deps: SceneDeps): (f: EnhancedFrame) => void {
     const px = (x: number): number => x * 0.01252 * ENHANCED_FACTOR;
     const py = (y: number): number => (196 - y * 0.009650499) * ENHANCED_FACTOR;
     const islands = sim.scenario.islands.filter((i) => i.present);
+    // every shoal ring has the dot spacing of the largest one: a smaller ring gets fewer dots, not the same number packed closer
+    const ringRadii = (i: IslandRecord): [number, number] => [px(i.innerRadius), i.outerRadius * 0.0096505 * ENHANCED_FACTOR];
+    const largestRing = Math.max(0, ...islands.map((i) => ellipsePerimeter(...ringRadii(i))));
     if (islands.length === 0) {
       for (const [x, y, r, a] of CHART_ISLANDS) {
         const { rx, ry } = circleRadii(r, a);
@@ -366,10 +419,10 @@ function chartScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       const c = g.ctx;
       c.fillStyle = rgba(INSTRUMENT.tick, 0.8);
       c.beginPath();
-      for (let i = 0; i < 40; i += 1) {
-        const a = (i / 40) * Math.PI * 2;
-        const dx = cx + Math.cos(a) * px(island.innerRadius);
-        const dy = cy + Math.sin(a) * island.outerRadius * 0.0096505 * ENHANCED_FACTOR;
+      const [rx, ry] = ringRadii(island);
+      for (const a of ellipseDotAngles(rx, ry, shoalDotCount(ellipsePerimeter(rx, ry), largestRing))) {
+        const dx = cx + Math.cos(a) * rx;
+        const dy = cy + Math.sin(a) * ry;
         c.moveTo(g.toX(dx) + g.toLength(1.8), g.toY(dy));
         c.arc(g.toX(dx), g.toY(dy), g.toLength(1.8), 0, Math.PI * 2);
       }
@@ -399,6 +452,7 @@ function chartScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       glowDot(g, xo + px(snap.sub.x), py(snap.sub.y), 6, INSTRUMENT.boat);
     }
     brassFrame(g, xo);
+    drawVectorLegend(g, deps, view, "chart", xo + 34, PICTURE_HEIGHT - 30, "left");
     drawNavTagOf(g, deps, view, drawn, { x0: xo + 14, y0: 14, x1: xo + PICTURE_WIDTH - 14, y1: PICTURE_HEIGHT - 14 });
   };
 }
@@ -476,6 +530,7 @@ function quadrantScene(deps: SceneDeps): (f: EnhancedFrame) => void {
       glowDot(g, xo + px(snap.sub.x), py(snap.sub.y), 6, INSTRUMENT.boat);
     }
     brassFrame(g, xo);
+    drawVectorLegend(g, deps, view, "quadrant", xo + 34, PICTURE_HEIGHT - 30, "left");
     drawNavTagOf(g, deps, view, drawn, { x0: xo + 14, y0: 14, x1: xo + PICTURE_WIDTH - 14, y1: PICTURE_HEIGHT - 14 });
   };
 }

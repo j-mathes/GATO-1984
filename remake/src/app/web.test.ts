@@ -2486,11 +2486,11 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
 
     it("SHIP NAV SYMBOLS (46) needs the enhanced graphics; U tags the ships of the chart, map and radar nearest first and then none, O cycles the vector time", () => {
       const h = play();
-      const internals = h.app as unknown as { navSelected: number | null; navMinuteIndex: number };
+      const internals = h.app as unknown as { navSelected: number | null; navVectorIndex: number };
       expect(h.app.advanced.on("navSymbols")).toBe(true);
       expect(h.app.advanced.effective("navSymbols")).toBe(false); // the original graphics keep the dots
       press(h.app, "c", "u", "o");
-      expect([internals.navSelected, internals.navMinuteIndex]).toEqual([null, 2]); // the keys do nothing there
+      expect([internals.navSelected, internals.navVectorIndex]).toEqual([null, 1]); // the keys do nothing there
       h.app.advanced.set("enhancedGraphics", true);
       expect(h.app.advanced.effective("navSymbols")).toBe(true);
       h.app.settings.difficulty = 1;
@@ -2505,15 +2505,15 @@ describe("advanced options (remake additions that can go back to the 1984 behavi
       expect(internals.navSelected).toBeNull(); // after the farthest, no tag
       expect(tagged.size).toBeGreaterThan(2);
       press(h.app, "o");
-      expect(internals.navMinuteIndex).toBe(0);
+      expect(internals.navVectorIndex).toBe(2);
       press(h.app, "o", "o");
-      expect(internals.navMinuteIndex).toBe(2); // 3, 6, 12 minutes and round again, 12 to begin with
+      expect(internals.navVectorIndex).toBe(1); // 3, 6, 12 intervals and round again, 6 to begin with
       h.app.settings.difficulty = 4;
       press(h.app, "u");
       expect(internals.navSelected).toBeNull(); // the details are for difficulty 2 and below
       h.app.advanced.set("navSymbols", false);
       press(h.app, "o");
-      expect(internals.navMinuteIndex).toBe(2);
+      expect(internals.navVectorIndex).toBe(1);
     });
 
     it("every enhanced track screen draws with the ship symbols on and off, a tagged ship included", () => {
