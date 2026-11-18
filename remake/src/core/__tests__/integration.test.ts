@@ -249,3 +249,49 @@ describe("submarine lost", () => {
     expect(events.some((e) => e.type === "subDestroyed" && e.reason === "collision")).toBe(true);
   });
 });
+
+describe("resupply at the sub tender", () => {
+  /** A mission whose tender has taken up its first leg (before the first step it has no heading yet), with the boat stopped 100 units from it on its heading, low on fuel. */
+  function besideTender(n: number, over: Partial<SimOptions> = {}): Simulation {
+    const sim = makeSim(n, createRng(5), over);
+    sim.step();
+    const tender = sim.vessels[2];
+    if (!tender) throw new Error("no tender");
+    sim.teleport(tender.x + 100, tender.y);
+    sim.sub.heading = tender.heading;
+    sim.sub.depth = 0;
+    sim.sub.fuel = 15000;
+    return sim;
+  }
+
+  for (const n of [1, 2, 3, 4, 5]) {
+    for (const gradualTurns of [false, true]) {
+      it(`scenario ${n}, tender under way, ships turning ${gradualTurns ? "gradually" : "at once"}: refuels, reloads and repairs, then finishes`, () => {
+        const sim = besideTender(n, { gradualTurns });
+        // the boat stays put while the tender sails off: the resupply goes on
+        sim.sub.torpedoes = 20;
+        sim.sub.damage[2] = 1;
+        const events = run(sim, 600, () => sim.sub.torpedoes === 24 && sim.sub.resupply === null && sim.sub.fuel > 35000);
+        expect(sim.status).toBe("running");
+        expect(events.filter((e) => e.type === "resupplyStarted")).toHaveLength(1);
+        expect(events.filter((e) => e.type === "resupplyFinished")).toHaveLength(1);
+        expect(sim.sub.fuel).toBe(36000);
+        expect(sim.sub.torpedoes).toBe(24);
+        expect(sim.sub.damage.every((d) => d === 0)).toBe(true);
+        expect(sim.sub.resupply).toBeNull();
+      });
+    }
+  }
+
+  it("does not start when the boat heads the other way, or is out of range, or already has full fuel", () => {
+    const attempt = (change: (sim: Simulation) => void): boolean => {
+      const sim = besideTender(1);
+      change(sim);
+      return run(sim, 3).some((e) => e.type === "resupplyStarted");
+    };
+    expect(attempt(() => undefined)).toBe(true);
+    expect(attempt((sim) => (sim.sub.heading += Math.PI))).toBe(false);
+    expect(attempt((sim) => sim.teleport(sim.sub.x + 500, sim.sub.y))).toBe(false);
+    expect(attempt((sim) => (sim.sub.fuel = 36000))).toBe(false);
+  });
+});
