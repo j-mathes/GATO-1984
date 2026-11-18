@@ -148,7 +148,6 @@ export class App {
   private sim: Simulation | null = null;
   private runner: FixedTimestepRunner | null = null;
   private snapshot: Snapshot | null = null;
-  private menuEntry = "";
   private orders: { lines: string[]; timeline: OrdersTimeline; start: number; handle: MorseHandle | null; done: boolean } | null = null;
   private gameControl = new GameControl(this.settings);
   private difficultyEditor: LineEditor | null = null;
@@ -392,11 +391,9 @@ export class App {
   }
 
   private menuKey(e: KeyLike): void {
-    if (e.key === "Enter") {
-      this.choose(this.menuEntry === "" ? "1" : this.menuEntry);
-    } else if (e.key === "Backspace") this.menuEntry = this.menuEntry.slice(0, -1);
+    // Enter alone takes the first choice; a key that is not a choice is ignored, so nothing invalid is left on the prompt line
+    if (e.key === "Enter") this.choose("1");
     else if (/^[1-5]$/.test(e.key)) this.choose(e.key);
-    else if (e.key.length === 1 && this.menuEntry.length < 3) this.menuEntry += e.key;
   }
 
   /** The text under the list: what the selected switch gives on (the remake feature) and off (the 1984 behaviour), and which one is in force. */
@@ -597,7 +594,6 @@ export class App {
   }
 
   private choose(input: string): void {
-    this.menuEntry = "";
     const state = this.launcher.choose(input);
     if (state.screen !== "done") return;
     switch (state.target) {
@@ -1132,7 +1128,7 @@ export class App {
         if (!this.front((w, h) => drawEnhancedTitle(g, this.titleArt, w, h, timeMs, timeMs - (this.titleSince ?? timeMs)))) drawTitle(g, this.titleArt, this.sprites, timeMs, timeMs - this.titleSince);
         return;
       case "menu":
-        if (!this.front((w, h) => drawEnhancedMenu(g, this.titleArt, w, h, this.menuEntry, LAUNCHER_MENU, timeMs))) drawLauncherMenu(g, this.menuEntry, undefined, this.titleArt);
+        if (!this.front((w, h) => drawEnhancedMenu(g, this.titleArt, w, h, "", LAUNCHER_MENU, timeMs))) drawLauncherMenu(g, "", undefined, this.titleArt);
         return;
       case "settings":
         this.withSkin(() =>

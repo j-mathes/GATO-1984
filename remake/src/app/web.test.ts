@@ -322,6 +322,16 @@ describe("application shell", () => {
     expect(app.mode).toBe("menu");
   });
 
+  it("the menu ignores a key that is not a choice, and Enter takes choice 1", () => {
+    const { app } = makeApp();
+    press(app, "x");
+    press(app, "9", "a", "0", "Backspace", "Escape");
+    expect(app.mode).toBe("menu");
+    expect((app as unknown as { menuEntry?: string }).menuEntry).toBeUndefined();
+    press(app, "Enter");
+    expect(app.mode).not.toBe("menu");
+  });
+
   it("the history in the app: arrows turn pages, a modifier key does not, Esc returns to the menu and the history reopens on that page; the switch turns it off", () => {
     const { app } = makeApp();
     const page = (): number => ((app as unknown as { history: { view: { index: number } } }).history.view.index);
